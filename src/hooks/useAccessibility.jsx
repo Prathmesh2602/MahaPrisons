@@ -48,6 +48,7 @@ export const AccessibilityProvider = ({ children }) => {
   const increaseFontSize = () => setFontSize(prev => Math.min(prev + 1, 4));
   const decreaseFontSize = () => setFontSize(prev => Math.max(prev - 1, -2));
   const resetFontSize = () => setFontSize(0);
+  const toggleLanguage = () => setLanguage(prev => prev === 'mr' ? 'en' : 'mr');
 
   // Translation helper function
   const t = (key) => {
@@ -104,6 +105,7 @@ export const AccessibilityProvider = ({ children }) => {
       value={{
         language,
         setLanguage,
+        toggleLanguage,
         contrast,
         setContrast,
         fontSize,
