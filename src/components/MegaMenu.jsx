@@ -79,7 +79,7 @@ export const MegaMenu = () => {
                   href={item.href}
                   className={`px-2.5 py-3.5 flex items-center gap-0.5 transition-all whitespace-nowrap focus:outline focus:outline-2 focus:outline-amber-500 h-full ${
                     isHome 
-                      ? 'bg-amber-500 text-gray-950 px-4 hover:bg-amber-600' 
+                      ? 'bg-amber-500 text-[#fff] font-[500] px-4 hover:bg-amber-600' 
                       : 'hover:bg-black/5 dark-mode:hover:bg-white/5 text-gray-900 dark-mode:text-gray-100'
                   }`}
                   aria-haspopup={hasChildren ? "true" : "false"}
