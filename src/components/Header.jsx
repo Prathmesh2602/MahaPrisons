@@ -4,6 +4,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 export const Header = () => {
   const { language } = useAccessibility();
 
+  
   return (
     <header className="w-full bg-white/45 border-b border-gray-250/30 backdrop-blur-md text-gray-900 py-4 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4 dark-mode:bg-gray-900/35 dark-mode:text-gray-100 dark-mode:border-gray-800/40 smooth-transition relative z-10">
 
