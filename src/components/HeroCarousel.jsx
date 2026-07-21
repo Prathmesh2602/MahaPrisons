@@ -46,28 +46,24 @@ export const HeroCarousel = () => {
         >
           {/* Active Banner Image with Ken Burns animation */}
           <div className="absolute inset-0 z-0">
+            {/* Blurred fill backdrop, swaps instantly (stays fully opaque so it never ghosts through the fading foreground) */}
+            <img
+              src={slides[currentSlide].img_src}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover object-center scale-110 blur-2xl brightness-75"
+            />
             <AnimatePresence mode="wait">
-              <motion.div
+              <motion.img
                 key={currentSlide}
+                src={slides[currentSlide].img_src}
+                alt={slides[currentSlide].img_alt}
                 initial={{ scale: 1.08, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.8 }}
-                className="w-full h-full relative"
-              >
-                {/* Blurred fill backdrop, same image, scaled to cover so blur has no edges */}
-                <img
-                  src={slides[currentSlide].img_src}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover object-center scale-110 blur-2xl brightness-75"
-                />
-                <img
-                  src={slides[currentSlide].img_src}
-                  alt={slides[currentSlide].img_alt}
-                  className="relative w-full h-full object-contain object-center"
-                />
-              </motion.div>
+                className="absolute inset-0 w-full h-full object-contain object-center"
+              />
             </AnimatePresence>
             {/* Subtle vignette overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
