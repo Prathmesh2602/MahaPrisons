@@ -53,12 +53,19 @@ export const HeroCarousel = () => {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.8 }}
-                className="w-full h-full"
+                className="w-full h-full relative"
               >
+                {/* Blurred fill backdrop, same image, scaled to cover so blur has no edges */}
+                <img
+                  src={slides[currentSlide].img_src}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover object-center scale-110 blur-2xl brightness-75"
+                />
                 <img
                   src={slides[currentSlide].img_src}
                   alt={slides[currentSlide].img_alt}
-                  className="w-full h-full object-contain bg-white object-center"
+                  className="relative w-full h-full object-contain object-center"
                 />
               </motion.div>
             </AnimatePresence>
