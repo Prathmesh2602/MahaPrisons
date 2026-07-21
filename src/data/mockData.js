@@ -147,21 +147,24 @@ export const mockHomepageData = {
     }
   ],
   hero_carousel: [
-    {
-      img_src: "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/07/20260703755665836.jpeg",
-      img_alt: "पुण्यश्लोक अहिल्यादेवी होळकर शेतकरी कर्जमुक्ती योजना",
-      caption: "पुण्यश्लोक अहिल्यादेवी होळकर शेतकरी कर्जमुक्ती योजना"
-    },
-    {
-      img_src: "https://files.prokerala.com/news/photos/imgs/1024/mantralaya-the-administrative-headquarters-of-the-974726.jpg",
-      img_alt: "मंत्रालय मुंबई",
-      caption: "मंत्रालय मुंबई"
-    },
-    {
-      img_src: "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2025/01/20250122476252478.jpg",
-      img_alt: "मंत्रालय मुंबई",
-      caption: "मंत्रालय मुंबई"
-    }
+    // { img_src: "/gallary/1.jpeg", img_alt: "Gallery Image 1" },
+    // { img_src: "/gallary/2.jpeg", img_alt: "Gallery Image 2" },
+    // { img_src: "/gallary/3.jpeg", img_alt: "Gallery Image 3" },
+    { img_src: "/gallary/4.jpeg", img_alt: "Gallery Image 4" },
+    { img_src: "/gallary/5.jpeg", img_alt: "Gallery Image 5" },
+    { img_src: "/gallary/6.jpeg", img_alt: "Gallery Image 6" },
+    { img_src: "/gallary/7.jpeg", img_alt: "Gallery Image 7" },
+    { img_src: "/gallary/8.jpeg", img_alt: "Gallery Image 8" },
+    { img_src: "/gallary/9.jpeg", img_alt: "Gallery Image 9" },
+    { img_src: "/gallary/10.jpeg", img_alt: "Gallery Image 10" },
+    { img_src: "/gallary/11.jpeg", img_alt: "Gallery Image 11" },
+    { img_src: "/gallary/12.jpeg", img_alt: "Gallery Image 12" },
+    { img_src: "/gallary/13.jpeg", img_alt: "Gallery Image 13" },
+    { img_src: "/gallary/14.jpeg", img_alt: "Gallery Image 14" },
+    { img_src: "/gallary/15.jpeg", img_alt: "Gallery Image 15" },
+    { img_src: "/gallary/16.jpeg", img_alt: "Gallery Image 16" },
+    { img_src: "/gallary/17.jpeg", img_alt: "Gallery Image 17" },
+    { img_src: "/gallary/WhatsApp Image 2026-07-20 at 19.57.30.jpeg", img_alt: "Gallery Image 18" }
   ],
   minister_profiles: [
     {

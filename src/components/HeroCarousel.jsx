@@ -15,9 +15,9 @@ export const HeroCarousel = () => {
     if (isPaused) return;
     const timer = setInterval(() => {
       handleNext();
-    }, 6500);
+    }, 3500);
     return () => clearInterval(timer);
-  }, [currentSlide, isPaused]);
+  }, [currentSlide, isPaused, slides.length]);
 
   const handleNext = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -58,12 +58,12 @@ export const HeroCarousel = () => {
                 <img
                   src={slides[currentSlide].img_src}
                   alt={slides[currentSlide].img_alt}
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-contain bg-white object-center"
                 />
               </motion.div>
             </AnimatePresence>
-            {/* Dark vignette overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent z-10" />
+            {/* Subtle vignette overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
           </div>
 
           {/* Controls - Left Chevron */}
@@ -97,30 +97,6 @@ export const HeroCarousel = () => {
                 aria-current={idx === currentSlide ? "true" : "false"}
               />
             ))}
-          </div>
-
-          {/* Glassmorphic Slide Caption */}
-          <div className="absolute inset-x-0 bottom-0 p-5 md:p-7 z-20">
-            <div className="max-w-2xl">
-              <motion.div 
-                key={currentSlide}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                className="p-4 rounded-2xl bg-black/70 border border-white/15 backdrop-blur-md text-left inline-block max-w-full shadow-lg"
-              >
-                <span className="text-[9px] text-amber-400 font-extrabold uppercase tracking-widest block mb-1">
-                  {language === 'mr' ? 'विशेष योजना व उपक्रम' : 'Featured Scheme'}
-                </span>
-                <h2 className="text-xs md:text-sm font-extrabold font-devanagari tracking-wide text-white leading-snug">
-                  {language === 'mr' 
-                    ? slides[currentSlide].caption
-                    : currentSlide === 0 
-                      ? "Punyasloke Ahilyadevi Holkar Farmer Debt Relief Scheme" 
-                      : "Mantralaya, Mumbai Head Office Official Banners"}
-                </h2>
-              </motion.div>
-            </div>
           </div>
         </div>
 

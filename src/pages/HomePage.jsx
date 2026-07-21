@@ -76,11 +76,11 @@ export const HomePage = () => {
         {/* Interactive React month-by-month calendar */}
         <HolidayCalendar />
 
-        {/* Slide Photo Gallery & map */}
-        <PhotoGallery />
-
         {/* Redirection Links */}
         <ImportantLinks />
+
+        {/* Slide Photo Gallery & map */}
+        <PhotoGallery />
 
       </main>
 
