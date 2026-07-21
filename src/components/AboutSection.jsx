@@ -17,17 +17,17 @@ export const AboutSection = () => {
 
   return (
     <div className="w-full py-20 px-4 md:px-8 bg-gradient-to-b from-[#F1F5F9] to-[#F8FAFC] dark-mode:from-gray-900 dark-mode:to-gray-950 border-y border-gray-200 dark-mode:border-gray-800 smooth-transition relative overflow-hidden">
-      
+
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
+
           {/* Prison Logo column */}
           <div className="lg:col-span-4 flex justify-center">
             <div className="relative p-6 bg-white dark-mode:bg-gray-850 border border-gray-200/50 dark-mode:border-gray-800 rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 group max-w-sm">
               {/* Highlight gradient borders */}
               <span className="absolute inset-0 bg-gradient-to-tr from-[#0F3D66]/5 to-[#0F766E]/5 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500" />
               <img
-                src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/01/20260109374693913.jpg"
+                src="/logo.jpeg"
                 alt={t("कारागृह लोगो")}
                 className="w-44 h-auto mx-auto rounded-2xl group-hover:scale-105 transition-transform duration-300 shadow-inner"
               />
@@ -45,7 +45,7 @@ export const AboutSection = () => {
             <p className="text-sm md:text-base text-gray-700 dark-mode:text-gray-300 font-medium leading-relaxed mb-6 font-devanagari max-w-3xl">
               {aboutText}
             </p>
-            
+
             {/* Read More button */}
             <a
               href="https://mahaprisons.gov.in/about-department/%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%9a%e0%a4%af/"

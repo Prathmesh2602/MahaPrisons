@@ -9,7 +9,7 @@ export const PhotoGallery = () => {
   const [activePhoto, setActivePhoto] = useState(0);
 
   const galleryInfo = mockHomepageData.gallery;
-  
+
   // Custom mock photos showing Yerawada Open Prison units, statistics, and training programs
   const galleryItems = [
     {
@@ -169,7 +169,7 @@ export const PhotoGallery = () => {
   return (
     <div className="w-full bg-white dark-mode:bg-gray-950 py-20 px-4 md:px-8 border-b border-gray-200 dark-mode:border-gray-800 smooth-transition">
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Section title & View All action */}
         <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-10 border-b border-gray-100 dark-mode:border-gray-800 pb-4">
           <div className="text-center sm:text-left">
@@ -195,27 +195,42 @@ export const PhotoGallery = () => {
 
         {/* Gallery Interface */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
+
           {/* Column 1: Carousel Slider */}
-          <div className="lg:col-span-8 relative bg-slate-50 dark-mode:bg-gray-900 border border-gray-200/80 dark-mode:border-gray-850 rounded-3xl overflow-hidden aspect-video shadow-md flex items-center justify-center group">
-            
-            <AnimatePresence mode="wait">
-              <motion.img
+          <div className="lg:col-span-8 relative bg-gray-900 border border-gray-200/80 dark-mode:border-gray-850 rounded-3xl overflow-hidden aspect-video shadow-md flex items-center justify-center group">
+
+            <AnimatePresence>
+              <motion.div
                 key={activePhoto}
-                src={galleryItems[activePhoto].img_src}
-                alt={galleryItems[activePhoto].img_alt}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.3 }}
-                className="w-full h-full object-contain p-4 rounded-3xl"
-              />
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="absolute inset-0 w-full h-full"
+              >
+                {/* Background image without blur */}
+                <img
+                  src={galleryItems[activePhoto].img_src}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover object-center scale-110 opacity-40"
+                />
+                {/* Foreground image */}
+                <motion.img
+                  src={galleryItems[activePhoto].img_src}
+                  alt={galleryItems[activePhoto].img_alt}
+                  initial={{ scale: 0.98 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0 w-full h-full object-contain object-center z-10"
+                />
+              </motion.div>
             </AnimatePresence>
 
             {/* Left controller */}
             <button
               onClick={handlePrev}
-              className="absolute left-4 w-11 h-11 rounded-full bg-black/40 hover:bg-[#0F3D66] text-white flex items-center justify-center focus:outline focus:outline-2 focus:outline-amber-500 border border-white/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer shadow-lg"
+              className="absolute left-4 w-11 h-11 rounded-full bg-black/40 hover:bg-[#0F3D66] text-white flex items-center justify-center focus:outline focus:outline-2 focus:outline-amber-500 border border-white/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer shadow-lg z-20"
               aria-label="Previous Photo"
             >
               <ChevronLeft className="w-6 h-6" />
@@ -224,14 +239,14 @@ export const PhotoGallery = () => {
             {/* Right controller */}
             <button
               onClick={handleNext}
-              className="absolute right-4 w-11 h-11 rounded-full bg-black/40 hover:bg-[#0F3D66] text-white flex items-center justify-center focus:outline focus:outline-2 focus:outline-amber-500 border border-white/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer shadow-lg"
+              className="absolute right-4 w-11 h-11 rounded-full bg-black/40 hover:bg-[#0F3D66] text-white flex items-center justify-center focus:outline focus:outline-2 focus:outline-amber-500 border border-white/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer shadow-lg z-20"
               aria-label="Next Photo"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
 
             {/* Indicator Overlay */}
-            <div className="absolute top-4 right-4 bg-[#0F3D66]/85 backdrop-blur-sm text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-wider shadow-sm">
+            <div className="absolute top-4 right-4 bg-[#0F3D66]/85 backdrop-blur-sm text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-wider shadow-sm z-20">
               {activePhoto + 1} / {galleryItems.length}
             </div>
           </div>
@@ -241,7 +256,7 @@ export const PhotoGallery = () => {
             <div className="bg-[#F8FAFC] dark-mode:bg-gray-900 border border-gray-200/80 dark-mode:border-gray-850 rounded-3xl p-6 shadow-sm flex flex-col gap-4 relative overflow-hidden h-full min-h-[250px]">
               {/* Highlight background corner */}
               <span className="absolute -top-12 -right-12 w-28 h-28 bg-[#0F766E]/5 rounded-full blur-xl" />
-              
+
               <div className="flex items-center gap-2 text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-extrabold uppercase tracking-widest">
                 <Eye className="w-3.5 h-3.5" />
                 <span>{language === 'mr' ? 'फोटो वर्णन' : 'Photo Details'}</span>
@@ -262,9 +277,8 @@ export const PhotoGallery = () => {
                   <button
                     key={idx}
                     onClick={() => setActivePhoto(idx)}
-                    className={`h-2.5 rounded-full transition-all border border-gray-300 dark-mode:border-gray-700 cursor-pointer ${
-                      idx === activePhoto ? 'bg-amber-500 w-6' : 'bg-gray-300 dark-mode:bg-gray-800 w-2.5'
-                    }`}
+                    className={`h-2.5 rounded-full transition-all border border-gray-300 dark-mode:border-gray-700 cursor-pointer ${idx === activePhoto ? 'bg-amber-500 w-6' : 'bg-gray-300 dark-mode:bg-gray-800 w-2.5'
+                      }`}
                     aria-label={`Go to photo ${idx + 1}`}
                   />
                 ))}

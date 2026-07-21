@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';
 import { Bell, ArrowRight, Download, FileText, Calendar } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const pastelColors = [
+  'bg-rose-50 dark-mode:bg-rose-950/40 border-rose-100/80 dark-mode:border-rose-900/50',
+  'bg-blue-50 dark-mode:bg-blue-950/40 border-blue-100/80 dark-mode:border-blue-900/50',
+  'bg-emerald-50 dark-mode:bg-emerald-950/40 border-emerald-100/80 dark-mode:border-emerald-900/50',
+  'bg-amber-50 dark-mode:bg-amber-950/40 border-amber-100/80 dark-mode:border-amber-900/50',
+  'bg-violet-50 dark-mode:bg-violet-950/40 border-violet-100/80 dark-mode:border-violet-900/50',
+  'bg-teal-50 dark-mode:bg-teal-950/40 border-teal-100/80 dark-mode:border-teal-900/50'
+];
 
 export const AnnouncementsTabs = () => {
   const { language, t } = useAccessibility();
@@ -63,35 +73,35 @@ export const AnnouncementsTabs = () => {
   };
 
   return (
-    <div className="w-full bg-white dark-mode:bg-gray-950 py-20 px-4 md:px-8 border-b border-gray-200/60 dark-mode:border-gray-850 smooth-transition">
-      <div className="max-w-4xl mx-auto bg-white border border-gray-200/80 rounded-3xl shadow-md overflow-hidden dark-mode:bg-gray-900 dark-mode:border-gray-800">
+    <div className="w-full bg-slate-50 dark-mode:bg-gray-950 py-20 px-4 md:px-8 border-b border-gray-200/60 dark-mode:border-gray-850 smooth-transition">
+      <div className="max-w-7xl mx-auto">
         
-        {/* Header containing tabs */}
-        <div className="bg-gradient-to-r from-[#0F3D66] to-[#1E5AA8] text-white p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shadow-inner">
-              <Bell className="w-5 h-5 text-amber-300 animate-swing" />
-            </div>
-            <div>
-              <h2 className={`text-base font-extrabold font-devanagari tracking-wide ${language === 'mr' ? '' : 'tracking-wide'}`}>
+        {/* Section title & Tabs */}
+        <div className="flex flex-col md:flex-row justify-between md:items-end gap-6 mb-10 border-b border-gray-200 dark-mode:border-gray-800 pb-6">
+          <div className="text-center md:text-left">
+            <span className="text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-extrabold uppercase tracking-widest block mb-2">
+              {language === 'mr' ? 'सूचना आणि घोषणा' : 'Notices & Announcements'}
+            </span>
+            <div className="flex items-center justify-center md:justify-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 dark-mode:bg-amber-900/30 flex items-center justify-center">
+                <Bell className="w-5 h-5 text-amber-600 dark-mode:text-amber-400 animate-swing" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#0F3D66] dark-mode:text-blue-300 font-devanagari">
                 {t("ताज्या घडामोडी")}
               </h2>
-              <span className="text-[10px] text-blue-200 uppercase font-bold tracking-widest block mt-0.5">
-                Notices & Announcements
-              </span>
             </div>
           </div>
 
           {/* Navigation tab links */}
-          <div className="flex bg-[#092947]/60 rounded-full p-1 border border-white/5 backdrop-blur-sm">
+          <div className="flex bg-white dark-mode:bg-gray-900 rounded-full p-1.5 border border-gray-200 dark-mode:border-gray-800 shadow-sm self-center md:self-end">
             {tabs.map((tab, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveTab(idx)}
-                className={`px-4.5 py-1.5 rounded-full text-xs font-bold transition-all focus:outline-none cursor-pointer ${
+                className={`px-6 py-2.5 rounded-full text-xs md:text-sm font-bold transition-all focus:outline-none cursor-pointer ${
                   idx === activeTab 
-                    ? 'bg-amber-500 text-gray-950 shadow-md' 
-                    : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    ? 'bg-[#0F3D66] text-white shadow-md dark-mode:bg-blue-600' 
+                    : 'text-gray-500 hover:text-[#0F3D66] hover:bg-gray-100 dark-mode:text-gray-400 dark-mode:hover:bg-gray-800 dark-mode:hover:text-blue-300'
                 }`}
                 aria-selected={idx === activeTab ? "true" : "false"}
                 role="tab"
@@ -103,47 +113,60 @@ export const AnnouncementsTabs = () => {
         </div>
 
         {/* Notices items container */}
-        <div className="p-6">
-          <div className="flex flex-col gap-4">
-            {tabs[activeTab]?.items.map((item, idx) => {
-              const text = getNoticeText(item.text, activeTab, idx);
-              const isPdf = item.href.endsWith('.pdf');
+        <div className="relative min-h-[400px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              {tabs[activeTab]?.items.map((item, idx) => {
+                const text = getNoticeText(item.text, activeTab, idx);
+                const isPdf = item.href.endsWith('.pdf');
+                const cardColorClass = pastelColors[idx % pastelColors.length];
 
-              return (
-                <a
-                  key={idx}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border border-gray-100 rounded-2xl hover:bg-[#F8FAFC] hover:border-[#0F3D66]/20 transition-all duration-300 dark-mode:border-gray-800 dark-mode:hover:bg-gray-850 focus:outline focus:outline-2 focus:outline-amber-500"
-                >
-                  <div className="flex gap-3 items-start">
-                    {/* Visual file/notif status icon */}
-                    <div className="w-9 h-9 rounded-xl bg-gray-50 border border-gray-150 flex items-center justify-center dark-mode:bg-gray-800 dark-mode:border-gray-700 flex-shrink-0 group-hover:bg-[#0F3D66] group-hover:text-white transition-all duration-300">
-                      {isPdf ? <Download className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
-                    </div>
+                return (
+                  <a
+                    key={idx}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group flex flex-col justify-between p-5 ${cardColorClass} border rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline focus:outline-2 focus:outline-amber-500 relative overflow-hidden`}
+                  >
+                    {/* Subtle gradient overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-[#0F3D66]/5 dark-mode:to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                    <div className="flex flex-col">
-                      <h4 className="text-xs md:text-[13px] font-bold text-gray-850 dark-mode:text-gray-250 group-hover:text-[#0F3D66] dark-mode:group-hover:text-blue-300 leading-snug transition-colors duration-300">
+                    <div>
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#F8FAFC] dark-mode:bg-gray-800 border border-gray-150 dark-mode:border-gray-700 flex items-center justify-center group-hover:bg-[#0F3D66] group-hover:text-white dark-mode:group-hover:bg-blue-600 transition-colors duration-300 shadow-sm">
+                          {isPdf ? <Download className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[10px] text-gray-500 dark-mode:text-gray-400 font-bold uppercase tracking-wider bg-gray-50 dark-mode:bg-gray-850 px-2.5 py-1 rounded-full border border-gray-100 dark-mode:border-gray-800">
+                          <Calendar className="w-3.5 h-3.5" />
+                          <span>{item.date || 'Jul 2026'}</span>
+                        </div>
+                      </div>
+
+                      <h4 className="text-[13px] font-bold text-gray-800 dark-mode:text-gray-200 group-hover:text-[#0F3D66] dark-mode:group-hover:text-blue-300 leading-snug transition-colors duration-300 line-clamp-3">
                         {text}
                       </h4>
-                      {/* Notice metadata */}
-                      <div className="flex items-center gap-1.5 mt-1.5 text-[10px] text-gray-500 font-bold uppercase tracking-wider">
-                        <Calendar className="w-3.5 h-3.5" />
-                        <span>{item.date || 'Jul 2026'}</span>
+                    </div>
+
+                    {/* Redirection indicator */}
+                    <div className="mt-4 pt-3 border-t border-gray-100 dark-mode:border-gray-800 flex items-center justify-between text-xs font-extrabold text-[#0F766E] dark-mode:text-teal-400 group-hover:text-[#1E5AA8] dark-mode:group-hover:text-blue-400 transition-colors">
+                      <span>{isPdf ? t("डाउनलोड") : t("अधिक वाचा")}</span>
+                      <div className="w-7 h-7 rounded-full bg-[#0F766E]/10 dark-mode:bg-teal-400/10 flex items-center justify-center group-hover:bg-[#1E5AA8]/20 dark-mode:group-hover:bg-blue-400/20 transition-colors">
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </div>
-                  </div>
-
-                  {/* Redirection indicator */}
-                  <div className="flex items-center gap-1.5 text-[10.5px] font-extrabold text-[#0F766E] dark-mode:text-teal-400 opacity-80 group-hover:opacity-100 transition-opacity whitespace-nowrap self-end md:self-center">
-                    <span>{isPdf ? t("डाउनलोड") : t("अधिक वाचा …")}</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </a>
-              );
-            })}
-          </div>
+                  </a>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
       </div>

@@ -33,11 +33,11 @@ export const HeroCarousel = () => {
     : "Security, correction, and rehabilitation are our guiding pillars. We are committed to equipping inmates with skills to make them productive members of society.";
 
   return (
-    <div className="w-full bg-transparent py-10 px-4 md:px-8 border-b border-gray-200/40 dark-mode:border-gray-850/45 smooth-transition relative z-10">
+    <div className="w-full bg-transparent py-4 px-4 md:px-8 border-gray-200/40 dark-mode:border-gray-850/45 smooth-transition relative z-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         {/* Left Side: Trendy Ken Burns Carousel (8 cols) */}
-        <div 
+        <div
           className="lg:col-span-8 relative h-[320px] md:h-[420px] rounded-3xl overflow-hidden shadow-md border border-gray-200/50 dark-mode:border-gray-800 flex flex-col justify-end group"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -45,28 +45,38 @@ export const HeroCarousel = () => {
           aria-label="Government Banners"
         >
           {/* Active Banner Image with Ken Burns animation */}
-          <div className="absolute inset-0 z-0">
-            {/* Blurred fill backdrop, swaps instantly (stays fully opaque so it never ghosts through the fading foreground) */}
-            <img
-              src={slides[currentSlide].img_src}
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 w-full h-full object-cover object-center scale-110 blur-2xl brightness-75"
-            />
-            <AnimatePresence mode="wait">
-              <motion.img
+          <div className="absolute inset-0 z-0 bg-gray-900 overflow-hidden">
+            <AnimatePresence>
+              <motion.div
                 key={currentSlide}
-                src={slides[currentSlide].img_src}
-                alt={slides[currentSlide].img_alt}
-                initial={{ scale: 1.08, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.8 }}
-                className="absolute inset-0 w-full h-full object-contain object-center"
-              />
+                className="absolute inset-0 w-full h-full"
+              >
+                {/* Background image without blur */}
+                <img
+                  src={slides[currentSlide].img_src}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover object-center scale-110 opacity-40"
+                />
+                {/* Foreground image with Ken Burns */}
+                <motion.img
+                  src={slides[currentSlide].img_src}
+                  alt={slides[currentSlide].img_alt}
+                  initial={{ scale: 1.05 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.8 }}
+                  className="absolute inset-0 w-full h-full object-contain object-center z-10"
+                  style={{
+                    WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)',
+                    maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)'
+                  }}
+                />
+              </motion.div>
             </AnimatePresence>
-            {/* Subtle vignette overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
           </div>
 
           {/* Controls - Left Chevron */}
@@ -93,9 +103,8 @@ export const HeroCarousel = () => {
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
-                className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-                  idx === currentSlide ? 'bg-amber-400 w-5' : 'bg-white/40'
-                }`}
+                className={`w-2 h-2 rounded-full transition-all cursor-pointer ${idx === currentSlide ? 'bg-amber-400 w-5' : 'bg-white/40'
+                  }`}
                 aria-label={`Go to slide ${idx + 1}`}
                 aria-current={idx === currentSlide ? "true" : "false"}
               />
@@ -110,9 +119,9 @@ export const HeroCarousel = () => {
 
           {/* Dignitary Profile details */}
           <div className="flex items-center gap-4">
-            <img 
-              src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/06/202606051649346751.jpeg" 
-              alt="ADG Suhas Warke" 
+            <img
+              src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/06/202606051649346751.jpeg"
+              alt="ADG Suhas Warke"
               className="w-16 h-16 rounded-2xl object-cover object-top border border-gray-150 dark-mode:border-gray-700 shadow-sm"
             />
             <div className="flex flex-col">

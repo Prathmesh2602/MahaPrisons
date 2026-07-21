@@ -60,6 +60,7 @@ body {
 .hover-lift {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .hover-lift:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(15, 61, 102, 0.06);
@@ -73,6 +74,7 @@ body {
 .gradient-border-hover {
   position: relative;
 }
+
 .gradient-border-hover::after {
   content: '';
   position: absolute;
@@ -87,6 +89,7 @@ body {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
+
 .gradient-border-hover:hover::after {
   opacity: 1;
 }
@@ -124,14 +127,14 @@ body {
 
 /* High-tech grid pattern backdrop */
 .high-tech-grid {
-  background-image: 
+  background-image:
     radial-gradient(circle at 1px 1px, rgba(15, 61, 102, 0.04) 1.5px, transparent 0),
     radial-gradient(circle at 1px 1px, rgba(15, 61, 102, 0.02) 1px, transparent 0);
   background-size: 32px 32px, 16px 16px;
 }
 
 .dark-mode .high-tech-grid {
-  background-image: 
+  background-image:
     radial-gradient(circle at 1px 1px, rgba(96, 165, 250, 0.04) 1.5px, transparent 0),
     radial-gradient(circle at 1px 1px, rgba(96, 165, 250, 0.02) 1px, transparent 0);
 }
@@ -155,13 +158,16 @@ body {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(15, 61, 102, 0.15);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(15, 61, 102, 0.3);
 }

@@ -18,11 +18,14 @@ export const AccessibilityProvider = ({ children }) => {
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove('high-contrast', 'dark-mode');
+    root.style.filter = 'none';
     
-    if (contrast === 'high-contrast') {
+    if (contrast === 'high') {
       root.classList.add('high-contrast');
-    } else if (contrast === 'dark-mode') {
+    } else if (contrast === 'dark') {
       root.classList.add('dark-mode');
+    } else if (contrast === 'inverted') {
+      root.style.filter = 'invert(1) hue-rotate(180deg)';
     }
   }, [contrast]);
 
@@ -34,16 +37,6 @@ export const AccessibilityProvider = ({ children }) => {
     const sizeMultiplier = 1.125 + fontSize * 0.1; // 10% change per step
     root.style.fontSize = `${sizeMultiplier * 100}%`;
   }, [fontSize]);
-
-  // Apply color inversion style
-  useEffect(() => {
-    const root = document.documentElement;
-    if (invertColors) {
-      root.style.filter = 'invert(1) hue-rotate(180deg)';
-    } else {
-      root.style.filter = 'none';
-    }
-  }, [invertColors]);
 
   const increaseFontSize = () => setFontSize(prev => Math.min(prev + 1, 4));
   const decreaseFontSize = () => setFontSize(prev => Math.max(prev - 1, -2));
@@ -90,6 +83,43 @@ export const AccessibilityProvider = ({ children }) => {
     }
     setIsSpeaking(false);
   };
+
+  // Global hover-to-speak logic when active
+  useEffect(() => {
+    if (!bhashiniVoiceActive) {
+      stopSpeaking();
+      return;
+    }
+
+    let hoverTimeout;
+    const handleMouseOver = (e) => {
+      const target = e.target;
+      const validTags = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'A', 'BUTTON', 'SPAN', 'LI', 'LABEL'];
+      
+      if (validTags.includes(target.tagName)) {
+        const text = target.textContent || target.innerText;
+        if (text && text.trim().length > 0 && text.trim().length < 200) {
+          clearTimeout(hoverTimeout);
+          hoverTimeout = setTimeout(() => {
+            speak(text.trim());
+          }, 400); // 400ms delay so it doesn't spam while quickly moving mouse
+        }
+      }
+    };
+
+    const handleMouseOut = () => {
+      clearTimeout(hoverTimeout);
+    };
+
+    document.addEventListener('mouseover', handleMouseOver);
+    document.addEventListener('mouseout', handleMouseOut);
+
+    return () => {
+      clearTimeout(hoverTimeout);
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseout', handleMouseOut);
+    };
+  }, [bhashiniVoiceActive, language]);
 
   // Cleanup speech synthesis on unmount
   useEffect(() => {

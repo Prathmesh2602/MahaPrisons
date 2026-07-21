@@ -1,25 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { Search, GitFork, Accessibility, ChevronDown, Check, Sun, Moon, Volume2, VolumeX, Type } from 'lucide-react';
+import { Search, GitFork, Settings2, ChevronDown, Check, Sun, Moon, Volume2, VolumeX, Type } from 'lucide-react';
 
 export const AccessibilityToolbar = () => {
-  const { 
-    fontSizeIndex, 
-    increaseFontSize, 
-    decreaseFontSize, 
+  const {
+    fontSize,
+    increaseFontSize,
+    decreaseFontSize,
     resetFontSize,
-    contrast, 
-    setContrast, 
-    language, 
+    contrast,
+    setContrast,
+    language,
     toggleLanguage,
-    speechActive,
-    toggleSpeech,
+    bhashiniVoiceActive: speechActive,
+    setBhashiniVoiceActive,
     t
   } = useAccessibility();
+
+  const toggleSpeech = () => setBhashiniVoiceActive(!speechActive);
+  const fontSizeIndex = fontSize;
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setPanelOpen(false);
+      }
+    };
+    
+    if (panelOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [panelOpen]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -39,8 +59,8 @@ export const AccessibilityToolbar = () => {
   };
 
   return (
-    <div className="w-full bg-white/40 border-b border-gray-300/40 py-1.5 px-4 md:px-8 text-xs font-semibold text-gray-700 flex flex-wrap justify-between items-center z-50 relative smooth-transition select-none">
-      
+    <div className="w-full bg-white/40 border-b border-gray-300/40 py-1 px-4 md:px-8 text-xs font-semibold text-gray-700 flex flex-wrap justify-between items-center z-50 relative smooth-transition select-none">
+
       {/* 1. LEFT SIDE: Static Government Title */}
       <div className="flex items-center gap-2 text-[10.5px] uppercase font-bold tracking-wide text-gray-700">
         <span>महाराष्ट्र शासन</span>
@@ -50,7 +70,7 @@ export const AccessibilityToolbar = () => {
 
       {/* 2. RIGHT SIDE: Clean Usability Icons */}
       <div className="flex items-center gap-4 relative">
-        
+
         {/* Toggleable Search Box */}
         {searchOpen && (
           <form onSubmit={handleSearchSubmit} className="flex items-center relative animate-in slide-in-from-right-3 duration-200">
@@ -69,52 +89,43 @@ export const AccessibilityToolbar = () => {
         )}
 
         {/* Search Icon */}
-        <button 
+        <button
           onClick={() => setSearchOpen(!searchOpen)}
-          className={`p-1 rounded hover:bg-black/5 cursor-pointer transition-colors ${searchOpen ? 'text-[#0F3D66] bg-black/5' : 'text-gray-650'}`}
+          className={`p-1.5 rounded-md hover:bg-black/5 cursor-pointer transition-colors flex items-center gap-1.5 ${searchOpen ? 'text-[#0F3D66] bg-black/5' : 'text-gray-700 hover:text-gray-900'}`}
           title={t("Search")}
         >
-          <Search className="w-4 h-4" />
+          <Search className="w-5 h-5" strokeWidth={1.5} />
         </button>
 
         {/* Sitemap Link Icon */}
-        <a 
+        <a
           href="https://mahaprisons.gov.in/%e0%a4%b8%e0%a4%be%e0%a4%87%e0%a4%9f%e0%a4%ae%e0%a5%85%e0%a4%aa/"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-1 rounded hover:bg-black/5 text-gray-650 transition-colors"
+          className="p-1.5 rounded-md hover:bg-black/5 text-gray-700 hover:text-gray-900 transition-colors flex items-center gap-1.5"
           title={t("Sitemap")}
         >
-          <GitFork className="w-4 h-4" />
+          <GitFork className="w-5 h-5" strokeWidth={1.5} />
         </a>
 
-        {/* Accessibility Panel Trigger */}
-        <button 
-          onClick={() => setPanelOpen(!panelOpen)}
-          className={`p-1 rounded hover:bg-black/5 cursor-pointer transition-colors flex items-center gap-0.5 ${panelOpen ? 'text-[#0F3D66] bg-black/5' : 'text-gray-650'}`}
-          title={t("Accessibility Options")}
-          aria-expanded={panelOpen ? "true" : "false"}
-        >
-          <Accessibility className="w-4 h-4" />
-          <ChevronDown className="w-3 h-3 text-gray-400" />
-        </button>
+        {/* Accessibility Wrapper */}
+        <div ref={dropdownRef} className="relative flex items-center">
+          {/* Accessibility Panel Trigger */}
+          <button
+            onClick={() => setPanelOpen(!panelOpen)}
+            className={`p-1.5 rounded-md hover:bg-black/5 cursor-pointer transition-colors flex items-center gap-1.5 ${panelOpen ? 'text-[#0F3D66] bg-black/5' : 'text-gray-700 hover:text-gray-900'}`}
+            title={t("Accessibility Options")}
+            aria-expanded={panelOpen ? "true" : "false"}
+          >
+            <Settings2 className="w-5 h-5" strokeWidth={1.5} />
+            <ChevronDown className="w-3.5 h-3.5 text-gray-500" strokeWidth={3} />
+          </button>
 
-        {/* Language Toggler (अ / A) */}
-        <button 
-          onClick={toggleLanguage}
-          className="px-2 py-0.5 border border-gray-400 hover:border-gray-900 rounded text-[10px] font-bold text-gray-800 flex items-center gap-1 cursor-pointer transition-all hover:bg-white"
-          title={language === 'mr' ? 'Switch to English' : 'मराठीत बदला'}
-        >
-          <span className="font-devanagari">अ</span>
-          <span className="text-gray-300">|</span>
-          <span>A</span>
-        </button>
-
-        {/* Floating Accessibility Settings Card Popover */}
-        {panelOpen && (
-          <div className="absolute right-0 top-8 mt-2 w-72 bg-white/95 backdrop-blur-md text-gray-800 border border-gray-250 shadow-2xl rounded-xl p-4 z-50 text-[11.5px] select-none animate-in fade-in slide-in-from-top-3 duration-200">
+          {/* Floating Accessibility Settings Card Popover */}
+          {panelOpen && (
+            <div className="absolute right-0 top-full mt-2 w-72 bg-white/95 backdrop-blur-md text-gray-800 border border-gray-250 shadow-2xl rounded-xl p-4 z-50 text-[11.5px] select-none animate-in fade-in slide-in-from-top-3 duration-200">
             <h4 className="font-bold text-[#0F3D66] mb-3 text-xs border-b border-gray-150 pb-1.5 flex items-center gap-1">
-              <Accessibility className="w-4 h-4" />
+              <Settings2 className="w-4 h-4" />
               <span>{language === 'mr' ? 'सुगम्यता पर्याय' : 'Accessibility Options'}</span>
             </h4>
 
@@ -124,14 +135,14 @@ export const AccessibilityToolbar = () => {
                 {language === 'mr' ? 'अक्षर आकार' : 'Font Size Control'}
               </span>
               <div className="flex items-center justify-between bg-gray-50 rounded-lg p-1 border border-gray-200">
-                <button 
+                <button
                   onClick={decreaseFontSize}
                   className="px-2.5 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-gray-700 shadow-sm transition-all cursor-pointer"
                   title={language === 'mr' ? 'अक्षर आकार कमी करा' : 'Decrease text size'}
                 >
                   A-
                 </button>
-                <button 
+                <button
                   onClick={resetFontSize}
                   className="px-3 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-[#0F3D66] shadow-sm transition-all cursor-pointer flex items-center gap-1"
                   title={language === 'mr' ? 'मूळ आकार' : 'Reset text size'}
@@ -139,7 +150,7 @@ export const AccessibilityToolbar = () => {
                   <Type className="w-3 h-3" />
                   <span>{fontSizeIndex === 0 ? '100%' : fontSizeIndex === 1 ? '112.5%' : fontSizeIndex === 2 ? '125%' : '87.5%'}</span>
                 </button>
-                <button 
+                <button
                   onClick={increaseFontSize}
                   className="px-2.5 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-gray-700 shadow-sm transition-all cursor-pointer"
                   title={language === 'mr' ? 'अक्षर आकार वाढवा' : 'Increase text size'}
@@ -159,11 +170,10 @@ export const AccessibilityToolbar = () => {
                   <button
                     key={mode}
                     onClick={() => setContrast(mode)}
-                    className={`px-2 py-1.5 rounded-lg border text-left font-bold flex items-center justify-between cursor-pointer transition-all ${
-                      contrast === mode
-                        ? 'border-[#0F3D66] bg-[#0F3D66]/5 text-[#0F3D66]'
-                        : 'border-gray-200 hover:bg-gray-50 text-gray-700'
-                    }`}
+                    className={`px-2 py-1.5 rounded-lg border text-left font-bold flex items-center justify-between cursor-pointer transition-all ${contrast === mode
+                      ? 'border-[#0F3D66] bg-[#0F3D66]/5 text-[#0F3D66]'
+                      : 'border-gray-200 hover:bg-gray-50 text-gray-700'
+                      }`}
                   >
                     <span>{getContrastLabel(mode)}</span>
                     {contrast === mode && <Check className="w-3.5 h-3.5 text-[#0F3D66]" />}
@@ -180,18 +190,17 @@ export const AccessibilityToolbar = () => {
                     {language === 'mr' ? 'भाषिणी आवाज वाचक' : 'Bhashini Voice Narrator'}
                   </span>
                   <span className="text-[9.5px] text-gray-400 block mt-0.5">
-                    {speechActive 
-                      ? (language === 'mr' ? 'मजकूर-ते-आवाज सुरू आहे' : 'Speech narration is active') 
+                    {speechActive
+                      ? (language === 'mr' ? 'मजकूर-ते-आवाज सुरू आहे' : 'Speech narration is active')
                       : (language === 'mr' ? 'आवाज वाचक बंद आहे' : 'Click to enable screen reader')}
                   </span>
                 </div>
                 <button
                   onClick={toggleSpeech}
-                  className={`p-2 rounded-full cursor-pointer transition-all ${
-                    speechActive
-                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/20'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-500'
-                  }`}
+                  className={`p-2 rounded-full cursor-pointer transition-all ${speechActive
+                    ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/20'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-500'
+                    }`}
                   title={speechActive ? 'Mute' : 'Speak Page Content'}
                 >
                   {speechActive ? <Volume2 className="w-4 h-4 animate-bounce" /> : <VolumeX className="w-4 h-4" />}
@@ -213,6 +222,18 @@ export const AccessibilityToolbar = () => {
 
           </div>
         )}
+        </div>
+
+        {/* Language Toggler (अ / A) */}
+        <button
+          onClick={toggleLanguage}
+          className="ml-2 px-3 py-1 border-2 border-gray-400 hover:border-[#0F3D66] hover:text-[#0F3D66] rounded-md text-[11px] font-extrabold text-gray-800 flex items-center gap-1.5 cursor-pointer transition-all hover:bg-white hover:shadow-sm"
+          title={language === 'mr' ? 'Switch to English' : 'मराठीत बदला'}
+        >
+          <span className="font-devanagari text-[13px]">अ</span>
+          <span className="text-gray-300">|</span>
+          <span className="text-[12px]">A</span>
+        </button>
 
       </div>
     </div>

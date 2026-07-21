@@ -4,9 +4,9 @@ import { useAccessibility } from '../hooks/useAccessibility';
 export const Header = () => {
   const { language } = useAccessibility();
 
-  
+
   return (
-    <header className="w-full bg-white/45 border-b border-gray-250/30 backdrop-blur-md text-gray-900 py-4 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4 dark-mode:bg-gray-900/35 dark-mode:text-gray-100 dark-mode:border-gray-800/40 smooth-transition relative z-10">
+    <header className="w-full bg-white/45 backdrop-blur-md text-gray-900 pt-2 pb-3 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4 dark-mode:bg-gray-900/35 dark-mode:text-gray-100 dark-mode:border-gray-800/40 smooth-transition relative z-10">
 
       {/* 1. LEFT SIDE: Emblem and Title Block */}
       <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
@@ -50,9 +50,9 @@ export const Header = () => {
           title={language === 'mr' ? "महाराष्ट्र शासन अधिकृत संकेतस्थळ" : "Government of Maharashtra Portal"}
         >
           <img
-            src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/01/20260109374693913.jpg"
+            src="/logo.jpeg"
             alt="Maharashtra Government Seal"
-            className="h-18 w-auto rounded"
+            className="h-18 w-auto rounded object-contain"
           />
         </a>
 

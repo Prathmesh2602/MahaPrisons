@@ -21,7 +21,7 @@ export const NewsTicker = () => {
   }, [isPaused, items.length]);
 
   return (
-    <div 
+    <div
       className="w-full bg-gradient-to-r from-[#0F3D66]/85 via-[#1E5AA8]/80 to-[#0B665E]/80 backdrop-blur-md text-white py-2.5 px-4 md:px-8 border-b border-white/10 flex flex-col md:flex-row items-center gap-3 overflow-hidden text-sm relative smooth-transition shadow-sm"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -36,29 +36,28 @@ export const NewsTicker = () => {
       <div className="relative w-full h-5 flex items-center overflow-hidden">
         {items.map((item, idx) => {
           const isActive = idx === activeIndex;
-          
+
           // Clean text translations for news items
-          const itemText = language === 'mr' 
-            ? item.text 
-            : idx === 0 
+          const itemText = language === 'mr'
+            ? item.text
+            : idx === 0
               ? "Regarding publication of provisional service seniority list as of 01.01.2024 for Lower Grade posts in Prisons Department. NEW"
               : "Regarding the announcement of results of the qualifying examination conducted from 19.06.2024 to 21.06.2024 for clerical category employees. NEW";
 
           return (
             <div
               key={idx}
-              className={`absolute inset-0 flex items-center transition-all duration-500 transform ${
-                isActive 
-                  ? 'translate-y-0 opacity-100' 
+              className={`absolute inset-0 flex items-center transition-all duration-500 transform ${isActive
+                  ? 'translate-y-0 opacity-100'
                   : 'translate-y-full opacity-0'
-              }`}
+                }`}
               style={{ display: isActive ? 'flex' : 'none' }}
             >
               <a
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:underline flex items-center gap-2 font-semibold text-white/95 hover:text-amber-300 w-full truncate focus:outline focus:outline-2 focus:outline-amber-500 rounded transition-colors"
+                className="hover:underline flex items-center pl-2 gap-2 font-semibold text-white/95 hover:text-amber-300 w-full truncate focus:outline focus:outline-2 focus:outline-amber-500 rounded transition-colors"
               >
                 <span className="w-1.5 h-1.5 bg-amber-400 rounded-full flex-shrink-0 animate-ping" />
                 <span className="truncate">{itemText}</span>

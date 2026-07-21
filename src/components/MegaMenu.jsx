@@ -49,19 +49,18 @@ export const MegaMenu = () => {
   const moreItems = mockHomepageData.navigation_menu.slice(10);
 
   return (
-    <nav 
-      className={`w-full z-40 smooth-transition border-b ${
-        isSticky 
-          ? 'sticky top-0 bg-[#F3F4F6]/95 backdrop-blur-md shadow-md border-gray-300 text-gray-900' 
-          : 'bg-[#F3F4F6]/40 backdrop-blur-md border-gray-250/30 text-gray-900'
-      } dark-mode:bg-gray-900/35 dark-mode:text-gray-150 dark-mode:border-gray-800/40`}
+    <nav
+      className={`w-full z-40 smooth-transition ${isSticky
+        ? 'sticky top-0 bg-[#F3F4F6]/95 backdrop-blur-md shadow-md border-gray-300 text-gray-900'
+        : 'bg-white/45 backdrop-blur-md text-gray-900'
+        } dark-mode:bg-gray-900/35 dark-mode:text-gray-150 dark-mode:border-gray-800/40`}
       aria-label="Main Navigation"
     >
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center h-12">
-        
+
         {/* Desktop Navigation Links */}
         <div className="hidden lg:flex items-center justify-between gap-1 w-full text-xs font-bold">
-          
+
           {/* Primary items */}
           {primaryItems.map((item, idx) => {
             const hasChildren = item.children && item.children.length > 0;
@@ -69,7 +68,7 @@ export const MegaMenu = () => {
             const isHome = item.text === "मुख्यपृष्ठ";
 
             return (
-              <div 
+              <div
                 key={idx}
                 className="relative h-12 flex items-center"
                 onMouseEnter={() => handleDropdownHover(idx)}
@@ -77,11 +76,10 @@ export const MegaMenu = () => {
               >
                 <a
                   href={item.href}
-                  className={`px-2.5 py-3.5 flex items-center gap-0.5 transition-all whitespace-nowrap focus:outline focus:outline-2 focus:outline-amber-500 h-full ${
-                    isHome 
-                      ? 'bg-amber-500 text-[#fff] font-[500] px-4 hover:bg-amber-600' 
-                      : 'hover:bg-black/5 dark-mode:hover:bg-white/5 text-gray-900 dark-mode:text-gray-100'
-                  }`}
+                  className={`px-2.5 py-3.5 flex items-center gap-0.5 transition-all whitespace-nowrap focus:outline focus:outline-2 focus:outline-amber-500 h-full ${isHome
+                    ? 'bg-amber-500 rounded text-[#fff] font-[500] px-4 hover:bg-amber-600'
+                    : 'hover:bg-black/5 rounded dark-mode:hover:bg-white/5 text-gray-900 dark-mode:text-gray-100'
+                    }`}
                   aria-haspopup={hasChildren ? "true" : "false"}
                   aria-expanded={isDropdownActive ? "true" : "false"}
                 >
@@ -111,15 +109,14 @@ export const MegaMenu = () => {
 
           {/* Collapsible Hamburger Menu on the right (More links) */}
           {moreItems.length > 0 && (
-            <div 
+            <div
               className="relative h-12 flex items-center"
               onMouseEnter={() => handleDropdownHover(99)}
               onMouseLeave={handleDropdownLeave}
             >
               <button
-                className={`px-3.5 py-3.5 hover:bg-black/5 dark-mode:hover:bg-white/5 flex items-center gap-1 transition-all h-full text-gray-900 dark-mode:text-gray-100 focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer ${
-                  activeDropdown === 99 ? 'bg-black/5 dark-mode:bg-white/5' : ''
-                }`}
+                className={`px-3.5 py-3.5 hover:bg-black/5 dark-mode:hover:bg-white/5 flex items-center gap-1 transition-all h-full text-gray-900 dark-mode:text-gray-100 focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer ${activeDropdown === 99 ? 'bg-black/5 dark-mode:bg-white/5' : ''
+                  }`}
                 aria-haspopup="true"
                 aria-expanded={activeDropdown === 99 ? "true" : "false"}
                 aria-label="Expand more menus"
@@ -142,9 +139,8 @@ export const MegaMenu = () => {
                       >
                         <a
                           href={item.href}
-                          className={`block px-4 py-2.5 text-xs font-semibold text-gray-900 dark-mode:text-gray-100 hover:bg-gray-100 dark-mode:hover:bg-gray-800 flex items-center justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 ${
-                            isSubActive ? 'bg-gray-100 dark-mode:bg-gray-800' : ''
-                          }`}
+                          className={`block px-4 py-2.5 text-xs font-semibold text-gray-900 dark-mode:text-gray-100 hover:bg-gray-100 dark-mode:hover:bg-gray-800 flex items-center justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 ${isSubActive ? 'bg-gray-100 dark-mode:bg-gray-800' : ''
+                            }`}
                         >
                           <span className="truncate max-w-[200px]">{t(item.text)}</span>
                           {hasSubChildren ? (
@@ -182,7 +178,7 @@ export const MegaMenu = () => {
         {/* Brand identity for sticky navbar (Mobile) */}
         {isSticky && (
           <div className="lg:hidden flex items-center gap-2">
-            <img 
+            <img
               src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/01/20260109374693913.jpg"
               alt="MahaPrisons Logo"
               className="h-8 w-auto rounded"
@@ -215,11 +211,11 @@ export const MegaMenu = () => {
 
                 return (
                   <div key={idx} className="border-b border-[#1E5AA8]/20 py-1.5 last:border-0">
-                    <div 
+                    <div
                       className="flex items-center justify-between px-3 py-2 hover:bg-white/5 rounded transition-colors"
                       onClick={() => hasChildren && toggleDropdownMobile(idx)}
                     >
-                      <a 
+                      <a
                         href={hasChildren ? undefined : item.href}
                         className="text-sm font-semibold flex items-center gap-2"
                         onClick={(e) => hasChildren && e.preventDefault()}
