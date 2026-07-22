@@ -38,7 +38,7 @@ export const QuickServices = () => {
       <span className="absolute -bottom-32 -right-32 w-80 h-80 bg-teal-500/5 rounded-full blur-3xl" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        
+
         {/* Section title */}
         <div className="text-center mb-12">
           <span className={`text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-extrabold uppercase block mb-2 ${language === 'mr' ? '' : 'tracking-widest'}`}>
@@ -79,7 +79,7 @@ export const QuickServices = () => {
                   <span className={`text-[10px] md:text-xs font-bold text-gray-500 dark-mode:text-gray-400 group-hover:text-amber-600 transition-colors uppercase ${language === 'mr' ? '' : 'tracking-wider'}`}>
                     {translatedTitle}
                   </span>
-                  <span className="text-xl md:text-22px font-extrabold text-[#0F3D66] dark-mode:text-blue-300 font-manrope tracking-tight leading-snug">
+                  <span className="text-xl md:text-22px font-extrabold text-[#0F3D66] dark-mode:text-blue-300 font-poppins tracking-tight leading-snug">
                     {translatedNumber}
                   </span>
                 </div>

@@ -14,7 +14,7 @@ export const MinisterProfiles = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {mockHomepageData.minister_profiles.map((profile, idx) => {
             return (
-              <div 
+              <div
                 key={idx}
                 className="bg-white border border-gray-200/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 dark-mode:bg-gray-800 dark-mode:border-gray-700 flex flex-col items-center p-6 text-center group"
               >
@@ -34,7 +34,7 @@ export const MinisterProfiles = () => {
                 </h3>
 
                 {/* Designation */}
-                <p className="text-xs font-semibold text-gray-700 dark-mode:text-gray-300 font-manrope">
+                <p className="text-xs font-semibold text-gray-700 dark-mode:text-gray-300 font-poppins">
                   {t(profile.desg)}
                 </p>
 

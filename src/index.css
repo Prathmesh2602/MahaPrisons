@@ -13,8 +13,7 @@
   --color-text-primary: #111827;
   --color-text-secondary: #374151;
 
-  --font-inter: "Inter", sans-serif;
-  --font-manrope: "Manrope", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
   --font-devanagari: "Mukta", "Noto Sans Devanagari", "Mangal", "Kokila", "Arial Unicode MS", sans-serif;
   --font-mukta: "Mukta", "Mangal", "Arial Unicode MS", sans-serif;
 }
@@ -27,7 +26,7 @@ html {
 body {
   background-color: var(--color-app-bg);
   color: var(--color-text-primary);
-  font-family: var(--font-inter);
+  font-family: var(--font-poppins);
   margin: 0;
   padding: 0;
   overflow-x: hidden;

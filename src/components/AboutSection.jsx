@@ -27,7 +27,7 @@ export const AboutSection = () => {
               {/* Highlight gradient borders */}
               <span className="absolute inset-0 bg-gradient-to-tr from-[#0F3D66]/5 to-[#0F766E]/5 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500" />
               <img
-                src="/logo.jpeg"
+                src="/Logo.jpeg"
                 alt={t("कारागृह लोगो")}
                 className="w-44 h-auto mx-auto rounded-2xl group-hover:scale-105 transition-transform duration-300 shadow-inner"
               />

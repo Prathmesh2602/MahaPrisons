@@ -63,9 +63,21 @@ export const AccessibilityToolbar = () => {
 
       {/* 1. LEFT SIDE: Static Government Title */}
       <div className="flex items-center gap-2 text-[10.5px] uppercase font-bold tracking-wide text-gray-700">
-        <span>महाराष्ट्र शासन</span>
-        <span className="text-gray-400">|</span>
-        <span>Government of Maharashtra</span>
+        <div className="flex items-center gap-2">
+          <span>महाराष्ट्र शासन</span>
+          <span className="text-gray-400">|</span>
+          <span>Government of Maharashtra</span>
+        </div>
+        <span className="hidden md:block text-gray-300 mx-2">|</span>
+        <div className="hidden md:flex flex-row items-center gap-2">
+          <span className="text-[11px] font-bold font-devanagari text-[#0F3D66] dark-mode:text-blue-300 leading-tight">
+            महाराष्ट्र कारागृहे व सुधार सेवा
+          </span>
+          <span className="text-gray-400">|</span>
+          <span className="text-[11px] font-semibold text-[#111827] dark-mode:text-white leading-tight font-poppins">
+            Maharashtra Prisons and Correctional Services
+          </span>
+        </div>
       </div>
 
       {/* 2. RIGHT SIDE: Clean Usability Icons */}

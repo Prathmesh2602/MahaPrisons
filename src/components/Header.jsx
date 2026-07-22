@@ -10,6 +10,37 @@ export const Header = () => {
 
       {/* 1. LEFT SIDE: Emblem and Title Block */}
       <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
+        {/* Maharashtra Government Seal */}
+        <a
+          href="https://www.maharashtra.gov.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          title={language === 'mr' ? "महाराष्ट्र शासन अधिकृत संकेतस्थळ" : "Government of Maharashtra Portal"}
+        >
+          <img
+            src="/Logo.jpeg"
+            alt="Maharashtra Government Seal"
+            className="h-18 w-auto rounded object-contain"
+          />
+        </a>
+
+        {/* Division border */}
+        <div className="hidden sm:block h-12 w-[1px] bg-gray-300 dark-mode:bg-gray-700" />
+
+        {/* Title Texts */}
+        <div className="flex flex-col">
+          <span className="text-sm md:text-[15px] font-bold font-devanagari text-[#0F3D66] dark-mode:text-blue-300 leading-tight">
+            येरवडा खुले कारागृह, पुणे
+          </span>
+          <h1 className="text-base md:text-lg lg:text-xl font-extrabold text-[#111827] dark-mode:text-white leading-tight font-poppins">
+            Yerwada Open Prison Pune
+          </h1>
+        </div>
+
+      </div>
+
+      {/* 2. RIGHT SIDE: Government Seal and Digital India Logos */}
+      <div className="flex items-center gap-4 flex-wrap justify-center">
         {/* National Emblem of India */}
         <a
           href="https://www.india.gov.in"
@@ -23,37 +54,6 @@ export const Header = () => {
             className="h-14 w-auto dark-mode:invert"
           />
           <span className="text-[7.5px] font-bold text-gray-500 tracking-wider">सत्यमेव जयते</span>
-        </a>
-
-        {/* Division border */}
-        <div className="hidden sm:block h-12 w-[1px] bg-gray-300 dark-mode:bg-gray-700" />
-
-        {/* Title Texts (Concurrent rendering matching the reference site) */}
-        <div className="flex flex-col">
-          <span className="text-sm md:text-[15px] font-bold font-devanagari text-[#0F3D66] dark-mode:text-blue-300 leading-tight">
-            महाराष्ट्र कारागृहे व सुधार सेवा
-          </span>
-          <h1 className="text-base md:text-lg lg:text-xl font-extrabold text-[#111827] dark-mode:text-white leading-tight font-inter">
-            Maharashtra Prisons and Correctional Services
-          </h1>
-        </div>
-      </div>
-
-      {/* 2. RIGHT SIDE: Government Seal and Digital India Logos */}
-      <div className="flex items-center gap-4 flex-wrap justify-center">
-        {/* Maharashtra Government Seal */}
-        <a
-          href="https://www.maharashtra.gov.in"
-          target="_blank"
-          rel="noopener noreferrer"
-          // className="focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1.5 bg-[#F1F5F9]/60 dark-mode:bg-gray-800/60 border border-gray-250/30 hover:shadow-md hover:scale-102 transition-all"
-          title={language === 'mr' ? "महाराष्ट्र शासन अधिकृत संकेतस्थळ" : "Government of Maharashtra Portal"}
-        >
-          <img
-            src="/logo.jpeg"
-            alt="Maharashtra Government Seal"
-            className="h-18 w-auto rounded object-contain"
-          />
         </a>
 
         {/* Digital India Logo */}
