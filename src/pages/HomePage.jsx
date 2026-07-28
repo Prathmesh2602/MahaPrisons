@@ -13,7 +13,6 @@ import AboutSection from '../components/AboutSection';
 import AnnouncementsTabs from '../components/AnnouncementsTabs';
 import HolidayCalendar from '../components/HolidayCalendar';
 import PhotoGallery from '../components/PhotoGallery';
-import ImportantLinks from '../components/ImportantLinks';
 import Footer from '../components/Footer';
 import LiveWallpaperBg from '../components/LiveWallpaperBg';
 
@@ -63,9 +62,6 @@ export const HomePage = () => {
         {/* Dignitary card grid */}
         <MinisterProfiles />
 
-        {/* Citizens Helplines grid */}
-        <QuickServices />
-
         {/* Welcoming About department copy */}
         <AboutSection />
 
@@ -75,11 +71,11 @@ export const HomePage = () => {
         {/* Interactive React month-by-month calendar */}
         <HolidayCalendar />
 
-        {/* Redirection Links */}
-        <ImportantLinks />
-
         {/* Slide Photo Gallery & map */}
         <PhotoGallery />
+
+        {/* Quick Services & Links */}
+        <QuickServices />
 
       </main>
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';
-import { Phone, Shield, ShieldAlert, HeartHandshake, UserCheck, HelpCircle } from 'lucide-react';
+import { Phone, Shield, ShieldAlert, HeartHandshake, UserCheck, HelpCircle, Link2, ArrowRight } from 'lucide-react';
 
 export const QuickServices = () => {
   const { language, t } = useAccessibility();
+  const links = mockHomepageData.important_links;
 
   // Helper function to return relevant Lucide Icons for government services
   const getIcon = (idx) => {
@@ -32,63 +33,108 @@ export const QuickServices = () => {
   };
 
   return (
-    <div className="w-full py-16 px-4 md:px-8 bg-white dark-mode:bg-gray-950 smooth-transition relative overflow-hidden">
+    <div className="w-full py-10 px-4 md:px-8 bg-gradient-to-b from-white to-[#F8FAFC] dark-mode:from-gray-950 dark-mode:to-gray-900 smooth-transition relative overflow-hidden border-b border-gray-200/60 dark-mode:border-gray-850">
       {/* Decorative background blur objects */}
-      <span className="absolute -top-32 -left-32 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl" />
-      <span className="absolute -bottom-32 -right-32 w-80 h-80 bg-teal-500/5 rounded-full blur-3xl" />
+      <span className="absolute -top-32 -left-32 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+      <span className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-
+        
         {/* Section title */}
-        <div className="text-center mb-12">
-          <span className={`text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-extrabold uppercase block mb-2 ${language === 'mr' ? '' : 'tracking-widest'}`}>
-            {t("नागरिकांविषयी")}
-          </span>
+        <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#0F3D66] dark-mode:text-blue-300 font-devanagari relative inline-block pb-3">
-            {t("मदत केंद्र")}
-            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-amber-500 rounded-full shadow-sm" />
+            {t("जलद सेवा आणि महत्त्वाच्या लिंक्स")}
+            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full shadow-sm" />
           </h2>
+          <p className="mt-2 text-gray-600 dark-mode:text-gray-400 text-xs md:text-sm max-w-2xl mx-auto">
+            {t("नागरिकांच्या सुविधेसाठी महत्त्वाचे संपर्क क्रमांक आणि संबंधित शासकीय संकेतस्थळांच्या लिंक्स खालीलप्रमाणे उपलब्ध आहेत.")}
+          </p>
         </div>
 
-        {/* Services helpline grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockHomepageData.helpline_services.map((service, idx) => {
-            const parts = service.text.split(':');
-            const number = parts[1] ? parts[1].trim() : '';
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Helplines Container */}
+          <div>
+            <div className="flex items-center gap-2 mb-4 border-b border-gray-200 dark-mode:border-gray-800 pb-2">
+              <Phone className="w-5 h-5 text-[#0F766E] dark-mode:text-teal-400" />
+              <h3 className="text-lg md:text-xl font-bold text-gray-800 dark-mode:text-gray-200">
+                {t("मदत केंद्र (Helplines)")}
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {mockHomepageData.helpline_services.map((service, idx) => {
+                const parts = service.text.split(':');
+                const number = parts[1] ? parts[1].trim() : '';
+                const translatedTitle = t(service.text).split(':')[0];
+                const translatedNumber = t(service.text).split(':')[1] || number;
 
-            // Render translated version of helpline titles
-            const translatedTitle = t(service.text).split(':')[0];
-            const translatedNumber = t(service.text).split(':')[1] || number;
+                return (
+                  <a
+                    key={idx}
+                    href={`tel:${number}`}
+                    className="group relative bg-white border border-gray-200/80 rounded-xl p-4 hover:border-[#0F766E]/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 dark-mode:bg-gray-900/50 dark-mode:border-gray-800 dark-mode:hover:border-teal-900/50 dark-mode:hover:bg-gray-850 flex items-center gap-4 focus:outline focus:outline-2 focus:outline-[#0F766E] overflow-hidden"
+                  >
+                    <span className="absolute -top-12 -right-12 w-24 h-24 bg-[#0F766E]/5 group-hover:bg-[#0F766E]/10 rounded-full blur-xl transition-all duration-500" />
+                    
+                    <div className={`w-12 h-12 rounded-xl border shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0 ${getIconBg(idx)}`}>
+                      {getIcon(idx)}
+                    </div>
 
-            return (
-              <a
-                key={idx}
-                href={`tel:${number}`}
-                className="group relative bg-gradient-to-tr from-[#F8FAFC] to-white border border-gray-200/60 rounded-3xl p-6 hover:from-white hover:to-white hover:border-[#0F3D66]/25 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 dark-mode:from-gray-900 dark-mode:to-gray-850 dark-mode:border-gray-800 dark-mode:hover:bg-gray-850 flex items-center gap-5 focus:outline focus:outline-2 focus:outline-amber-500 overflow-hidden"
-              >
-                {/* Subtle colored glow corner */}
-                <span className="absolute -top-12 -right-12 w-28 h-28 bg-[#0F3D66]/3 group-hover:bg-[#0F3D66]/8 rounded-full blur-2xl transition-all duration-500" />
+                    <div className="flex flex-col overflow-hidden">
+                      <span className={`text-xs font-bold text-gray-500 dark-mode:text-gray-400 group-hover:text-[#0F766E] transition-colors uppercase truncate ${language === 'mr' ? '' : 'tracking-wider'}`}>
+                        {translatedTitle}
+                      </span>
+                      <span className="text-xl md:text-2xl font-extrabold text-gray-800 dark-mode:text-gray-200 font-poppins tracking-tight leading-snug mt-0.5 truncate">
+                        {translatedNumber}
+                      </span>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
 
-                {/* Icon wrapper */}
-                <div className={`w-12 h-12 rounded-2xl border shadow-inner flex items-center justify-center group-hover:scale-108 transition-transform duration-300 ${getIconBg(idx)}`}>
-                  {getIcon(idx)}
-                </div>
+          {/* Important Links Container */}
+          <div>
+            <div className="flex items-center gap-2 mb-4 border-b border-gray-200 dark-mode:border-gray-800 pb-2">
+              <Link2 className="w-5 h-5 text-[#0F3D66] dark-mode:text-blue-400" />
+              <h3 className="text-lg md:text-xl font-bold text-gray-800 dark-mode:text-gray-200">
+                {t("महत्त्वाच्या लिंक्स (Important Links)")}
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {links.map((link, idx) => {
+                return (
+                  <a
+                    key={idx}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative bg-white border border-gray-200/60 rounded-md p-2 hover:border-[#0F3D66]/30 hover:shadow-sm transition-all duration-300 dark-mode:bg-gray-900/50 dark-mode:border-gray-800 dark-mode:hover:border-blue-900/50 dark-mode:hover:bg-gray-850 flex items-center justify-between gap-1 focus:outline focus:outline-2 focus:outline-amber-500 overflow-hidden"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0F3D66]/[0.02] dark-mode:to-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    
+                    <div className="flex items-center gap-2 relative z-10 overflow-hidden">
+                      <div className="w-6 h-6 rounded flex items-center justify-center text-gray-400 group-hover:bg-[#0F3D66] group-hover:text-white transition-all duration-300 shadow-sm border border-gray-100 dark-mode:border-gray-700 flex-shrink-0">
+                        <Link2 className="w-3 h-3" />
+                      </div>
+                      <span className="text-xs md:text-[13px] font-semibold text-gray-700 dark-mode:text-gray-300 group-hover:text-[#0F3D66] dark-mode:group-hover:text-blue-400 transition-colors leading-tight truncate">
+                        {t(link.text)}
+                      </span>
+                    </div>
 
-                {/* Typography details */}
-                <div className="flex flex-col">
-                  <span className={`text-[10px] md:text-xs font-bold text-gray-500 dark-mode:text-gray-400 group-hover:text-amber-600 transition-colors uppercase ${language === 'mr' ? '' : 'tracking-wider'}`}>
-                    {translatedTitle}
-                  </span>
-                  <span className="text-xl md:text-22px font-extrabold text-[#0F3D66] dark-mode:text-blue-300 font-poppins tracking-tight leading-snug">
-                    {translatedNumber}
-                  </span>
-                </div>
-              </a>
-            );
-          })}
+                    <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#0F3D66] dark-mode:text-gray-600 dark-mode:group-hover:text-blue-400 group-hover:translate-x-1 transition-all flex-shrink-0 relative z-10" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   );
 };
+
 export default QuickServices;
