@@ -141,15 +141,17 @@ body {
 
 /* Accessibility settings panel overlays */
 .glass-effect {
-  background: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255, 255, 255, 1) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
+  border: none !important;
 }
 
 .dark-mode .glass-effect {
-  background: rgba(24, 31, 46, 0.9) !important;
+  background: rgba(24, 31, 46, 1) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
+  border: none !important;
 }
 
 /* Custom scrollbars for clean dashboards */

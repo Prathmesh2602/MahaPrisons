@@ -63,7 +63,7 @@ export const MegaMenu = () => {
 
           {/* Primary items */}
           {primaryItems.map((item, idx) => {
-            const hasChildren = item.children && item.children.length > 0;
+            const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
             const isDropdownActive = activeDropdown === idx;
             const isHome = item.text === "मुख्यपृष्ठ";
 
@@ -88,10 +88,10 @@ export const MegaMenu = () => {
                   {hasChildren && <ChevronDown className="w-3.5 h-3.5 text-gray-500 dark-mode:text-gray-400 flex-shrink-0" />}
                 </a>
 
-                {/* Dropdown menu */}
-                {hasChildren && isDropdownActive && (
-                  <div className="absolute left-0 top-12 w-64 bg-white text-gray-900 border border-gray-250 shadow-xl rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:border-gray-800 animate-in fade-in slide-in-from-top-2 duration-200">
-                    {item.children.map((child, cIdx) => (
+                {/* Regular Dropdown menu */}
+                {hasChildren && !item.isMegaMenu && isDropdownActive && (
+                  <div className="absolute left-0 top-12 w-64 bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200">
+                    {item.children?.map((child, cIdx) => (
                       <a
                         key={cIdx}
                         href={child.href}
@@ -100,6 +100,51 @@ export const MegaMenu = () => {
                         <span>{t(child.text)}</span>
                         <ChevronRight className="w-3 h-3 text-gray-400" />
                       </a>
+                    ))}
+                  </div>
+                )}
+
+                {/* Mega Menu Dropdown */}
+                {hasChildren && item.isMegaMenu && isDropdownActive && (
+                  <div className="absolute left-0 top-12 min-w-[600px] max-w-5xl bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-4 px-6 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200 grid grid-cols-2 lg:grid-cols-3 gap-6">
+                    {item.groups?.map((group, gIdx) => (
+                      <div key={gIdx} className="flex flex-col gap-2">
+                        <h3 className="text-sm font-bold text-amber-600 dark-mode:text-amber-500 border-b border-gray-200 dark-mode:border-gray-700 pb-1 mb-1 whitespace-nowrap">
+                          {t(group.groupTitle)}
+                        </h3>
+                        <div className="flex flex-col gap-1">
+                          {group.children.map((child, cIdx) => {
+                             const hasSub = child.children && child.children.length > 0;
+                             return (
+                              <div key={cIdx} className="relative group/sub">
+                                <a
+                                  href={hasSub ? undefined : child.href}
+                                  className="text-xs font-semibold text-[#0F3D66] dark-mode:text-blue-300 hover:text-amber-500 dark-mode:hover:text-amber-400 transition-colors py-1 flex items-center gap-1 cursor-pointer w-full justify-between pr-2"
+                                >
+                                  <div className="flex items-center gap-1">
+                                    <ChevronRight className="w-3 h-3 text-gray-400" />
+                                    <span>{t(child.text)}</span>
+                                  </div>
+                                  {hasSub && <ChevronRight className="w-3 h-3 text-gray-400" />}
+                                </a>
+                                {hasSub && (
+                                  <div className="absolute left-[90%] top-0 ml-1 min-w-[200px] bg-white text-gray-900 shadow-lg shadow-black/10 rounded-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 hidden group-hover/sub:block animate-in fade-in slide-in-from-left-2 duration-150">
+                                    {child.children.map((subChild, scIdx) => (
+                                      <a
+                                        key={scIdx}
+                                        href={subChild.href}
+                                        className="block px-4 py-2 text-xs font-semibold text-[#0F3D66] dark-mode:text-blue-300 hover:bg-gray-150 dark-mode:hover:bg-gray-800 transition-colors"
+                                      >
+                                        <span>{t(subChild.text)}</span>
+                                      </a>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                             );
+                          })}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 )}
@@ -126,9 +171,9 @@ export const MegaMenu = () => {
 
               {/* Collapsed Items Panel */}
               {activeDropdown === 99 && (
-                <div className="absolute right-0 top-12 w-64 bg-white text-gray-900 border border-gray-250 shadow-xl rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:border-gray-800 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 top-12 w-64 bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200">
                   {moreItems.map((item, mIdx) => {
-                    const hasSubChildren = item.children && item.children.length > 0;
+                    const hasSubChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
                     const isSubActive = activeSubMenu === mIdx;
 
                     return (
@@ -152,7 +197,7 @@ export const MegaMenu = () => {
 
                         {/* Flyout Sub-menu (Opens to the left) */}
                         {hasSubChildren && isSubActive && (
-                          <div className="absolute right-full top-0 mr-1 w-60 bg-white text-gray-900 border border-gray-250 shadow-2xl rounded-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:border-gray-800 animate-in fade-in slide-in-from-right-2 duration-150">
+                          <div className="absolute right-full top-0 mr-1 w-60 bg-white text-gray-900 shadow-lg shadow-black/10 rounded-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-right-2 duration-150">
                             {item.children.map((subChild, scIdx) => (
                               <a
                                 key={scIdx}
@@ -206,14 +251,14 @@ export const MegaMenu = () => {
           <div className="w-4/5 max-w-sm h-full bg-[#0F3D66] border-r border-[#1E5AA8]/30 shadow-2xl py-4 overflow-y-auto z-40 text-white animate-in slide-in-from-left duration-300">
             <div className="flex flex-col gap-1 px-3">
               {mockHomepageData.navigation_menu.map((item, idx) => {
-                const hasChildren = item.children && item.children.length > 0;
+                const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
                 const isDropdownActive = activeDropdown === idx;
 
                 return (
                   <div key={idx} className="border-b border-[#1E5AA8]/20 py-1.5 last:border-0">
                     <div
-                      className="flex items-center justify-between px-3 py-2 hover:bg-white/5 rounded transition-colors"
-                      onClick={() => hasChildren && toggleDropdownMobile(idx)}
+                      className="flex items-center justify-between px-3 py-2 hover:bg-white/5 rounded transition-colors cursor-pointer"
+                      onClick={() => hasChildren ? toggleDropdownMobile(idx) : null}
                     >
                       <a
                         href={hasChildren ? undefined : item.href}
@@ -231,9 +276,9 @@ export const MegaMenu = () => {
                     </div>
 
                     {/* Mobile Dropdown Submenu */}
-                    {hasChildren && isDropdownActive && (
+                    {hasChildren && !item.isMegaMenu && isDropdownActive && (
                       <div className="mt-1 pl-6 flex flex-col gap-1 bg-[#092947]/50 rounded-md py-1 border-l-2 border-amber-500 animate-in slide-in-from-top duration-200">
-                        {item.children.map((child, cIdx) => (
+                        {item.children?.map((child, cIdx) => (
                           <a
                             key={cIdx}
                             href={child.href}
@@ -242,6 +287,54 @@ export const MegaMenu = () => {
                           >
                             {t(child.text)}
                           </a>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Mobile Mega Menu Groups */}
+                    {hasChildren && item.isMegaMenu && isDropdownActive && (
+                      <div className="mt-1 pl-4 flex flex-col gap-3 bg-[#092947]/50 rounded-md py-2 border-l-2 border-amber-500 animate-in slide-in-from-top duration-200">
+                        {item.groups?.map((group, gIdx) => (
+                          <div key={gIdx} className="flex flex-col gap-1">
+                            <h4 className="text-xs font-bold text-amber-400 px-3 uppercase tracking-wider mb-1">
+                              {t(group.groupTitle)}
+                            </h4>
+                            {group.children.map((child, cIdx) => {
+                              const hasSub = child.children && child.children.length > 0;
+                              return (
+                                <div key={cIdx}>
+                                  <a
+                                    href={hasSub ? undefined : child.href}
+                                    className="block px-3 py-1.5 text-xs font-semibold text-blue-200 hover:text-white transition-colors"
+                                    onClick={(e) => {
+                                      if (hasSub) {
+                                        // Simple toggler logic can just rely on not closing menu, 
+                                        // For now, let's keep it visible.
+                                      } else {
+                                        setMobileMenuOpen(false);
+                                      }
+                                    }}
+                                  >
+                                    - {t(child.text)}
+                                  </a>
+                                  {hasSub && (
+                                    <div className="pl-4 flex flex-col mt-0.5 mb-1">
+                                      {child.children.map((subChild, scIdx) => (
+                                        <a
+                                          key={scIdx}
+                                          href={subChild.href}
+                                          className="block px-3 py-1 text-[11px] text-gray-300 hover:text-white transition-colors"
+                                          onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                          • {t(subChild.text)}
+                                        </a>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
                         ))}
                       </div>
                     )}

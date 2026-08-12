@@ -11,128 +11,207 @@ export const mockHomepageData = {
   navigation_menu: [
     {
       text: "मुख्यपृष्ठ",
-      href: "#",
+      href: "/",
       title: "मुख्यपृष्ठ",
       children: []
     },
     {
-      text: "विभागाविषयी",
+      text: "कारागृह व्यवस्था",
       href: "#",
-      title: "विभागाविषयी",
-      children: [
-        { text: "परिचय", href: "https://mahaprisons.gov.in/about-department/%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%9a%e0%a4%af/", title: "परिचय", children: [] },
-        { text: "दृष्टी आणि ध्येय", href: "https://mahaprisons.gov.in/content-category/%e0%a4%a6%e0%a5%83%e0%a4%b7%e0%a5%8d%e0%a4%9f%e0%a5%80-%e0%a4%86%e0%a4%a3%e0%a4%bf-%e0%a4%a7%e0%a5%8d%e0%a4%af%e0%a5%87%e0%a4%af/", title: "दृष्टी आणि ध्येय", children: [] },
-        { text: "कारागृहांचा इतिहास", href: "https://mahaprisons.gov.in/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9%e0%a4%be%e0%a4%82%e0%a4%9a%e0%a4%be-%e0%a4%87%e0%a4%a4%e0%a4%bf%e0%a4%b9%e0%a4%be%e0%a4%b8/", title: "कारागृहांचा इतिहास", children: [] },
-        { text: "संस्थात्मक रचना", href: "https://mahaprisons.gov.in/%e0%a4%95%e0%a5%8b%e0%a4%a3%e0%a4%be%e0%a4%9a%e0%a5%87-%e0%a4%95%e0%a5%8b%e0%a4%a3/", title: "संस्थात्मक रचना", children: [] }
-      ]
-    },
-    {
-      text: "महाराष्ट्रातील कारागृहे",
-      href: "#",
-      title: "महाराष्ट्रातील कारागृहे",
-      children: [
-        { text: "कारागृह मुख्यालय, पुणे", href: "https://mahaprisons.gov.in/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%ae%e0%a5%81%e0%a4%96%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b2%e0%a4%af-%e0%a4%aa%e0%a5%81%e0%a4%a3%e0%a5%87/", title: "कारागृह मुख्यालय, पुणे", children: [] },
-        { text: "पश्चिम क्षेत्र", href: "https://mahaprisons.gov.in/%e0%a4%aa%e0%a4%b6%e0%a5%8d%e0%a4%9a%e0%a4%bf%e0%a4%ae-%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a5%87%e0%a4%a4%e0%a5%8d%e0%a4%b0/", title: "पश्चिम क्षेत्र", children: [] },
-        { text: "पूर्व क्षेत्र", href: "https://mahaprisons.gov.in/%e0%a4%aa%e0%a5%82%e0%a4%b0%e0%a5%8d%e0%a4%b5-%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a5%87%e0%a4%a4%e0%a5%8d%e0%a4%b0/", title: "पूर्व क्षेत्र", children: [] },
-        { text: "दक्षिण क्षेत्र", href: "https://mahaprisons.gov.in/%e0%a4%a6%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a4%bf%e0%a4%a3-%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a5%87%e0%a4%a4%e0%a5%8d%e0%a4%b0/", title: "दक्षिण क्षेत्र", children: [] },
-        { text: "मध्य विभाग, छ.संभाजीनगर", href: "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%a7%e0%a5%8d%e0%a4%af-%e0%a4%b5%e0%a4%bf%e0%a4%ad%e0%a4%be%e0%a4%97/", title: "मध्य विभाग, छ.संभाजीनगर", children: [] },
-        { text: "नाशिक विभाग", href: "https://mahaprisons.gov.in/%e0%a4%a8%e0%a4%be%e0%a4%b6%e0%a4%bf%e0%a4%95-%e0%a4%b5%e0%a4%bf%e0%a4%ad%e0%a4%be%e0%a4%97/", title: "नाशिक विभाग", children: [] }
-      ]
-    },
-    {
-      text: "सूचना",
-      href: "#",
-      title: "सूचना",
-      children: [
-        { text: "कायदे व नियम", href: "https://mahaprisons.gov.in/%e0%a4%95%e0%a4%be%e0%a4%af%e0%a4%a6%e0%a5%87-%e0%a4%b5-%e0%a4%a8%e0%a4%bf%e0%a4%af%e0%a4%ae/", title: "कायदे व नियम", children: [] },
-        { text: "परिपत्रके", href: "https://mahaprisons.gov.in/notice-category/%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0%e0%a4%95%e0%a5%87/", title: "परिपत्रके", children: [] },
-        { text: "घोषणा ( सामान्य)", href: "https://mahaprisons.gov.in/notice-category/%e0%a4%98%e0%a5%8b%e0%a4%b7%e0%a4%a3%e0%a4%be-%e0%a4%b8%e0%a4%be%e0%a4%ae%e0%a4%be%e0%a4%a8%e0%a5%8d%e0%a4%af/", title: "घोषणा ( सामान्य)", children: [] },
-        { text: "भरती", href: "https://mahaprisons.gov.in/notice-category/%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80/", title: "भरती", children: [] },
-        { text: "निविदा", href: "https://mahaprisons.gov.in/notice-category/%e0%a4%a8%e0%a4%bf%e0%a4%b5%e0%a4%bf%e0%a4%a6%e0%a4%be/", title: "निविदा", children: [] }
-      ]
-    },
-    {
-      text: "तक्रार निवारण",
-      href: "https://mahaprisons.gov.in/%e0%a4%a4%e0%a4%95%e0%a5%8d%e0%a4%b0%e0%a4%be%e0%a4%b0-%e0%a4%a8%e0%a4%bf%e0%a4%b5%e0%a4%be%e0%a4%b0%e0%a4%a3/",
-      title: "तक्रार निवारण",
+      title: "कारागृह व्यवस्था",
       children: []
     },
     {
-      text: "नागरिकांविषयी",
-      href: "https://mahaprisons.gov.in/e0-a4-a8-e0-a4-be-e0-a4-97-e0-a4-b0-e0-a4-bf-e0-a4-95-e0-a4-be-e0-a4-82-e0-a4-b5-e0-a4-bf-e0-a4-b7-e0-a4-af-e0-a5-80/",
-      title: "नागरिकांविषयी",
+      text: "प्रशासकीय विभाग",
+      href: "#",
+      title: "प्रशासकीय विभाग",
+      isMegaMenu: true,
+      groups: [
+        {
+          groupTitle: "प्रशासन व कर्मचारी",
+          children: [
+            { text: "प्रशासन", href: "#", title: "प्रशासन", children: [] },
+            { text: "आस्थापना", href: "#", title: "आस्थापना", children: [] },
+            { text: "न्याय विभाग", href: "#", title: "न्याय विभाग", children: [] }
+          ]
+        },
+        {
+          groupTitle: "दैनंदिन सुविधा",
+          children: [
+            { text: "रेशन", href: "#", title: "रेशन", children: [] },
+            { text: "उपाहारगृह", href: "#", title: "उपाहारगृह", children: [] },
+            { text: "मुलाखत", href: "#", title: "मुलाखत", children: [] },
+            { text: "दवाखाना", href: "#", title: "दवाखाना", children: [] }
+          ]
+        },
+        {
+          groupTitle: "उत्पादन व उपक्रम",
+          children: [
+            { text: "कारखाना", href: "#", title: "कारखाना", children: [] },
+            { text: "शेती", href: "#", title: "शेती", children: [] },
+            { text: "उद्योग", href: "#", title: "उद्योग", children: [] }
+          ]
+        },
+        {
+          groupTitle: "सुरक्षा व पायाभूत सुविधा",
+          children: [
+            { text: "अंतर्गत सुरक्षा", href: "#", title: "अंतर्गत सुरक्षा", children: [] },
+            { text: "बांधकाम", href: "#", title: "बांधकाम", children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      text: "शेती व पूरक व्यवसाय",
+      href: "#",
+      title: "शेती व पूरक व्यवसाय",
+      children: [
+        { text: "रोपवाटिका", href: "#", title: "रोपवाटिका", children: [] },
+        { text: "कुक्कुटपालन", href: "#", title: "कुक्कुटपालन", children: [] },
+        { text: "दुग्धव्यवसाय", href: "#", title: "दुग्धव्यवसाय", children: [] },
+        { text: "शेळीपालन", href: "#", title: "शेळीपालन", children: [] },
+        { text: "मशरूम प्रकल्प", href: "#", title: "मशरूम प्रकल्प", children: [] },
+        { text: "गांडूळखत प्रकल्प", href: "#", title: "गांडूळखत प्रकल्प", children: [] },
+        { text: "नाविन्यपूर्ण उपक्रम व उत्पादने", href: "#", title: "नाविन्यपूर्ण उपक्रम व उत्पादने", children: [] }
+      ]
+    },
+    {
+      text: "सामाजिक उपक्रम",
+      href: "#",
+      title: "सामाजिक उपक्रम",
+      children: [
+        { text: "केशकर्तनालय", href: "#", title: "केशकर्तनालय", children: [] },
+        { text: "धुलाईगृह", href: "#", title: "धुलाईगृह", children: [] },
+        { text: "श्रृंखला उपाहारगृह", href: "#", title: "श्रृंखला उपाहारगृह", children: [] },
+        { text: "के. के. मंगल लॉन", href: "#", title: "के. के. मंगल लॉन", children: [] },
+        { text: "मिंडा युनिट", href: "#", title: "मिंडा युनिट", children: [] }
+      ]
+    },
+    {
+      text: "सोयी-सुविधा",
+      href: "#",
+      title: "सोयी-सुविधा",
+      isMegaMenu: true,
+      groups: [
+        {
+          groupTitle: "भेट व संपर्क",
+          children: [
+            {
+              text: "बंदी मुलाखत", href: "#", title: "बंदी मुलाखत", children: [
+                { text: "प्रत्यक्ष मुलाखत", href: "#", title: "प्रत्यक्ष मुलाखत", children: [] },
+                { text: "ई-मुलाखत", href: "#", title: "ई-मुलाखत", children: [] }
+              ]
+            },
+            {
+              text: "ॲलेन स्मार्ट कार्ड फोन सुविधा", href: "#", title: "ॲलेन स्मार्ट कार्ड फोन सुविधा", children: [
+                { text: "ऑडिओ", href: "#", title: "ऑडिओ", children: [] },
+                { text: "व्हिडिओ", href: "#", title: "व्हिडिओ", children: [] }
+              ]
+            },
+            { text: "पत्रव्यवहार व मनीऑर्डर सुविधा", href: "#", title: "पत्रव्यवहार व मनीऑर्डर सुविधा", children: [] }
+          ]
+        },
+        {
+          groupTitle: "कायदेशीर व प्रशासकीय सुविधा",
+          children: [
+            { text: "मोफत कायदेशीर मदत", href: "#", title: "मोफत कायदेशीर मदत", children: [] },
+            { text: "जिल्हा विधी सेवा प्राधिकरण", href: "#", title: "जिल्हा विधी सेवा प्राधिकरण", children: [] },
+            { text: "संचित व अभिवाचन रजा", href: "#", title: "संचित व अभिवाचन रजा", children: [] },
+            { text: "माफी", href: "#", title: "माफी", children: [] }
+          ]
+        },
+        {
+          groupTitle: "आरोग्य व दैनंदिन सुविधा",
+          children: [
+            { text: "हिरकणी कक्ष", href: "#", title: "हिरकणी कक्ष", children: [] },
+            { text: "व्यायामशाळा", href: "#", title: "व्यायामशाळा", children: [] },
+            { text: "वेट कॅन्टीन", href: "#", title: "वेट कॅन्टीन", children: [] }
+          ]
+        },
+        {
+          groupTitle: "शिक्षण व विकास",
+          children: [
+            { text: "शैक्षणिक सुविधा", href: "#", title: "शैक्षणिक सुविधा", children: [] },
+            { text: "ग्रंथालय", href: "#", title: "ग्रंथालय", children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      text: "सांस्कृतिक उपक्रम",
+      href: "#",
+      title: "सांस्कृतिक उपक्रम",
+      isMegaMenu: true,
+      groups: [
+        {
+          groupTitle: "प्रबोधन व जनजागृती",
+          children: [
+            { text: "प्रबोधन कार्यक्रम", href: "#", title: "प्रबोधन कार्यक्रम", children: [] },
+            { text: "व्यसनमुक्ती कार्यक्रम", href: "#", title: "व्यसनमुक्ती कार्यक्रम", children: [] }
+          ]
+        },
+        {
+          groupTitle: "प्रशिक्षण व व्यक्तिमत्त्व विकास",
+          children: [
+            { text: "व्यावसायिक प्रशिक्षण", href: "#", title: "व्यावसायिक प्रशिक्षण", children: [] }
+          ]
+        },
+        {
+          groupTitle: "योग व आध्यात्मिक उपक्रम",
+          children: [
+            { text: "योग, ध्यान व धारणा", href: "#", title: "योग, ध्यान व धारणा", children: [] },
+            { text: "प्राणिक हीलिंग", href: "#", title: "प्राणिक हीलिंग", children: [] },
+            { text: "कीर्तन व भजन", href: "#", title: "कीर्तन व भजन", children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      text: "उल्लेखनीय कार्य",
+      href: "#",
+      title: "उल्लेखनीय कार्य",
+      children: [
+        { text: "उल्लेखनीय उपक्रम", href: "#", title: "उल्लेखनीय उपक्रम", children: [] },
+        { text: "महत्त्वपूर्ण प्रकल्प", href: "#", title: "महत्त्वपूर्ण प्रकल्प", children: [] },
+        { text: "पुरस्कार व गौरव", href: "#", title: "पुरस्कार व गौरव", children: [] },
+        { text: "उत्कृष्ट कार्यपद्धती", href: "#", title: "उत्कृष्ट कार्यपद्धती", children: [] },
+        { text: "परिणाम व यशोगाथा", href: "#", title: "परिणाम व यशोगाथा", children: [] }
+      ]
+    },
+    {
+      text: "दौरे व भेटी",
+      href: "#",
+      title: "दौरे व भेटी",
+      isMegaMenu: true,
+      groups: [
+        {
+          groupTitle: "अभ्यासभेटी",
+          children: [
+            { text: "शैक्षणिक अभ्यासभेट", href: "#", title: "शैक्षणिक अभ्यासभेट", children: [] },
+            { text: "संस्थात्मक अभ्यासभेट", href: "#", title: "संस्थात्मक अभ्यासभेट", children: [] }
+          ]
+        },
+        {
+          groupTitle: "प्रशासकीय दौरे",
+          children: [
+            { text: "अधिकारी दौरे", href: "#", title: "अधिकारी दौरे", children: [] },
+            { text: "मान्यवर भेटी", href: "#", title: "मान्यवर भेटी", children: [] },
+            { text: "निरीक्षण दौरे", href: "#", title: "निरीक्षण दौरे", children: [] },
+            { text: "विभागीय भेटी", href: "#", title: "विभागीय भेटी", children: [] }
+          ]
+        }
+      ]
+    },
+    {
+      text: "आमची उत्पादने",
+      href: "#",
+      title: "आमची उत्पादने",
       children: []
     },
     {
-      text: "योजना/कार्यक्रम",
+      text: "संपर्क",
       href: "#",
-      title: "योजना/कार्यक्रम",
-      children: [
-        { text: "राज्य सरकार", href: "https://mahaprisons.gov.in/provider/%e0%a4%b0%e0%a4%be%e0%a4%9c%e0%a5%8d%e0%a4%af-%e0%a4%b8%e0%a4%b0%e0%a4%95%e0%a4%be%e0%a4%b0-mr/", title: "राज्य सरकार", children: [] }
-      ]
-    },
-    {
-      text: "उत्पादन",
-      href: "#",
-      title: "उत्पादन",
-      children: [
-        { text: "कृषी", href: "https://mahaprisons.gov.in/%e0%a4%95%e0%a5%83%e0%a4%b7%e0%a5%80/", title: "कृषी", children: [] },
-        { text: "उद्योग", href: "https://mahaprisons.gov.in/%e0%a4%89%e0%a4%ad%e0%a5%8d%e0%a4%af%e0%a5%8b%e0%a4%97/", title: "उद्योग", children: [] }
-      ]
-    },
-    {
-      text: "कागदपत्रे",
-      href: "#",
-      title: "कागदपत्रे",
-      children: [
-        { text: "निर्देशिका", href: "https://mahaprisons.gov.in/%e0%a4%a8%e0%a4%bf%e0%a4%b0%e0%a5%8d%e0%a4%a6%e0%a5%87%e0%a4%b6%e0%a4%bf%e0%a4%95%e0%a4%be-mr/", title: "निर्देशिका", children: [] },
-        { text: "सामान्य बदली", href: "https://mahaprisons.gov.in/document-category/%e0%a4%b8%e0%a4%be%e0%a4%ae%e0%a4%be%e0%a4%a8%e0%a5%8d%e0%a4%af-%e0%a4%ac%e0%a4%a6%e0%a4%b2%e0%a5%80/", title: "सामान्य बदली", children: [] },
-        { text: "सेवाज्येष्ठता यादी", href: "https://mahaprisons.gov.in/document-category/%e0%a4%b8%e0%a5%87%e0%a4%b5%e0%a4%be%e0%a4%9c%e0%a5%8d%e0%a4%af%e0%a5%87%e0%a4%b7%e0%a5%8d%e0%a4%a0%e0%a4%a4%e0%a4%be-%e0%a4%af%e0%a4%be%e0%a4%a6%e0%a5%80/", title: "सेवाज्येष्ठता यादी", children: [] },
-        { text: "नागरिकांची सनद", href: "https://mahaprisons.gov.in/document-category/%e0%a4%a8%e0%a4%be%e0%a4%97%e0%a4%b0%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%82%e0%a4%9a%e0%a5%80-%e0%a4%b8%e0%a4%a8%e0%a4%a6/", title: "नागरिकांची सनद", children: [] },
-        { text: "माहितीचा अधिकार कागदपत्रे", href: "https://mahaprisons.gov.in/document-category/%e0%a4%ae%e0%a4%be%e0%a4%b9%e0%a4%bf%e0%a4%a4%e0%a5%80%e0%a4%9a%e0%a4%be-%e0%a4%85%e0%a4%a7%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%b0-%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0/", title: "माहितीचा अधिकार कागदपत्रे", children: [] }
-      ]
-    },
-    {
-      text: "सुधारात्मक कार्यक्रम",
-      href: "#",
-      title: "सुधारात्मक कार्यक्रम",
-      children: [
-        { text: "सुविधा", href: "https://mahaprisons.gov.in/%e0%a4%b8%e0%a5%81%e0%a4%b5%e0%a4%bf%e0%a4%a7%e0%a4%be/", title: "सुविधा", children: [] },
-        { text: "व्यावसायिक प्रशिक्षण", href: "https://mahaprisons.gov.in/%e0%a4%b5%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b5%e0%a4%b8%e0%a4%be%e0%a4%af%e0%a4%bf%e0%a4%95-%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%b6%e0%a4%bf%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a4%a3/", title: "व्यावसायिक प्रशिक्षण", children: [] },
-        { text: "आरोग्य शिबीरे", href: "https://mahaprisons.gov.in/%e0%a4%86%e0%a4%b0%e0%a5%8b%e0%a4%97%e0%a5%8d%e0%a4%af-%e0%a4%b6%e0%a4%bf%e0%a4%ac%e0%a5%80%e0%a4%b0%e0%a5%87/", title: "आरोग्य शिबीरे", children: [] }
-      ]
-    },
-    {
-      text: "प्रकाशने",
-      href: "#",
-      title: "प्रकाशने",
-      children: [
-        { text: "मासिके/प्रसिध्दी पत्रके", href: "https://mahaprisons.gov.in/publication-type/%e0%a4%ae%e0%a4%be%e0%a4%b8%e0%a4%bf%e0%a4%95%e0%a5%87-%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%b8%e0%a4%bf%e0%a4%a7%e0%a5%8d%e0%a4%a6%e0%a5%80-%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0%e0%a4%95%e0%a5%87/", title: "मासिके/प्रसिध्दी पत्रके", children: [] },
-        { text: "महाराष्ट्र कारागृह नियमावली", href: "https://mahaprisons.gov.in/publication-type/%e0%a4%ae%e0%a4%b9%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%b7%e0%a5%8d%e0%a4%9f%e0%a5%8d%e0%a4%b0-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%a8%e0%a4%bf%e0%a4%af%e0%a4%ae%e0%a4%be/", title: "महाराष्ट्र कारागृह नियमावली", children: [] },
-        { text: "प्रशिक्षण पुस्तिका", href: "https://mahaprisons.gov.in/publication-type/%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%b6%e0%a4%bf%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a4%a3-%e0%a4%aa%e0%a5%81%e0%a4%b8%e0%a5%8d%e0%a4%a4%e0%a4%bf%e0%a4%95%e0%a4%be/", title: "प्रशिक्षण पुस्तिका", children: [] }
-      ]
-    },
-    {
-      text: "माहितीचा अधिकार",
-      href: "#",
-      title: "माहितीचा अधिकार",
-      children: [
-        { text: "माहितीचा अधिकार कागदपत्रे", href: "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%be%e0%a4%b9%e0%a4%bf%e0%a4%a4%e0%a5%80%e0%a4%9a%e0%a4%be-%e0%a4%85%e0%a4%a7%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%b0-%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0/", title: "माहितीचा अधिकार कागदपत्रे", children: [] },
-        { text: "माहिती अधिकार संपर्क (पीआयओ / एपीआयओ / एए)", href: "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%be%e0%a4%b9%e0%a4%bf%e0%a4%a4%e0%a5%80%e0%a4%9a%e0%a4%be-%e0%a4%85%e0%a4%a7%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%b0-%e0%a4%b8%e0%a4%82%e0%a4%aa%e0%a4%b0%e0%a5%8d%e0%a4%95-%e0%a4%aa/", title: "माहिती अधिकार संपर्क (पीआयओ / एपीआयओ / एए)", children: [] }
-      ]
-    },
-    {
-      text: "मीडिया कॉर्नर",
-      href: "#",
-      title: "मीडिया कॉर्नर",
-      children: [
-        { text: "छायाचित्र दालन", href: "https://mahaprisons.gov.in/%e0%a4%9b%e0%a4%be%e0%a4%af%e0%a4%be%e0%a4%9a%e0%a4%bf%e0%a4%a4%e0%a5%8d%e0%a4%b0-%e0%a4%a6%e0%a4%be%e0%a4%b2%e0%a4%a8/", title: "छायाचित्र दालन", children: [] }
-      ]
-    },
-    {
-      text: "100 दिवसांची कार्यालयीन सुधारणांची विशेष मोहिम – दुसरा टप्पा",
-      href: "https://mahaprisons.gov.in/e0-a5-a7-e0-a5-a6-e0-a5-a6-e0-a4-a6-e0-a4-bf-e0-a4-b5-e0-a4-b8-e0-a4-be-e0-a4-82-e0-a4-9a-e0-a4-be-e0-a4-95-e0-a4-be-e0-a4-b0-e0-a5-8d-e0-a4-af-e0-a4-95-e0-a5-8d-e0-a4-b0-e0-a4-ae-e0-a4-85/",
-      title: "100 दिवसांची कार्यालयीन सुधारणांची विशेष मोहिम – दुसरा टप्पा",
+      title: "संपर्क",
       children: []
     }
   ],
