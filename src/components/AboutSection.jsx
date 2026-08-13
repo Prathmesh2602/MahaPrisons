@@ -97,6 +97,7 @@ export const AboutSection = () => {
               </div>
             </div>
 
+
             {/* Right Side: Officer Profiles */}
             <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-gray-100 dark-mode:border-gray-800 pt-8 lg:pt-0 lg:pl-8 xl:pl-12">
               <h3 className="text-xs font-semibold text-gray-400 dark-mode:text-gray-500 uppercase tracking-widest mb-6 text-center">

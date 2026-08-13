@@ -18,7 +18,7 @@ export const Header = () => {
           title={language === 'mr' ? "महाराष्ट्र शासन अधिकृत संकेतस्थळ" : "Government of Maharashtra Portal"}
         >
           <img
-            src="/Logo.jpeg"
+            src="/logo.jpeg"
             alt="Maharashtra Government Seal"
             className="h-12 md:h-14 w-auto rounded object-contain"
           />
