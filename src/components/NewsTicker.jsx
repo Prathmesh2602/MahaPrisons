@@ -22,7 +22,7 @@ export const NewsTicker = () => {
 
   return (
     <div
-      className="w-full bg-gradient-to-r from-[#0F3D66]/85 via-[#1E5AA8]/80 to-[#0B665E]/80 backdrop-blur-md text-white py-2.5 px-4 md:px-8 border-b border-white/10 flex flex-col md:flex-row items-center gap-3 overflow-hidden text-sm relative smooth-transition shadow-sm"
+      className="w-full bg-gradient-to-r from-[#0F3D66]/85 via-[#1E5AA8]/80 to-[#0B665E]/80 backdrop-blur-md text-white py-2.5 px-4 md:px-8 border-b border-white/10 flex flex-col md:flex-row items-center gap-3 overflow-hidden text-xs relative smooth-transition shadow-sm"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

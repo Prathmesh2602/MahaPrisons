@@ -16,6 +16,7 @@
   --font-poppins: "Poppins", sans-serif;
   --font-devanagari: "Mukta", "Noto Sans Devanagari", "Mangal", "Kokila", "Arial Unicode MS", sans-serif;
   --font-mukta: "Mukta", "Mangal", "Arial Unicode MS", sans-serif;
+  --font-classy: "Playfair Display", "Noto Serif Devanagari", serif;
 }
 
 html {
@@ -26,10 +27,10 @@ html {
 body {
   background-color: var(--color-app-bg);
   color: var(--color-text-primary);
-  font-family: var(--font-poppins);
+  font-family: var(--font-devanagari);
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  /* overflow-x: hidden; removed to allow sticky navbar */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -196,4 +197,66 @@ body {
   background: #000000 !important;
   border-color: #FFFF00 !important;
   backdrop-filter: none !important;
+}
+
+
+/* --- English Language Typography Overrides --- */
+.lang-en {
+  font-family: var(--font-poppins);
+}
+.lang-en h1, .lang-en h2, .lang-en h3, .lang-en .font-extrabold {
+  font-weight: 600 !important; /* Semi-bold for primary headings */
+}
+.lang-en h4, .lang-en h5, .lang-en h6, .lang-en .font-bold, .lang-en b, .lang-en strong {
+  font-weight: 500 !important; /* Medium for secondary headings/bold */
+}
+.lang-en .font-semibold {
+  font-weight: 400 !important; /* Normal for lower hierarchy */
+}
+.lang-en .text-gray-900, .lang-en .text-\[\#111827\] {
+  color: #374151 !important;
+}
+.lang-en .text-\[\#0F3D66\] {
+  color: #1E40AF !important;
+}
+
+/* --- Marathi Nav Typography Overrides --- */
+.lang-mr nav .text-\[12px\] { font-size: 13.5px !important; }
+.lang-mr nav .text-\[13px\] { font-size: 14.5px !important; }
+.lang-mr nav .text-\[14px\] { font-size: 15.5px !important; }
+
+.lang-mr nav h1, .lang-mr nav h2, .lang-mr nav h3, .lang-mr nav .font-extrabold {
+  font-weight: 600 !important;
+}
+.lang-mr nav h4, .lang-mr nav h5, .lang-mr nav h6, .lang-mr nav .font-bold, .lang-mr nav b, .lang-mr nav strong {
+  font-weight: 500 !important;
+}
+.lang-mr nav .font-semibold, .lang-mr nav .font-medium {
+  font-weight: 400 !important;
+}
+.lang-mr nav .text-gray-900, .lang-mr nav .text-\[\#111827\] {
+  color: #374151 !important;
+}
+.lang-mr nav .text-\[\#0F3D66\] {
+  color: #1E40AF !important;
+}
+
+/* Force Marathi styling (Devanagari) for specific components (Header, Toolbar) even in English mode */
+.devanagari-force {
+  font-family: var(--font-devanagari) !important;
+}
+.devanagari-force h1, .devanagari-force h2, .devanagari-force h3, .devanagari-force .font-extrabold {
+  font-weight: 800 !important;
+}
+.devanagari-force h4, .devanagari-force h5, .devanagari-force h6, .devanagari-force .font-bold, .devanagari-force b, .devanagari-force strong {
+  font-weight: 700 !important;
+}
+.devanagari-force .font-semibold {
+  font-weight: 600 !important;
+}
+.devanagari-force .text-gray-900, .devanagari-force .text-\[\#111827\] {
+  color: #111827 !important;
+}
+.devanagari-force .text-\[\#0F3D66\] {
+  color: #0F3D66 !important;
 }

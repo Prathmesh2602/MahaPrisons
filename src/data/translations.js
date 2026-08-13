@@ -327,6 +327,10 @@ export const translations = {
     mr: "संस्थात्मक अभ्यासभेट",
     en: "Institutional Study Visit"
   },
+  "प्रशासकीय दौरे": {
+    mr: "प्रशासकीय दौरे",
+    en: "Administrative Tours"
+  },
   "अधिकारी दौरे": {
     mr: "अधिकारी दौरे",
     en: "Official Visits"

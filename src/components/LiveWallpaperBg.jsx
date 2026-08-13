@@ -32,7 +32,7 @@ export const LiveWallpaperBg = () => {
   ];
 
   return (
-    <div className="absolute top-0 left-0 right-0 h-[1150px] overflow-hidden pointer-events-none z-0 select-none bg-gradient-to-b from-[#EEF2F6] via-[#F8FAFC] to-transparent">
+    <div className="absolute top-0 left-0 right-0 h-[750px] overflow-hidden pointer-events-none z-0 select-none bg-gradient-to-b from-[#EEF2F6] via-[#F8FAFC] to-transparent">
 
       {/* 1. Snappy Indian-Themed Background Slideshow (Opacity 70% with fast crossfade) */}
       <div className="absolute inset-0 z-0 opacity-[0.70] brightness-95 contrast-110">

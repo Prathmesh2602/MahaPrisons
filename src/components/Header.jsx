@@ -6,7 +6,7 @@ export const Header = () => {
 
 
   return (
-    <header className="w-full bg-white/45 backdrop-blur-md text-gray-900 pt-2 pb-3 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4 dark-mode:bg-gray-900/35 dark-mode:text-gray-100 dark-mode:border-gray-800/40 smooth-transition relative z-10">
+    <header className="w-full bg-white/45 backdrop-blur-md text-gray-900 py-1.5 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4 dark-mode:bg-gray-900/35 dark-mode:text-gray-100 dark-mode:border-gray-800/40 smooth-transition relative z-10 devanagari-force">
 
       {/* 1. LEFT SIDE: Emblem and Title Block */}
       <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
@@ -20,19 +20,19 @@ export const Header = () => {
           <img
             src="/Logo.jpeg"
             alt="Maharashtra Government Seal"
-            className="h-18 w-auto rounded object-contain"
+            className="h-12 md:h-14 w-auto rounded object-contain"
           />
         </a>
 
         {/* Division border */}
-        <div className="hidden sm:block h-12 w-[1px] bg-gray-300 dark-mode:bg-gray-700" />
+        <div className="hidden sm:block h-10 w-[1px] bg-gray-300 dark-mode:bg-gray-700" />
 
         {/* Title Texts */}
         <div className="flex flex-col">
-          <span className="text-sm md:text-[15px] font-bold font-devanagari text-[#0F3D66] dark-mode:text-blue-300 leading-tight">
+          <span className="text-xs md:text-[14px] font-bold font-devanagari text-[#0F3D66] dark-mode:text-blue-300 leading-tight mb-1">
             येरवडा खुले कारागृह, पुणे
           </span>
-          <h1 className="text-base md:text-lg lg:text-xl font-extrabold text-[#111827] dark-mode:text-white leading-tight font-poppins">
+          <h1 className="text-base md:text-lg lg:text-xl font-extrabold text-[#111827] dark-mode:text-white leading-tight">
             Yerwada Open Prison Pune
           </h1>
         </div>
@@ -51,9 +51,9 @@ export const Header = () => {
           <img
             src="https://mahaprisons.gov.in/wp-content/themes/sdo-theme/images/emblem.svg"
             alt={language === 'mr' ? "भारताचे राज्य चिन्ह" : "State Emblem of India"}
-            className="h-14 w-auto dark-mode:invert"
+            className="h-10 md:h-12 w-auto dark-mode:invert"
           />
-          <span className="text-[7.5px] font-bold text-gray-500 tracking-wider">सत्यमेव जयते</span>
+          <span className="text-[6.5px] md:text-[7px] font-bold text-gray-500 tracking-wider">सत्यमेव जयते</span>
         </a>
 
         {/* Digital India Logo */}
@@ -67,7 +67,7 @@ export const Header = () => {
           <img
             src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2019/03/2019031587.png"
             alt="Digital India Logo"
-            className="h-18 w-auto rounded object-contain"
+            className="h-12 md:h-14 w-auto rounded object-contain"
           />
         </a>
       </div>

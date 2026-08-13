@@ -14,7 +14,7 @@ export const AccessibilityProvider = ({ children }) => {
   const [bhashiniVoiceActive, setBhashiniVoiceActive] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
-  // Apply contrast settings to html/body elements
+  // Apply contrast settings and language class to html/body elements
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove('high-contrast', 'dark-mode');
@@ -27,7 +27,15 @@ export const AccessibilityProvider = ({ children }) => {
     } else if (contrast === 'inverted') {
       root.style.filter = 'invert(1) hue-rotate(180deg)';
     }
-  }, [contrast]);
+
+    if (language === 'en') {
+      document.body.classList.add('lang-en');
+      document.body.classList.remove('lang-mr');
+    } else {
+      document.body.classList.add('lang-mr');
+      document.body.classList.remove('lang-en');
+    }
+  }, [contrast, language]);
 
   // Apply font size adjustment class
   useEffect(() => {

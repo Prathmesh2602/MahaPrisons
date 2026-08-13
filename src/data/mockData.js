@@ -11,18 +11,21 @@ export const mockHomepageData = {
   navigation_menu: [
     {
       text: "मुख्यपृष्ठ",
+      icon: "Home",
       href: "/",
       title: "मुख्यपृष्ठ",
       children: []
     },
     {
       text: "कारागृह व्यवस्था",
+      icon: "Shield",
       href: "#",
       title: "कारागृह व्यवस्था",
       children: []
     },
     {
       text: "प्रशासकीय विभाग",
+      icon: "Briefcase",
       href: "#",
       title: "प्रशासकीय विभाग",
       isMegaMenu: true,
@@ -63,6 +66,7 @@ export const mockHomepageData = {
     },
     {
       text: "शेती व पूरक व्यवसाय",
+      icon: "Sprout",
       href: "#",
       title: "शेती व पूरक व्यवसाय",
       children: [
@@ -77,6 +81,7 @@ export const mockHomepageData = {
     },
     {
       text: "सामाजिक उपक्रम",
+      icon: "HeartHandshake",
       href: "#",
       title: "सामाजिक उपक्रम",
       children: [
@@ -89,6 +94,7 @@ export const mockHomepageData = {
     },
     {
       text: "सोयी-सुविधा",
+      icon: "LayoutGrid",
       href: "#",
       title: "सोयी-सुविधा",
       isMegaMenu: true,
@@ -139,6 +145,7 @@ export const mockHomepageData = {
     },
     {
       text: "सांस्कृतिक उपक्रम",
+      icon: "Palette",
       href: "#",
       title: "सांस्कृतिक उपक्रम",
       isMegaMenu: true,
@@ -168,6 +175,7 @@ export const mockHomepageData = {
     },
     {
       text: "उल्लेखनीय कार्य",
+      icon: "Award",
       href: "#",
       title: "उल्लेखनीय कार्य",
       children: [
@@ -180,6 +188,7 @@ export const mockHomepageData = {
     },
     {
       text: "दौरे व भेटी",
+      icon: "Map",
       href: "#",
       title: "दौरे व भेटी",
       isMegaMenu: true,
@@ -204,12 +213,14 @@ export const mockHomepageData = {
     },
     {
       text: "आमची उत्पादने",
+      icon: "Package",
       href: "#",
       title: "आमची उत्पादने",
       children: []
     },
     {
       text: "संपर्क",
+      icon: "PhoneCall",
       href: "#",
       title: "संपर्क",
       children: []
@@ -226,24 +237,56 @@ export const mockHomepageData = {
     }
   ],
   hero_carousel: [
-    // { img_src: "/gallary/1.jpeg", img_alt: "Gallery Image 1" },
-    // { img_src: "/gallary/2.jpeg", img_alt: "Gallery Image 2" },
-    // { img_src: "/gallary/3.jpeg", img_alt: "Gallery Image 3" },
-    { img_src: "/gallary/4.jpeg", img_alt: "Gallery Image 4" },
-    { img_src: "/gallary/5.jpeg", img_alt: "Gallery Image 5" },
-    { img_src: "/gallary/6.jpeg", img_alt: "Gallery Image 6" },
-    { img_src: "/gallary/7.jpeg", img_alt: "Gallery Image 7" },
-    { img_src: "/gallary/8.jpeg", img_alt: "Gallery Image 8" },
-    { img_src: "/gallary/9.jpeg", img_alt: "Gallery Image 9" },
-    { img_src: "/gallary/10.jpeg", img_alt: "Gallery Image 10" },
-    { img_src: "/gallary/11.jpeg", img_alt: "Gallery Image 11" },
-    { img_src: "/gallary/12.jpeg", img_alt: "Gallery Image 12" },
-    { img_src: "/gallary/13.jpeg", img_alt: "Gallery Image 13" },
-    { img_src: "/gallary/14.jpeg", img_alt: "Gallery Image 14" },
-    { img_src: "/gallary/15.jpeg", img_alt: "Gallery Image 15" },
-    { img_src: "/gallary/16.jpeg", img_alt: "Gallery Image 16" },
-    { img_src: "/gallary/17.jpeg", img_alt: "Gallery Image 17" },
-    { img_src: "/gallary/WhatsApp Image 2026-07-20 at 19.57.30.jpeg", img_alt: "Gallery Image 18" }
+    {
+      img_src: "/gallary/rehab_hero.png",
+      img_alt: "येरवडा खुले कारागृह",
+      category: { mr: "पुनर्वसन", en: "Rehabilitation" },
+      title: { mr: "येरवडा खुले कारागृह", en: "Yerawada Open Prison" },
+      statement: { mr: "श्रमातून परिवर्तनाची वाट.", en: "Path of transformation through labor." },
+      description: { mr: "शिस्त, कौशल्य, श्रम आणि स्वावलंबनाच्या माध्यमातून पुनर्वसनाची नवी दिशा.", en: "A new direction in rehabilitation through discipline, skills, labor, and self-reliance." },
+      cta1: { mr: "आमचा प्रवास", en: "Our Journey", href: "#" },
+      cta2: { mr: "उपक्रम पहा", en: "View Initiatives", href: "#" }
+    },
+    {
+      img_src: "/gallary/farming_hero.png",
+      img_alt: "शेती उपक्रम",
+      category: { mr: "शेती", en: "Agriculture" },
+      title: { mr: "मातीशी नातं", en: "Bond with Soil" },
+      statement: { mr: "स्वावलंबनाकडे वाटचाल.", en: "Stepping towards self-reliance." },
+      description: { mr: "शेती आणि पूरक उपक्रमांच्या माध्यमातून कौशल्य आणि जबाबदारीची जडणघडण.", en: "Building skills and responsibility through farming and allied activities." },
+      cta1: { mr: "शेती उपक्रम", en: "Farming Activities", href: "#" },
+      cta2: null
+    },
+    {
+      img_src: "/gallary/skills_hero.png",
+      img_alt: "कौशल्य विकास केंद्र",
+      category: { mr: "कौशल्य विकास", en: "Skill Development" },
+      title: { mr: "कौशल्यातून आत्मनिर्भरतेकडे", en: "Self-reliance through Skills" },
+      statement: { mr: "नव्या संधींची तयारी.", en: "Preparing for new opportunities." },
+      description: { mr: "व्यावसायिक प्रशिक्षण आणि उत्पादनाच्या माध्यमातून नव्या संधींची तयारी.", en: "Empowerment through vocational training and productive activities." },
+      cta1: { mr: "प्रशिक्षण पहा", en: "View Training", href: "#" },
+      cta2: null
+    },
+    {
+      img_src: "/gallary/industry_hero.png",
+      img_alt: "उद्योग विभाग",
+      category: { mr: "उत्पादन व उद्योग", en: "Production & Industry" },
+      title: { mr: "श्रमाला संधी, भविष्याला दिशा.", en: "Opportunity for Labor, Direction for Future." },
+      statement: { mr: "शिस्त आणि आत्मविश्वासाचा विकास.", en: "Developing discipline and confidence." },
+      description: { mr: "उत्पादक कामातून कौशल्य, शिस्त आणि आत्मविश्वासाचा विकास.", en: "Fostering skill, discipline, and self-belief through productive work." },
+      cta1: { mr: "उद्योग उपक्रम", en: "Industrial Activities", href: "#" },
+      cta2: null
+    },
+    {
+      img_src: "/gallary/reintegration_hero.png",
+      img_alt: "पुनर्वसन उपक्रम",
+      category: { mr: "पुनर्वसन", en: "Reintegration" },
+      title: { mr: "नव्या आयुष्याची तयारी", en: "Preparing for a New Life" },
+      statement: { mr: "समाजात पुनर्स्थापना.", en: "Reintegration into society." },
+      description: { mr: "जबाबदारी आणि स्वावलंबनाच्या माध्यमातून समाजात पुनर्स्थापनेची तयारी.", en: "Getting ready for reintegration into society through responsibility and self-sufficiency." },
+      cta1: { mr: "आमची उत्पादने", en: "Our Products", href: "#" },
+      cta2: null
+    }
   ],
   minister_profiles: [
     {
