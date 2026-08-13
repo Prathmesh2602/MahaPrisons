@@ -71,7 +71,7 @@ export const AccessibilityToolbar = () => {
     <div id="accessibility-toolbar" className={`w-full bg-white/70 backdrop-blur-md py-0.5 px-4 md:px-8 text-xs font-semibold text-gray-700 flex flex-wrap justify-between items-center z-50 sticky top-0 smooth-transition select-none devanagari-force ${isScrolled ? 'border-b border-gray-300/50 shadow-sm' : 'border-b border-transparent'}`}>
 
       {/* 1. LEFT SIDE: Static Government Title */}
-      <div className="flex items-center gap-2 text-[9px] uppercase font-bold tracking-wide text-gray-700">
+      <div className="flex items-center gap-2 text-[9px] uppercase font-medium tracking-wide text-gray-700">
         <div className="flex items-center gap-2">
           <span>महाराष्ट्र शासन</span>
           <span className="text-gray-400">|</span>
@@ -79,7 +79,7 @@ export const AccessibilityToolbar = () => {
         </div>
         <span className="hidden md:block text-gray-300 mx-2">|</span>
         <div className="hidden md:flex flex-row items-center gap-2">
-          <span className="text-[10px] font-bold font-devanagari text-[#0F3D66] dark-mode:text-blue-300 leading-tight">
+          <span className="text-[10px] font-medium font-poppins text-[#0F3D66] dark-mode:text-blue-300 leading-tight">
             महाराष्ट्र कारागृहे व सुधार सेवा
           </span>
           <span className="text-gray-400">|</span>
@@ -145,27 +145,27 @@ export const AccessibilityToolbar = () => {
           {/* Floating Accessibility Settings Card Popover */}
           {panelOpen && (
             <div className="absolute right-0 top-full mt-2 w-72 bg-white/95 backdrop-blur-md text-gray-800 border border-gray-250 shadow-2xl rounded-xl p-4 z-50 text-[11.5px] select-none animate-in fade-in slide-in-from-top-3 duration-200">
-              <h4 className="font-bold text-[#0F3D66] mb-3 text-xs border-b border-gray-150 pb-1.5 flex items-center gap-1">
+              <h4 className="font-medium text-[#0F3D66] mb-3 text-xs border-b border-gray-150 pb-1.5 flex items-center gap-1">
                 <Settings2 className="w-4 h-4" />
                 <span>{language === 'mr' ? 'सुगम्यता पर्याय' : 'Accessibility Options'}</span>
               </h4>
 
               {/* Font Resize Tools */}
               <div className="mb-4">
-                <span className="block font-bold text-gray-500 mb-1.5 uppercase tracking-wide text-[9.5px]">
+                <span className="block font-medium text-gray-500 mb-1.5 uppercase tracking-wide text-[9.5px]">
                   {language === 'mr' ? 'अक्षर आकार' : 'Font Size Control'}
                 </span>
                 <div className="flex items-center justify-between bg-gray-50 rounded-lg p-1 border border-gray-200">
                   <button
                     onClick={decreaseFontSize}
-                    className="px-2.5 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-gray-700 shadow-sm transition-all cursor-pointer"
+                    className="px-2.5 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-medium text-gray-700 shadow-sm transition-all cursor-pointer"
                     title={language === 'mr' ? 'अक्षर आकार कमी करा' : 'Decrease text size'}
                   >
                     A-
                   </button>
                   <button
                     onClick={resetFontSize}
-                    className="px-3 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-[#0F3D66] shadow-sm transition-all cursor-pointer flex items-center gap-1"
+                    className="px-3 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-medium text-[#0F3D66] shadow-sm transition-all cursor-pointer flex items-center gap-1"
                     title={language === 'mr' ? 'मूळ आकार' : 'Reset text size'}
                   >
                     <Type className="w-3 h-3" />
@@ -173,7 +173,7 @@ export const AccessibilityToolbar = () => {
                   </button>
                   <button
                     onClick={increaseFontSize}
-                    className="px-2.5 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-gray-700 shadow-sm transition-all cursor-pointer"
+                    className="px-2.5 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-medium text-gray-700 shadow-sm transition-all cursor-pointer"
                     title={language === 'mr' ? 'अक्षर आकार वाढवा' : 'Increase text size'}
                   >
                     A+
@@ -183,7 +183,7 @@ export const AccessibilityToolbar = () => {
 
               {/* Contrast Theme Selectors */}
               <div className="mb-4">
-                <span className="block font-bold text-gray-500 mb-1.5 uppercase tracking-wide text-[9.5px]">
+                <span className="block font-medium text-gray-500 mb-1.5 uppercase tracking-wide text-[9.5px]">
                   {language === 'mr' ? 'रंगसंगती (विरोधाभास)' : 'Contrast & Color Schemes'}
                 </span>
                 <div className="grid grid-cols-2 gap-1.5">
@@ -191,7 +191,7 @@ export const AccessibilityToolbar = () => {
                     <button
                       key={mode}
                       onClick={() => setContrast(mode)}
-                      className={`px-2 py-1.5 rounded-lg border text-left font-bold flex items-center justify-between cursor-pointer transition-all ${contrast === mode
+                      className={`px-2 py-1.5 rounded-lg border text-left font-medium flex items-center justify-between cursor-pointer transition-all ${contrast === mode
                         ? 'border-[#0F3D66] bg-[#0F3D66]/5 text-[#0F3D66]'
                         : 'border-gray-200 hover:bg-gray-50 text-gray-700'
                         }`}
@@ -207,7 +207,7 @@ export const AccessibilityToolbar = () => {
               <div className="border-t border-gray-150 pt-3 mt-2">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="block font-bold text-gray-700 text-[11px] leading-tight">
+                    <span className="block font-medium text-gray-700 text-[11px] leading-tight">
                       {language === 'mr' ? 'भाषिणी आवाज वाचक' : 'Bhashini Voice Narrator'}
                     </span>
                     <span className="text-[9.5px] text-gray-400 block mt-0.5">
@@ -248,10 +248,10 @@ export const AccessibilityToolbar = () => {
         {/* Language Toggler (अ / A) */}
         <button
           onClick={toggleLanguage}
-          className="ml-2 px-2 py-0.5 border-2 border-gray-400 hover:border-[#0F3D66] hover:text-[#0F3D66] rounded-md text-[10.5px] font-extrabold text-gray-800 flex items-center gap-1.5 cursor-pointer transition-all hover:bg-white hover:shadow-sm"
+          className="ml-2 px-2 py-0.5 border-2 border-gray-400 hover:border-[#0F3D66] hover:text-[#0F3D66] rounded-md text-[10.5px] font-semibold text-gray-800 flex items-center gap-1.5 cursor-pointer transition-all hover:bg-white hover:shadow-sm"
           title={language === 'mr' ? 'Switch to English' : 'मराठीत बदला'}
         >
-          <span className="font-devanagari text-[12px]">अ</span>
+          <span className="font-poppins text-[12px]">अ</span>
           <span className="text-gray-300">|</span>
           <span className="text-[11px]">A</span>
         </button>

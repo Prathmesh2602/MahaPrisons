@@ -27,9 +27,9 @@ export const NewsTicker = () => {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* 1. Ticker Title badge */}
-      <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-wider shadow-inner animate-pulse flex-shrink-0">
+      <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-3.5 py-1 text-[11px] font-semibold uppercase tracking-wider shadow-inner animate-pulse flex-shrink-0">
         <Megaphone className="w-3.5 h-3.5 text-amber-300" />
-        <span className="font-devanagari text-white">{t("ताजी बातमी")}</span>
+        <span className="font-poppins text-white">{t("ताजी बातमी")}</span>
       </div>
 
       {/* 2. Ticker Content Window */}

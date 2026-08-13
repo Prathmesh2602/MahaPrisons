@@ -14,6 +14,7 @@ import HolidayCalendar from '../components/HolidayCalendar';
 import PhotoGallery from '../components/PhotoGallery';
 import Footer from '../components/Footer';
 import LiveWallpaperBg from '../components/LiveWallpaperBg';
+import JailInsights from '../components/JailInsights';
 
 export const HomePage = () => {
   const { language } = useAccessibility();
@@ -24,8 +25,7 @@ export const HomePage = () => {
   const yBlob4 = useTransform(scrollY, [0, 1800], [0, 80]);
 
   return (
-    <div className={`w-full min-h-screen flex flex-col bg-[#F8FAFC] dark-mode:bg-[#080B11] smooth-transition relative high-tech-grid ${language === 'mr' ? 'font-devanagari font-medium' : 'font-poppins'
-      }`}>
+    <div className="w-full min-h-screen flex flex-col bg-[#F8FAFC] dark-mode:bg-[#080B11] smooth-transition relative font-poppins">
 
       {/* 1. GRAPHICAL LIVE WALLPAPER BACKGROUND (Covers sitemap to end of Hero section) */}
       <LiveWallpaperBg />
@@ -62,6 +62,9 @@ export const HomePage = () => {
 
         {/* Welcoming About department copy */}
         <AboutSection />
+
+        {/* Jail Insights Section */}
+        <JailInsights />
 
         {/* Tabbed Tenders & Notices */}
         <AnnouncementsTabs />

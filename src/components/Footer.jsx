@@ -21,7 +21,7 @@ export const Footer = () => {
         <div className="max-w-7xl mx-auto flex flex-wrap justify-center items-center gap-6 md:gap-10 select-none">
           {/* Pause Indicator mock matching the screenshot */}
           <button className="text-gray-400 hover:text-gray-900 transition-colors p-1" title="Pause Carousel">
-            <span className="text-base font-bold">⏸</span>
+            <span className="text-base font-medium">⏸</span>
           </button>
 
           {footerBanners.map((banner, idx) => (

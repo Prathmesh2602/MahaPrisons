@@ -50,7 +50,7 @@ export const HeroCarousel = () => {
             <div className="flex items-center gap-3 md:gap-5">
               {['श्रम', 'कौशल्य', 'जबाबदारी', 'पुनर्वसन'].map((word, idx) => (
                 <React.Fragment key={word}>
-                  <span className="text-[10px] md:text-xs font-bold tracking-[0.25em] text-white/95 uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  <span className="text-[10px] md:text-xs font-medium tracking-[0.25em] text-white/95 uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                     {language === 'mr' ? word : ['LABOR', 'SKILL', 'RESPONSIBILITY', 'REHABILITATION'][idx]}
                   </span>
                   {idx < 3 && (
@@ -99,7 +99,7 @@ export const HeroCarousel = () => {
                   className="flex flex-col text-white"
                 >
                   <div className="mb-3">
-                    <span className="inline-block px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
+                    <span className="inline-block px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[10px] font-medium uppercase tracking-widest backdrop-blur-md">
                       {language === 'mr' ? 'महाराष्ट्र कारागृह व सुधार सेवा' : 'Maharashtra Prisons & Correctional Services'}
                     </span>
                   </div>
@@ -110,11 +110,11 @@ export const HeroCarousel = () => {
                   </span>
 
                   {/* Semantic H1 */}
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-devanagari text-white mb-3 drop-shadow-md leading-tight">
+                  <h1 className="text-2xl md:text-3xl lg:text-5xl font-semibold font-poppins text-white mb-3 drop-shadow-md leading-tight">
                     {slides[currentSlide].title[language]}
                   </h1>
 
-                  <p className="text-xl md:text-2xl font-bold text-amber-400 mb-4 drop-shadow-sm">
+                  <p className="text-xl md:text-2xl font-medium text-amber-400 mb-4 drop-shadow-sm">
                     {slides[currentSlide].statement[language]}
                   </p>
 
@@ -124,12 +124,12 @@ export const HeroCarousel = () => {
 
                   <div className="flex flex-wrap gap-3">
                     {slides[currentSlide].cta1 && (
-                      <a href={slides[currentSlide].cta1.href} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-gray-900 text-sm font-bold rounded-lg transition-colors shadow-lg cursor-pointer">
+                      <a href={slides[currentSlide].cta1.href} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-gray-900 text-sm font-medium rounded-lg transition-colors shadow-lg cursor-pointer">
                         {slides[currentSlide].cta1[language]}
                       </a>
                     )}
                     {slides[currentSlide].cta2 && (
-                      <a href={slides[currentSlide].cta2.href} className="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-sm font-bold rounded-lg transition-all backdrop-blur-md cursor-pointer">
+                      <a href={slides[currentSlide].cta2.href} className="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-sm font-medium rounded-lg transition-all backdrop-blur-md cursor-pointer">
                         {slides[currentSlide].cta2[language]}
                       </a>
                     )}
@@ -152,10 +152,10 @@ export const HeroCarousel = () => {
                     className="w-14 h-14 rounded-full object-cover object-top border-2 border-white/30 shadow-md"
                   />
                   <div className="flex flex-col">
-                    <span className="text-[9px] text-amber-400 font-extrabold uppercase tracking-widest mb-0.5">
+                    <span className="text-[9px] text-amber-400 font-semibold uppercase tracking-widest mb-0.5">
                       {language === 'mr' ? 'संचालक संदेश' : "Director's Message"}
                     </span>
-                    <h3 className="text-sm font-extrabold font-devanagari text-white">
+                    <h3 className="text-sm font-semibold font-poppins text-white">
                       {t("श्री. सुहास वारके")}
                     </h3>
                     <p className="text-[10px] font-semibold text-gray-300 leading-tight">
@@ -167,7 +167,7 @@ export const HeroCarousel = () => {
                 {/* Editorial quote block */}
                 <div className="my-5 relative flex-1 flex items-center">
                   <Quote className="absolute -top-2 -left-1 w-6 h-6 text-white/10 rotate-180" />
-                  <p className="text-xs font-semibold text-gray-100 leading-relaxed font-devanagari relative pl-3">
+                  <p className="text-xs font-semibold text-gray-100 leading-relaxed font-poppins relative pl-3">
                     {dgQuote}
                   </p>
                 </div>
@@ -178,7 +178,7 @@ export const HeroCarousel = () => {
                     href="https://mahaprisons.gov.in/directors-message/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 group/btn cursor-pointer"
+                    className="flex items-center justify-between text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 group/btn cursor-pointer"
                   >
                     <div className="flex items-center gap-1.5">
                       <FileText className="w-4 h-4" />
@@ -212,7 +212,7 @@ export const HeroCarousel = () => {
 
           {/* Premium Carousel Indicators */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4">
-            <div className="text-white font-mono font-bold text-xs tracking-[0.2em] drop-shadow-md">
+            <div className="text-white font-mono font-medium text-xs tracking-[0.2em] drop-shadow-md">
               {String(currentSlide + 1).padStart(2, '0')} <span className="text-white/50">/ {String(slides.length).padStart(2, '0')}</span>
             </div>
 
@@ -251,10 +251,10 @@ export const HeroCarousel = () => {
               className="w-14 h-14 rounded-full object-cover object-top border border-gray-200 dark-mode:border-gray-700 shadow-sm"
             />
             <div className="flex flex-col">
-              <span className="text-[9px] text-[#0F3D66] dark-mode:text-blue-400 font-extrabold uppercase tracking-widest mb-0.5">
+              <span className="text-[9px] text-[#0F3D66] dark-mode:text-blue-400 font-semibold uppercase tracking-widest mb-0.5">
                 {language === 'mr' ? 'संचालक संदेश' : "Director's Message"}
               </span>
-              <h3 className="text-sm font-extrabold font-devanagari text-gray-900 dark-mode:text-white">
+              <h3 className="text-sm font-semibold font-poppins text-gray-900 dark-mode:text-white">
                 {t("श्री. सुहास वारके")}
               </h3>
               <p className="text-[10px] font-semibold text-gray-500 dark-mode:text-gray-400 leading-tight">
@@ -264,7 +264,7 @@ export const HeroCarousel = () => {
           </div>
           <div className="my-5 relative flex-1 flex items-center">
             <Quote className="absolute -top-2 -left-1 w-6 h-6 text-gray-100 dark-mode:text-gray-800 rotate-180" />
-            <p className="text-xs font-semibold text-gray-700 dark-mode:text-gray-300 leading-relaxed font-devanagari relative pl-3">
+            <p className="text-xs font-semibold text-gray-700 dark-mode:text-gray-300 leading-relaxed font-poppins relative pl-3">
               {dgQuote}
             </p>
           </div>
@@ -273,7 +273,7 @@ export const HeroCarousel = () => {
               href="https://mahaprisons.gov.in/directors-message/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between text-xs font-bold text-[#0F3D66] dark-mode:text-blue-400 hover:text-[#1E5AA8] transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 group/btn cursor-pointer"
+              className="flex items-center justify-between text-xs font-medium text-[#0F3D66] dark-mode:text-blue-400 hover:text-[#1E5AA8] transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 group/btn cursor-pointer"
             >
               <div className="flex items-center gap-1.5">
                 <FileText className="w-4 h-4" />

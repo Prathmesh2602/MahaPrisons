@@ -29,11 +29,11 @@ export const Header = () => {
 
         {/* Title Texts */}
         <div className="flex flex-col">
-          <span className="text-xs md:text-[14px] font-bold font-devanagari text-[#0F3D66] dark-mode:text-blue-300 leading-tight mb-1">
-            येरवडा खुले कारागृह, पुणे
+          <span className="text-xs md:text-[14px] font-medium font-poppins text-[#0F3D66] dark-mode:text-blue-300 leading-tight mb-1">
+            {language === 'mr' ? 'Yerwada Open District Prison Pune' : 'येरवडा खुले जिल्हा कारागृह, पुणे'}
           </span>
-          <h1 className="text-base md:text-lg lg:text-xl font-extrabold text-[#111827] dark-mode:text-white leading-tight">
-            Yerwada Open Prison Pune
+          <h1 className="text-base md:text-lg lg:text-xl font-semibold text-[#111827] dark-mode:text-white leading-tight">
+            {language === 'mr' ? 'येरवडा खुले जिल्हा कारागृह, पुणे' : 'Yerwada Open District Prison Pune'}
           </h1>
         </div>
 
@@ -53,7 +53,7 @@ export const Header = () => {
             alt={language === 'mr' ? "भारताचे राज्य चिन्ह" : "State Emblem of India"}
             className="h-10 md:h-12 w-auto dark-mode:invert"
           />
-          <span className="text-[6.5px] md:text-[7px] font-bold text-gray-500 tracking-wider">सत्यमेव जयते</span>
+          <span className="text-[6.5px] md:text-[7px] font-medium text-gray-500 tracking-wider">सत्यमेव जयते</span>
         </a>
 
         {/* Digital India Logo */}

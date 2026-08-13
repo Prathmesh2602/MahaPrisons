@@ -14,9 +14,9 @@
   --color-text-secondary: #374151;
 
   --font-poppins: "Poppins", sans-serif;
-  --font-devanagari: "Mukta", "Noto Sans Devanagari", "Mangal", "Kokila", "Arial Unicode MS", sans-serif;
-  --font-mukta: "Mukta", "Mangal", "Arial Unicode MS", sans-serif;
-  --font-classy: "Playfair Display", "Noto Serif Devanagari", serif;
+  --font-devanagari: "Poppins", sans-serif;
+  --font-mukta: "Poppins", sans-serif;
+  --font-classy: "Poppins", sans-serif;
 }
 
 html {
@@ -27,7 +27,7 @@ html {
 body {
   background-color: var(--color-app-bg);
   color: var(--color-text-primary);
-  font-family: var(--font-devanagari);
+  font-family: var(--font-poppins);
   margin: 0;
   padding: 0;
   /* overflow-x: hidden; removed to allow sticky navbar */

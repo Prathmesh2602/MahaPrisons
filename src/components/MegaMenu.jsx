@@ -167,7 +167,7 @@ export const MegaMenu = () => {
         {/* Hidden measuring container for dynamic split */}
         <div
           ref={measuringRef}
-          className="absolute top-0 left-0 h-0 overflow-hidden invisible flex items-center gap-1 text-[13px] font-extrabold w-max"
+          className="absolute top-0 left-0 h-0 overflow-hidden invisible flex items-center gap-1 text-[13px] font-semibold w-max"
           aria-hidden="true"
         >
           {mockHomepageData.navigation_menu.map((item, idx) => {
@@ -189,7 +189,7 @@ export const MegaMenu = () => {
         </div>
 
         {/* Desktop Navigation Links */}
-        <div ref={containerRef} className="hidden lg:flex items-center justify-between gap-1 w-full text-[13px] font-extrabold">
+        <div ref={containerRef} className="hidden lg:flex items-center justify-between gap-1 w-full text-[13px] font-semibold">
 
           {/* Primary items */}
           {primaryItems.map((item, idx) => {
@@ -221,7 +221,7 @@ export const MegaMenu = () => {
 
                 {/* Regular Dropdown menu */}
                 {hasChildren && !item.isMegaMenu && isDropdownActive && (
-                  <div className={`absolute top-12 w-64 bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200 ${idx > primaryItems.length / 2 ? 'right-0' : 'left-0'}`}>
+                  <div className={`absolute top-full w-64 bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200 ${idx > primaryItems.length / 2 ? 'right-0' : 'left-0'}`}>
                     {item.children?.map((child, cIdx) => (
                       <a
                         key={cIdx}
@@ -237,10 +237,10 @@ export const MegaMenu = () => {
 
                 {/* Mega Menu Dropdown */}
                 {hasChildren && item.isMegaMenu && isDropdownActive && (
-                  <div className={`absolute top-12 min-w-[750px] lg:min-w-[850px] max-w-6xl bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-3 px-5 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200 grid grid-cols-2 lg:grid-cols-3 gap-5 ${idx >= primaryItems.length / 2 ? 'right-0' : 'left-0'}`}>
+                  <div className={`absolute top-full min-w-[750px] lg:min-w-[850px] max-w-6xl bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-3 px-5 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200 grid grid-cols-2 lg:grid-cols-3 gap-5 ${idx >= primaryItems.length / 2 ? 'right-0' : 'left-0'}`}>
                     {item.groups?.map((group, gIdx) => (
                       <div key={gIdx} className="flex flex-col gap-1.5">
-                        <h3 className="text-[14px] font-bold text-amber-600 dark-mode:text-amber-500 border-b border-gray-200 dark-mode:border-gray-700 pb-0.5 mb-1 whitespace-normal leading-snug">
+                        <h3 className="text-[14px] font-medium text-amber-600 dark-mode:text-amber-500 border-b border-gray-200 dark-mode:border-gray-700 pb-0.5 mb-1 whitespace-normal leading-snug">
                           {t(group.groupTitle)}
                         </h3>
                         <div className="flex flex-col gap-0.5">
@@ -302,7 +302,7 @@ export const MegaMenu = () => {
 
               {/* Collapsed Items Panel */}
               {activeDropdown === 99 && (
-                <div className="absolute right-0 top-12 w-64 bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 top-full w-64 bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200">
                   {moreItems.map((item, mIdx) => {
                     const hasSubChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
                     const isSubActive = activeSubMenu === mIdx;
@@ -341,7 +341,7 @@ export const MegaMenu = () => {
                             ))}
                             {item.isMegaMenu && item.groups?.map((group, gIdx) => (
                               <div key={gIdx} className="mb-2 last:mb-0">
-                                <div className="px-4 py-1.5 text-[14px] font-bold text-amber-600 dark-mode:text-amber-500 bg-gray-50 dark-mode:bg-gray-800/50 whitespace-normal leading-snug">
+                                <div className="px-4 py-1.5 text-[14px] font-medium text-amber-600 dark-mode:text-amber-500 bg-gray-50 dark-mode:bg-gray-800/50 whitespace-normal leading-snug">
                                   {t(group.groupTitle)}
                                 </div>
                                 {group.children?.map((subChild, scIdx) => (
@@ -375,7 +375,7 @@ export const MegaMenu = () => {
               alt="MahaPrisons Logo"
               className="h-8 w-auto rounded"
             />
-            <span className="text-xs font-bold font-devanagari tracking-wide text-amber-500">
+            <span className="text-xs font-medium font-poppins tracking-wide text-amber-500">
               {language === 'mr' ? 'महाराष्ट्र कारागृह विभाग' : 'MahaPrisons'}
             </span>
           </div>
@@ -445,7 +445,7 @@ export const MegaMenu = () => {
                       <div className="mt-1 pl-4 flex flex-col gap-3 bg-[#092947]/50 rounded-md py-2 border-l-2 border-amber-500 animate-in slide-in-from-top duration-200">
                         {item.groups?.map((group, gIdx) => (
                           <div key={gIdx} className="flex flex-col gap-1">
-                            <h4 className="text-[14px] font-bold text-amber-400 px-3 mb-1 whitespace-normal leading-snug">
+                            <h4 className="text-[14px] font-medium text-amber-400 px-3 mb-1 whitespace-normal leading-snug">
                               {t(group.groupTitle)}
                             </h4>
                             {group.children.map((child, cIdx) => {

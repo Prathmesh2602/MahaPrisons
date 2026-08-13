@@ -8,56 +8,121 @@ export const AboutSection = () => {
 
   // Bilingual paragraph content about the department
   const aboutText = lang === 'mr'
-    ? "महाराष्ट्र कारागृह विभाग हा राज्यातील कायदा व सुव्यवस्था राखण्यात अत्यंत महत्त्वाची भूमिका बजावतो. गुन्हेगारांचे सुरक्षित अभिरक्षण करणे आणि त्याच वेळी त्यांच्या सुधारणेसाठी व पुनर्वसनासाठी विविध उपक्रम राबविणे हे विभागाचे मुख्य ध्येय आहे. राज्यात विविध श्रेणींमधील एकूण ६० कारागृहे आहेत, ज्यामध्ये मध्यवर्ती, जिल्हा, खुले आणि महिला काराकृहांचा समावेश होतो. आधुनिक तंत्रज्ञानाचा वापर करून पारदर्शकता वाढविणे आणि बंदीवानांमध्ये व्यावसायिक कौशल्ये निर्माण करून त्यांना समाजाचे जबाबदार नागरिक बनविणे यावर विभागाचा भर आहे."
-    : "The Maharashtra Prisons Department plays a vital role in maintaining law and order in the state. Secure custody of offenders, coupled with correctional initiatives for their reform and rehabilitation, forms the core mission. With 60 prisons of various categories including central, district, open, and women's prisons across the state, the department leverages modern technology to foster transparency. We focus on vocational training and psychological rehabilitation to transform inmates into responsible citizens.";
+    ? "येरवडा खुले कारागृह हे पुण्याच्या ऐतिहासिक येरवडा मध्यवर्ती कारागृहाच्या विस्तीर्ण ५१२ एकर परिसरात वसलेले एक विशेष पुनर्वसन आणि सुधार केंद्र आहे. १९५६ मध्ये स्थापित झालेले हे महाराष्ट्रातील पहिले 'खुले कारागृह' होते, जे प्रगतशील कारागृह प्रशासनातील एक महत्त्वाचे पाऊल मानले जाते. येथे प्रामुख्याने जन्मठेपेची शिक्षा भोगत असलेल्या, चांगली वर्तणूक असलेल्या आणि मध्यवर्ती कारागृहात किमान ५ वर्षे पूर्ण केलेल्या बंदीवानांना ठेवले जाते. हे कारागृह पारंपारिक बंदिस्त कोठड्यांविना, कमीत कमी सुरक्षिततेवर चालते. येथे बंदीवानांच्या मानसिक सुधारणेवर आणि व्यावसायिक सक्षमीकरणावर विशेष भर दिला जातो. बंदीवानांना सेंद्रिय शेती आणि पशुपालन यांसारख्या उत्पादक कामांमध्ये सक्रियपणे गुंतवले जाते; येथील सेंद्रिय शेतीतून इतर कारागृहांनाही ताज्या भाज्यांचा पुरवठा केला जातो. या प्रगतशील दृष्टिकोनामुळे बंदीवानांना उपजीविकेचे महत्त्वपूर्ण कौशल्य प्राप्त होते, ज्यामुळे त्यांची समाजात एक जबाबदार नागरिक म्हणून यशस्वीपणे पुनर्रचना होण्यास मदत होते."
+    : "The Yerwada Open Jail is a specialized rehabilitation facility located in the expansive campus of the historic Yerwada Central Jail in Pune. Established in 1956, it was the first 'Open Institution' in Maharashtra, marking a significant milestone in progressive prison administration. It primarily houses inmates serving life sentences who have demonstrated excellent conduct and successfully completed at least five years in the high-security central prison. Operating under minimal security without traditional confinement cells, the facility strongly emphasizes psychological reform and vocational empowerment. Inmates are actively engaged in productive activities such as extensive organic farming—supplying fresh produce to neighboring institutions—and animal husbandry. This progressive approach ensures inmates acquire vital livelihood skills, facilitating their successful and responsible reintegration into society upon release.";
 
   const welcomeTitle = lang === 'mr'
-    ? "महाराष्ट्र कारागृह आणि सुधार सेवांमध्ये आपले स्वागत आहे"
-    : "Welcome to Maharashtra Prisons & Correctional Services";
+    ? "येरवडा खुले जिल्हा कारागृह मध्ये आपले स्वागत आहे"
+    : "Welcome to Yerwada Open District Prison";
+
+  const openJailOfficers = [
+    {
+      name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
+      desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१",
+      img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      name: "श्री. नागेश एम. कांबळे",
+      desg: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १",
+      img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"
+    },
+    {
+      name: "श्री. नागनाथ एन. भाणवसे",
+      desg: "तुरुंग अधिकारी श्रेणी २",
+      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+    },
+    {
+      name: "श्रीमती निशा डी. श्रेयकर",
+      desg: "तुरुंग अधिकारी श्रेणी २",
+      img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop"
+    }
+  ];
 
   return (
-    <div className="w-full py-20 px-4 md:px-8 bg-gradient-to-b from-[#F1F5F9] to-[#F8FAFC] dark-mode:from-gray-900 dark-mode:to-gray-950 border-y border-gray-200 dark-mode:border-gray-800 smooth-transition relative overflow-hidden">
+    <div className="w-full py-8 px-4 md:px-8 bg-[#F8FAFC] dark-mode:bg-[#080B11] relative overflow-hidden">
+
+      {/* Background accents */}
+      <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-teal-500/5 dark-mode:bg-teal-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[30vw] h-[30vw] bg-amber-500/5 dark-mode:bg-amber-500/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
-          {/* Prison Logo column */}
-          <div className="lg:col-span-4 flex justify-center">
-            <div className="relative p-6 bg-white dark-mode:bg-gray-850 border border-gray-200/50 dark-mode:border-gray-800 rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 group max-w-sm">
-              {/* Highlight gradient borders */}
-              <span className="absolute inset-0 bg-gradient-to-tr from-[#0F3D66]/5 to-[#0F766E]/5 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500" />
-              <img
-                src="/Logo.jpeg"
-                alt={t("कारागृह लोगो")}
-                className="w-44 h-auto mx-auto rounded-2xl group-hover:scale-105 transition-transform duration-300 shadow-inner"
-              />
+        {/* Main "Dashboard" Container */}
+        <div className="bg-white dark-mode:bg-gray-900 rounded-3xl shadow-sm border border-gray-100 dark-mode:border-gray-800 p-6 md:p-8 relative overflow-hidden">
+
+          {/* Subtle inner top gradient */}
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-amber-400 via-teal-600 to-[#0F3D66] opacity-80" />
+
+          {/* Split Layout: Info on Left, Profiles on Right */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+            {/* Left Side: Info & CTA */}
+            <div className="lg:col-span-7 xl:col-span-6 flex flex-col justify-center">
+
+              {/* Header: Logo + Title */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6 mb-6">
+                <img
+                  src="/Logo.jpeg"
+                  alt={t("कारागृह लोगो")}
+                  className="w-16 md:w-20 h-auto object-contain mix-blend-multiply dark-mode:mix-blend-screen shrink-0"
+                />
+                <div className="flex flex-col text-center sm:text-left pt-1">
+                  <span className={`text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-semibold uppercase block mb-1 ${lang === 'mr' ? '' : 'tracking-widest'}`}>
+                    {t("येरवडा खुल्या कारागृहाविषयी")}
+                  </span>
+                  <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-[#0F3D66] dark-mode:text-blue-300 font-poppins leading-tight">
+                    {welcomeTitle}
+                  </h2>
+                </div>
+              </div>
+
+              {/* Body Text */}
+              <div className="mb-8">
+                <p className="text-[13px] md:text-sm lg:text-[15px] text-gray-600 dark-mode:text-gray-300 font-medium leading-relaxed font-poppins text-center sm:text-left">
+                  {aboutText}
+                </p>
+              </div>
+
+              {/* Read More button */}
+              <div className="flex justify-center sm:justify-start">
+                <a
+                  href="https://mahaprisons.gov.in/about-department/%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%9a%e0%a4%af/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-[#0F3D66] hover:bg-[#1E5AA8] text-white rounded-full font-medium text-xs shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all group focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer"
+                >
+                  <span>{t("अधिक वाचा …")}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                </a>
+              </div>
             </div>
+
+            {/* Right Side: Officer Profiles */}
+            <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-gray-100 dark-mode:border-gray-800 pt-8 lg:pt-0 lg:pl-8 xl:pl-12">
+              <h3 className="text-xs font-semibold text-gray-400 dark-mode:text-gray-500 uppercase tracking-widest mb-6 text-center">
+                {lang === 'mr' ? 'प्रभारी अधिकारी' : 'Officers In Charge'}
+              </h3>
+
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                {openJailOfficers.map((officer, idx) => (
+                  <div key={idx} className="flex flex-col items-center p-2 hover:-translate-y-1 transition-transform duration-300 group">
+
+                    {/* Avatar with ring effect */}
+                    <div className="relative mb-4">
+                      <div className="absolute inset-0 bg-gradient-to-tr from-amber-400 to-teal-500 rounded-full blur opacity-10 group-hover:opacity-40 transition-opacity duration-300 scale-110" />
+                      <img src={officer.img} alt={t(officer.name)} className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300" />
+                    </div>
+
+                    {/* Name & Designation */}
+                    <span className="text-[13px] md:text-[14px] font-semibold text-[#0F3D66] dark-mode:text-blue-300 text-center mb-1 leading-tight">{t(officer.name)}</span>
+                    <span className="text-[10px] md:text-[11px] text-gray-500 dark-mode:text-gray-400 text-center leading-snug px-1 font-medium">{t(officer.desg)}</span>
+
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
-
-          {/* About text column */}
-          <div className="lg:col-span-8 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <span className={`text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-extrabold uppercase block mb-2 ${lang === 'mr' ? '' : 'tracking-widest'}`}>
-              {t("विभागाविषयी")}
-            </span>
-            <h2 className="text-xl md:text-3xl font-extrabold text-[#0F3D66] dark-mode:text-blue-300 mb-4 font-devanagari leading-snug">
-              {welcomeTitle}
-            </h2>
-            <p className="text-sm md:text-base text-gray-700 dark-mode:text-gray-300 font-medium leading-relaxed mb-6 font-devanagari max-w-3xl">
-              {aboutText}
-            </p>
-
-            {/* Read More button */}
-            <a
-              href="https://mahaprisons.gov.in/about-department/%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%9a%e0%a4%af/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-[#0F3D66] hover:bg-[#1E5AA8] text-white rounded-full font-bold text-xs shadow-md hover:shadow-lg transition-all group focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer"
-            >
-              <span>{t("अधिक वाचा …")}</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </a>
-          </div>
-
         </div>
       </div>
     </div>

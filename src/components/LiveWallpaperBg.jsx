@@ -138,7 +138,7 @@ export const LiveWallpaperBg = () => {
             top: p.y,
             fontSize: p.size,
           }}
-          className="text-[#0F3D66]/12 font-bold"
+          className="text-[#0F3D66]/12 font-medium"
         >
           {p.type}
         </motion.div>

@@ -312,6 +312,24 @@ export const mockHomepageData = {
       img_alt: "ADG Suhas Warke (IPS)",
       name: "श्री. सुहास वारके",
       desg: "Director General of Prisons and Correctional Services"
+    },
+    {
+      img_src: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop",
+      img_alt: "Yogesh Desai",
+      name: "श्री. योगेश देसाई",
+      desg: "विशेष कारागृह महानिरीक्षक"
+    },
+    {
+      img_src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
+      img_alt: "Sunil Dhamal",
+      name: "श्री. सुनील ढमाळ",
+      desg: "कारागृह उपमहानिरीक्षक, पश्चिम विभाग, येरवडा"
+    },
+    {
+      img_src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop",
+      img_alt: "Shamkant Shedge",
+      name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
+      desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१"
     }
   ],
   helpline_services: [

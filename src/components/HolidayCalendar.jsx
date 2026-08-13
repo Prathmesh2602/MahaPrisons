@@ -66,30 +66,30 @@ export const HolidayCalendar = () => {
   });
 
   return (
-    <div className="w-full py-20 px-4 md:px-8 bg-[#F1F5F9] dark-mode:bg-gray-900 border-b border-gray-200/60 dark-mode:border-gray-850 smooth-transition">
+    <div className="w-full py-4 md:py-6 px-4 md:px-8 bg-[#F1F5F9] dark-mode:bg-gray-900 border-b border-gray-200/60 dark-mode:border-gray-850 smooth-transition">
       <div className="max-w-6xl mx-auto">
         
         {/* Section title */}
-        <div className="text-center mb-10">
-          <span className="text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-extrabold uppercase tracking-widest block mb-1">
+        <div className="text-center mb-4">
+          <span className="text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-semibold uppercase tracking-widest block mb-1">
             {language === 'mr' ? 'कार्यालयीन दिनदर्शिका' : 'Office Calendar'}
           </span>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#0F3D66] dark-mode:text-blue-300 font-devanagari relative inline-block pb-3">
+          <h2 className="text-xl md:text-2xl font-semibold text-[#0F3D66] dark-mode:text-blue-300 font-poppins relative inline-block pb-3">
             {t("Holiday Calendar")}
             <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-amber-500 rounded-full" />
           </h2>
         </div>
 
         {/* 2 columns layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
           
           {/* Column 1: The Calendar Widget */}
           <div className="lg:col-span-7 bg-white dark-mode:bg-gray-900 border border-gray-200/80 dark-mode:border-gray-800 rounded-3xl p-6 shadow-md">
             {/* Header selector */}
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-sm font-bold text-gray-800 dark-mode:text-gray-150 flex items-center gap-2">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-sm font-medium text-gray-800 dark-mode:text-gray-150 flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-[#1E5AA8]" />
-                <span className="font-devanagari font-bold">{monthName} {year}</span>
+                <span className="font-poppins font-medium">{monthName} {year}</span>
               </h3>
               
               <div className="flex gap-2">
@@ -116,7 +116,7 @@ export const HolidayCalendar = () => {
               {dayNames.map((name, idx) => (
                 <div 
                   key={idx} 
-                  className={`py-2 border-b border-gray-100 dark-mode:border-gray-800 font-bold uppercase tracking-wide ${
+                  className={`py-2 border-b border-gray-100 dark-mode:border-gray-800 font-medium uppercase tracking-wide ${
                     idx === 0 ? 'text-red-500' : 'text-gray-500 dark-mode:text-gray-400'
                   }`}
                 >
@@ -130,7 +130,7 @@ export const HolidayCalendar = () => {
                 const isWeekend = isWeekendDay(idx);
                 const isToday = day && new Date().getDate() === day && new Date().getMonth() === month && new Date().getFullYear() === year;
 
-                let cellClass = "relative min-h-[44px] flex flex-col justify-center items-center rounded-xl transition-all duration-300 ";
+                let cellClass = "relative min-h-[36px] flex flex-col justify-center items-center rounded-xl transition-all duration-300 ";
                 
                 if (!day) {
                   cellClass += "opacity-0";
@@ -138,12 +138,12 @@ export const HolidayCalendar = () => {
                   cellClass += "border ";
                   
                   if (isToday) {
-                    cellClass += "bg-[#1E5AA8] text-white border-[#1E5AA8] shadow-md font-bold ";
+                    cellClass += "bg-[#1E5AA8] text-white border-[#1E5AA8] shadow-md font-medium ";
                   } else if (holiday) {
                     if (holiday.type === 'gazetted') {
-                      cellClass += "bg-red-50 border-red-200 text-red-700 font-bold hover:bg-red-100/80 dark-mode:bg-red-950/20 dark-mode:border-red-900/50 dark-mode:text-red-300 ";
+                      cellClass += "bg-red-50 border-red-200 text-red-700 font-medium hover:bg-red-100/80 dark-mode:bg-red-950/20 dark-mode:border-red-900/50 dark-mode:text-red-300 ";
                     } else {
-                      cellClass += "bg-amber-50 border-amber-200 text-amber-700 font-bold hover:bg-amber-100/80 dark-mode:bg-amber-950/20 dark-mode:border-amber-900/50 dark-mode:text-amber-300 ";
+                      cellClass += "bg-amber-50 border-amber-200 text-amber-700 font-medium hover:bg-amber-100/80 dark-mode:bg-amber-950/20 dark-mode:border-amber-900/50 dark-mode:text-amber-300 ";
                     }
                   } else if (isWeekend) {
                     cellClass += "bg-[#F8FAFC] border-gray-100 text-red-550 dark-mode:bg-gray-800/40 dark-mode:border-gray-800/40 ";
@@ -170,7 +170,7 @@ export const HolidayCalendar = () => {
             </div>
 
             {/* Legend guide */}
-            <div className="flex flex-wrap gap-4 border-t border-gray-100 dark-mode:border-gray-800 pt-4 text-[10px] font-bold uppercase tracking-wide justify-center text-gray-500 dark-mode:text-gray-400">
+            <div className="flex flex-wrap gap-4 border-t border-gray-100 dark-mode:border-gray-800 pt-4 text-[10px] font-medium uppercase tracking-wide justify-center text-gray-500 dark-mode:text-gray-400">
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 bg-red-50 dark-mode:bg-red-950/30 border border-red-200 dark-mode:border-red-900/50 rounded-sm" />
                 <span>{t("राजपत्रित सुट्टी")}</span>
@@ -190,7 +190,7 @@ export const HolidayCalendar = () => {
           {/* Column 2: Selected Month Holidays list */}
           <div className="lg:col-span-5 bg-white dark-mode:bg-gray-900 border border-gray-200/80 dark-mode:border-gray-800 rounded-3xl p-6 shadow-md flex flex-col h-full justify-between">
             <div>
-              <h3 className="text-sm font-bold text-gray-800 dark-mode:text-gray-150 border-b border-gray-100 dark-mode:border-gray-800 pb-3 mb-4 flex items-center gap-2">
+              <h3 className="text-sm font-medium text-gray-800 dark-mode:text-gray-150 border-b border-gray-100 dark-mode:border-gray-800 pb-3 mb-4 flex items-center gap-2">
                 <Info className="w-4.5 h-4.5 text-[#0F766E]" />
                 <span>
                   {language === 'mr' 
@@ -225,11 +225,11 @@ export const HolidayCalendar = () => {
                       >
                         <div className="flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${isGazetted ? 'bg-red-500' : 'bg-amber-500'}`} />
-                          <span className="text-xs font-bold text-gray-700 dark-mode:text-gray-250 leading-tight">
+                          <span className="text-xs font-medium text-gray-700 dark-mode:text-gray-250 leading-tight">
                             {h.title.split('/')[language === 'mr' ? 1 : 0].trim()}
                           </span>
                         </div>
-                        <span className="text-[10px] font-bold text-gray-500 dark-mode:text-gray-400 bg-white border border-gray-150 px-2 py-0.5 rounded-full whitespace-nowrap dark-mode:bg-gray-800 dark-mode:border-gray-700">
+                        <span className="text-[10px] font-medium text-gray-500 dark-mode:text-gray-400 bg-white border border-gray-150 px-2 py-0.5 rounded-full whitespace-nowrap dark-mode:bg-gray-800 dark-mode:border-gray-700">
                           {dayString}
                         </span>
                       </div>

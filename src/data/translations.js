@@ -1,5 +1,55 @@
 
 export const translations = {
+  // Yerwada Open Jail Officers
+  "श्री. नागेश एम. कांबळे": {
+    mr: "श्री. नागेश एम. कांबळे",
+    en: "Shri. Nagesh M. Kamble"
+  },
+  "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १": {
+    mr: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १",
+    en: "Senior Jail Officer (Admin & Others) Grade 1"
+  },
+  "श्री. नागनाथ एन. भाणवसे": {
+    mr: "श्री. नागनाथ एन. भाणवसे",
+    en: "Shri. Nagnath N. Bhanavase"
+  },
+  "तुरुंग अधिकारी श्रेणी २": {
+    mr: "तुरुंग अधिकारी श्रेणी २",
+    en: "Jail Officer Grade 2"
+  },
+  "श्रीमती निशा डी. श्रेयकर": {
+    mr: "श्रीमती निशा डी. श्रेयकर",
+    en: "Shrimati Nisha D. Shreyekar"
+  },
+  "येरवडा खुल्या कारागृहाविषयी": {
+    mr: "येरवडा खुल्या कारागृहाविषयी",
+    en: "ABOUT YERWADA OPEN JAIL"
+  },
+  // Senior Officers
+  "श्री. योगेश देसाई": {
+    mr: "श्री. योगेश देसाई",
+    en: "Shri. Yogesh Desai"
+  },
+  "विशेष कारागृह महानिरीक्षक": {
+    mr: "विशेष कारागृह महानिरीक्षक",
+    en: "Special Inspector General of Prisons"
+  },
+  "श्री. सुनील ढमाळ": {
+    mr: "श्री. सुनील ढमाळ",
+    en: "Shri. Sunil Dhamal"
+  },
+  "कारागृह उपमहानिरीक्षक, पश्चिम विभाग, येरवडा": {
+    mr: "कारागृह उपमहानिरीक्षक, पश्चिम विभाग, येरवडा",
+    en: "Deputy Inspector General of Prisons, Western Region, Yerwada"
+  },
+  "श्री. शामकांत शालन चंद्रकांत शेडगे": {
+    mr: "श्री. शामकांत शालन चंद्रकांत शेडगे",
+    en: "Shri. Shamkant Shalan Chandrakant Shedge"
+  },
+  "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१": {
+    mr: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१",
+    en: "Superintendent, Yerwada Open District Prison, Class-1"
+  },
   // Page Title and Headers
   "Maharashtra Prisons and Correctional Services": {
     mr: "महाराष्ट्र कारागृह आणि सुधार सेवा",
@@ -780,5 +830,87 @@ export const translations = {
   "भारत सरकारचे इलेक्ट्रॉनिक्स आणि माहिती तंत्रज्ञान मंत्रालय": {
     mr: "भारत सरकारचे इलेक्ट्रॉनिक्स आणि माहिती तंत्रज्ञान मंत्रालय",
     en: "Ministry of Electronics and Information Technology, Govt. of India"
+  },
+  
+  // Jail Insights Section
+  "येरवडा खुले कारागृह: एक दृष्टिक्षेप": {
+    mr: "येरवडा खुले कारागृह: एक दृष्टिक्षेप",
+    en: "Yerawada Open Jail: Insights"
+  },
+  "सुधारणा आणि पुनर्वसन": {
+    mr: "सुधारणा आणि पुनर्वसन",
+    en: "Reformation & Rehabilitation"
+  },
+  "कैद्यांच्या सर्वांगीण विकासासाठी आणि त्यांना समाजाच्या मुख्य प्रवाहात आणण्यासाठी विशेष प्रयत्न.": {
+    mr: "कैद्यांच्या सर्वांगीण विकासासाठी आणि त्यांना समाजाच्या मुख्य प्रवाहात आणण्यासाठी विशेष प्रयत्न.",
+    en: "Special efforts for the holistic development of inmates and their reintegration into society."
+  },
+  "शृंखला उपहारगृह": {
+    mr: "शृंखला उपहारगृह",
+    en: "Shrunkhala Restaurant"
+  },
+  "कैद्यांमार्फत चालवले जाणारे हॉटेल, जिथे त्यांना रोजगार आणि कौशल्य विकासाची संधी मिळते.": {
+    mr: "कैद्यांमार्फत चालवले जाणारे हॉटेल, जिथे त्यांना रोजगार आणि कौशल्य विकासाची संधी मिळते.",
+    en: "A restaurant run by inmates, providing them with employment and skill development opportunities."
+  },
+  "शेती आणि वृक्षारोपण": {
+    mr: "शेती आणि वृक्षारोपण",
+    en: "Agriculture & Tree Plantation"
+  },
+  "मोकळ्या जागेचा वापर करून शेती आणि पर्यावरण संवर्धनासाठी मोठ्या प्रमाणावर वृक्षारोपण.": {
+    mr: "मोकळ्या जागेचा वापर करून शेती आणि पर्यावरण संवर्धनासाठी मोठ्या प्रमाणावर वृक्षारोपण.",
+    en: "Extensive tree plantation for environmental conservation and agriculture using open spaces."
+  },
+  "कौशल्य विकास कार्यक्रम": {
+    mr: "कौशल्य विकास कार्यक्रम",
+    en: "Skill Development Programs"
+  },
+  "वेल्डिंग, सुतारकाम आणि अन्न प्रक्रिया यांसारख्या व्यावसायिक प्रशिक्षणातून स्वावलंबन.": {
+    mr: "वेल्डिंग, सुतारकाम आणि अन्न प्रक्रिया यांसारख्या व्यावसायिक प्रशिक्षणातून स्वावलंबन.",
+    en: "Self-reliance through vocational training like welding, carpentry, and food processing."
+  },
+  "अधिक माहितीसाठी": {
+    mr: "अधिक माहितीसाठी",
+    en: "For More Info"
+  },
+  "Youtube चॅनेलला भेट द्या": {
+    mr: "Youtube चॅनेलला भेट द्या",
+    en: "Visit YouTube Channel"
+  },
+  "आमचे व्हिडिओ पहा": {
+    mr: "आमचे व्हिडिओ पहा",
+    en: "Watch Our Videos"
+  },
+  "ऐतिहासिक वारसा": {
+    mr: "ऐतिहासिक वारसा",
+    en: "Historical Heritage"
+  },
+  "येरवडा कारागृहाला मोठा इतिहास लाभला असून, येथे महात्मा गांधी आणि इतर स्वातंत्र्यसैनिकांना ठेवण्यात आले होते.": {
+    mr: "येरवडा कारागृहाला मोठा इतिहास लाभला असून, येथे महात्मा गांधी आणि इतर स्वातंत्र्यसैनिकांना ठेवण्यात आले होते.",
+    en: "Yerawada Jail has a rich history, having housed Mahatma Gandhi and other freedom fighters."
+  },
+  "शिक्षण आणि साक्षरता": {
+    mr: "शिक्षण आणि साक्षरता",
+    en: "Education & Literacy"
+  },
+  "कैद्यांसाठी मूलभूत साक्षरता आणि मुक्त विद्यापीठांमार्फत उच्च शिक्षणाच्या सुविधा.": {
+    mr: "कैद्यांसाठी मूलभूत साक्षरता आणि मुक्त विद्यापीठांमार्फत उच्च शिक्षणाच्या सुविधा.",
+    en: "Basic literacy and higher education facilities for inmates through open universities."
+  },
+  "जलद सेवा आणि महत्त्वाच्या लिंक्स": {
+    mr: "जलद सेवा आणि महत्त्वाच्या लिंक्स",
+    en: "Quick Services & Important Links"
+  },
+  "नागरिकांच्या सुविधेसाठी महत्त्वाचे संपर्क क्रमांक आणि संबंधित शासकीय संकेतस्थळांच्या लिंक्स खालीलप्रमाणे उपलब्ध आहेत.": {
+    mr: "नागरिकांच्या सुविधेसाठी महत्त्वाचे संपर्क क्रमांक आणि संबंधित शासकीय संकेतस्थळांच्या लिंक्स खालीलप्रमाणे उपलब्ध आहेत.",
+    en: "Important contact numbers and related government website links are available below for the convenience of citizens."
+  },
+  "मदत केंद्र (Helplines)": {
+    mr: "मदत केंद्र (Helplines)",
+    en: "Helplines"
+  },
+  "महत्त्वाच्या लिंक्स (Important Links)": {
+    mr: "महत्त्वाच्या लिंक्स (Important Links)",
+    en: "Important Links"
   }
 };

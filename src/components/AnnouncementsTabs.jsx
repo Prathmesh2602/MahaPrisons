@@ -79,14 +79,14 @@ export const AnnouncementsTabs = () => {
         {/* Section title & Tabs */}
         <div className="flex flex-col md:flex-row justify-between md:items-end gap-6 mb-10 border-b border-gray-200 dark-mode:border-gray-800 pb-6">
           <div className="text-center md:text-left">
-            <span className="text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-extrabold uppercase tracking-widest block mb-2">
+            <span className="text-[10px] text-[#0F766E] dark-mode:text-teal-400 font-semibold uppercase tracking-widest block mb-2">
               {language === 'mr' ? 'सूचना आणि घोषणा' : 'Notices & Announcements'}
             </span>
             <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-100 dark-mode:bg-amber-900/30 flex items-center justify-center">
                 <Bell className="w-5 h-5 text-amber-600 dark-mode:text-amber-400 animate-swing" />
               </div>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[#0F3D66] dark-mode:text-blue-300 font-devanagari">
+              <h2 className="text-xl md:text-2xl font-semibold text-[#0F3D66] dark-mode:text-blue-300 font-poppins">
                 {t("ताज्या घडामोडी")}
               </h2>
             </div>
@@ -98,7 +98,7 @@ export const AnnouncementsTabs = () => {
               <button
                 key={idx}
                 onClick={() => setActiveTab(idx)}
-                className={`px-6 py-2.5 rounded-full text-xs md:text-sm font-bold transition-all focus:outline-none cursor-pointer ${
+                className={`px-6 py-2.5 rounded-full text-xs md:text-sm font-medium transition-all focus:outline-none cursor-pointer ${
                   idx === activeTab 
                     ? 'bg-[#0F3D66] text-white shadow-md dark-mode:bg-blue-600' 
                     : 'text-gray-500 hover:text-[#0F3D66] hover:bg-gray-100 dark-mode:text-gray-400 dark-mode:hover:bg-gray-800 dark-mode:hover:text-blue-300'
@@ -144,19 +144,19 @@ export const AnnouncementsTabs = () => {
                         <div className="w-10 h-10 rounded-xl bg-[#F8FAFC] dark-mode:bg-gray-800 border border-gray-150 dark-mode:border-gray-700 flex items-center justify-center group-hover:bg-[#0F3D66] group-hover:text-white dark-mode:group-hover:bg-blue-600 transition-colors duration-300 shadow-sm">
                           {isPdf ? <Download className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] text-gray-500 dark-mode:text-gray-400 font-bold uppercase tracking-wider bg-gray-50 dark-mode:bg-gray-850 px-2.5 py-1 rounded-full border border-gray-100 dark-mode:border-gray-800">
+                        <div className="flex items-center gap-1.5 text-[10px] text-gray-500 dark-mode:text-gray-400 font-medium uppercase tracking-wider bg-gray-50 dark-mode:bg-gray-850 px-2.5 py-1 rounded-full border border-gray-100 dark-mode:border-gray-800">
                           <Calendar className="w-3.5 h-3.5" />
                           <span>{item.date || 'Jul 2026'}</span>
                         </div>
                       </div>
 
-                      <h4 className="text-[13px] font-bold text-gray-800 dark-mode:text-gray-200 group-hover:text-[#0F3D66] dark-mode:group-hover:text-blue-300 leading-snug transition-colors duration-300 line-clamp-3">
+                      <h4 className="text-[13px] font-medium text-gray-800 dark-mode:text-gray-200 group-hover:text-[#0F3D66] dark-mode:group-hover:text-blue-300 leading-snug transition-colors duration-300 line-clamp-3">
                         {text}
                       </h4>
                     </div>
 
                     {/* Redirection indicator */}
-                    <div className="mt-4 pt-3 border-t border-gray-100 dark-mode:border-gray-800 flex items-center justify-between text-xs font-extrabold text-[#0F766E] dark-mode:text-teal-400 group-hover:text-[#1E5AA8] dark-mode:group-hover:text-blue-400 transition-colors">
+                    <div className="mt-4 pt-3 border-t border-gray-100 dark-mode:border-gray-800 flex items-center justify-between text-xs font-semibold text-[#0F766E] dark-mode:text-teal-400 group-hover:text-[#1E5AA8] dark-mode:group-hover:text-blue-400 transition-colors">
                       <span>{isPdf ? t("डाउनलोड") : t("अधिक वाचा")}</span>
                       <div className="w-7 h-7 rounded-full bg-[#0F766E]/10 dark-mode:bg-teal-400/10 flex items-center justify-center group-hover:bg-[#1E5AA8]/20 dark-mode:group-hover:bg-blue-400/20 transition-colors">
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
