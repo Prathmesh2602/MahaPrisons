@@ -62,7 +62,7 @@ export const AboutSection = () => {
               {/* Header: Logo + Title */}
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6 mb-6">
                 <img
-                  src="/Logo.jpeg"
+                  src="/logo.jpeg"
                   alt={t("कारागृह लोगो")}
                   className="w-16 md:w-20 h-auto object-contain mix-blend-multiply dark-mode:mix-blend-screen shrink-0"
                 />
