@@ -323,7 +323,7 @@ export const mockHomepageData = {
       img_src: "/gallary/yogesh%20desai.png",
       img_alt: "Yogesh Desai",
       name: "श्री. योगेश देसाई",
-      desg: "विशेष कारागृह महानिरीक्षक"
+      desg: "विशेष कारागृह महानिरीक्षक, महाराष्ट्र राज्य"
     },
     {
       img_src: "/gallary/Sunil%20Dhamal.png",

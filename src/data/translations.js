@@ -47,9 +47,9 @@ export const translations = {
     mr: "श्री. योगेश देसाई",
     en: "Shri. Yogesh Desai"
   },
-  "विशेष कारागृह महानिरीक्षक": {
-    mr: "विशेष कारागृह महानिरीक्षक",
-    en: "Special Inspector General of Prisons"
+  "विशेष कारागृह महानिरीक्षक, महाराष्ट्र राज्य": {
+    mr: "विशेष कारागृह महानिरीक्षक, महाराष्ट्र राज्य",
+    en: "Special Inspector General of Prisons, Maharashtra State"
   },
   "श्री. सुनील ढमाळ": {
     mr: "श्री. सुनील ढमाळ",
