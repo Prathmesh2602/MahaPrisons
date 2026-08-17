@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { Search, GitFork, Settings2, ChevronDown, Check, Sun, Moon, Volume2, VolumeX, Type } from 'lucide-react';
+import { Search, GitFork, Settings2, ChevronDown, Check, Sun, Moon, Volume2, VolumeX, Type, ExternalLink } from 'lucide-react';
 
 export const AccessibilityToolbar = () => {
   const {
@@ -78,15 +78,16 @@ export const AccessibilityToolbar = () => {
           <span>Government of Maharashtra</span>
         </div>
         <span className="hidden md:block text-gray-300 mx-2">|</span>
-        <div className="hidden md:flex flex-row items-center gap-2">
-          <span className="text-[10px] font-medium font-poppins text-[#0F3D66] dark-mode:text-blue-300 leading-tight">
+        <a href="https://mahaprisons.gov.in/" target="_blank" rel="noopener noreferrer" className="hidden md:flex flex-row items-center gap-2 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-amber-500 rounded px-1 -ml-1 group">
+          <span className="text-[10px] font-medium font-poppins text-[#0F3D66] dark-mode:text-blue-300 leading-tight group-hover:underline">
             महाराष्ट्र कारागृहे व सुधार सेवा
           </span>
           <span className="text-gray-400">|</span>
-          <span className="text-[10px] font-semibold text-[#111827] dark-mode:text-white leading-tight">
+          <span className="text-[10px] font-semibold text-[#111827] dark-mode:text-white leading-tight group-hover:underline">
             Maharashtra Prisons and Correctional Services
           </span>
-        </div>
+          <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
+        </a>
       </div>
 
       {/* 2. RIGHT SIDE: Clean Usability Icons */}

@@ -14,12 +14,18 @@ export const mockHomepageData = {
       icon: "Home",
       href: "/",
       title: "मुख्यपृष्ठ",
-      children: []
+      children: [
+        { text: "परिचय", href: "/#about", title: "About", children: [] },
+        { text: "घोषणा आणि निविदा", href: "/#announcements", title: "Announcements", children: [] },
+        { text: "सुट्ट्यांचे कॅलेंडर", href: "/#calendar", title: "Calendar", children: [] },
+        { text: "फोटो गॅलरी", href: "/#gallery", title: "Gallery", children: [] },
+        { text: "जलद सेवा", href: "/#services", title: "Services", children: [] }
+      ]
     },
     {
       text: "कारागृह व्यवस्था",
       icon: "Shield",
-      href: "#",
+      href: "/yerawada-open-jail",
       title: "कारागृह व्यवस्था",
       children: []
     },
@@ -314,19 +320,19 @@ export const mockHomepageData = {
       desg: "Director General of Prisons and Correctional Services"
     },
     {
-      img_src: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop",
+      img_src: "/gallary/yogesh%20desai.png",
       img_alt: "Yogesh Desai",
       name: "श्री. योगेश देसाई",
       desg: "विशेष कारागृह महानिरीक्षक"
     },
     {
-      img_src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
+      img_src: "/gallary/Sunil%20Dhamal.png",
       img_alt: "Sunil Dhamal",
       name: "श्री. सुनील ढमाळ",
       desg: "कारागृह उपमहानिरीक्षक, पश्चिम विभाग, येरवडा"
     },
     {
-      img_src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop",
+      img_src: "/gallary/Shamkant%20shedge.png",
       img_alt: "Shamkant Shedge",
       name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
       desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१"

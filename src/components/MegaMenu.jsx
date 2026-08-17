@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';
 import { Menu, X, ChevronDown, ChevronRight, Home, ChevronLeft, Shield, Briefcase, Sprout, HeartHandshake, LayoutGrid, Palette, Award, Map, Package, PhoneCall } from 'lucide-react';
@@ -23,6 +24,7 @@ const iconColorMap = {
 
 export const MegaMenu = () => {
   const { language, t } = useAccessibility();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null); // Desktop active top-level dropdown index
   const [activeSubMenu, setActiveSubMenu] = useState(null); // Desktop active sub flyout index
@@ -154,8 +156,9 @@ export const MegaMenu = () => {
   const moreItems = mockHomepageData.navigation_menu.slice(splitIndex);
 
   return (
-    <nav
-      style={{ top: `${toolbarHeight}px` }}
+    <>
+      <nav
+        style={{ top: `${toolbarHeight}px` }}
       className={`w-full z-40 smooth-transition sticky ${isSticky
         ? 'bg-[#F3F4F6]/95 backdrop-blur-md shadow-md border-y border-gray-300/50 text-gray-900'
         : 'bg-white/45 backdrop-blur-md border-y border-transparent text-gray-900'
@@ -172,12 +175,12 @@ export const MegaMenu = () => {
         >
           {mockHomepageData.navigation_menu.map((item, idx) => {
             const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
-            const isHome = item.text === "मुख्यपृष्ठ";
+            const isActive = location.pathname === item.href;
             const IconComponent = item.icon ? iconMap[item.icon] : null;
             const iconColor = item.icon ? iconColorMap[item.icon] : 'text-gray-500';
             return (
-              <div key={idx} className={`px-2 py-2 flex items-center gap-1.5 whitespace-nowrap ${isHome ? 'px-3' : ''}`}>
-                {IconComponent && <IconComponent className={`w-3.5 h-3.5 ${isHome ? 'mr-1' : iconColor}`} />}
+              <div key={idx} className={`px-2 py-2 flex items-center gap-1.5 whitespace-nowrap ${isActive ? 'px-3' : ''}`}>
+                {IconComponent && <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'mr-1' : iconColor}`} />}
                 <span>{t(item.text)}</span>
                 {hasChildren && <ChevronDown className="w-3 h-3" />}
               </div>
@@ -195,7 +198,7 @@ export const MegaMenu = () => {
           {primaryItems.map((item, idx) => {
             const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
             const isDropdownActive = activeDropdown === idx;
-            const isHome = item.text === "मुख्यपृष्ठ";
+            const isActive = location.pathname === item.href;
             const IconComponent = item.icon ? iconMap[item.icon] : null;
 
             return (
@@ -205,19 +208,19 @@ export const MegaMenu = () => {
                 onMouseEnter={() => handleDropdownHover(idx)}
                 onMouseLeave={handleDropdownLeave}
               >
-                <a
-                  href={item.href}
-                  className={`px-2 py-2.5 flex items-center gap-1.5 transition-all whitespace-nowrap focus:outline focus:outline-2 focus:outline-amber-500 h-full ${isHome
+                <Link
+                  to={item.href}
+                  className={`px-2 py-2.5 flex items-center gap-1.5 transition-all whitespace-nowrap focus:outline focus:outline-2 focus:outline-amber-500 h-full ${isActive
                     ? 'bg-amber-500 rounded text-[#fff] font-[500] px-3 hover:bg-amber-600'
-                    : 'hover:bg-black/5 rounded dark-mode:hover:bg-white/5 text-gray-900 dark-mode:text-gray-100'
+                    : 'hover:bg-black/5 rounded dark-mode:hover:bg-white/5 text-black dark-mode:text-gray-100'
                     }`}
                   aria-haspopup={hasChildren ? "true" : "false"}
                   aria-expanded={isDropdownActive ? "true" : "false"}
                 >
-                  {IconComponent && <IconComponent className={`w-3.5 h-3.5 ${isHome ? 'mr-1' : (item.icon ? iconColorMap[item.icon] : 'text-gray-500')}`} />}
+                  {IconComponent && <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'mr-1' : (item.icon ? iconColorMap[item.icon] : 'text-gray-700')}`} />}
                   <span>{t(item.text)}</span>
                   {hasChildren && <ChevronDown className="w-3 h-3 text-gray-500 dark-mode:text-gray-400 flex-shrink-0" />}
-                </a>
+                </Link>
 
                 {/* Regular Dropdown menu */}
                 {hasChildren && !item.isMegaMenu && isDropdownActive && (
@@ -392,15 +395,31 @@ export const MegaMenu = () => {
         </button>
       </div>
 
+      </nav>
+
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-[108px] md:top-[128px] bg-black/60 z-30 transition-opacity animate-in fade-in duration-300">
-          <div className="w-4/5 max-w-sm h-full bg-[#0F3D66] border-r border-[#1E5AA8]/30 shadow-2xl py-4 overflow-y-auto z-40 text-white animate-in slide-in-from-left duration-300">
-            <div className="flex flex-col gap-1 px-3">
+        <div className="lg:hidden fixed inset-0 z-[100] transition-opacity animate-in fade-in duration-300">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setMobileMenuOpen(false)} aria-hidden="true"></div>
+          <div className="relative w-4/5 max-w-sm h-full bg-[#0F3D66] border-r border-[#1E5AA8]/30 shadow-2xl flex flex-col z-40 text-white animate-in slide-in-from-left duration-300">
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between p-4 border-b border-[#1E5AA8]/30 shrink-0">
+              <span className="font-semibold text-amber-500 text-[15px]">{language === 'mr' ? 'मुख्य मेनू' : 'Main Menu'}</span>
+              <button 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="p-1.5 rounded-md hover:bg-white/10 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 text-white cursor-pointer"
+                aria-label="Close Menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Drawer Menu Items */}
+            <div className="flex flex-col gap-1 px-3 py-4 overflow-y-auto custom-scrollbar h-full">
               {mockHomepageData.navigation_menu.map((item, idx) => {
                 const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
                 const isDropdownActive = activeDropdown === idx;
-                const isHome = item.text === "मुख्यपृष्ठ";
+                const isActive = location.pathname === item.href;
                 const IconComponent = item.icon ? iconMap[item.icon] : null;
 
                 return (
@@ -412,7 +431,10 @@ export const MegaMenu = () => {
                       <a
                         href={hasChildren ? undefined : item.href}
                         className="text-sm font-semibold flex items-center gap-2.5"
-                        onClick={(e) => hasChildren && e.preventDefault()}
+                        onClick={(e) => {
+                          if (hasChildren) e.preventDefault();
+                          else setMobileMenuOpen(false);
+                        }}
                       >
                         {IconComponent && <IconComponent className={`w-4 h-4 ${item.icon ? iconColorMap[item.icon] : 'text-blue-200'}`} />}
                         <span>{t(item.text)}</span>
@@ -494,7 +516,8 @@ export const MegaMenu = () => {
           </div>
         </div>
       )}
-    </nav>
+    </>
   );
 };
+
 export default MegaMenu;

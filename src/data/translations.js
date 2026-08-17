@@ -1,5 +1,22 @@
 
 export const translations = {
+  // Home Menu Dropdown
+  "घोषणा आणि निविदा": {
+    mr: "घोषणा आणि निविदा",
+    en: "Announcements & Tenders"
+  },
+  "सुट्ट्यांचे कॅलेंडर": {
+    mr: "सुट्ट्यांचे कॅलेंडर",
+    en: "Holiday Calendar"
+  },
+  "फोटो गॅलरी": {
+    mr: "फोटो गॅलरी",
+    en: "Photo Gallery"
+  },
+  "जलद सेवा": {
+    mr: "जलद सेवा",
+    en: "Quick Services"
+  },
   // Yerwada Open Jail Officers
   "श्री. नागेश एम. कांबळे": {
     mr: "श्री. नागेश एम. कांबळे",
@@ -11,14 +28,14 @@ export const translations = {
   },
   "श्री. नागनाथ एन. भाणवसे": {
     mr: "श्री. नागनाथ एन. भाणवसे",
-    en: "Shri. Nagnath N. Bhanavase"
+    en: "Shri. Nagnath N. Bhanvase"
   },
   "तुरुंग अधिकारी श्रेणी २": {
     mr: "तुरुंग अधिकारी श्रेणी २",
     en: "Jail Officer Grade 2"
   },
-  "श्रीमती निशा डी. श्रेयकर": {
-    mr: "श्रीमती निशा डी. श्रेयकर",
+  "श्रीमती निशा डी. श्रेयेकर": {
+    mr: "श्रीमती निशा डी. श्रेयेकर",
     en: "Shrimati Nisha D. Shreyekar"
   },
   "येरवडा खुल्या कारागृहाविषयी": {
@@ -831,7 +848,7 @@ export const translations = {
     mr: "भारत सरकारचे इलेक्ट्रॉनिक्स आणि माहिती तंत्रज्ञान मंत्रालय",
     en: "Ministry of Electronics and Information Technology, Govt. of India"
   },
-  
+
   // Jail Insights Section
   "येरवडा खुले कारागृह: एक दृष्टिक्षेप": {
     mr: "येरवडा खुले कारागृह: एक दृष्टिक्षेप",

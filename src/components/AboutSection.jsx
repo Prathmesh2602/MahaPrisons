@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { ArrowRight } from 'lucide-react';
 
@@ -19,12 +20,12 @@ export const AboutSection = () => {
     {
       name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
       desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१",
-      img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"
+      img: "/gallary/Shamkant%20shedge.png"
     },
     {
       name: "श्री. नागेश एम. कांबळे",
       desg: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १",
-      img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"
+      img: "/gallary/Nagesh%20Kamble.png"
     },
     {
       name: "श्री. नागनाथ एन. भाणवसे",
@@ -34,7 +35,7 @@ export const AboutSection = () => {
     {
       name: "श्रीमती निशा डी. श्रेयकर",
       desg: "तुरुंग अधिकारी श्रेणी २",
-      img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop"
+      img: "/gallary/nisha%20shreyekar.png"
     }
   ];
 
@@ -85,15 +86,13 @@ export const AboutSection = () => {
 
               {/* Read More button */}
               <div className="flex justify-center sm:justify-start">
-                <a
-                  href="https://mahaprisons.gov.in/about-department/%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%9a%e0%a4%af/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/yerawada-open-jail"
                   className="inline-flex items-center gap-2 px-8 py-3 bg-[#0F3D66] hover:bg-[#1E5AA8] text-white rounded-full font-medium text-xs shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all group focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer"
                 >
                   <span>{t("अधिक वाचा …")}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -111,7 +110,7 @@ export const AboutSection = () => {
                     {/* Avatar with ring effect */}
                     <div className="relative mb-4">
                       <div className="absolute inset-0 bg-gradient-to-tr from-amber-400 to-teal-500 rounded-full blur opacity-10 group-hover:opacity-40 transition-opacity duration-300 scale-110" />
-                      <img src={officer.img} alt={t(officer.name)} className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300" />
+                      <img src={officer.img} alt={t(officer.name)} className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover object-top border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300" />
                     </div>
 
                     {/* Name & Designation */}

@@ -1,10 +1,5 @@
-import React from 'react';
-import { useAccessibility } from '../hooks/useAccessibility';
-import { useScroll, useTransform, motion } from 'framer-motion';
-
-import AccessibilityToolbar from '../components/AccessibilityToolbar';
-import Header from '../components/Header';
-import MegaMenu from '../components/MegaMenu';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import HeroCarousel from '../components/HeroCarousel';
 import MinisterProfiles from '../components/MinisterProfiles';
 import QuickServices from '../components/QuickServices';
@@ -12,77 +7,62 @@ import AboutSection from '../components/AboutSection';
 import AnnouncementsTabs from '../components/AnnouncementsTabs';
 import HolidayCalendar from '../components/HolidayCalendar';
 import PhotoGallery from '../components/PhotoGallery';
-import Footer from '../components/Footer';
-import LiveWallpaperBg from '../components/LiveWallpaperBg';
 import JailInsights from '../components/JailInsights';
 
 export const HomePage = () => {
-  const { language } = useAccessibility();
+  const location = useLocation();
 
-  // Scroll transforms for bottom section orbs
-  const { scrollY } = useScroll();
-  const yBlob3 = useTransform(scrollY, [0, 1800], [0, -120]);
-  const yBlob4 = useTransform(scrollY, [0, 1800], [0, 80]);
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-[#F8FAFC] dark-mode:bg-[#080B11] smooth-transition relative font-poppins">
-
-      {/* 1. GRAPHICAL LIVE WALLPAPER BACKGROUND (Covers sitemap to end of Hero section) */}
-      <LiveWallpaperBg />
-
-      {/* Bottom section decorative parallax blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <motion.div
-          style={{ y: yBlob3 }}
-          className="glow-orb w-[600px] h-[600px] bg-indigo-400/5 bottom-[300px] -left-80 pointer-events-none"
-        />
-        <motion.div
-          style={{ y: yBlob4 }}
-          className="glow-orb w-80 h-80 bg-amber-400/5 bottom-20 -right-20 pointer-events-none"
-        />
-      </div>
-
-      {/* Accessibility Toolbar */}
-      <AccessibilityToolbar />
-
-      {/* Premium Title Branding Header */}
-      <Header />
-
-      {/* Desktop Light Gray / Sticky Accordion mega menu */}
-      <MegaMenu />
-
-      {/* Main Content Body Slot */}
-      <main id="main-content" className="flex-1 flex flex-col focus:outline-none relative z-10">
-
+    <>
+      <div id="hero">
         {/* Carousel & Minister grid */}
         <HeroCarousel />
-
         {/* Dignitary card grid */}
         <MinisterProfiles />
+      </div>
 
+      <div id="about">
         {/* Welcoming About department copy */}
         <AboutSection />
+      </div>
 
+      <div id="insights">
         {/* Jail Insights Section */}
         <JailInsights />
+      </div>
 
+      <div id="announcements">
         {/* Tabbed Tenders & Notices */}
         <AnnouncementsTabs />
+      </div>
 
+      <div id="calendar">
         {/* Interactive React month-by-month calendar */}
         <HolidayCalendar />
+      </div>
 
+      <div id="gallery">
         {/* Slide Photo Gallery & map */}
         <PhotoGallery />
+      </div>
 
+      <div id="services">
         {/* Quick Services & Links */}
         <QuickServices />
-
-      </main>
-
-      {/* NIC copyright footer list */}
-      <Footer />
-    </div>
+      </div>
+    </>
   );
 };
 export default HomePage;
