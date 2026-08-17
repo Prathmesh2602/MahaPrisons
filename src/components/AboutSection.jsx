@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, User } from 'lucide-react';
 
 export const AboutSection = () => {
   const { language, t } = useAccessibility();
@@ -30,10 +30,10 @@ export const AboutSection = () => {
     {
       name: "श्री. नागनाथ एन. भाणवसे",
       desg: "तुरुंग अधिकारी श्रेणी २",
-      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+      img: ""
     },
     {
-      name: "श्रीमती निशा डी. श्रेयकर",
+      name: "श्रीमती निशा डी. श्रेयेकर",
       desg: "तुरुंग अधिकारी श्रेणी २",
       img: "/gallary/nisha%20shreyekar.png"
     }
@@ -110,7 +110,13 @@ export const AboutSection = () => {
                     {/* Avatar with ring effect */}
                     <div className="relative mb-4">
                       <div className="absolute inset-0 bg-gradient-to-tr from-amber-400 to-teal-500 rounded-full blur opacity-10 group-hover:opacity-40 transition-opacity duration-300 scale-110" />
-                      <img src={officer.img} alt={t(officer.name)} className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover object-top border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300" />
+                      {officer.img ? (
+                        <img src={officer.img} alt={t(officer.name)} className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover object-top border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300" />
+                      ) : (
+                        <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300 bg-white flex items-center justify-center">
+                          <User className="w-10 h-10 md:w-12 md:h-12 text-[#94A3B8]" strokeWidth={2} />
+                        </div>
+                      )}
                     </div>
 
                     {/* Name & Designation */}

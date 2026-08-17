@@ -22,6 +22,17 @@ const iconColorMap = {
   PhoneCall: 'text-sky-600'
 };
 
+const isItemActive = (item, pathname) => {
+  if (item.href && item.href !== '#' && pathname === item.href) return true;
+  if (item.children) {
+    if (item.children.some(child => isItemActive(child, pathname))) return true;
+  }
+  if (item.groups) {
+    if (item.groups.some(group => group.children && group.children.some(child => isItemActive(child, pathname)))) return true;
+  }
+  return false;
+};
+
 export const MegaMenu = () => {
   const { language, t } = useAccessibility();
   const location = useLocation();
@@ -175,7 +186,7 @@ export const MegaMenu = () => {
         >
           {mockHomepageData.navigation_menu.map((item, idx) => {
             const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
-            const isActive = location.pathname === item.href;
+            const isActive = isItemActive(item, location.pathname);
             const IconComponent = item.icon ? iconMap[item.icon] : null;
             const iconColor = item.icon ? iconColorMap[item.icon] : 'text-gray-500';
             return (
@@ -198,7 +209,7 @@ export const MegaMenu = () => {
           {primaryItems.map((item, idx) => {
             const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
             const isDropdownActive = activeDropdown === idx;
-            const isActive = location.pathname === item.href;
+            const isActive = isItemActive(item, location.pathname);
             const IconComponent = item.icon ? iconMap[item.icon] : null;
 
             return (
@@ -226,14 +237,14 @@ export const MegaMenu = () => {
                 {hasChildren && !item.isMegaMenu && isDropdownActive && (
                   <div className={`absolute top-full w-64 bg-white text-gray-900 shadow-lg shadow-black/10 rounded-b-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-top-2 duration-200 ${idx > primaryItems.length / 2 ? 'right-0' : 'left-0'}`}>
                     {item.children?.map((child, cIdx) => (
-                      <a
+                      <Link
                         key={cIdx}
-                        href={child.href}
+                        to={child.href}
                         className="w-full px-4 py-2 text-[13px] font-medium text-[#0F3D66] dark-mode:text-blue-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500"
                       >
                         <span className="flex-1 text-left whitespace-normal leading-snug">{t(child.text)}</span>
                         <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0 mt-0.5" />
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -251,8 +262,9 @@ export const MegaMenu = () => {
                             const hasSub = child.children && child.children.length > 0;
                             return (
                               <div key={cIdx} className="relative group/sub">
-                                <a
-                                  href={hasSub ? undefined : child.href}
+                                <Link
+                                  to={hasSub ? '#' : child.href}
+                                  onClick={(e) => hasSub && e.preventDefault()}
                                   className="text-[13px] font-medium text-[#0F3D66] dark-mode:text-blue-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 transition-colors py-1 px-1.5 rounded flex items-start gap-1 cursor-pointer w-full justify-between"
                                 >
                                   <div className="flex items-start gap-1 flex-1">
@@ -260,17 +272,17 @@ export const MegaMenu = () => {
                                     <span className="whitespace-normal leading-tight text-left">{t(child.text)}</span>
                                   </div>
                                   {hasSub && <ChevronRight className="w-2.5 h-2.5 text-gray-400 flex-shrink-0 mt-0.5" />}
-                                </a>
+                                </Link>
                                 {hasSub && (
                                   <div className="absolute left-[90%] top-0 ml-1 min-w-[180px] bg-white text-gray-900 shadow-lg shadow-black/10 rounded-lg py-1.5 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 hidden group-hover/sub:block animate-in fade-in slide-in-from-left-2 duration-150">
                                     {child.children.map((subChild, scIdx) => (
-                                      <a
+                                      <Link
                                         key={scIdx}
-                                        href={subChild.href}
+                                        to={subChild.href}
                                         className="w-full px-3 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 transition-colors flex items-start"
                                       >
                                         <span className="whitespace-normal leading-tight text-left">{t(subChild.text)}</span>
-                                      </a>
+                                      </Link>
                                     ))}
                                   </div>
                                 )}
@@ -294,8 +306,13 @@ export const MegaMenu = () => {
               onMouseLeave={handleDropdownLeave}
             >
               <button
-                className={`px-3.5 py-3.5 hover:bg-black/5 dark-mode:hover:bg-white/5 flex items-center gap-1 transition-all h-full text-gray-900 dark-mode:text-gray-100 focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer ${activeDropdown === 99 ? 'bg-black/5 dark-mode:bg-white/5' : ''
-                  }`}
+                className={`px-3.5 py-3.5 flex items-center gap-1 transition-all h-full focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer ${
+                  moreItems.some(item => isItemActive(item, location.pathname))
+                    ? 'bg-amber-500 rounded text-[#fff] hover:bg-amber-600'
+                    : activeDropdown === 99
+                      ? 'bg-black/5 dark-mode:bg-white/5 text-black dark-mode:text-gray-100'
+                      : 'hover:bg-black/5 dark-mode:hover:bg-white/5 text-gray-900 dark-mode:text-gray-100'
+                }`}
                 aria-haspopup="true"
                 aria-expanded={activeDropdown === 99 ? "true" : "false"}
                 aria-label="Expand more menus"
@@ -316,10 +333,16 @@ export const MegaMenu = () => {
                         className="relative"
                         onMouseEnter={() => handleSubMenuHover(mIdx)}
                       >
-                        <a
-                          href={item.href}
-                          className={`w-full px-4 py-2 text-[13px] font-medium text-gray-900 dark-mode:text-gray-100 hover:bg-gray-100 dark-mode:hover:bg-gray-800 flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 ${isSubActive ? 'bg-gray-100 dark-mode:bg-gray-800' : ''
-                            }`}
+                        <Link
+                          to={hasSubChildren ? '#' : item.href}
+                          onClick={(e) => hasSubChildren && e.preventDefault()}
+                          className={`w-full px-4 py-2 text-[13px] font-medium flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 ${
+                            isItemActive(item, location.pathname) 
+                              ? 'bg-amber-50 text-amber-700 dark-mode:bg-amber-900/30 dark-mode:text-amber-400' 
+                              : isSubActive 
+                                ? 'bg-gray-100 dark-mode:bg-gray-800 text-gray-900 dark-mode:text-gray-100' 
+                                : 'text-gray-900 dark-mode:text-gray-100 hover:bg-gray-100 dark-mode:hover:bg-gray-800'
+                          }`}
                         >
                           <span className="flex-1 whitespace-normal leading-snug text-left max-w-[200px]">{t(item.text)}</span>
                           {hasSubChildren ? (
@@ -327,20 +350,20 @@ export const MegaMenu = () => {
                           ) : (
                             <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0 mt-0.5" />
                           )}
-                        </a>
+                        </Link>
 
                         {/* Flyout Sub-menu (Opens to the left) */}
                         {hasSubChildren && isSubActive && (
                           <div className="absolute right-full top-0 mr-1 min-w-[240px] max-h-[80vh] overflow-y-auto bg-white text-gray-900 shadow-lg shadow-black/10 rounded-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-right-2 duration-150 custom-scrollbar">
                             {!item.isMegaMenu && item.children?.map((subChild, scIdx) => (
-                              <a
+                              <Link
                                 key={scIdx}
-                                href={subChild.href}
+                                to={subChild.href}
                                 className="w-full px-4 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500"
                               >
                                 <span className="flex-1 text-left whitespace-normal leading-snug">{t(subChild.text)}</span>
                                 <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0 mt-0.5" />
-                              </a>
+                              </Link>
                             ))}
                             {item.isMegaMenu && item.groups?.map((group, gIdx) => (
                               <div key={gIdx} className="mb-2 last:mb-0">
@@ -348,13 +371,13 @@ export const MegaMenu = () => {
                                   {t(group.groupTitle)}
                                 </div>
                                 {group.children?.map((subChild, scIdx) => (
-                                  <a
+                                  <Link
                                     key={scIdx}
-                                    href={subChild.href || '#'}
+                                    to={subChild.href || '#'}
                                     className="w-full px-4 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start transition-colors border-b border-gray-100 last:border-0 dark-mode:border-gray-800"
                                   >
                                     <span className="whitespace-normal leading-snug text-left">{t(subChild.text)}</span>
-                                  </a>
+                                  </Link>
                                 ))}
                               </div>
                             ))}
@@ -419,17 +442,19 @@ export const MegaMenu = () => {
               {mockHomepageData.navigation_menu.map((item, idx) => {
                 const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
                 const isDropdownActive = activeDropdown === idx;
-                const isActive = location.pathname === item.href;
+                const isActive = isItemActive(item, location.pathname);
                 const IconComponent = item.icon ? iconMap[item.icon] : null;
 
                 return (
                   <div key={idx} className="border-b border-[#1E5AA8]/20 py-1.5 last:border-0">
                     <div
-                      className="flex items-center justify-between px-3 py-2 hover:bg-white/5 rounded transition-colors cursor-pointer"
+                      className={`flex items-center justify-between px-3 py-2 rounded transition-colors cursor-pointer ${
+                        isActive ? 'bg-amber-500/20 text-amber-400' : 'hover:bg-white/5'
+                      }`}
                       onClick={() => hasChildren ? toggleDropdownMobile(idx) : null}
                     >
-                      <a
-                        href={hasChildren ? undefined : item.href}
+                      <Link
+                        to={hasChildren ? '#' : item.href}
                         className="text-sm font-semibold flex items-center gap-2.5"
                         onClick={(e) => {
                           if (hasChildren) e.preventDefault();
@@ -438,7 +463,7 @@ export const MegaMenu = () => {
                       >
                         {IconComponent && <IconComponent className={`w-4 h-4 ${item.icon ? iconColorMap[item.icon] : 'text-blue-200'}`} />}
                         <span>{t(item.text)}</span>
-                      </a>
+                      </Link>
                       {hasChildren && (
                         <button className="p-1 focus:outline-none">
                           <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDropdownActive ? 'rotate-180 text-amber-400' : 'text-gray-400'}`} />
@@ -450,14 +475,14 @@ export const MegaMenu = () => {
                     {hasChildren && !item.isMegaMenu && isDropdownActive && (
                       <div className="mt-1 pl-6 flex flex-col gap-1 bg-[#092947]/50 rounded-md py-1 border-l-2 border-amber-500 animate-in slide-in-from-top duration-200">
                         {item.children?.map((child, cIdx) => (
-                          <a
+                          <Link
                             key={cIdx}
-                            href={child.href}
+                            to={child.href}
                             className="block px-3 py-1.5 text-[13px] font-medium text-blue-200 hover:bg-white/10 hover:text-white rounded transition-colors"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             {t(child.text)}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     )}
@@ -474,31 +499,30 @@ export const MegaMenu = () => {
                               const hasSub = child.children && child.children.length > 0;
                               return (
                                 <div key={cIdx}>
-                                  <a
-                                    href={hasSub ? undefined : child.href}
+                                  <Link
+                                    to={hasSub ? '#' : child.href}
                                     className="block px-3 py-1 text-[13px] font-medium text-blue-200 hover:bg-white/10 hover:text-white rounded transition-colors"
                                     onClick={(e) => {
                                       if (hasSub) {
-                                        // Simple toggler logic can just rely on not closing menu, 
-                                        // For now, let's keep it visible.
+                                        e.preventDefault();
                                       } else {
                                         setMobileMenuOpen(false);
                                       }
                                     }}
                                   >
                                     - {t(child.text)}
-                                  </a>
+                                  </Link>
                                   {hasSub && (
                                     <div className="pl-4 flex flex-col mt-0.5 mb-1">
                                       {child.children.map((subChild, scIdx) => (
-                                        <a
+                                        <Link
                                           key={scIdx}
-                                          href={subChild.href}
+                                          to={subChild.href}
                                           className="block px-3 py-1 text-[12px] font-normal text-gray-300 hover:bg-white/10 hover:text-white rounded transition-colors"
                                           onClick={() => setMobileMenuOpen(false)}
                                         >
-                                          • {t(subChild.text)}
-                                        </a>
+                                          {t(subChild.text)}
+                                        </Link>
                                       ))}
                                     </div>
                                   )}

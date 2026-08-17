@@ -67,34 +67,49 @@ export const yerawadaOpenJailData = {
     },
     staff: [
       {
-        name: { en: "Shri. Shamkant Shedge", mr: "श्री. शामकांत शालन चंद्रकांत शेडगे" },
+        name: { en: "Shri. Shamkant Shalan Chandrakant Shedge", mr: "श्री. शामकांत शालन चंद्रकांत शेडगे" },
         role: { en: "Superintendent, Yerawada Open Jail", mr: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१" },
         img: "/gallary/Shamkant%20shedge.png"
       },
       {
         name: { en: "Shri. Nagesh M. Kamble", mr: "श्री. नागेश एम. कांबळे" },
-        role: { en: "Senior Prison Officer", mr: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १" },
+        role: { en: "Senior Jailor", mr: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १" },
         img: "/gallary/Nagesh%20Kamble.png"
       },
       {
         name: { en: "Shri. Nagnath N. Bhanvase", mr: "श्री. नागनाथ एन. भाणवसे" },
-        role: { en: "Prison Officer Grade 2", mr: "तुरुंग अधिकारी श्रेणी २" },
-        img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+        role: { en: "Jailor Grade 2", mr: "तुरुंग अधिकारी श्रेणी २" },
+        img: ""
       },
       {
         name: { en: "Smt. Nisha D. Shreyakar", mr: "श्रीमती निशा डी. श्रेयेकर" },
-        role: { en: "Prison Officer Grade 2", mr: "तुरुंग अधिकारी श्रेणी २" },
+        role: { en: "Jailor Grade 2", mr: "तुरुंग अधिकारी श्रेणी २" },
         img: "/gallary/nisha%20shreyekar.png"
       },
       {
         name: { en: "Smt. Nita Uke", mr: "श्रीमती नीता उके" },
         role: { en: "Office Superintendent", mr: "कार्यालयीन अधीक्षक" },
-        img: ""
+        img: "/gallary/Nita%20Uke,%20Office%20Superintendent.png"
       },
-      { name: { en: "Sunil Gayakwad", mr: "सुनील गायकवाड" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
-      { name: { en: "Balaji Sawant", mr: "बालाजी सावंत" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
-      { name: { en: "Datta Chavan", mr: "दत्ता चव्हाण" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
-      { name: { en: "Chandrakant Khandve", mr: "चंद्रकांत खांडवे" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" }
+      {
+        name: { en: "Smt. Sneha Dalal", mr: "श्रीमती स्नेहा दलाल" },
+        role: { en: "Senior Clerk", mr: "वरिष्ठ लिपिक" },
+        img: "/gallary/Sneha%20Dalal,%20Senior%20Clerk.png"
+      },
+      {
+        name: { en: "Shri. Govind Gawade", mr: "श्री. गोविंद गावडे" },
+        role: { en: "Senior Clerk", mr: "वरिष्ठ लिपिक" },
+        img: "/gallary/श्री गोविंद गावडे वरिष्ठ लिपिक.png"
+      },
+      {
+        name: { en: "Shri. Pravin Khuspe", mr: "श्री. प्रवीण खुस्पे" },
+        role: { en: "Clerk", mr: "लिपिक" },
+        img: "/gallary/श्री प्रवीण खुस्पे, लिपिक.png"
+      },
+      { name: { en: "Shri. Sunil Gayakwad", mr: "श्री. सुनील गायकवाड" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
+      { name: { en: "Shri. Balaji Sawant", mr: "श्री. बालाजी सावंत" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
+      { name: { en: "Shri. Datta Chavan", mr: "श्री. दत्ता चव्हाण" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
+      { name: { en: "Shri. Chandrakant Khandve", mr: "श्री. चंद्रकांत खांडवे" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" }
     ]
   },
   activities: {

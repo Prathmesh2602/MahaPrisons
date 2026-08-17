@@ -7,10 +7,16 @@ import { translations } from '../data/translations';
 const AccessibilityContext = createContext(undefined);
 
 export const AccessibilityProvider = ({ children }) => {
-  const [language, setLanguage] = useState('mr');
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem('language') || 'mr';
+  });
   const [contrast, setContrast] = useState('normal');
   const [fontSize, setFontSize] = useState(0);
   const [invertColors, setInvertColors] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('language', language);
+  }, [language]);
   const [bhashiniVoiceActive, setBhashiniVoiceActive] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
 

@@ -39,33 +39,33 @@ export const mockHomepageData = {
         {
           groupTitle: "प्रशासन व कर्मचारी",
           children: [
-            { text: "प्रशासन", href: "#", title: "प्रशासन", children: [] },
-            { text: "आस्थापना", href: "#", title: "आस्थापना", children: [] },
-            { text: "न्याय विभाग", href: "#", title: "न्याय विभाग", children: [] }
+            { text: "प्रशासन", href: "/administrative/administration", title: "प्रशासन", children: [] },
+            { text: "आस्थापना", href: "/administrative/establishment", title: "आस्थापना", children: [] },
+            { text: "न्याय विभाग", href: "/administrative/judicial", title: "न्याय विभाग", children: [] }
           ]
         },
         {
           groupTitle: "दैनंदिन सुविधा",
           children: [
-            { text: "रेशन", href: "#", title: "रेशन", children: [] },
-            { text: "उपाहारगृह", href: "#", title: "उपाहारगृह", children: [] },
-            { text: "मुलाखत", href: "#", title: "मुलाखत", children: [] },
-            { text: "दवाखाना", href: "#", title: "दवाखाना", children: [] }
+            { text: "रेशन", href: "/administrative/ration", title: "रेशन", children: [] },
+            { text: "उपाहारगृह", href: "/administrative/canteen", title: "उपाहारगृह", children: [] },
+            { text: "मुलाखत", href: "/administrative/interview", title: "मुलाखत", children: [] },
+            { text: "दवाखाना", href: "/administrative/hospital", title: "दवाखाना", children: [] }
           ]
         },
         {
           groupTitle: "उत्पादन व उपक्रम",
           children: [
-            { text: "कारखाना", href: "#", title: "कारखाना", children: [] },
-            { text: "शेती", href: "#", title: "शेती", children: [] },
-            { text: "उद्योग", href: "#", title: "उद्योग", children: [] }
+            { text: "कारखाना", href: "/administrative/factory", title: "कारखाना", children: [] },
+            { text: "शेती", href: "/administrative/agriculture", title: "शेती", children: [] },
+            { text: "उद्योग", href: "/administrative/industry", title: "उद्योग", children: [] }
           ]
         },
         {
           groupTitle: "सुरक्षा व पायाभूत सुविधा",
           children: [
-            { text: "अंतर्गत सुरक्षा", href: "#", title: "अंतर्गत सुरक्षा", children: [] },
-            { text: "बांधकाम", href: "#", title: "बांधकाम", children: [] }
+            { text: "अंतर्गत सुरक्षा", href: "/administrative/internal-security", title: "अंतर्गत सुरक्षा", children: [] },
+            { text: "बांधकाम", href: "/administrative/construction", title: "बांधकाम", children: [] }
           ]
         }
       ]
@@ -76,13 +76,13 @@ export const mockHomepageData = {
       href: "#",
       title: "शेती व पूरक व्यवसाय",
       children: [
-        { text: "रोपवाटिका", href: "#", title: "रोपवाटिका", children: [] },
-        { text: "कुक्कुटपालन", href: "#", title: "कुक्कुटपालन", children: [] },
-        { text: "दुग्धव्यवसाय", href: "#", title: "दुग्धव्यवसाय", children: [] },
-        { text: "शेळीपालन", href: "#", title: "शेळीपालन", children: [] },
-        { text: "मशरूम प्रकल्प", href: "#", title: "मशरूम प्रकल्प", children: [] },
-        { text: "गांडूळखत प्रकल्प", href: "#", title: "गांडूळखत प्रकल्प", children: [] },
-        { text: "नाविन्यपूर्ण उपक्रम व उत्पादने", href: "#", title: "नाविन्यपूर्ण उपक्रम व उत्पादने", children: [] }
+        { text: "रोपवाटिका", href: "/agriculture/nursery", title: "रोपवाटिका", children: [] },
+        { text: "कुक्कुटपालन", href: "/agriculture/poultry-farming", title: "कुक्कुटपालन", children: [] },
+        { text: "दुग्धव्यवसाय", href: "/agriculture/dairy-farming", title: "दुग्धव्यवसाय", children: [] },
+        { text: "शेळीपालन", href: "/agriculture/goat-farming", title: "शेळीपालन", children: [] },
+        { text: "मशरूम प्रकल्प", href: "/agriculture/mushroom-project", title: "मशरूम प्रकल्प", children: [] },
+        { text: "गांडूळखत प्रकल्प", href: "/agriculture/vermicompost-project", title: "गांडूळखत प्रकल्प", children: [] },
+        { text: "नाविन्यपूर्ण उपक्रम व उत्पादने", href: "/agriculture/innovative-activities", title: "नाविन्यपूर्ण उपक्रम व उत्पादने", children: [] }
       ]
     },
     {
@@ -91,11 +91,11 @@ export const mockHomepageData = {
       href: "#",
       title: "सामाजिक उपक्रम",
       children: [
-        { text: "केशकर्तनालय", href: "#", title: "केशकर्तनालय", children: [] },
-        { text: "धुलाईगृह", href: "#", title: "धुलाईगृह", children: [] },
-        { text: "श्रृंखला उपाहारगृह", href: "#", title: "श्रृंखला उपाहारगृह", children: [] },
-        { text: "के. के. मंगल लॉन", href: "#", title: "के. के. मंगल लॉन", children: [] },
-        { text: "मिंडा युनिट", href: "#", title: "मिंडा युनिट", children: [] }
+        { text: "केशकर्तनालय", href: "/social/salon", title: "केशकर्तनालय", children: [] },
+        { text: "धुलाईगृह", href: "/social/laundry", title: "धुलाईगृह", children: [] },
+        { text: "श्रृंखला उपाहारगृह", href: "/social/shrinkhala-canteen", title: "श्रृंखला उपाहारगृह", children: [] },
+        { text: "के. के. मंगल लॉन", href: "/social/mangal-lawn", title: "के. के. मंगल लॉन", children: [] },
+        { text: "मिंडा युनिट", href: "/social/minda-unit", title: "मिंडा युनिट", children: [] }
       ]
     },
     {
@@ -109,42 +109,42 @@ export const mockHomepageData = {
           groupTitle: "भेट व संपर्क",
           children: [
             {
-              text: "बंदी मुलाखत", href: "#", title: "बंदी मुलाखत", children: [
-                { text: "प्रत्यक्ष मुलाखत", href: "#", title: "प्रत्यक्ष मुलाखत", children: [] },
-                { text: "ई-मुलाखत", href: "#", title: "ई-मुलाखत", children: [] }
+              text: "बंदी मुलाखत", href: "/facilities/prisoner-interview", title: "बंदी मुलाखत", children: [
+                { text: "प्रत्यक्ष मुलाखत", href: "/facilities/prisoner-interview", title: "प्रत्यक्ष मुलाखत", children: [] },
+                { text: "ई-मुलाखत", href: "/facilities/prisoner-interview", title: "ई-मुलाखत", children: [] }
               ]
             },
             {
-              text: "ॲलेन स्मार्ट कार्ड फोन सुविधा", href: "#", title: "ॲलेन स्मार्ट कार्ड फोन सुविधा", children: [
-                { text: "ऑडिओ", href: "#", title: "ऑडिओ", children: [] },
-                { text: "व्हिडिओ", href: "#", title: "व्हिडिओ", children: [] }
+              text: "ॲलेन स्मार्ट कार्ड फोन सुविधा", href: "/facilities/smart-card-phone", title: "ॲलेन स्मार्ट कार्ड फोन सुविधा", children: [
+                { text: "ऑडिओ", href: "/facilities/smart-card-phone", title: "ऑडिओ", children: [] },
+                { text: "व्हिडिओ", href: "/facilities/smart-card-phone", title: "व्हिडिओ", children: [] }
               ]
             },
-            { text: "पत्रव्यवहार व मनीऑर्डर सुविधा", href: "#", title: "पत्रव्यवहार व मनीऑर्डर सुविधा", children: [] }
+            { text: "पत्रव्यवहार व मनीऑर्डर सुविधा", href: "/facilities/correspondence", title: "पत्रव्यवहार व मनीऑर्डर सुविधा", children: [] }
           ]
         },
         {
           groupTitle: "कायदेशीर व प्रशासकीय सुविधा",
           children: [
-            { text: "मोफत कायदेशीर मदत", href: "#", title: "मोफत कायदेशीर मदत", children: [] },
-            { text: "जिल्हा विधी सेवा प्राधिकरण", href: "#", title: "जिल्हा विधी सेवा प्राधिकरण", children: [] },
-            { text: "संचित व अभिवाचन रजा", href: "#", title: "संचित व अभिवाचन रजा", children: [] },
-            { text: "माफी", href: "#", title: "माफी", children: [] }
+            { text: "मोफत कायदेशीर मदत", href: "/facilities/free-legal-aid", title: "मोफत कायदेशीर मदत", children: [] },
+            { text: "जिल्हा विधी सेवा प्राधिकरण", href: "/facilities/district-legal-services", title: "जिल्हा विधी सेवा प्राधिकरण", children: [] },
+            { text: "संचित व अभिवाचन रजा", href: "/facilities/furlough-parole", title: "संचित व अभिवाचन रजा", children: [] },
+            { text: "माफी", href: "/facilities/remission", title: "माफी", children: [] }
           ]
         },
         {
           groupTitle: "आरोग्य व दैनंदिन सुविधा",
           children: [
-            { text: "हिरकणी कक्ष", href: "#", title: "हिरकणी कक्ष", children: [] },
-            { text: "व्यायामशाळा", href: "#", title: "व्यायामशाळा", children: [] },
-            { text: "वेट कॅन्टीन", href: "#", title: "वेट कॅन्टीन", children: [] }
+            { text: "हिरकणी कक्ष", href: "/facilities/hirkani-room", title: "हिरकणी कक्ष", children: [] },
+            { text: "व्यायामशाळा", href: "/facilities/gymnasium", title: "व्यायामशाळा", children: [] },
+            { text: "वेट कॅन्टीन", href: "/facilities/wet-canteen", title: "वेट कॅन्टीन", children: [] }
           ]
         },
         {
           groupTitle: "शिक्षण व विकास",
           children: [
-            { text: "शैक्षणिक सुविधा", href: "#", title: "शैक्षणिक सुविधा", children: [] },
-            { text: "ग्रंथालय", href: "#", title: "ग्रंथालय", children: [] }
+            { text: "शैक्षणिक सुविधा", href: "/facilities/education", title: "शैक्षणिक सुविधा", children: [] },
+            { text: "ग्रंथालय", href: "/facilities/library", title: "ग्रंथालय", children: [] }
           ]
         }
       ]
@@ -220,7 +220,7 @@ export const mockHomepageData = {
     {
       text: "आमची उत्पादने",
       icon: "Package",
-      href: "#",
+      href: "/our-products",
       title: "आमची उत्पादने",
       children: []
     },

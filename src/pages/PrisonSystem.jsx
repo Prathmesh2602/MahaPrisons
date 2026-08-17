@@ -38,10 +38,10 @@ export const YerawadaOpenJailPage = () => {
 
   return (
     <div className="w-full bg-[#F8FAFC] dark-mode:bg-[#080B11] pb-24 font-poppins overflow-hidden">
-      
+
       {/* Hero Section with Parallax */}
       <section className="relative h-[75vh] overflow-hidden flex items-center justify-center bg-[#0F3D66] dark-mode:bg-gray-950">
-        <motion.div 
+        <motion.div
           style={{ y: yHero, opacity: opacityHero }}
           className="absolute inset-0 z-0 bg-cover bg-center"
           initial={{ scale: 1.1 }}
@@ -64,8 +64,8 @@ export const YerawadaOpenJailPage = () => {
               {language === 'mr' ? 'सुधारणा आणि पुनर्वसन' : 'Correction & Rehabilitation'}
             </span>
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -73,7 +73,7 @@ export const YerawadaOpenJailPage = () => {
           >
             {getTranslation(data.hero.title)}
           </motion.h1>
-          
+
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -95,10 +95,10 @@ export const YerawadaOpenJailPage = () => {
       </section>
 
       <div className="container mx-auto px-4 md:px-8 -mt-10 relative z-30">
-        
+
         {/* Overview Stats Cards */}
         <section className="mb-20">
-          <motion.div 
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -106,7 +106,7 @@ export const YerawadaOpenJailPage = () => {
             className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
             {data.overview.stats.map((stat, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 variants={fadeUpVariant}
                 className="bg-white/80 dark-mode:bg-gray-800/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl shadow-blue-900/10 dark-mode:shadow-black/40 border border-white/50 dark-mode:border-gray-700 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500 hover:bg-white dark-mode:hover:bg-gray-800"
@@ -146,7 +146,7 @@ export const YerawadaOpenJailPage = () => {
 
             <div className="space-y-12">
               {data.timeline.events.map((event, idx) => (
-                <motion.div 
+                <motion.div
                   key={idx}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -157,7 +157,7 @@ export const YerawadaOpenJailPage = () => {
                   <div className="w-full md:w-1/2 flex justify-start md:justify-end md:hidden">
                     {/* Mobile spacing */}
                   </div>
-                  
+
                   {/* Timeline Dot */}
                   <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 w-8 h-8 rounded-full bg-white dark-mode:bg-gray-900 border-4 border-amber-500 shadow-lg shadow-amber-500/20 z-10 flex items-center justify-center" />
 
@@ -192,63 +192,63 @@ export const YerawadaOpenJailPage = () => {
             </div>
 
             <div className="flex flex-col gap-6">
-              {/* First Row: 4 Cards */}
-              <motion.div 
+              {/* First Row: 6 Cards */}
+              <motion.div
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4"
               >
-                {data.administration.staff.slice(0, 4).map((member, idx) => (
-                  <motion.div 
+                {data.administration.staff.slice(0, 6).map((member, idx) => (
+                  <motion.div
                     key={idx}
                     variants={fadeUpVariant}
-                    className="bg-gray-50 dark-mode:bg-gray-800 rounded-2xl p-6 text-center group hover:bg-[#0F3D66] dark-mode:hover:bg-gray-700 transition-colors duration-300 flex flex-col items-center"
+                    className="bg-gray-50 dark-mode:bg-gray-800 rounded-2xl py-3 px-1 sm:py-4 sm:px-2 text-center group hover:bg-[#0F3D66] dark-mode:hover:bg-gray-700 transition-colors duration-300 flex flex-col items-center"
                   >
-                    <div className={`w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full shadow-md flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 overflow-hidden border-[3px] border-white dark-mode:border-gray-700 ${!member.img ? 'bg-white dark-mode:bg-gray-700' : ''}`}>
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full shadow-md flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110 overflow-hidden border-2 border-white dark-mode:border-gray-700 bg-white">
                       {member.img ? (
                         <img src={member.img} alt={getTranslation(member.name)} className="w-full h-full object-cover object-top" />
                       ) : (
-                        <User className="w-8 h-8 text-gray-400 dark-mode:text-gray-500 group-hover:text-amber-400" />
+                        <User className="w-8 h-8 sm:w-10 sm:h-10 text-[#94A3B8]" strokeWidth={2} />
                       )}
                     </div>
-                    <h5 className="text-lg font-semibold text-gray-900 dark-mode:text-white mb-1 group-hover:text-white">
+                    <h5 title={getTranslation(member.name)} className="text-[10px] sm:text-xs font-semibold text-gray-900 dark-mode:text-white mb-1 group-hover:!text-white line-clamp-2">
                       {getTranslation(member.name)}
                     </h5>
-                    <p className="text-[10px] sm:text-xs font-medium text-amber-600 dark-mode:text-amber-400 uppercase tracking-wider group-hover:text-amber-300 leading-snug">
+                    <p className="text-[9px] sm:text-[10px] font-medium text-amber-600 dark-mode:text-amber-400 tracking-wider group-hover:text-amber-300 leading-snug line-clamp-2">
                       {getTranslation(member.role)}
                     </p>
                   </motion.div>
                 ))}
               </motion.div>
 
-              {/* Second Row: 5 Cards */}
-              {data.administration.staff.length > 4 && (
-                <motion.div 
+              {/* Second Row: 6 Cards */}
+              {data.administration.staff.length > 6 && (
+                <motion.div
                   variants={staggerContainer}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true }}
-                  className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6"
+                  className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4"
                 >
-                  {data.administration.staff.slice(4).map((member, idx) => (
-                    <motion.div 
+                  {data.administration.staff.slice(6).map((member, idx) => (
+                    <motion.div
                       key={`row2-${idx}`}
                       variants={fadeUpVariant}
-                      className="bg-gray-50 dark-mode:bg-gray-800 rounded-2xl p-6 text-center group hover:bg-[#0F3D66] dark-mode:hover:bg-gray-700 transition-colors duration-300 flex flex-col items-center"
+                      className="bg-gray-50 dark-mode:bg-gray-800 rounded-2xl py-3 px-1 sm:py-4 sm:px-2 text-center group hover:bg-[#0F3D66] dark-mode:hover:bg-gray-700 transition-colors duration-300 flex flex-col items-center"
                     >
-                      <div className={`w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full shadow-md flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 overflow-hidden border-[3px] border-white dark-mode:border-gray-700 ${!member.img ? 'bg-white dark-mode:bg-gray-700' : ''}`}>
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full shadow-md flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110 overflow-hidden border-2 border-white dark-mode:border-gray-700 bg-white">
                         {member.img ? (
                           <img src={member.img} alt={getTranslation(member.name)} className="w-full h-full object-cover object-top" />
                         ) : (
-                          <User className="w-8 h-8 text-gray-400 dark-mode:text-gray-500 group-hover:text-amber-400" />
+                          <User className="w-8 h-8 sm:w-10 sm:h-10 text-[#94A3B8]" strokeWidth={2} />
                         )}
                       </div>
-                      <h5 className="text-lg font-semibold text-gray-900 dark-mode:text-white mb-1 group-hover:text-white">
+                      <h5 title={getTranslation(member.name)} className="text-[10px] sm:text-xs font-semibold text-gray-900 dark-mode:text-white mb-1 group-hover:!text-white line-clamp-2">
                         {getTranslation(member.name)}
                       </h5>
-                      <p className="text-[10px] sm:text-xs font-medium text-amber-600 dark-mode:text-amber-400 uppercase tracking-wider group-hover:text-amber-300 leading-snug">
+                      <p className="text-[9px] sm:text-[10px] font-medium text-amber-600 dark-mode:text-amber-400 tracking-wider group-hover:text-amber-300 leading-snug line-clamp-2">
                         {getTranslation(member.role)}
                       </p>
                     </motion.div>
@@ -268,7 +268,7 @@ export const YerawadaOpenJailPage = () => {
 
           <div className="space-y-12 max-w-6xl mx-auto px-4 md:px-12 lg:px-24">
             {data.activities.list.map((activity, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -280,9 +280,9 @@ export const YerawadaOpenJailPage = () => {
                 <div className="w-full lg:w-1/2">
                   <div className="relative rounded-2xl overflow-hidden shadow-xl shadow-blue-900/10 group">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <img 
-                      src={activity.image} 
-                      alt={getTranslation(activity.title)} 
+                    <img
+                      src={activity.image}
+                      alt={getTranslation(activity.title)}
                       className="w-full h-[260px] md:h-[300px] object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                   </div>

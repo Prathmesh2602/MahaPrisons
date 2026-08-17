@@ -24,7 +24,7 @@ export const translations = {
   },
   "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १": {
     mr: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १",
-    en: "Senior Jail Officer (Admin & Others) Grade 1"
+    en: "Senior Jailor (Admin & Others) Grade 1"
   },
   "श्री. नागनाथ एन. भाणवसे": {
     mr: "श्री. नागनाथ एन. भाणवसे",
@@ -32,11 +32,11 @@ export const translations = {
   },
   "तुरुंग अधिकारी श्रेणी २": {
     mr: "तुरुंग अधिकारी श्रेणी २",
-    en: "Jail Officer Grade 2"
+    en: "Jailor Grade 2"
   },
   "श्रीमती निशा डी. श्रेयेकर": {
     mr: "श्रीमती निशा डी. श्रेयेकर",
-    en: "Shrimati Nisha D. Shreyekar"
+    en: "Smt. Nisha D. Shreyekar"
   },
   "येरवडा खुल्या कारागृहाविषयी": {
     mr: "येरवडा खुल्या कारागृहाविषयी",
@@ -642,6 +642,10 @@ export const translations = {
     mr: "ताजी बातमी",
     en: "Latest News"
   },
+  "कारागृह लोगो": {
+    mr: "कारागृह लोगो",
+    en: "Prison Logo"
+  },
   "मदत केंद्र": {
     mr: "मदत केंद्र",
     en: "Help Center / Helplines"
@@ -929,5 +933,86 @@ export const translations = {
   "महत्त्वाच्या लिंक्स (Important Links)": {
     mr: "महत्त्वाच्या लिंक्स (Important Links)",
     en: "Important Links"
-  }
+  },
+  "सोयी-सुविधा": { mr: "सोयी-सुविधा", en: "Facilities & Amenities" },
+  "भेट व संपर्क": { mr: "भेट व संपर्क", en: "Visit & Contact" },
+  "बंदी मुलाखत": { mr: "बंदी मुलाखत", en: "Prisoner Interview" },
+  "प्रत्यक्ष मुलाखत": { mr: "प्रत्यक्ष मुलाखत", en: "Physical Meeting" },
+  "ई-मुलाखत": { mr: "ई-मुलाखत", en: "E-Meeting" },
+  "ॲलेन स्मार्ट कार्ड फोन सुविधा": { mr: "ॲलेन स्मार्ट कार्ड फोन सुविधा", en: "Allen Smart Card Phone" },
+  "ऑडिओ": { mr: "ऑडिओ", en: "Audio" },
+  "व्हिडिओ": { mr: "व्हिडिओ", en: "Video" },
+  "पत्रव्यवहार व मनीऑर्डर सुविधा": { mr: "पत्रव्यवहार व मनीऑर्डर सुविधा", en: "Correspondence & Money Order" },
+  "कायदेशीर व प्रशासकीय सुविधा": { mr: "कायदेशीर व प्रशासकीय सुविधा", en: "Legal & Administrative" },
+  "मोफत कायदेशीर मदत": { mr: "मोफत कायदेशीर मदत", en: "Free Legal Aid" },
+  "जिल्हा विधी सेवा प्राधिकरण": { mr: "जिल्हा विधी सेवा प्राधिकरण", en: "District Legal Services (DLSA)" },
+  "संचित व अभिवाचन रजा": { mr: "संचित व अभिवाचन रजा", en: "Furlough & Parole Leave" },
+  "माफी": { mr: "माफी", en: "Remission" },
+  "आरोग्य व दैनंदिन सुविधा": { mr: "आरोग्य व दैनंदिन सुविधा", en: "Health & Daily Utilities" },
+  "हिरकणी कक्ष": { mr: "हिरकणी कक्ष", en: "Hirkani Room" },
+  "व्यायामशाळा": { mr: "व्यायामशाळा", en: "Gymnasium" },
+  "वेट कॅन्टीन": { mr: "वेट कॅन्टीन", en: "Wet Canteen" },
+  "शिक्षण व विकास": { mr: "शिक्षण व विकास", en: "Education & Development" },
+  "शैक्षणिक सुविधा": { mr: "शैक्षणिक सुविधा", en: "Educational Facilities" },
+  "ग्रंथालय": { mr: "ग्रंथालय", en: "Library" },
+  "मुख्यपृष्ठ": { mr: "मुख्यपृष्ठ", en: "Home" },
+  "परिचय": { mr: "परिचय", en: "About" },
+  "कारागृह व्यवस्था": { mr: "कारागृह व्यवस्था", en: "Prison System" },
+  "प्रशासकीय विभाग": { mr: "प्रशासकीय विभाग", en: "Administrative Departments" },
+  "प्रशासन व कर्मचारी": { mr: "प्रशासन व कर्मचारी", en: "Administration & Staff" },
+  "प्रशासन": { mr: "प्रशासन", en: "Administration" },
+  "आस्थापना": { mr: "आस्थापना", en: "Establishment" },
+  "न्याय विभाग": { mr: "न्याय विभाग", en: "Judicial Department" },
+  "दैनंदिन सुविधा": { mr: "दैनंदिन सुविधा", en: "Daily Amenities" },
+  "रेशन": { mr: "रेशन", en: "Ration" },
+  "उपाहारगृह": { mr: "उपाहारगृह", en: "Canteen" },
+  "मुलाखत": { mr: "मुलाखत", en: "Interview" },
+  "दवाखाना": { mr: "दवाखाना", en: "Hospital" },
+  "उत्पादन व उपक्रम": { mr: "उत्पादन व उपक्रम", en: "Production & Activities" },
+  "कारखाना": { mr: "कारखाना", en: "Factory" },
+  "शेती": { mr: "शेती", en: "Agriculture" },
+  "उद्योग": { mr: "उद्योग", en: "Industry" },
+  "सुरक्षा व पायाभूत सुविधा": { mr: "सुरक्षा व पायाभूत सुविधा", en: "Security & Infrastructure" },
+  "अंतर्गत सुरक्षा": { mr: "अंतर्गत सुरक्षा", en: "Internal Security" },
+  "बांधकाम": { mr: "बांधकाम", en: "Construction" },
+  "शेती व पूरक व्यवसाय": { mr: "शेती व पूरक व्यवसाय", en: "Agriculture & Allied Businesses" },
+  "रोपवाटिका": { mr: "रोपवाटिका", en: "Nursery" },
+  "कुक्कुटपालन": { mr: "कुक्कुटपालन", en: "Poultry Farming" },
+  "दुग्धव्यवसाय": { mr: "दुग्धव्यवसाय", en: "Dairy Farming" },
+  "शेळीपालन": { mr: "शेळीपालन", en: "Goat Farming" },
+  "मशरूम प्रकल्प": { mr: "मशरूम प्रकल्प", en: "Mushroom Project" },
+  "गांडूळखत प्रकल्प": { mr: "गांडूळखत प्रकल्प", en: "Vermicompost Project" },
+  "नाविन्यपूर्ण उपक्रम व उत्पादने": { mr: "नाविन्यपूर्ण उपक्रम व उत्पादने", en: "Innovative Activities & Products" },
+  "सामाजिक उपक्रम": { mr: "सामाजिक उपक्रम", en: "Social Activities" },
+  "केशकर्तनालय": { mr: "केशकर्तनालय", en: "Hair Salon" },
+  "धुलाईगृह": { mr: "धुलाईगृह", en: "Laundry" },
+  "श्रृंखला उपाहारगृह": { mr: "श्रृंखला उपाहारगृह", en: "Shrinkhala Canteen" },
+  "के. के. मंगल लॉन": { mr: "के. के. मंगल लॉन", en: "K.K. Mangal Lawn" },
+  "मिंडा युनिट": { mr: "मिंडा युनिट", en: "Minda Unit" },
+  "प्रबोधन व जनजागृती": { mr: "प्रबोधन व जनजागृती", en: "Awareness & Enlightenment" },
+  "प्रबोधन कार्यक्रम": { mr: "प्रबोधन कार्यक्रम", en: "Enlightenment Program" },
+  "व्यसनमुक्ती कार्यक्रम": { mr: "व्यसनमुक्ती कार्यक्रम", en: "De-addiction Program" },
+  "प्रशिक्षण व व्यक्तिमत्त्व विकास": { mr: "प्रशिक्षण व व्यक्तिमत्त्व विकास", en: "Training & Personality Dev" },
+  "व्यावसायिक प्रशिक्षण": { mr: "व्यावसायिक प्रशिक्षण", en: "Vocational Training" },
+  "योग व आध्यात्मिक उपक्रम": { mr: "योग व आध्यात्मिक उपक्रम", en: "Yoga & Spiritual Activities" },
+  "योग, ध्यान व धारणा": { mr: "योग, ध्यान व धारणा", en: "Yoga & Meditation" },
+  "प्राणिक हीलिंग": { mr: "प्राणिक हीलिंग", en: "Pranic Healing" },
+  "कीर्तन व भजन": { mr: "कीर्तन व भजन", en: "Kirtan & Bhajan" },
+  "उल्लेखनीय कार्य": { mr: "उल्लेखनीय कार्य", en: "Notable Work" },
+  "उल्लेखनीय उपक्रम": { mr: "उल्लेखनीय उपक्रम", en: "Notable Initiatives" },
+  "महत्त्वपूर्ण प्रकल्प": { mr: "महत्त्वपूर्ण प्रकल्प", en: "Important Projects" },
+  "पुरस्कार व गौरव": { mr: "पुरस्कार व गौरव", en: "Awards & Honors" },
+  "उत्कृष्ट कार्यपद्धती": { mr: "उत्कृष्ट कार्यपद्धती", en: "Best Practices" },
+  "परिणाम व यशोगाथा": { mr: "परिणाम व यशोगाथा", en: "Success Stories" },
+  "दौरे व भेटी": { mr: "दौरे व भेटी", en: "Tours & Visits" },
+  "अभ्यासभेटी": { mr: "अभ्यासभेटी", en: "Study Visits" },
+  "शैक्षणिक अभ्यासभेट": { mr: "शैक्षणिक अभ्यासभेट", en: "Educational Study Visit" },
+  "संस्थात्मक अभ्यासभेट": { mr: "संस्थात्मक अभ्यासभेट", en: "Institutional Study Visit" },
+  "प्रशासकीय दौरे": { mr: "प्रशासकीय दौरे", en: "Administrative Tours" },
+  "अधिकारी दौरे": { mr: "अधिकारी दौरे", en: "Officer Tours" },
+  "मान्यवर भेटी": { mr: "मान्यवर भेटी", en: "Dignitary Visits" },
+  "निरीक्षण दौरे": { mr: "निरीक्षण दौरे", en: "Inspection Tours" },
+  "विभागीय भेटी": { mr: "विभागीय भेटी", en: "Departmental Visits" },
+  "आमची उत्पादने": { mr: "आमची उत्पादने", en: "Our Products" },
+  "संपर्क": { mr: "संपर्क", en: "Contact Us" }
 };
