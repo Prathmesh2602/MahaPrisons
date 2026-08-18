@@ -17,7 +17,7 @@ const HirkaniRoomPage = () => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#FFF5F7] dark-mode:bg-[#2A1B1F] font-poppins text-gray-800 dark-mode:text-gray-200 overflow-hidden">
+    <div className="relative min-h-screen bg-[#FFF5F7] dark-mode:bg-[#2A1B1F] font-poppins text-gray-800 dark-mode:text-gray-200 overflow-hidden">
       
       {/* Soft Organic Header Background */}
       <div className="absolute top-0 left-0 w-full h-[60vh] bg-[#FFE4E8] dark-mode:bg-[#3D262B] rounded-b-[50%] md:rounded-b-[100%] transform scale-x-150 origin-top -z-10" />

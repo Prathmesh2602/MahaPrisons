@@ -1,4 +1,4 @@
-﻿import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../../hooks/useAccessibility';
 import { facilitiesData } from '../../data/facilitiesData';
@@ -26,7 +26,7 @@ const CorrespondencePage = () => {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#FDFCF8] dark-mode:to-[#1A1A1A] z-10" />
         
-        <div className="relative z-20 max-w-4xl mx-auto mt-10">
+        <div className="relative z-20 max-w-4xl mx-auto -mt-10">
           <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
             <Send className="w-12 h-12 text-amber-500 mx-auto mb-6 opacity-80" />
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-amber-900 dark-mode:text-amber-500 mb-4 tracking-tight drop-shadow-sm">

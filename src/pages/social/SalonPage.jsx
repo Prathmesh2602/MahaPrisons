@@ -34,7 +34,7 @@ const SalonPage = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/80 to-gray-900/40"></div>
         </div>
 
-        <div className="relative z-10 container mx-auto px-6 lg:px-12">
+        <div className="relative z-10 container mx-auto px-6 lg:px-12 -mt-8">
           <div className="max-w-2xl">
             <motion.div 
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}

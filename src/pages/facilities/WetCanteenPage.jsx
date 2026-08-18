@@ -1,4 +1,4 @@
-﻿import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { motion as fmotion, AnimatePresence } from 'framer-motion';
 import { useAccessibility } from '../../hooks/useAccessibility';
 import { facilitiesData } from '../../data/facilitiesData';
@@ -26,7 +26,7 @@ const WetCanteenPage = () => {
            <img src={data.heroImage} alt="Canteen" className="w-full h-full object-cover opacity-40 mix-blend-overlay" />
            <div className="absolute inset-0 bg-gradient-to-t from-[#FFFBF0] dark-mode:from-[#1C1A17] to-transparent" />
         </div>
-        <div className="relative z-10 px-4 max-w-3xl mx-auto mt-12">
+        <div className="relative z-10 px-4 max-w-3xl mx-auto -mt-8">
           <fmotion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="flex justify-center mb-6">
             <div className="p-4 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[#FFFBF0]">
               <Coffee className="w-10 h-10" />
