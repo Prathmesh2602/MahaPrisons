@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AccessibilityProvider } from './hooks/useAccessibility';
+import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import YerawadaOpenJailPage from './pages/PrisonSystem';
@@ -50,6 +51,7 @@ function App() {
   return (
     <AccessibilityProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
