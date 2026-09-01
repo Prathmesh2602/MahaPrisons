@@ -81,25 +81,34 @@ Each phase ships a working, deployable state. Don't start phase N+1 until phase 
 - [ ] `scopeMiddleware(action)` — fine-grained check: given `req.user` + target `menu_item_id` (or a page/menu row's own `menu_item_id`), look up `UserMenuPermission` (walking up `parent_id` so a grant on a parent covers descendants), require `can_write` for maker actions, `can_approve` for checker actions. `SUPER_ADMIN` bypasses.
 - [ ] `auditLogger` middleware — on every mutating admin request, write `AuditLog` row (user, action, resource, before/after diff).
 - [ ] Template routes: `GET /templates` (list, for template picker), `GET /templates/:key` (returns `allowed_block_types` + block schemas, for admin form generation).
-- [ ] CRUD routes under `/api/v1/admin/*`, all gated by `scopeMiddleware`:
+- [ ] CRUD routes under `/api/v1/admin/*`, all scoped by `scopeMiddleware`. Split per architecture doc §3.4c — not everything is maker-checker gated:
+
+**Gated (submit → review → approve/reject) — Pages, Announcements, menu structural changes, Site Settings:**
   - [ ] `pages` — list/get/create/update (maker, requires `can_write`); create validates `menu_item_id` ownership and, if set, auto-links `MenuItem.page_id`.
   - [ ] `content-blocks` — create/update/delete/reorder within a page; **create/update reject if `block_type` not in the page's `Template.allowed_block_types`**, and reject if `data` fails the block's Zod schema (maxLength etc.).
   - [ ] `pages/:id/submit-for-review` (maker) — snapshots current blocks into a new `PageVersion(decision=pending)`, sets `Page.status = in_review`.
   - [ ] `pages/:id/approve` (checker, `can_approve`) — sets `PageVersion.decision = approved`, `Page.status = published`, `published_at = now`.
   - [ ] `pages/:id/reject` (checker, `can_approve`, requires `comments`) — sets `PageVersion.decision = rejected`, `Page.status = draft`.
-  - [ ] `review-queue` — `GET /admin/review-queue` list of Pages/MenuItems with `status = in_review` within caller's checker scope.
-  - [ ] `menu` — CRUD (maker within scope) + `PUT /menu/reorder` (batch parent/order update) — same submit/approve/reject flow as pages, or simpler direct-write for `SUPER_ADMIN`-scoped top-level restructuring (confirm with department per architecture doc's open question).
+  - [ ] `review-queue` — `GET /admin/review-queue` list of Pages/Announcements/MenuItems with `status = in_review` within caller's checker scope.
+  - [ ] `announcements` — same submit/approve/reject pattern as pages.
+  - [ ] `menu` structural ops — `POST /menu` (add item), `DELETE /menu/:id`, `PUT /menu/:id/move` (re-nest under different parent), `PUT /menu/:id/href` — all go through submit/approve/reject before affecting the live tree.
+  - [ ] `settings` — `GET`/`PUT` singleton, `SUPER_ADMIN` + `can_approve` only (small enough to skip a separate review step — direct approve-gated write).
+
+**Direct write (scoped `can_write`, live immediately, audit-logged, no review step):**
   - [ ] `translations` — CRUD (mostly update, keys rarely added).
   - [ ] `media` — `POST /media/upload` (multipart, store file, create `Media` row).
-  - [ ] `settings` — `GET`/`PUT` singleton, `SUPER_ADMIN` + `can_approve` only.
-  - [ ] `announcements`, `products`, `facilities`, `gallery`, `officers` — full CRUD each, same maker-checker + scope pattern as pages.
+  - [ ] `gallery`, `officers`, `products`, `facilities` — full CRUD each, scoped `can_write` only.
+  - [ ] `menu/:id` label edit + `PUT /menu/reorder` (batch order-only update within existing structure) — no approval step, unlike structural ops above.
+
+**Admin/system:**
   - [ ] `users` — CRUD (SUPER_ADMIN only).
   - [ ] `user-permissions` — `GET`/`PUT /users/:id/menu-permissions` (SUPER_ADMIN only) — assign/revoke `UserMenuPermission` rows (menu subtree + can_write/can_approve flags).
   - [ ] `audit-logs` — read-only list, filterable.
+- [ ] Template routes: `GET /templates` (list, for template picker), `GET /templates/:key` (returns `allowed_block_types` + block schemas, for admin form generation).
 - [ ] Rate limiting on `/auth/login` (brute-force protection).
 - [ ] Input sanitization on all rich-text/HTML fields (strip/escape to prevent stored XSS).
 
-**Done when:** a maker-scoped user can create a page, add a whitelisted block, submit for review; a checker-scoped user (different account) sees it in the review queue, approves it, and it appears on the live `web` site within cache TTL; the maker cannot self-approve (403); a block type outside the template's whitelist is rejected (400); a field exceeding its `maxLength` is rejected (400); every action produces an `AuditLog` row.
+**Done when:** a maker-scoped user can create a page, add a whitelisted block, submit for review; a checker-scoped user (different account) sees it in the review queue, approves it, and it appears on the live `web` site within cache TTL; the maker cannot self-approve (403); a block type outside the template's whitelist is rejected (400); a field exceeding its `maxLength` is rejected (400); a direct-write action (translation edit, gallery upload, menu relabel) goes live immediately with no review step but still produces an `AuditLog` row; a structural menu change (add/remove/re-nest) does NOT go live until approved.
 
 ---
 
@@ -108,8 +117,10 @@ Each phase ships a working, deployable state. Don't start phase N+1 until phase 
 - [ ] Auth: login page, JWT stored httpOnly cookie, route guard, auto-logout on token expiry.
 - [ ] Layout: sidebar nav (items filtered by caller's `UserMenuPermission` scope — a maker-only user doesn't see Site Settings/Users), header, breadcrumbs (per `admin/README.md` structure).
 - [ ] **Dashboard** — counts (pages, announcements), **My Drafts** (maker's own in-progress items), **Awaiting My Approval** (checker's queue count), recent audit log feed.
-- [ ] **Menu Builder** — tree view scoped to caller's permitted subtrees, drag-reorder (`@dnd-kit`), icon picker (existing `iconMap` list), mr/en label fields, `PUT /menu/reorder` on drop.
-  - [ ] "Add Menu Item" wizard: step 1 label/icon/position → step 2 "Create a page for this?" toggle → if yes, **Template Gallery** (card grid, thumbnail + name per `Template`, fetched from `GET /templates`) → select → creates `Page(status=draft)` linked via `menu_item_id`, opens Page Editor.
+- [ ] **Menu Builder** — tree view scoped to caller's permitted subtrees.
+  - [ ] Relabel / drag-reorder within existing structure — **direct write**, `PUT /menu/reorder` on drop, live immediately, no review step.
+  - [ ] "Add Menu Item" wizard (**structural, gated**): step 1 label/icon/position → step 2 "Create a page for this?" toggle → if yes, **Template Gallery** (card grid, thumbnail + name per `Template`, fetched from `GET /templates`) → select → creates `Page(status=draft)` linked via `menu_item_id` → whole thing (menu item + page) queued `in_review`, does not appear in live nav until a checker approves.
+  - [ ] Remove item / re-nest under different parent / change `href` — same gated pattern as add.
 - [ ] **Page list** — table, filter by section/status (scoped), search by title/slug.
 - [ ] **Page editor**:
   - [ ] Page meta form (title mr/en, slug read-only after create, template — read-only after create, "last reviewed" date).
@@ -120,17 +131,19 @@ Each phase ships a working, deployable state. Don't start phase N+1 until phase 
     - [ ] **Edit** per component — form auto-generated from the block's Zod schema (shared registry, architecture doc §4): mr/en fields side-by-side, **live character counter** against each field's `maxLength`, hard-stops input at the limit, image fields open Media Library picker.
   - [ ] Preview pane (iframe to `web` dev/staging rendering the current draft state).
   - [ ] Actions: **Save Draft** (any `can_write`), **Submit for Review** (maker) — button hidden entirely if caller lacks `can_write` on this page's scope, forms render read-only instead.
-- [ ] **Review Queue** (visible only to `can_approve` users) — list of in-review Pages/MenuItems in caller's scope; opening one shows a **block-by-block diff** (submitted `PageVersion.blocks_snapshot` vs currently-published blocks) plus **Approve** / **Reject** (comments required on reject).
-- [ ] **Collections** — generic CRUD table+form per collection (Announcements w/ PDF upload+metadata, Products, Gallery albums/images, Officers, Facilities) — same maker Save/Submit + checker Review Queue pattern as pages.
-- [ ] **Media Library** — grid view, upload (drag-drop), alt-text mr/en editor, usage lookup (which pages reference this media), delete-guard if in use.
-- [ ] **Translations** — searchable/sortable table, inline mr/en edit, character-limit indicator shown per key where it's used in a fixed-layout slot, add-new-key form.
-- [ ] **Site Settings** — single form: logo, topbar links, footer columns, contact info, social links. `SUPER_ADMIN` + `can_approve` only.
+- [ ] **Review Queue** (visible only to `can_approve` users) — list of in-review Pages/Announcements/MenuItems in caller's scope; opening one shows a **block-by-block diff** (submitted `PageVersion.blocks_snapshot` vs currently-published blocks) plus **Approve** / **Reject** (comments required on reject).
+- [ ] **Collections**:
+  - [ ] Announcements & Tenders (+ PDF upload w/ metadata: size, format, language) — **gated**, same maker Save/Submit + checker Review Queue pattern as pages.
+  - [ ] Products, Gallery (albums/images), Officers, Facilities — **direct write**, plain CRUD table+form, `can_write` required, saved change is live immediately, no submit/approve step.
+- [ ] **Media Library** — grid view, upload (drag-drop), alt-text mr/en editor, usage lookup (which pages reference this media), delete-guard if in use. Direct write, not gated.
+- [ ] **Translations** — searchable/sortable table, inline mr/en edit, character-limit indicator shown per key where it's used in a fixed-layout slot, add-new-key form. Direct write, not gated.
+- [ ] **Site Settings** — single form: logo, topbar links, footer columns, contact info, social links. Gated — `SUPER_ADMIN` + `can_approve` only.
 - [ ] **Users & Roles** (SUPER_ADMIN only):
   - [ ] User list/create/edit/deactivate, base role assignment.
   - [ ] Per-user **permission grid**: pick one or more menu subtrees, toggle **Maker** (`can_write`) / **Checker** (`can_approve`) per subtree — same user can be Maker on one section, Checker on another.
 - [ ] **Audit Logs** — filterable table (user, resource, date range), diff viewer, shows submit/approve/reject events with checker comments.
 
-**Done when:** a maker-only user can log in, sees only their permitted menu sections, adds a menu item, picks a template, creates a page, adds/removes/reorders only whitelisted components, hits a character limit and is blocked from exceeding it, and submits for review — with no Publish button ever visible to them. A separate checker-only user sees it in their Review Queue, sees a diff, approves it, and it goes live on the public site. A `SUPER_ADMIN` can grant/revoke this scoping from Users & Roles without a developer.
+**Done when:** a maker-only user can log in, sees only their permitted menu sections, adds a menu item, picks a template, creates a page, adds/removes/reorders only whitelisted components, hits a character limit and is blocked from exceeding it, and submits for review — with no Publish button ever visible to them. A separate checker-only user sees it in their Review Queue, sees a diff, approves it, and it goes live on the public site. The same maker can also edit a translation, upload a gallery image, or relabel a menu item and see it live **immediately**, no checker involved. A `SUPER_ADMIN` can grant/revoke this scoping from Users & Roles without a developer.
 
 ---
 

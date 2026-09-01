@@ -187,8 +187,25 @@ draft ──(maker submits)──> in_review ──(checker approves)──> app
 
 - **Maker** (`can_write`): create page, add/remove/reorder content blocks, edit content within field limits, submit for review. Cannot self-approve or publish.
 - **Checker** (`can_approve`): reviews the `PageVersion` diff (blocks_snapshot vs currently-published version), approves (→ publish, or queue publish) or rejects with comments (→ back to draft, maker notified).
-- Same split applies to menu changes: a maker's menu add/edit/reorder within their scope also queues for checker approval before it affects the live `MenuItem` tree (prevents an editor silently restructuring nav).
 - `SUPER_ADMIN` can act as both maker and checker (break-glass), always logged in `AuditLog` either way.
+
+**c) What actually needs gating — not everything.** Maker-checker exists to catch public-facing, consequential mistakes before they go live. Gating every action (including trivial, reversible, or non-public ones) adds friction with no real risk reduction. Split:
+
+| Content / action | Maker-checker gated? | Why |
+|---|---|---|
+| Page publish (content edits going live) | **Yes** | Public-facing, factual/compliance weight |
+| Announcements & Tenders | **Yes** | Legal/financial consequence if wrong or fake |
+| Menu **structural** change — add/remove/re-nest item, change `href` | **Yes** | Broken nav or wrong link is site-wide impact |
+| Site Settings (contact info, official links) | **Yes** | High-visibility, rarely changed, worth gatekeeping |
+| Menu **label-only** edit or reorder within existing structure | No — direct write | Cosmetic, instantly visible if wrong, trivial to revert |
+| Translations | No — direct write | Wording polish, high frequency, low individual impact |
+| Media Library upload | No — direct write | File isn't live until *referenced* by gated content; exposure is caught at that gate, not at upload |
+| Gallery images, Officer photos | No — direct write | Low-consequence, high-frequency updates; gating slows routine dept work for no real gain |
+| Products (catalog) | No — direct write | Same reasoning as gallery; revisit if pricing/payment gets attached later |
+
+Rule of thumb: **gate the publish/live action, not every edit.** A maker is always free to draft/save/experiment without review; the gate sits only at the point content becomes public and only where the content type is public-facing + consequential. Every action — gated or not — still writes an `AuditLog` row; direct-write items rely on audit trail + revert instead of pre-publish approval.
+
+`Page.status` and the submit/approve/reject flow above therefore apply to: **Pages, Announcements, menu structural changes, Site Settings.** Everything else in the admin (Translations, Media, Gallery, Officers, Products, menu label/reorder) is a plain scoped CRUD — `can_write` required to change it, no `in_review` step, change is live immediately and logged.
 
 ---
 
@@ -245,12 +262,29 @@ GET  /products                 -> Product[]
 GET  /gallery                  -> GalleryAlbum[]
 ```
 
-`/api/v1/admin/*` — JWT + RBAC protected, full CRUD on every table above, plus:
+`/api/v1/admin/*` — JWT + scoped RBAC protected. Two access patterns (see §3.4c for which content uses which):
+
+**Gated (maker-checker: submit → review → approve/reject)** — Pages, Announcements, menu structural changes, Site Settings:
 ```
-POST /pages/:id/publish
+POST /pages/:id/submit-for-review
+POST /pages/:id/approve            -- checker only
+POST /pages/:id/reject             -- checker only, requires comments
+GET  /review-queue                 -- items awaiting caller's approval
+```
+
+**Direct write (scoped can_write, live immediately, audit-logged)** — Translations, Media, Gallery, Officers, Products, menu label/reorder:
+```
+PUT  /translations/:id
 POST /media/upload
+PUT  /gallery/:id
+PUT  /officers/:id
+PUT  /products/:id
+PUT  /menu/:id                     -- label/order only; structural changes go through the gated path instead
+```
+
+Common to both:
+```
 GET  /audit-logs
-PUT  /menu/reorder              -- batch order+parent update for drag-drop tree
 ```
 
 ---
@@ -279,12 +313,13 @@ Per `admin/README.md`'s blueprint, expanded for full editability + maker-checker
 
 ```
 Dashboard              -- stats, GIGW compliance status, my pending drafts, items awaiting my approval, recent audit log
-Menu Builder           -- tree view (scoped to user's UserMenuPermission), drag-reorder, add/edit/hide items, icon picker
-  └─ "Add Menu Item" flow:
+Menu Builder           -- tree view (scoped to user's UserMenuPermission)
+  ├─ Relabel (mr/en) or drag-reorder within existing structure -- direct write, live immediately, audit-logged only
+  └─ "Add Menu Item" / remove item / re-nest / change href -- STRUCTURAL, goes through review:
        1. Enter label (mr/en), icon, position in tree
        2. "Create Page for this item?" toggle
           └─ if yes: "Select Template" gallery (thumbnail + name per Template row) → creates linked Page(status=draft)
-       3. Save → menu item + page both created as draft, queued for checker if user is maker-only
+       3. Save → menu item (+ page, if created) queued as in_review for checker approval before appearing in live nav
 Pages
   ├─ Page list          (filter by section/status; scoped to user's permitted menu subtrees)
   ├─ Page editor
@@ -299,14 +334,13 @@ Pages
        ├─ Diff view: current published version vs submitted PageVersion, block by block
        └─ Approve (→ publish) | Reject (comments required → back to maker as draft)
 Collections
-  ├─ Announcements & Tenders (+ PDF upload w/ metadata: size, format, language)
-  ├─ Products (Jail Industries catalog)
-  ├─ Gallery (albums/images)
-  └─ Officers (used by officer_list blocks + facility pages)
-  (same maker-checker + scoping rules apply as Pages)
-Site Settings           -- logo, topbar, footer, contact, social links (singleton form) — SUPER_ADMIN + can_approve only
-Translations            -- searchable key/mr/en table, inline edit, character limit shown where key is used in a fixed-layout string
-Media Library           -- upload, browse, alt-text (mr/en) editor, usage tracker
+  ├─ Announcements & Tenders (+ PDF upload w/ metadata: size, format, language) -- GATED: maker submits, checker approves
+  ├─ Products (Jail Industries catalog)                                       -- direct write, scoped can_write, audit-logged
+  ├─ Gallery (albums/images)                                                  -- direct write, scoped can_write, audit-logged
+  └─ Officers (used by officer_list blocks + facility pages)                  -- direct write, scoped can_write, audit-logged
+Site Settings           -- logo, topbar, footer, contact, social links (singleton form) — GATED, SUPER_ADMIN + can_approve only
+Translations            -- searchable key/mr/en table, inline edit, character limit shown where key is used in a fixed-layout string — direct write, audit-logged
+Media Library           -- upload, browse, alt-text (mr/en) editor, usage tracker — direct write, not gated (exposure controlled at the gate of whatever content references it)
 Users & Roles           -- SUPER_ADMIN only:
   ├─ Create/deactivate user
   ├─ Assign base role (SUPER_ADMIN | CONTENT_EDITOR | AUDITOR)
@@ -352,5 +386,5 @@ Each phase ships a working state — site never breaks mid-migration since Phase
 - Hosting: self-hosted Postgres/Redis vs managed (matches govt hosting policy?).
 - File storage for media: local disk, S3-compatible, or NIC-provided storage?
 - Who are the actual admin users, how many, and how do they map to menu subtrees (needed to seed initial `UserMenuPermission` rows)?
-- Approval workflow: confirmed maker-checker (§3.4). Confirm with department whether a single checker can approve their own section's makers, or whether cross-section approval (e.g. central PRO office approves everything) is required.
+- Approval workflow: confirmed maker-checker, scoped to Pages/Announcements/menu-structural-changes/Site Settings only — not applied to Translations/Media/Gallery/Officers/Products/menu-relabel (§3.4c). Confirm this split matches department risk appetite, and whether a single checker can approve their own section's makers or whether cross-section approval (e.g. central PRO office approves everything) is required.
 - SSR/prerendering (Phase 7) — priority now vs later, given GIGW crawlability requirement already flagged as a gap?
