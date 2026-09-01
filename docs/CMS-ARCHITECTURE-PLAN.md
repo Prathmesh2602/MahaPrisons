@@ -56,11 +56,19 @@ Postgres + Prisma, per `backend/README.md`'s stack recommendation.
 ### 3.1 Core CMS tables
 
 ```
+Template
+  key                 text PK          -- "TemplateA" | "TemplateB" | "TemplateC" | "TemplateD" | "Homepage"
+  name                text             -- shown in template picker
+  thumbnail_media_id  uuid FK -> Media -- preview shown when admin picks a template
+  allowed_block_types text[]           -- whitelist, e.g. ["hero","stat_grid","officer_list"] — admin can only add these
+  slot_rules          jsonb            -- optional: {block_type: {min, max}} e.g. hero max 1, required
+
 Page
   id            uuid PK
   slug          text UNIQUE           -- "administrative/administration" (matches current route path)
-  template_key  text                  -- "TemplateA" | "TemplateB" | "TemplateC" | "TemplateD" | "Homepage" | "Custom:<key>"
-  status        enum(draft, published, archived)
+  menu_item_id  uuid FK -> MenuItem NULLABLE  -- set when page was created from "Add Menu Item -> Create Page"
+  template_key  text FK -> Template
+  status        enum(draft, in_review, approved, published, rejected, archived)  -- maker-checker states, see §3.4
   title_mr      text
   title_en      text
   meta          jsonb                 -- SEO meta, GIGW required fields (last-reviewed date, owner)
@@ -71,10 +79,21 @@ Page
 ContentBlock
   id            uuid PK
   page_id       uuid FK -> Page
-  block_type    text                  -- "hero" | "richtext" | "officer_list" | "stat_grid" | "gallery" | "cta" | "table" | ...
-  order         int
-  data          jsonb                 -- shape validated per block_type (zod schema in backend), always carries {mr, en} on text fields
+  block_type    text                  -- must be in Page.template.allowed_block_types (server-validated)
+  order         int                   -- admin can reorder (move up/down/drag) within the page
+  data          jsonb                 -- shape validated per block_type (zod schema, includes maxLength per field — see §4)
   created_at, updated_at
+
+PageVersion                            -- maker-checker snapshot/approval trail
+  id            uuid PK
+  page_id       uuid FK -> Page
+  blocks_snapshot jsonb               -- full ContentBlock[] at time of submission
+  submitted_by  uuid FK -> User        -- maker
+  submitted_at  timestamp
+  reviewed_by   uuid FK -> User NULLABLE  -- checker
+  reviewed_at   timestamp NULLABLE
+  decision      enum(pending, approved, rejected) default pending
+  comments      text                  -- checker's rejection reason / notes
 
 MenuItem
   id            uuid PK
@@ -82,6 +101,7 @@ MenuItem
   label_mr      text
   label_en      text
   href          text                  -- internal slug (/administrative/administration) or external URL
+  page_id       uuid FK -> Page NULLABLE  -- linked page, set via "Create Page" step in menu builder
   icon          text                  -- lucide-react icon name, matches existing iconMap
   order         int
   is_mega_group boolean               -- marks a "groupTitle" node in mega-menu
@@ -126,14 +146,49 @@ Officer        -- id, name_mr/en, designation_mr/en, photo_media_id, department,
 
 Reuse the existing `translations.js` key/mr/en shape directly as the `Translation` table — smallest possible migration.
 
-### 3.3 Auth / audit (per backend README, unchanged)
+### 3.3 Auth / audit
 
 ```
-User        -- id, email, password_hash, role(SUPER_ADMIN|PRISON_SUPERINTENDENT|CONTENT_EDITOR|AUDITOR)
+User        -- id, email, password_hash, role(SUPER_ADMIN|CONTENT_EDITOR|AUDITOR), active, created_at
 AuditLog    -- id, user_id, action, resource_type, resource_id, ip, user_agent, timestamp, diff(jsonb)
 ```
 
 Every mutating admin action writes an `AuditLog` row — required per backend README's compliance section and GIGW lifecycle requirements.
+
+### 3.4 Permissions & Maker-Checker Workflow
+
+Two separate concerns, both needed per requirement:
+
+**a) Scoped access ("limited menu")** — a user isn't just "CONTENT_EDITOR" globally, they're scoped to specific menu sections (e.g. only Agriculture, not Administrative):
+
+```
+UserMenuPermission
+  id            uuid PK
+  user_id       uuid FK -> User
+  menu_item_id  uuid FK -> MenuItem     -- top-level or any-level node; grants access to it + all descendants
+  can_write     boolean                 -- MAKER: create/edit/submit pages+menu items under this scope
+  can_approve   boolean                 -- CHECKER: approve/reject/publish under this scope
+```
+
+A user with no `UserMenuPermission` row for a subtree cannot see or edit it in the admin UI. `SUPER_ADMIN` bypasses scoping entirely (implicit full access). One user can be maker on one section and checker on another (e.g. Editor for Agriculture, Approver for Facilities) — just two rows with different flags.
+
+**b) Maker-checker page lifecycle** — `Page.status` transitions:
+
+```
+draft ──(maker submits)──> in_review ──(checker approves)──> approved ──(publish action)──> published
+                                │                                                              │
+                                └──(checker rejects, writes comments)──> draft (edit + resubmit)  │
+                                                                                                  ▼
+                                                                                          (edit again later
+                                                                                           → new draft → in_review …,
+                                                                                           previous published version
+                                                                                           stays live until re-approved)
+```
+
+- **Maker** (`can_write`): create page, add/remove/reorder content blocks, edit content within field limits, submit for review. Cannot self-approve or publish.
+- **Checker** (`can_approve`): reviews the `PageVersion` diff (blocks_snapshot vs currently-published version), approves (→ publish, or queue publish) or rejects with comments (→ back to draft, maker notified).
+- Same split applies to menu changes: a maker's menu add/edit/reorder within their scope also queues for checker approval before it affects the live `MenuItem` tree (prevents an editor silently restructuring nav).
+- `SUPER_ADMIN` can act as both maker and checker (break-glass), always logged in `AuditLog` either way.
 
 ---
 
@@ -144,23 +199,36 @@ Define one place mapping `block_type` → React component, shared between `web` 
 ```js
 // shared/blockRegistry.js  (published as small internal package, or duplicated + kept in sync initially)
 export const blockRegistry = {
-  hero:        { component: HeroBlock,       schema: heroSchema },
-  richtext:    { component: RichTextBlock,   schema: richtextSchema },
-  officer_list:{ component: OfficerListBlock, schema: officerListSchema },
-  stat_grid:   { component: StatGridBlock,   schema: statGridSchema },
-  gallery:     { component: GalleryBlock,    schema: gallerySchema },
-  table:       { component: TableBlock,      schema: tableSchema },
-  cta:         { component: CtaBlock,        schema: ctaSchema },
+  hero: {
+    component: HeroBlock,
+    schema: z.object({
+      title_mr: z.string().max(80),        // matches Tailwind heading line-clamp in design
+      title_en: z.string().max(100),
+      subtitle_mr: z.string().max(160).optional(),
+      subtitle_en: z.string().max(200).optional(),
+      image_media_id: z.string().uuid(),
+    }),
+  },
+  richtext:     { component: RichTextBlock,    schema: richtextSchema },   // max length matched to card/section design
+  officer_list: { component: OfficerListBlock, schema: officerListSchema }, // each officer: name maxLength, designation maxLength
+  stat_grid:    { component: StatGridBlock,    schema: statGridSchema },   // label maxLength, value numeric/short string
+  gallery:      { component: GalleryBlock,     schema: gallerySchema },
+  table:        { component: TableBlock,       schema: tableSchema },
+  cta:          { component: CtaBlock,         schema: ctaSchema },
 };
 ```
 
+Every text field in every block schema carries a `maxLength` (and often `minLength`) chosen to match the actual UI constraint already baked into the design (line-clamp, card height, hero title size) — enforced **both** client-side in the admin form (character counter, hard stop) and server-side (reject on save). This is what keeps "fixed component, fixed style" true even though content is editable: the admin literally cannot type text that would break the layout.
+
 `PageRenderer` (web) walks `page.contentBlocks` sorted by `order`, renders `blockRegistry[block.block_type].component` with `block.data`. Admin's page editor walks the same registry to render the correct edit form + Zod validation per block type — add a new block type once, both sides get it.
+
+**Component whitelist per template:** each `Template` row lists `allowed_block_types` (§3.1). The admin's "Add Component" picker only shows types in that list for the page's chosen template — a `TemplateB` page can't add a block type that only exists for `TemplateD`. Style is 100% owned by the block's React component (fixed CSS/layout); admin only ever touches `data` (text/image fields), never markup or style. Add/remove/reorder operate only on which whitelisted components are present and their `order` — not on their internal layout.
 
 Existing `TemplateA–D` layouts become **either**:
 - (a) kept as fixed template shells that accept a page's blocks in a fixed slot order (fastest migration, matches current design exactly), or
 - (b) fully generalized into `hero` + `stat_grid` + `richtext` blocks composed freely (more flexible, more migration work).
 
-Recommend **(a) first**, migrate to (b) opportunistically per page later — ships CMS sooner without a redesign.
+Recommend **(a) first**, migrate to (b) opportunistically per page later — ships CMS sooner without a redesign. Either way, the whitelist + maxLength rules above apply.
 
 ---
 
@@ -207,25 +275,44 @@ PUT  /menu/reorder              -- batch order+parent update for drag-drop tree
 
 ## 7. Admin Portal (`admin/`) IA
 
-Per `admin/README.md`'s blueprint, expanded for full editability:
+Per `admin/README.md`'s blueprint, expanded for full editability + maker-checker:
 
 ```
-Dashboard              -- stats, GIGW compliance status, recent audit log
-Menu Builder           -- tree view, drag-reorder, add/remove/hide items, icon picker
+Dashboard              -- stats, GIGW compliance status, my pending drafts, items awaiting my approval, recent audit log
+Menu Builder           -- tree view (scoped to user's UserMenuPermission), drag-reorder, add/edit/hide items, icon picker
+  └─ "Add Menu Item" flow:
+       1. Enter label (mr/en), icon, position in tree
+       2. "Create Page for this item?" toggle
+          └─ if yes: "Select Template" gallery (thumbnail + name per Template row) → creates linked Page(status=draft)
+       3. Save → menu item + page both created as draft, queued for checker if user is maker-only
 Pages
-  ├─ Page list          (filter by section: administrative/agriculture/facilities/social/home)
-  ├─ Page editor         -- block list, add/reorder/edit block, mr+en side-by-side per field
-  └─ Publish/draft toggle, "last reviewed" date (GIGW requirement)
+  ├─ Page list          (filter by section/status; scoped to user's permitted menu subtrees)
+  ├─ Page editor
+  │    ├─ Page meta form (title mr/en, slug read-only after create, "last reviewed" date)
+  │    ├─ Component list — shows only components already on the page, in order
+  │    │    ├─ "Add Component" → picker limited to this page's Template.allowed_block_types
+  │    │    ├─ Move up / move down (or drag) — reorder only
+  │    │    ├─ Remove — with confirm (soft: block removed from page, not hard-deleted, recoverable from PageVersion history)
+  │    │    └─ Edit — opens component's form (fields from its Zod schema, mr/en side-by-side, live character counter against maxLength, image picker for media fields)
+  │    └─ Actions: Save Draft | Submit for Review (maker) — disabled/hidden if user has no can_write on this scope
+  └─ Review Queue (checker only) — list of Pages/MenuItems with status=in_review in the checker's scope
+       ├─ Diff view: current published version vs submitted PageVersion, block by block
+       └─ Approve (→ publish) | Reject (comments required → back to maker as draft)
 Collections
   ├─ Announcements & Tenders (+ PDF upload w/ metadata: size, format, language)
   ├─ Products (Jail Industries catalog)
   ├─ Gallery (albums/images)
   └─ Officers (used by officer_list blocks + facility pages)
-Site Settings           -- logo, topbar, footer, contact, social links (singleton form)
-Translations            -- searchable key/mr/en table, inline edit
+  (same maker-checker + scoping rules apply as Pages)
+Site Settings           -- logo, topbar, footer, contact, social links (singleton form) — SUPER_ADMIN + can_approve only
+Translations            -- searchable key/mr/en table, inline edit, character limit shown where key is used in a fixed-layout string
 Media Library           -- upload, browse, alt-text (mr/en) editor, usage tracker
-Users & Roles           -- RBAC per backend README's 4 roles
-Audit Logs              -- filterable by user/resource/date
+Users & Roles           -- SUPER_ADMIN only:
+  ├─ Create/deactivate user
+  ├─ Assign base role (SUPER_ADMIN | CONTENT_EDITOR | AUDITOR)
+  └─ Per-user UserMenuPermission grid: pick menu subtree(s), toggle can_write (maker) / can_approve (checker) per subtree
+     (a user can be maker on one section and checker on another)
+Audit Logs              -- filterable by user/resource/date, includes maker-checker decisions (submit/approve/reject) with comments
 ```
 
 ---
@@ -264,6 +351,6 @@ Each phase ships a working state — site never breaks mid-migration since Phase
 
 - Hosting: self-hosted Postgres/Redis vs managed (matches govt hosting policy?).
 - File storage for media: local disk, S3-compatible, or NIC-provided storage?
-- Who are the actual admin users / how many roles in practice (README lists 4; confirm with department)?
-- Approval workflow needed before publish (draft → review → publish) or is direct-publish acceptable for a government site?
+- Who are the actual admin users, how many, and how do they map to menu subtrees (needed to seed initial `UserMenuPermission` rows)?
+- Approval workflow: confirmed maker-checker (§3.4). Confirm with department whether a single checker can approve their own section's makers, or whether cross-section approval (e.g. central PRO office approves everything) is required.
 - SSR/prerendering (Phase 7) — priority now vs later, given GIGW crawlability requirement already flagged as a gap?
