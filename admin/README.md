@@ -1,14 +1,24 @@
 # MahaPrisons Admin Portal (`admin`)
 
-The **MahaPrisons Admin Portal** is the administration and content management dashboard for the **Maharashtra Prisons & Correctional Services Department** (Government of Maharashtra). 
-
-This portal provides a secure, role-based management environment for prison superintendents, departmental officers, and system administrators to manage public announcements, correctional industry products, visitor logistics, departmental metrics, and portal content.
+| Attribute | Details |
+| :--- | :--- |
+| **System** | Administration & Content Management Portal |
+| **Department** | Maharashtra Prisons & Correctional Services Department |
+| **Framework** | Vite + React + TypeScript + Tailwind CSS v4 |
+| **Authentication** | JWT HTTP-Only Cookies with Scoped Subtree RBAC |
+| **Governance** | Maker-Checker Dual-Authorization Pipeline |
 
 ---
 
-## 📌 Objectives & Scope
+> [!NOTE]
+> **System Purpose**
+> The **MahaPrisons Admin Portal** serves as the central administrative engine for departmental officers, superintendents, and system administrators. It enables zero-code content publishing, inmate product catalog management, visitor logistics tracking, and strict GIGW 3.0 compliance auditing.
 
-- **Content Management System (CMS)**: Create, update, publish, and archive official announcements, notices, recruitment drives, tenders, and press releases for the public website (`web`).
+---
+
+## Objectives & Scope
+
+- **Content Management System (CMS)**: Create, update, publish, and archive official announcements, notices, recruitment drives, tenders, and press releases for the public web application (`web`).
 - **Correctional Industry & Product Management**: Catalog and manage inmate-crafted products (handlooms, carpentry, leatherwork, bakery, agricultural products), inventory levels, pricing, and public showcase data.
 - **Facility & Administration Management**: Oversee prison administrative details across categories (Judicial, Hospital, Canteen, Internal Security, Agriculture, and Social Services).
 - **Security & Role-Based Access Control (RBAC)**: Manage user permissions for Super Administrators, Prison Wardens, Department Editors, and Compliance Auditors.
@@ -17,19 +27,22 @@ This portal provides a secure, role-based management environment for prison supe
 
 ---
 
-## 🏗 System Architecture & Tech Stack
+## System Architecture & Tech Stack
 
-### Recommended Stack
-- **Framework**: React 19 / Next.js (App Router) or Vite + TypeScript
-- **Styling**: Tailwind CSS v4
-- **Icons & Motion**: Lucide React, Framer Motion
-- **State Management & Data Fetching**: TanStack Query (React Query) / Redux Toolkit
-- **Form Handling & Validation**: React Hook Form + Zod
-- **UI Components**: Radix UI / Headless UI / Custom Accessible Components
+### Recommended Stack Specification
+
+| Component Layer | Technology | Usage / Rationale |
+| :--- | :--- | :--- |
+| **Framework** | React 19 / Vite + TypeScript | High-performance Single Page Application architecture |
+| **Styling** | Tailwind CSS v4 | Utility-first CSS framework with dynamic theme token support |
+| **Icons & Motion** | Lucide React, Framer Motion | Accessible UI icon set and hardware-accelerated animations |
+| **State & Fetching** | TanStack Query (React Query) | Server state management, smart caching, and query invalidation |
+| **Forms & Validation**| React Hook Form + Zod | Type-safe schema validation with live client-side character caps |
+| **UI Primitive** | Radix UI / Headless UI | Accessible, unstyled UI primitives adhering to WCAG AA |
 
 ---
 
-## 📁 Directory Structure Blueprint
+## Directory Structure Blueprint
 
 ```text
 admin/
@@ -63,7 +76,7 @@ admin/
 
 ---
 
-## 🔑 Key Features & Modules
+## Key Features & Operational Modules
 
 ### 1. Dashboard Overview
 - Real-time statistics: Total public announcements, active tenders, inmate product catalog status, pending visitor requests.
@@ -89,52 +102,54 @@ admin/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v18.0.0 or higher)
-- npm or yarn
+- npm or yarn package manager
 
-### Installation & Setup
+### Installation & Environment Setup
 
-1. **Navigate to the `admin` directory**:
+1. Navigate to the `admin` directory:
    ```bash
    cd admin
    ```
 
-2. **Install dependencies**:
+2. Install project dependencies:
    ```bash
    npm install
    ```
 
-3. **Configure Environment Variables**:
-   Copy `.env.example` to `.env` and configure the backend API endpoint:
+3. Configure Environment Variables:
+   Copy `.env.example` to `.env` and set backend API parameters:
    ```env
    VITE_API_BASE_URL=http://localhost:5000/api/v1
    VITE_APP_NAME="MahaPrisons Admin Portal"
    ```
 
-4. **Start the Development Server**:
+4. Launch Development Server:
    ```bash
    npm run dev
    ```
 
-5. **Build for Production**:
+5. Build for Production:
    ```bash
    npm run build
    ```
 
 ---
 
-## 🛡 Security & Compliance
+## Security & Compliance Standards
 
-- **GIGW 3.0 Standards**: High contrast mode, keyboard navigable controls, explicit labels, dynamic font sizing.
-- **Data Protection**: Sanitized inputs to prevent XSS, CSRF token validation, secure HTTP-only cookies.
-- **Authentication**: JWT token storage in secure cookies with auto-refresh mechanism.
+> [!IMPORTANT]
+> **Government Compliance Standards**
+> - **GIGW 3.0 Accessibility**: High contrast support, keyboard-navigable controls, explicit form labels, dynamic text scaling.
+> - **Data Protection**: Input sanitization preventing XSS attacks, CSRF token validation, HTTP-only cookie authentication.
+> - **Session Security**: Auto-logout after inactivity periods in accordance with CERT-In government IT security guidelines.
 
 ---
 
-## 🤝 Contributing & Maintenance
+## Maintenance & Contact
 
 Maintained by the **Maharashtra Prisons & Correctional Services Department IT Team** / Authorized Technical Partners.
-For technical issues or feature requests, consult the internal project repository documentation.
+For technical issues or feature requests, consult internal project documentation.

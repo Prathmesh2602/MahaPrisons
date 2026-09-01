@@ -1,181 +1,267 @@
 # MahaPrisons CMS — Step-by-Step Implementation Plan
 
-**Companion to:** [`CMS-ARCHITECTURE-PLAN.md`](./CMS-ARCHITECTURE-PLAN.md) (read that first for schema/API/rationale — this doc is the task checklist to execute it).
-
-Each phase ships a working, deployable state. Don't start phase N+1 until phase N's "Done when" criteria pass.
-
----
-
-## Phase 0 — Setup
-
-- [ ] Create `backend/package.json`, init Node project (Express or NestJS — pick one, README lists both as options).
-- [ ] Install: `prisma`, `@prisma/client`, `express`, `zod`, `jsonwebtoken`, `bcrypt`, `cors`, `helmet`, `express-rate-limit`, `ioredis`.
-- [ ] Provision Postgres (local Docker for dev) + Redis (local Docker for dev).
-- [ ] `backend/.env` from `.env.example` — `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, `CORS_ORIGINS`.
-- [ ] `docker-compose.yml` for local Postgres+Redis+backend.
-- [ ] `admin/package.json`, init Vite+React+TS project, install Tailwind v4, React Router, TanStack Query, React Hook Form, Zod, Radix UI.
-
-**Done when:** `docker-compose up` starts Postgres+Redis, `npm run dev` in `backend/` boots an empty Express server, `npm run dev` in `admin/` serves blank Vite app.
+| Attribute | Details |
+| :--- | :--- |
+| **Project** | MahaPrisons CMS Implementation Roadmap |
+| **Companion Architecture** | [`CMS-ARCHITECTURE-PLAN.md`](./CMS-ARCHITECTURE-PLAN.md) |
+| **Target System** | Public Web Portal (`web`) + Admin Dashboard (`admin`) + API Service (`backend`) |
+| **Execution Model** | Phased Sequential Delivery (Zero downtime, non-breaking rollout) |
+| **Date** | 1 September 2026 |
 
 ---
 
-## Phase 1 — Schema, Migrations, Seed
-
-- [ ] Write `backend/prisma/schema.prisma` — all tables from architecture doc §3: `Template`, `Page`, `ContentBlock`, `PageVersion`, `MenuItem`, `Translation`, `Media`, `SiteSettings`, `Announcement`, `Product`, `Facility`, `GalleryAlbum`, `GalleryImage`, `Officer`, `User`, `UserMenuPermission`, `AuditLog`.
-- [ ] `npx prisma migrate dev --name init` — generates first migration.
-- [ ] Seed `Template` rows for `TemplateA`–`TemplateD` + `Homepage`, each with `allowed_block_types` whitelist derived from what that template's JSX currently renders (read each `Template{A-D}.jsx` to enumerate its actual sections).
-- [ ] Write `backend/database/seeds/seedFromLegacyData.js`:
-  - [ ] Parse `web/src/data/translations.js` → bulk insert `Translation`.
-  - [ ] Parse `web/src/data/mockData.js` `navigation_menu` → recursive insert `MenuItem` tree (preserve order, href, icon).
-  - [ ] Parse `administrativeData.js` → one `Page` + `ContentBlock`(s) per `dataId`, `template_key` = which `Template{A-D}` currently used (check each page component's import), link `Page.menu_item_id` to the matching seeded `MenuItem`.
-  - [ ] Parse `agricultureData.js`, `facilitiesData.js`, `socialActivitiesData.js` → same pattern.
-  - [ ] Parse `galleryData.js` → `GalleryAlbum`/`GalleryImage`.
-  - [ ] Copy images referenced from `web/src/assets` + `web/public` into `backend`'s media storage dir, insert `Media` rows, capture URL mapping.
-  - [ ] Hand-author homepage `Page(slug="/")` blocks (hero, about, announcements, calendar, services, gallery) — homepage isn't template-driven, needs manual mapping from `mockData.js` + `extracted_homepage_data.json`.
-  - [ ] Set every seeded `Page.status = published` (legacy content is trusted as-is; maker-checker applies only to future edits).
-  - [ ] Create 1 `User` row (SUPER_ADMIN) for initial admin login.
-- [ ] Run seed, spot-check row counts match source file entry counts.
-
-**Done when:** `npm run db:seed` completes with no errors; every route currently in `App.jsx` has a matching `Page.slug` row; every `navigation_menu` entry has a matching `MenuItem` row; every seeded `Page.template_key` has a `Template` row whose `allowed_block_types` covers every `block_type` actually used on that page.
+> [!IMPORTANT]
+> **Execution Rule**
+> Each phase delivers a standalone, fully verified, and deployable milestone. Do not initiate Phase N+1 until Phase N satisfies its strict **Done When Verification Criteria**.
 
 ---
 
-## Phase 2 — Public Read API + Cache
+## Phase Execution Lifecycle Flow
 
-- [ ] `GET /api/v1/public/pages/:slug` — join `Page` + ordered `ContentBlock[]`, 404 if not published.
-- [ ] `GET /api/v1/public/menu` — return full `MenuItem` tree (nest by `parent_id` server-side).
-- [ ] `GET /api/v1/public/translations` — return `{ [key]: {mr, en} }` map.
-- [ ] `GET /api/v1/public/settings` — `SiteSettings` singleton.
-- [ ] `GET /api/v1/public/announcements`, `/products`, `/gallery`, `/facilities` — list endpoints, basic filtering (category, language).
-- [ ] Redis caching middleware on all public GETs (short TTL, e.g. 60s, so admin edits show up fast without hammering DB).
-- [ ] CORS whitelist restricted to `web` dev/prod origins.
-- [ ] Zod-validate all query params.
+```mermaid
+graph TD
+    P0["Phase 0: Base Infrastructure Setup"] --> P1["Phase 1: Prisma Schema & Legacy Data Seed"]
+    P1 --> P2["Phase 2: Public API & Redis Caching Layer"]
+    P2 --> P3["Phase 3: Public Web App Data Source Swap"]
+    P3 --> P4["Phase 4: Auth, RBAC & Governance APIs"]
+    P4 --> P5["Phase 5: Admin Portal Interface & Form Builder"]
+    P5 --> P6["Phase 6: Compliance Audit & Security Hardening"]
+    P6 --> P7["Phase 7: Prerender-on-Publish (SSR/SEO Post-Launch)"]
 
-**Done when:** every endpoint above returns real seeded data via `curl`; response matches shapes `web/` components expect (verify against `mockHomepageData` / `administrativeData` shapes).
-
----
-
-## Phase 3 — Frontend Swap (web/)
-
-- [ ] Add React Query (or SWR) to `web/`.
-- [ ] Build `src/lib/api.js` — thin fetch wrapper for public endpoints, base URL from `VITE_API_BASE_URL`.
-- [ ] `PageRenderer.jsx` — new component: reads slug from route, fetches `/pages/:slug`, dispatches to `Template{A-D}` (or block registry) based on `template_key`.
-- [ ] Collapse `App.jsx`: replace 40+ `<Route>` entries with `<Route path="/*" element={<PageRenderer />} />` (keep `/` separate if homepage stays bespoke for now).
-- [ ] `MegaMenu.jsx` — replace `mockHomepageData.navigation_menu` import with `useQuery(['menu'], fetchMenu)`.
-- [ ] `useAccessibility.jsx` — replace static `translations` import with translations fetched once at boot, exposed via context; `t()` reads from context state instead of static object.
-- [ ] Homepage sections (`HeroCarousel`, `AnnouncementsTabs`, `HolidayCalendar`, `NewsTicker`, `QuickServices`, `MinisterProfiles`, `JailInsights`, `PhotoGallery`) — swap each component's data source from static import to API fetch (`/pages/home`'s blocks, or dedicated collection endpoints for announcements/gallery).
-- [ ] `Footer.jsx` — pull footer columns/links from `/settings`.
-- [ ] Add loading/error/empty states everywhere a static import is replaced by a fetch.
-- [ ] Manual QA: click every nav item, compare rendered page to pre-migration screenshot — content and layout must match.
-- [ ] Delete `web/src/data/*.js` (except keep as historical reference in git history) once QA passes.
-
-**Done when:** site is visually identical to current static version but every string/image/menu item now comes from the API; stopping the backend breaks the site (proof nothing static remains).
+    classDef phaseStyle fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff;
+    class P0,P1,P2,P3,P4,P5,P6,P7 phaseStyle;
+```
 
 ---
 
-## Phase 4 — Auth + Scoped RBAC + Maker-Checker API
+## Phase 0: Base Environment Setup
 
-- [ ] `POST /api/v1/auth/login`, `/logout`, `/refresh-token` — JWT, bcrypt password check, httpOnly cookie.
-- [ ] `authMiddleware` — verify JWT, attach `req.user`.
-- [ ] `rbacMiddleware(allowedRoles)` — coarse role check (`SUPER_ADMIN`, `CONTENT_EDITOR`, `AUDITOR`).
-- [ ] `scopeMiddleware(action)` — fine-grained check: given `req.user` + target `menu_item_id` (or a page/menu row's own `menu_item_id`), look up `UserMenuPermission` (walking up `parent_id` so a grant on a parent covers descendants), require `can_write` for maker actions, `can_approve` for checker actions. `SUPER_ADMIN` bypasses.
-- [ ] `auditLogger` middleware — on every mutating admin request, write `AuditLog` row (user, action, resource, before/after diff).
-- [ ] Template routes: `GET /templates` (list, for template picker), `GET /templates/:key` (returns `allowed_block_types` + block schemas, for admin form generation).
-- [ ] CRUD routes under `/api/v1/admin/*`, all scoped by `scopeMiddleware`. Split per architecture doc §3.4c — not everything is maker-checker gated:
+Initialize project repositories, install dependencies, configure environment settings, and establish local Docker development services.
 
-**Gated (submit → review → approve/reject) — Pages, Announcements, menu structural changes, Site Settings:**
-  - [ ] `pages` — list/get/create/update (maker, requires `can_write`); create validates `menu_item_id` ownership and, if set, auto-links `MenuItem.page_id`.
-  - [ ] `content-blocks` — create/update/delete/reorder within a page; **create/update reject if `block_type` not in the page's `Template.allowed_block_types`**, and reject if `data` fails the block's Zod schema (maxLength etc.).
-  - [ ] `pages/:id/submit-for-review` (maker) — snapshots current blocks into a new `PageVersion(decision=pending)`, sets `Page.status = in_review`.
-  - [ ] `pages/:id/approve` (checker, `can_approve`) — sets `PageVersion.decision = approved`, `Page.status = published`, `published_at = now`.
-  - [ ] `pages/:id/reject` (checker, `can_approve`, requires `comments`) — sets `PageVersion.decision = rejected`, `Page.status = draft`.
-  - [ ] `review-queue` — `GET /admin/review-queue` list of Pages/Announcements/MenuItems with `status = in_review` within caller's checker scope.
-  - [ ] `announcements` — same submit/approve/reject pattern as pages.
-  - [ ] `menu` structural ops — `POST /menu` (add item), `DELETE /menu/:id`, `PUT /menu/:id/move` (re-nest under different parent), `PUT /menu/:id/href` — all go through submit/approve/reject before affecting the live tree.
-  - [ ] `settings` — `GET`/`PUT` singleton, `SUPER_ADMIN` + `can_approve` only (small enough to skip a separate review step — direct approve-gated write).
+### Task Checklist
 
-**Direct write (scoped `can_write`, live immediately, audit-logged, no review step):**
-  - [ ] `translations` — CRUD (mostly update, keys rarely added).
-  - [ ] `media` — `POST /media/upload` (multipart, store file, create `Media` row).
-  - [ ] `gallery`, `officers`, `products`, `facilities` — full CRUD each, scoped `can_write` only.
-  - [ ] `menu/:id` label edit + `PUT /menu/reorder` (batch order-only update within existing structure) — no approval step, unlike structural ops above.
+- [ ] Create `backend/package.json` and initialize Node.js application (Express.js).
+- [ ] Install core backend dependencies: `prisma`, `@prisma/client`, `express`, `zod`, `jsonwebtoken`, `bcrypt`, `cors`, `helmet`, `express-rate-limit`, `ioredis`.
+- [ ] Provision local development containers: PostgreSQL database and Redis server via Docker.
+- [ ] Configure `backend/.env` from `.env.example` (`DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, `CORS_ORIGINS`).
+- [ ] Create `docker-compose.yml` for multi-container orchestration (Postgres + Redis + Backend API).
+- [ ] Create `admin/package.json`, initialize Vite + React + TypeScript application, install Tailwind CSS v4, React Router, TanStack Query, React Hook Form, Zod, and Radix UI.
 
-**Admin/system:**
-  - [ ] `users` — CRUD (SUPER_ADMIN only).
-  - [ ] `user-permissions` — `GET`/`PUT /users/:id/menu-permissions` (SUPER_ADMIN only) — assign/revoke `UserMenuPermission` rows (menu subtree + can_write/can_approve flags).
-  - [ ] `audit-logs` — read-only list, filterable.
-- [ ] Template routes: `GET /templates` (list, for template picker), `GET /templates/:key` (returns `allowed_block_types` + block schemas, for admin form generation).
-- [ ] Rate limiting on `/auth/login` (brute-force protection).
-- [ ] Input sanitization on all rich-text/HTML fields (strip/escape to prevent stored XSS).
-
-**Done when:** a maker-scoped user can create a page, add a whitelisted block, submit for review; a checker-scoped user (different account) sees it in the review queue, approves it, and it appears on the live `web` site within cache TTL; the maker cannot self-approve (403); a block type outside the template's whitelist is rejected (400); a field exceeding its `maxLength` is rejected (400); a direct-write action (translation edit, gallery upload, menu relabel) goes live immediately with no review step but still produces an `AuditLog` row; a structural menu change (add/remove/re-nest) does NOT go live until approved.
+> [!TIP]
+> **Done When Verification Criteria**
+> - Running `docker-compose up` successfully boots PostgreSQL and Redis containers.
+> - Running `npm run dev` in `backend/` starts the Express server listening on the configured port.
+> - Running `npm run dev` in `admin/` serves the initial Vite single-page application clean without build errors.
 
 ---
 
-## Phase 5 — Admin Portal UI
+## Phase 1: Database Schema, Migrations & Legacy Seed
 
-- [ ] Auth: login page, JWT stored httpOnly cookie, route guard, auto-logout on token expiry.
-- [ ] Layout: sidebar nav (items filtered by caller's `UserMenuPermission` scope — a maker-only user doesn't see Site Settings/Users), header, breadcrumbs (per `admin/README.md` structure).
-- [ ] **Dashboard** — counts (pages, announcements), **My Drafts** (maker's own in-progress items), **Awaiting My Approval** (checker's queue count), recent audit log feed.
-- [ ] **Menu Builder** — tree view scoped to caller's permitted subtrees.
-  - [ ] Relabel / drag-reorder within existing structure — **direct write**, `PUT /menu/reorder` on drop, live immediately, no review step.
-  - [ ] "Add Menu Item" wizard (**structural, gated**): step 1 label/icon/position → step 2 "Create a page for this?" toggle → if yes, **Template Gallery** (card grid, thumbnail + name per `Template`, fetched from `GET /templates`) → select → creates `Page(status=draft)` linked via `menu_item_id` → whole thing (menu item + page) queued `in_review`, does not appear in live nav until a checker approves.
-  - [ ] Remove item / re-nest under different parent / change `href` — same gated pattern as add.
-- [ ] **Page list** — table, filter by section/status (scoped), search by title/slug.
-- [ ] **Page editor**:
-  - [ ] Page meta form (title mr/en, slug read-only after create, template — read-only after create, "last reviewed" date).
-  - [ ] Component list — only components currently on the page, in `order`.
-    - [ ] **Add Component** button → picker shows only `block_type`s in this page's `Template.allowed_block_types` that respect `slot_rules` (e.g. hides "hero" once max-1 already present).
-    - [ ] **Move up / move down** (or drag) per component — reorder only, no layout change.
-    - [ ] **Remove** per component — confirm dialog, removes from page (recoverable via `PageVersion` history).
-    - [ ] **Edit** per component — form auto-generated from the block's Zod schema (shared registry, architecture doc §4): mr/en fields side-by-side, **live character counter** against each field's `maxLength`, hard-stops input at the limit, image fields open Media Library picker.
-  - [ ] Preview pane (iframe to `web` dev/staging rendering the current draft state).
-  - [ ] Actions: **Save Draft** (any `can_write`), **Submit for Review** (maker) — button hidden entirely if caller lacks `can_write` on this page's scope, forms render read-only instead.
-- [ ] **Review Queue** (visible only to `can_approve` users) — list of in-review Pages/Announcements/MenuItems in caller's scope; opening one shows a **block-by-block diff** (submitted `PageVersion.blocks_snapshot` vs currently-published blocks) plus **Approve** / **Reject** (comments required on reject).
-- [ ] **Collections**:
-  - [ ] Announcements & Tenders (+ PDF upload w/ metadata: size, format, language) — **gated**, same maker Save/Submit + checker Review Queue pattern as pages.
-  - [ ] Products, Gallery (albums/images), Officers, Facilities — **direct write**, plain CRUD table+form, `can_write` required, saved change is live immediately, no submit/approve step.
-- [ ] **Media Library** — grid view, upload (drag-drop), alt-text mr/en editor, usage lookup (which pages reference this media), delete-guard if in use. Direct write, not gated.
-- [ ] **Translations** — searchable/sortable table, inline mr/en edit, character-limit indicator shown per key where it's used in a fixed-layout slot, add-new-key form. Direct write, not gated.
-- [ ] **Site Settings** — single form: logo, topbar links, footer columns, contact info, social links. Gated — `SUPER_ADMIN` + `can_approve` only.
-- [ ] **Users & Roles** (SUPER_ADMIN only):
-  - [ ] User list/create/edit/deactivate, base role assignment.
-  - [ ] Per-user **permission grid**: pick one or more menu subtrees, toggle **Maker** (`can_write`) / **Checker** (`can_approve`) per subtree — same user can be Maker on one section, Checker on another.
-- [ ] **Audit Logs** — filterable table (user, resource, date range), diff viewer, shows submit/approve/reject events with checker comments.
+Establish relational database tables, execute initial migrations, and parse existing bundled static JavaScript objects into database rows.
 
-**Done when:** a maker-only user can log in, sees only their permitted menu sections, adds a menu item, picks a template, creates a page, adds/removes/reorders only whitelisted components, hits a character limit and is blocked from exceeding it, and submits for review — with no Publish button ever visible to them. A separate checker-only user sees it in their Review Queue, sees a diff, approves it, and it goes live on the public site. The same maker can also edit a translation, upload a gallery image, or relabel a menu item and see it live **immediately**, no checker involved. A `SUPER_ADMIN` can grant/revoke this scoping from Users & Roles without a developer.
+### Task Checklist
+
+- [ ] Draft `backend/prisma/schema.prisma` mapping all core and collection tables specified in Architecture Plan:
+  `Template`, `Page`, `ContentBlock`, `PageVersion`, `MenuItem`, `Translation`, `Media`, `SiteSettings`, `Announcement`, `Product`, `Facility`, `GalleryAlbum`, `GalleryImage`, `Officer`, `User`, `UserMenuPermission`, `AuditLog`.
+- [ ] Execute `npx prisma migrate dev --name init` to generate baseline migration scripts.
+- [ ] Seed initial `Template` entries for `TemplateA` through `TemplateD` and `Homepage`, assigning block type whitelists matching current template JSX components.
+- [ ] Build automated legacy migration script `backend/database/seeds/seedFromLegacyData.js`:
+  - [ ] Parse `web/src/data/translations.js` and bulk-insert entries into `Translation` table.
+  - [ ] Parse `web/src/data/mockData.js` (`navigation_menu`) and recursively seed `MenuItem` tree preserving order and icon references.
+  - [ ] Parse `administrativeData.js`, `agricultureData.js`, `facilitiesData.js`, `socialActivitiesData.js` to create `Page` and `ContentBlock` records mapped to current routes.
+  - [ ] Parse `galleryData.js` to seed `GalleryAlbum` and `GalleryImage` records.
+  - [ ] Copy assets from `web/src/assets` and `web/public` into backend media storage directory, creating corresponding `Media` database records.
+  - [ ] Hand-author homepage `Page(slug="/")` content blocks (`HeroCarousel`, `AboutSection`, `AnnouncementsTabs`, `HolidayCalendar`, `QuickServices`, `PhotoGallery`).
+  - [ ] Mark all legacy seeded pages with status `PUBLISHED`.
+  - [ ] Create initial `SUPER_ADMIN` user account.
+- [ ] Run seed pipeline and verify entity row counts against original source data array lengths.
+
+> [!TIP]
+> **Done When Verification Criteria**
+> - `npm run db:seed` executes cleanly to completion without key constraint failures.
+> - Every active route path in `web/src/App.jsx` corresponds to a valid `Page.slug` row.
+> - Every navigation link in `mockData.js` has a matching `MenuItem` record.
 
 ---
 
-## Phase 6 — Compliance & Hardening
+## Phase 2: Public Read API & Response Caching Layer
 
-- [ ] XSS: sanitize all rich-text fields server-side (e.g. `sanitize-html`) before storing and before rendering.
-- [ ] CSRF protection on admin mutating routes (if using cookies).
-- [ ] SQL injection: confirmed n/a (Prisma parameterizes) — verify no raw queries.
-- [ ] CORS: lock to exact `web`/`admin` production origins.
-- [ ] Rate limiting on all `/admin/*` and `/auth/*` routes.
-- [ ] Session timeout / auto-logout after inactivity (admin).
-- [ ] HTTPS/TLS enforced at hosting layer — document requirement.
-- [ ] Re-run `docs/GIGW-COMPLIANCE-AUDIT.md` checklist — update statuses now that CMS backs Content Review / Archival / Last-updated-date items.
-- [ ] Load test public API endpoints (basic — confirm Redis cache actually reduces DB hits under repeat requests).
-- [ ] Backup strategy documented for Postgres (schedule, retention) and Media storage.
+Expose high-performance, unauthenticated read endpoints for public web consumption with Redis response caching.
 
-**Done when:** GIGW audit doc's "Lifecycle" and "Security" rows move from Pending → Done/Mitigated; a basic pen-test checklist (XSS, auth bypass, IDOR on admin routes) passes.
+### Task Checklist
 
----
+- [ ] Implement `GET /api/v1/public/pages/:slug`: Fetches published page content and sorted `ContentBlock` array.
+- [ ] Implement `GET /api/v1/public/menu`: Returns formatted hierarchical navigation tree.
+- [ ] Implement `GET /api/v1/public/translations`: Returns global dictionary object `{ [key]: { mr, en } }`.
+- [ ] Implement `GET /api/v1/public/settings`: Returns site configuration singleton record.
+- [ ] Implement `GET /api/v1/public/announcements`, `/products`, `/gallery`, `/facilities` list endpoints with category filters.
+- [ ] Attach Redis caching middleware across public GET endpoints (60-second TTL for instant cache invalidation).
+- [ ] Configure strict CORS whitelist restricted to authorized public web application origins.
+- [ ] Validate request parameters using Zod schemas.
 
-## Phase 7 (follow-up, post-launch) — SSR / Prerendering
-
-- [ ] Evaluate Vite SSR vs prerender-on-publish (generate static HTML snapshot per page when admin hits Publish, serve snapshot + hydrate).
-- [ ] Prerender-on-publish is simpler given CMS already knows exactly when content changes (publish event) — recommended over full SSR infra.
-- [ ] Addresses GIGW audit's flagged crawlability gap without giving up "instant edit, no redeploy" (snapshot regenerates automatically on publish, not on a build pipeline).
-
-**Done when:** search engine crawler (test via `curl` with no JS execution) receives full page content, not empty `<div id="root">`.
+> [!TIP]
+> **Done When Verification Criteria**
+> - All public API endpoints respond with valid JSON formatted data via `curl` tests.
+> - Data payloads match exact object shapes expected by public web frontend components.
 
 ---
 
-## Sequencing Notes
+## Phase 3: Public Web Portal Data Source Transition (`web/`)
 
-- Phases 0–3 can ship with **zero admin UI** — content is editable via direct SQL/API calls in the meantime, which unblocks Phase 3's frontend QA before Phase 5's UI is built.
-- Phase 4 (auth/CRUD API) and Phase 5 (admin UI) can run in parallel once Phase 4's route contracts are stable — admin UI team builds against a documented API spec (OpenAPI/Swagger, per backend README) while backend finishes remaining CRUD endpoints.
-- Do not skip Phase 6 before public launch — it's compliance-required, not optional polish, given this is a government site.
+Transition the public client application from static imported data files to dynamic API endpoints.
+
+### Task Checklist
+
+- [ ] Integrate TanStack Query (React Query) into `web/`.
+- [ ] Create `web/src/lib/api.js` API client wrapper configured with `VITE_API_BASE_URL`.
+- [ ] Build `PageRenderer.jsx` wildcard dispatcher component to handle dynamic routes based on slug parameters.
+- [ ] Refactor `web/src/App.jsx`: Replace 40+ static `<Route>` declarations with `<Route path="/*" element={<PageRenderer />} />`.
+- [ ] Update `MegaMenu.jsx`: Replace static data import with dynamic `useQuery(['menu'], fetchMenu)` hook.
+- [ ] Update `useAccessibility.jsx`: Hydrate translation context from `/api/v1/public/translations` on application load.
+- [ ] Update Homepage components (`HeroCarousel`, `AnnouncementsTabs`, `HolidayCalendar`, `NewsTicker`, `QuickServices`, `MinisterProfiles`, `JailInsights`, `PhotoGallery`) to consume API payloads.
+- [ ] Update `Footer.jsx` to fetch dynamic footer links from `/settings`.
+- [ ] Implement UI loading, error, and empty state fallbacks across all dynamic components.
+- [ ] Perform comprehensive visual QA: Verify rendered pages match original static output pixel-for-pixel.
+- [ ] Remove legacy data files (`web/src/data/*.js`) from project build pipeline.
+
+> [!TIP]
+> **Done When Verification Criteria**
+> - The public site functions dynamically with identical visual output.
+> - Temporarily stopping the backend service causes clean UI error states, confirming complete independence from legacy static JS data files.
+
+---
+
+## Phase 4: Authentication, Governance & Scoped Admin API
+
+Implement JWT authentication, role-based access middleware, maker-checker review queue APIs, and direct-write CRUD routes.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Maker as Content Maker
+    participant API as Admin API Service
+    participant DB as PostgreSQL Database
+    actor Checker as Content Checker
+
+    Maker->>API: POST /pages/:id/submit-for-review
+    API->>DB: Create PageVersion (PENDING) & Set Page.status = IN_REVIEW
+    API-->>Maker: Submission Confirmed
+    
+    Checker->>API: GET /admin/review-queue
+    API->>DB: Query pending items within Checker's scope
+    API-->>Checker: Return Review Queue Items
+    
+    Checker->>API: POST /pages/:id/approve
+    API->>DB: Update PageVersion (APPROVED) & Set Page.status = PUBLISHED
+    API-->>Checker: Publication Confirmed
+```
+
+### Task Checklist
+
+- [ ] Build Auth endpoints: `POST /api/v1/auth/login`, `/logout`, `/refresh-token` utilizing JWT and HTTP-only cookies.
+- [ ] Implement `authMiddleware` for JWT authentication verification.
+- [ ] Implement `rbacMiddleware` for coarse role verification (`SUPER_ADMIN`, `CONTENT_EDITOR`, `AUDITOR`).
+- [ ] Implement `scopeMiddleware` to enforce fine-grained access checks based on `UserMenuPermission` mapping (`can_write` / `can_approve`).
+- [ ] Implement `auditLogger` middleware to record mutating requests to `AuditLog` table with before/after state diffs.
+- [ ] Build Template API: `GET /admin/templates` and `GET /admin/templates/:key` (exposing block type whitelists and Zod schemas).
+- [ ] Build Gated Governance API routes (Maker-Checker):
+  - [ ] `pages`: List, retrieve, draft create/update, submit for review.
+  - [ ] `content-blocks`: Create/update/reorder with template whitelist enforcement and Zod validation.
+  - [ ] `pages/:id/submit-for-review` (Maker action).
+  - [ ] `pages/:id/approve` and `pages/:id/reject` (Checker actions with mandatory comments).
+  - [ ] `review-queue`: List pending submissions filtered by caller's authorized checker scope.
+  - [ ] `announcements`: Maker-Checker gated lifecycle endpoints.
+  - [ ] `menu` structural modifications: Gated add, delete, move, and URL targets.
+  - [ ] `settings`: Gated global configuration update routes (`SUPER_ADMIN` + `can_approve`).
+- [ ] Build Direct-Write Admin API routes (Scoped `can_write`, live immediately):
+  - [ ] `translations`: Translation dictionary CRUD.
+  - [ ] `media`: Multipart file upload and media library metadata management.
+  - [ ] `gallery`, `officers`, `products`, `facilities`: Direct-write CRUD.
+  - [ ] `menu/:id`: Immediate label relabeling and order reindexing.
+- [ ] Build System Management routes:
+  - [ ] `users`: User administration (Super Admin).
+  - [ ] `user-permissions`: Subtree scope permission management grid.
+  - [ ] `audit-logs`: Audit log reader with resource and user filtering.
+- [ ] Apply rate limiting on authentication routes and sanitize rich-text HTML inputs server-side.
+
+> [!TIP]
+> **Done When Verification Criteria**
+> - A Maker user can draft content and submit it for review, but is forbidden (403 Forbidden) from self-approving or publishing.
+> - A Checker user can view pending submissions in their authorized scope, review diffs, and approve items to publish live.
+> - Direct-write endpoints update content immediately while writing comprehensive audit log entries.
+
+---
+
+## Phase 5: Admin Portal User Interface (`admin/`)
+
+Construct the administrative portal web UI featuring navigation management, page building, maker-checker review workflow, and media asset management.
+
+### Task Checklist
+
+- [ ] Build Authentication views: Secure login view, token storage handling, route guards, automatic session timeout.
+- [ ] Construct Portal Layout: Responsive sidebar nav dynamically filtered by caller's permissions, header, breadcrumb navigation.
+- [ ] Build **Dashboard**: Overview cards, active draft queue, pending review queue counter, recent audit feed.
+- [ ] Build **Navigation Tree Builder**:
+  - [ ] Direct-write inline label editor and drag-and-drop order reindexing.
+  - [ ] Structural modification wizard: Add item -> Optional page auto-creation -> Template selection gallery -> Submit for review queue.
+- [ ] Build **Page Manager & Form Builder**:
+  - [ ] Page metadata editor (Title, slug, template lock, GIGW review date).
+  - [ ] Component roster editor: Add whitelisted components, reorder blocks, remove blocks.
+  - [ ] Dynamic component form generator driven by Zod block schemas: Side-by-side Marathi/English fields, **live character counters with hard stops**, media picker.
+  - [ ] Save Draft and Submit for Review actions.
+- [ ] Build **Review Queue & Diff Viewer**:
+  - [ ] Side-by-side block diff visualization comparing submitted `PageVersion` snapshot against live published blocks.
+  - [ ] One-click Approve and Reject (with mandatory reviewer notes input).
+- [ ] Build **Structured Collections**:
+  - [ ] Announcements & Tenders manager with PDF metadata tags (file size, format, language).
+  - [ ] Products catalog manager (Jail Industries inventory and image uploads).
+  - [ ] Department Officer roster and photo manager.
+- [ ] Build **Media Library**: Drag-and-drop file uploader, bilingual alt-text editor, media usage tracker.
+- [ ] Build **Translation Dictionary**: Searchable key-value translation grid with live character count indicators.
+- [ ] Build **Site Settings Editor**: Master form for site logo, topbar utilities, footer columns, contact details.
+- [ ] Build **User Access Manager** (Super Admin): User provisioning and visual permission matrix grid (`can_write` / `can_approve` toggles per menu subtree).
+- [ ] Build **Audit Log Viewer**: Filterable log table with detailed diff inspector.
+
+> [!TIP]
+> **Done When Verification Criteria**
+> - Non-technical department editors can seamlessly update page content, submit items for approval, upload media, and manage navigation without code edits.
+> - Layout stability is enforced: Form fields physically prevent typing past character limits, preserving design integrity across all viewports.
+
+---
+
+## Phase 6: Security Hardening & GIGW Compliance Audit
+
+Harden backend infrastructure, enforce security headers, and complete formal compliance validation.
+
+### Task Checklist
+
+- [ ] Enforce HTML sanitization (`sanitize-html`) across all rich-text content inputs server-side prior to storage.
+- [ ] Implement CSRF protection mechanisms across admin mutating routes.
+- [ ] Lock down CORS headers explicitly to production `web` and `admin` domain origins.
+- [ ] Apply API rate limiting middleware across all `/admin/*` and `/auth/*` endpoints.
+- [ ] Configure automatic administrative session invalidation after inactivity timeouts.
+- [ ] Audit all SQL queries (confirm total parameterization via Prisma ORM).
+- [ ] Re-assess `docs/GIGW-COMPLIANCE-AUDIT.md` checklist: Update lifecycle and content management items to **DONE**.
+- [ ] Conduct API performance load tests to confirm Redis caching effectively offloads database traffic.
+- [ ] Document database backup schedules and disaster recovery procedures.
+
+> [!TIP]
+> **Done When Verification Criteria**
+> - Penetration testing checks (XSS, SQLi, Auth Bypass, IDOR) pass with zero critical findings.
+> - All compliance items in `GIGW-COMPLIANCE-AUDIT.md` marked as requiring CMS integration are fully satisfied.
+
+---
+
+## Phase 7: Post-Launch Enhancements — Prerender-on-Publish (SSR / SEO)
+
+Enhance crawler search engine optimization and accessibility without sacrificing instant CMS publish capabilities.
+
+### Task Checklist
+
+- [ ] Implement automated static HTML snapshot generation triggered upon content publication events.
+- [ ] Serve pre-rendered HTML pages directly to search engine bots while hydrating client React applications for users.
+- [ ] Validate search engine crawler indexing against rendered page output.
+
+> [!TIP]
+> **Done When Verification Criteria**
+> - Headless HTTP requests (`curl` without JavaScript execution) receive fully populated HTML content for search engine indexing.

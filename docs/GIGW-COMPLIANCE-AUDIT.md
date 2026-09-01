@@ -1,41 +1,59 @@
-# GIGW 3.0 Compliance Audit
+# GIGW 3.0 Compliance Audit Report
 
-**Project:** MahaPrisons React Website
-**Date:** 14 August 2026
+| Attribute | Details |
+| :--- | :--- |
+| **Project** | MahaPrisons Public Web Application (`web`) |
+| **Department** | Maharashtra Prisons & Correctional Services Department |
+| **Audit Standard** | Guidelines for Indian Government Websites and Apps (GIGW 3.0) / WCAG 2.1 AA |
+| **Audit Date** | 14 August 2026 |
+| **Evaluation Scope** | Accessibility, Quality, Security, and Lifecycle Governance |
 
-This audit evaluates the existing React codebase against the Guidelines for Indian Government Websites and Apps (GIGW 3.0).
+---
 
-| Area | Requirement | Existing Status | Gap | Required Action | Implementation Status |
-|---|---|---|---|---|---|
-| Quality | Government identity | PARTIAL | Header contains logos but lacks some official structure/semantics. Logo alt text is present. | Enhance semantic `<header>`, verify emblem proportions, add ownership info to header where applicable. | Pending |
-| Quality | Ownership | PARTIAL | Footer mentions NIC and ownership, but not semantically structured. | Ensure ownership text is clearly presented and semantic. | Pending |
-| Quality | Last updated date | PARTIAL | Hardcoded in footer. | Update to use dynamic/contextual date or proper content structure. | Pending |
-| Quality | About Us | PARTIAL | Exists as a section on homepage. No dedicated route. | Create `/about` route and full About Us page. | Pending |
-| Quality | Contact Us | FAIL | Missing dedicated contact page. | Create `/contact` route with verified info. | Pending |
-| Quality | Feedback | FAIL | Missing feedback mechanism. | Create `/feedback` form with validation. | Pending |
-| Quality | Help | FAIL | Missing help section. | Create `/help` route. | Pending |
-| Quality | Search | PARTIAL | Toolbar redirects to external WP search. | Implement accessible internal search form structure. | Pending |
-| Quality | Sitemap | PARTIAL | Toolbar links to external sitemap. | Create internal `/sitemap` route and page. | Pending |
-| Quality | Download metadata | FAIL | Documents in tabs don't show full metadata (size, format). | Add metadata details (PDF, Size, Lang, Date) to document links. | Pending |
-| Accessibility | Alt text | PARTIAL | Some images have alt text, decorative images need `aria-hidden="true"`. | Systematic review of all `<img>` tags. | Pending |
-| Accessibility | Keyboard navigation | PARTIAL | Missing some focus indicators, outline sometimes overridden. | Implement visible focus rings for all interactive elements. | Pending |
-| Accessibility | Focus indicator | PARTIAL | Not systematically applied across all custom components (e.g. MegaMenu). | Standardize `:focus-visible` across design system. | Pending |
-| Accessibility | Contrast | PARTIAL | High contrast mode exists, but default contrast needs review against WCAG AA. | Audit and fix text/background contrast ratios. | Pending |
-| Accessibility | Text resize | PARTIAL | Toolbar has A-, A, A+, but layout may break on 200%. | Test text enlargement and ensure responsive flow. | Pending |
-| Accessibility | Screen reader support | PARTIAL | Missing ARIA landmarks, `aria-expanded`, `aria-controls` on menus. | Add semantic HTML5 landmarks and correct ARIA roles. | Pending |
-| Accessibility | Forms | FAIL | No forms exist yet to audit. | Ensure future forms have labels, validation, and error states. | Pending |
-| Accessibility | Language attributes | PARTIAL | `lang` hardcoded to `mr-IN` in index.html, not dynamic. | Dynamically update `<html lang="...">` on language switch. | Pending |
-| Accessibility | Captions/transcripts | N/A | No video/audio found yet. | N/A | Pending |
-| Security | HTTPS readiness | REQUIRES HOSTING ACTION | Frontend can't enforce this locally. | Document in deployment instructions. | Pending |
-| Security | Input validation | FAIL | No client-side validation on search. | Add React hook form validation. | Pending |
-| Security | XSS protection | REQUIRES REVIEW | Need to ensure no `dangerouslySetInnerHTML` is used insecurely. | Audit codebase for unsafe HTML injection. | Pending |
-| Security | External scripts | PARTIAL | Loading external images/fonts. | Document CSP requirements. | Pending |
-| Lifecycle | Content review | REQUIRES DEPARTMENT ACTION | CMS integration needed. | Build data-driven frontend architecture. | Pending |
-| Lifecycle | Archival | FAIL | No archive section. | Create `/archive` route architecture. | Pending |
-| Lifecycle | Monitoring | REQUIRES HOSTING ACTION | Centralized monitoring needed. | Document architecture readiness. | Pending |
-| Lifecycle | Backup/DR | REQUIRES HOSTING ACTION | Server-side responsibility. | Document requirements. | Pending |
+> [!NOTE]
+> **Audit Executive Summary**
+> This compliance audit evaluates the existing public web codebase against mandatory GIGW 3.0 quality, accessibility, security, and lifecycle management standards. 
 
-## Architectural Gaps
-* **Routing:** The app currently lacks a router (`react-router-dom`), preventing unique URLs for pages like `/about`, `/contact`, `/privacy-policy`.
-* **Design System:** Tailwind is used, but needs a more systematic token structure for accessibility states (e.g. focus rings).
-* **Semantic HTML:** Needs better use of `<main>`, `<article>`, `<nav>` with appropriate ARIA labels.
+---
+
+## Detailed Compliance Audit Matrix
+
+| Domain Area | Mandatory Standard Requirement | Current Status | Identified Gap | Required Remediation Action | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Quality** | Official Government Identity | PARTIAL | Header displays emblem logos but lacks formal semantic structure. | Enhance `<header>` semantics, verify emblem proportions, add departmental ownership metadata. | Pending |
+| **Quality** | Ownership Metadata | PARTIAL | Footer mentions NIC and ownership in plain text. | Structure ownership details using semantic HTML5 elements. | Pending |
+| **Quality** | Dynamic Last Updated Date | PARTIAL | Last updated date is hardcoded in footer text. | Connect date field to dynamic content model or CMS page revision timestamp. | Pending |
+| **Quality** | Dedicated About Us Page | PARTIAL | Content exists as homepage section only; lacks distinct URL route. | Provision dedicated `/about` route and structured content page. | Pending |
+| **Quality** | Contact Us Page | FAIL | Missing dedicated contact page with official department details. | Provision dedicated `/contact` route with validated contact info and map links. | Pending |
+| **Quality** | Citizen Feedback Mechanism | FAIL | Missing feedback submission tool. | Implement `/feedback` form with client/server-side validation and captcha. | Pending |
+| **Quality** | Help & Navigation Guide | FAIL | Missing dedicated help documentation route. | Provision `/help` route containing navigation instructions. | Pending |
+| **Quality** | Internal Search Function | PARTIAL | Toolbar redirects search query to external WP endpoint. | Build accessible internal search component and index. | Pending |
+| **Quality** | Dynamic Sitemap | PARTIAL | Sitemap link navigates to external static URL. | Provision internal `/sitemap` route dynamically generated from page registry. | Pending |
+| **Quality** | Document Download Metadata | FAIL | Document tabs lack file size, format, and language tags. | Append explicit metadata details (PDF, Size in MB, Language, Date) to document download links. | Pending |
+| **Accessibility** | Image Alt Text Integrity | PARTIAL | Text images have alt attributes; decorative assets need hidden tags. | Perform systematic review of `<img>` tags, adding `aria-hidden="true"` on decorative icons. | Pending |
+| **Accessibility** | Keyboard Navigability | PARTIAL | Focus outline styles occasionally overridden in custom elements. | Enforce visible `:focus-visible` focus rings across interactive elements. | Pending |
+| **Accessibility** | Focus Indicator Consistency | PARTIAL | Focus states inconsistent in custom navigation (e.g. MegaMenu). | Standardize focus ring utilities across global design tokens. | Pending |
+| **Accessibility** | Color Contrast (WCAG AA) | PARTIAL | High contrast mode present; default theme contrast needs review. | Audit background/text contrast ratios to guarantee 4.5:1 ratio. | Pending |
+| **Accessibility** | Text Resizing (200%) | PARTIAL | Text resize controls (A-, A, A+) work; layout flow needs verification. | Verify 200% text enlargement without visual overflow or clipping. | Pending |
+| **Accessibility** | Screen Reader Landmarks | PARTIAL | Missing ARIA landmarks, `aria-expanded`, and `aria-controls`. | Inject HTML5 semantic landmarks (`<main>`, `<nav>`) and ARIA roles. | Pending |
+| **Accessibility** | Form Accessibility | FAIL | No interactive forms currently present in frontend codebase. | Guarantee future forms include explicit `<label>`, ARIA errors, and focus traps. | Pending |
+| **Accessibility** | Dynamic Language Attribute | PARTIAL | `<html lang="mr-IN">` hardcoded in `index.html`. | Dynamically update document `lang` attribute on language toggle. | Pending |
+| **Accessibility** | Captions & Transcripts | N/A | No multimedia audio/video content present in current build. | N/A | Pending |
+| **Security** | Mandatory HTTPS TLS 1.3 | REQUIRES HOSTING | Cannot enforce in local frontend dev environment. | Document HTTPS deployment requirements in server hosting setup. | Pending |
+| **Security** | Input Validation | FAIL | Search input lacks client and server validation. | Attach React Hook Form and Zod schema validation. | Pending |
+| **Security** | XSS Script Injection | REVIEW NEEDED | Must ensure raw HTML injection is prohibited. | Perform security audit verifying no un-sanitized HTML injection occurs. | Pending |
+| **Security** | External Script Governance | PARTIAL | External image assets and web fonts loaded directly. | Formulate strict Content Security Policy (CSP) headers. | Pending |
+| **Lifecycle** | Content Review Lifecycle | REQUIRES CMS | Requires backend CMS integration. | Implement CMS dynamic content fetching engine. | Pending |
+| **Lifecycle** | Content Archival | FAIL | Lacks historical content archival section. | Build `/archive` route and database archival status filtering. | Pending |
+| **Lifecycle** | Monitoring & Alerting | REQUIRES HOSTING | Hosting server infrastructure responsibility. | Document operational uptime monitoring guidelines. | Pending |
+| **Lifecycle** | Backup & Disaster Recovery | REQUIRES HOSTING | Server-side database responsibility. | Document automated database backup strategy. | Pending |
+
+---
+
+## Architectural Remediation Priorities
+
+> [!WARNING]
+> **Priority Remediation Action Items**
+> 1. **Dynamic Router Integration**: Collapse static route definitions into dynamic routing (`react-router-dom`), enabling dedicated routes for `/about`, `/contact`, `/feedback`, and `/sitemap`.
+> 2. **Design Token Standardization**: Enforce high-contrast accessibility focus states across custom components (`MegaMenu`, `AccessibilityToolbar`).
+> 3. **Semantic HTML5 Restructuring**: Standardize usage of `<main>`, `<article>`, and `<nav>` landmarks with precise ARIA state attributes (`aria-expanded`, `aria-controls`).

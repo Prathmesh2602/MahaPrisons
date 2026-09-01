@@ -1,42 +1,48 @@
 # MahaPrisons Backend API Service (`backend`)
 
-The **MahaPrisons Backend API Service** is the server-side API application and database management service for the **Maharashtra Prisons & Correctional Services Department** (Government of Maharashtra).
-
-This service acts as the central backend engine, providing secure RESTful/GraphQL endpoints, data persistence, authentication, authorization, external government portal integrations, and file management for both:
-1. **Public Web Portal (`web`)**: Public announcements, prison products catalog, visitor information, photo/video gallery, and GIGW 3.0 compliance data.
-2. **Admin Portal (`admin`)**: Content management system, role-based access control, prison inventory management, and audit logging.
-
----
-
-## 📌 Core Responsibilities & Features
-
-- **Public API Gateway**: Serves high-performance cached endpoints for public notices, news tickers, tenders, recruitment, product showcases, and holiday calendars.
-- **Admin Management API**: Handles authenticated CRUD operations for department staff, notice publishing, product catalog management, and administrative metrics.
-- **Authentication & Authorization**: Implements secure JWT / OAuth2 authentication, multi-factor authentication (MFA) for government administrators, and fine-grained Role-Based Access Control (RBAC).
-- **Data Persistence & Database Management**: Manages relational data schemas (Announcements, Products, Facilities, Users, Audit Logs, Visitor Request Metadata).
-- **Government Integrations**:
-  - **National e-Prisons Portal**: Inter-service integration for inmate status lookups and e-Mulakat (visitor interview booking).
-  - **Payment Gateway Integration**: Processing public purchases of inmate-crafted products (galicha, handlooms, woodwork).
-  - **SMS / Email Notification Services**: Citizen notification alerts for service updates and staff notifications.
-- **File Storage & Asset Management**: Secure document upload, verification, PDF metadata tagging (file size, language, upload date), and media asset management.
-- **Security & Compliance**: GIGW 3.0 standards support, CERT-In security guidelines, rate limiting, SQL injection protection, CORS configuration, and complete audit trail logging.
+| Attribute | Details |
+| :--- | :--- |
+| **System** | Core Server-Side API & Database Persistence Service |
+| **Department** | Maharashtra Prisons & Correctional Services Department |
+| **Stack** | Node.js (Express.js) / PostgreSQL / Prisma ORM / Redis |
+| **Security** | JWT HTTP-Only Cookies, Scoped RBAC, Audit Logging |
+| **Compliance** | GIGW 3.0 & CERT-In IT Security Guidelines |
 
 ---
 
-## 🏗 Recommended Architecture & Tech Stack
-
-### Technology Options
-- **Runtime / Framework**: Node.js (Express.js / NestJS) or Python (FastAPI / Django)
-- **Database**: PostgreSQL / MySQL (Relational DB)
-- **ORM / Query Builder**: Prisma / TypeORM / Sequelize
-- **Cache & Session Store**: Redis (for API response caching, rate limiting, session store)
-- **Authentication**: JWT (JSON Web Tokens) with HTTP-only cookies & bcrypt password hashing
-- **Documentation**: Swagger / OpenAPI 3.0
-- **Containerization**: Docker & Docker Compose
+> [!NOTE]
+> **Service Architecture**
+> The **MahaPrisons Backend API Service** powers the central server infrastructure. It provides cached, high-performance RESTful APIs to the **Public Web Portal (`web`)** and authenticated, governance-enforced management endpoints to the **Admin Portal (`admin`)**.
 
 ---
 
-## 📁 Directory Structure Blueprint
+## Core Responsibilities & Capabilities
+
+- **Public Gateway**: Delivers high-speed cached endpoints for notices, news ticker items, recruitment drives, tenders, jail industry showcase products, and departmental calendars.
+- **Admin Management API**: Executes authenticated CRUD operations, page content drafting, versioning snapshots, and maker-checker approval workflows.
+- **Authentication & Security**: Implements JWT authentication, httpOnly cookie sessions, multi-factor authentication (MFA) support, and scoped role-based access control (RBAC).
+- **Data Persistence**: Manages relational models via Prisma ORM for PostgreSQL (Pages, Content Blocks, Navigation, Users, Audit Logs, Announcements, Products).
+- **External Integrations**: Connects with national e-Prisons portals for visitor interviews (e-Mulakat) and legal aid application tracking.
+- **Asset Storage & Verification**: Secure PDF and image uploads with metadata processing (file format, size, language, upload date) and alt-text storage.
+- **Audit Logging**: Comprehensive activity tracking capturing user ID, IP address, request method, target resource, timestamp, and before/after diff snapshots.
+
+---
+
+## Recommended Tech Stack
+
+| Component | Technology | Rationale |
+| :--- | :--- | :--- |
+| **Runtime / Framework** | Node.js (Express.js) | Light, asynchronous event-driven I/O engine |
+| **Database** | PostgreSQL | Relational consistency, JSONB payload support, ACID compliance |
+| **ORM Layer** | Prisma ORM | Type-safe query builder, auto-migrations, database seeding |
+| **Caching Layer** | Redis | In-memory response caching for public endpoints and rate limiting |
+| **Authentication** | JWT + bcrypt | Secure token sessions with HTTP-only cookies |
+| **Documentation** | Swagger / OpenAPI 3.0 | Standardized API endpoint contract specification |
+| **Containerization** | Docker & Docker Compose | Containerized local development and production deployment |
+
+---
+
+## Directory Structure Blueprint
 
 ```text
 backend/
@@ -53,7 +59,7 @@ backend/
 │   │   ├── errorHandler.js        # Centralized error handling
 │   │   ├── rateLimiter.js         # API rate limiting
 │   │   └── auditLogger.js         # Log actions to audit table
-│   ├── models/             # Database ORM models/schemas (Prisma/TypeORM)
+│   ├── models/             # Database ORM models/schemas (Prisma)
 │   │   ├── User.js
 │   │   ├── Announcement.js
 │   │   ├── Product.js
@@ -70,12 +76,12 @@ backend/
 │   │   ├── announcementService.js
 │   │   ├── ePrisonsIntegration.js # External e-Prisons API connector
 │   │   └── storageService.js      # PDF & media file management
-│   ├── utils/              # Helper utilities, logger (Winston/Pino), validators
+│   ├── utils/              # Helper utilities, logger, validators
 │   ├── app.js              # Express app setup & middleware attachment
 │   └── server.js           # Server initialization & database connection
 ├── database/
 │   ├── migrations/         # Database migration scripts
-│   └── seeds/              # Initial seed data (default roles, sample notices)
+│   └── seeds/              # Initial seed data
 ├── docs/                   # OpenAPI / Swagger specification files
 ├── .env.example            # Environment variables template
 ├── Dockerfile              # Docker container configuration
@@ -86,56 +92,62 @@ backend/
 
 ---
 
-## 📡 Key API Routes Specification
+## API Endpoint Specifications
 
-### 1. Public Routes (`/api/v1/public`)
+### 1. Public Endpoints (`/api/v1/public`)
+
 | Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/announcements` | Retrieve official notices, tenders, and recruitments (filtered by language/category) |
-| `GET` | `/products` | List correctional industry products (galicha, handloom, bakery) |
-| `GET` | `/products/:id` | Detailed product information and availability |
-| `GET` | `/facilities` | Information on prison sections (Judicial, Canteen, Hospital, etc.) |
+| :--- | :--- | :--- |
+| `GET` | `/pages/:slug` | Retrieve published page data and ordered content blocks |
+| `GET` | `/menu` | Retrieve hierarchical navigation tree |
+| `GET` | `/translations` | Retrieve global translation key-value map |
+| `GET` | `/announcements` | Retrieve official notices, tenders, and recruitment drives |
+| `GET` | `/products` | List correctional industry catalog items |
+| `GET` | `/facilities` | Information on prison administrative sections |
 | `GET` | `/calendar` | Departmental holiday and event calendar |
 
-### 2. Authentication Routes (`/api/v1/auth`)
+### 2. Authentication Endpoints (`/api/v1/auth`)
+
 | Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/login` | Staff login with credentials & optional MFA |
+| :--- | :--- | :--- |
+| `POST` | `/login` | Staff login with credentials & optional MFA verification |
 | `POST` | `/logout` | Invalidate current JWT session |
 | `POST` | `/refresh-token` | Obtain new access token using refresh token |
 
-### 3. Admin Routes (`/api/v1/admin` - Protected)
+### 3. Admin Governance Endpoints (`/api/v1/admin` - Protected)
+
 | Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/announcements` | Create a new notice/tender with PDF metadata |
-| `PUT` | `/announcements/:id` | Update notice content or validity date |
-| `DELETE` | `/announcements/:id` | Soft-delete / archive an announcement |
-| `POST` | `/products` | Add a new inmate product to catalog |
+| :--- | :--- | :--- |
+| `POST` | `/pages/:id/submit-for-review` | Submit drafted page version for checker review |
+| `POST` | `/pages/:id/approve` | Checker approves version snapshot for publication |
+| `POST` | `/pages/:id/reject` | Checker rejects version with required review notes |
+| `GET` | `/review-queue` | Retrieve pending items awaiting review in user scope |
+| `POST` | `/announcements` | Create notice or tender with PDF metadata |
 | `GET` | `/audit-logs` | Retrieve system action logs for compliance auditing |
-| `GET` | `/users` | Manage admin portal user roles & permissions |
+| `GET` | `/users` | Manage admin portal user roles and subtree permissions |
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v18.0.0+)
-- PostgreSQL / MySQL (or Docker Desktop)
-- Redis (optional, for caching & rate limiting)
+- PostgreSQL (or Docker Desktop)
+- Redis server
 
 ### Quick Start (Local Setup)
 
-1. **Navigate to the `backend` directory**:
+1. Navigate to the `backend` directory:
    ```bash
    cd backend
    ```
 
-2. **Install dependencies**:
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. **Configure Environment Variables**:
+3. Configure Environment Variables:
    Copy `.env.example` to `.env`:
    ```env
    PORT=5000
@@ -147,37 +159,36 @@ backend/
    CORS_ORIGINS=http://localhost:5173,http://localhost:5174
    ```
 
-4. **Run Database Migrations & Seeders**:
+4. Run Database Migrations & Seeders:
    ```bash
    npm run db:migrate
    npm run db:seed
    ```
 
-5. **Start Development Server**:
+5. Start Development Server:
    ```bash
    npm run dev
    ```
 
-### Docker Setup
-To launch the backend along with PostgreSQL and Redis:
+### Docker Multi-Container Launch
+To boot the Backend API, PostgreSQL database, and Redis cache simultaneously:
 ```bash
 docker-compose up -d --build
 ```
 
 ---
 
-## 🛡 Security & Compliance Standards
+## Security & Compliance Guidelines
 
-- **GIGW 3.0 & CERT-In Compliance**:
-  - All file downloads (PDFs) include full metadata (file size, language, creation date).
-  - Inputs sanitized using parameterization and schema validators (Zod/Joi) to eliminate SQL injection and XSS vulnerabilities.
-  - Strict CORS whitelist allowing requests only from verified `web` and `admin` domain origins.
-- **Audit Logging**: Every mutating action (`POST`, `PUT`, `DELETE`) writes an entry to `audit_logs` containing User ID, IP, User-Agent, Resource ID, and timestamp.
-- **Transport Security**: TLS 1.3 / HTTPS enforcement for production deployment.
+> [!WARNING]
+> **Security Audit Mandate**
+> - **Input Validation & Sanitization**: All rich-text inputs are sanitized server-side using HTML sanitization to prevent Stored XSS attacks. Prisma parameterization handles SQL injection protection.
+> - **CORS Protection**: Access control headers are locked strictly to authorized `web` and `admin` domains.
+> - **Audit Trails**: All mutating calls (`POST`, `PUT`, `DELETE`) write mandatory entries to `AuditLog`.
 
 ---
 
-## 🤝 Contributing & Maintenance
+## Maintenance & Support
 
 Maintained by the **Maharashtra Prisons & Correctional Services Department IT Team** / Authorized Technical Partners.
 For bug reports or API enhancements, refer to internal development guidelines.
