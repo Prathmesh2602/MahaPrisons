@@ -22,14 +22,13 @@
 graph TD
     P0["Phase 0: Base Infrastructure Setup"] --> P1["Phase 1: Prisma Schema & Legacy Data Seed"]
     P1 --> P2["Phase 2: Public API & Redis Caching Layer"]
-    P2 --> P3["Phase 3: Public Web App Data Source Swap"]
+    P2 --> P3["Phase 3: web/ rebuilt on Next.js — SSR/ISR ships here"]
     P3 --> P4["Phase 4: Auth, RBAC & Governance APIs"]
     P4 --> P5["Phase 5: Admin Portal Interface & Form Builder"]
     P5 --> P6["Phase 6: Compliance Audit & Security Hardening"]
-    P6 --> P7["Phase 7: Prerender-on-Publish (SSR/SEO Post-Launch)"]
 
     classDef phaseStyle fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff;
-    class P0,P1,P2,P3,P4,P5,P6,P7 phaseStyle;
+    class P0,P1,P2,P3,P4,P5,P6 phaseStyle;
 ```
 
 ---
@@ -46,12 +45,15 @@ Initialize project repositories, install dependencies, configure environment set
 - [ ] Configure `backend/.env` from `.env.example` (`DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, `CORS_ORIGINS`).
 - [ ] Create `docker-compose.yml` for multi-container orchestration (Postgres + Redis + Backend API).
 - [ ] Create `admin/package.json`, initialize Vite + React + TypeScript application, install Tailwind CSS v4, React Router, TanStack Query, React Hook Form, Zod, and Radix UI.
+- [ ] Initialize `web/` as a Next.js 15 (App Router, TypeScript optional) project — either `npx create-next-app` fresh and port over existing components/assets/Tailwind config, or add Next.js alongside the current Vite setup and cut over incrementally. Install `framer-motion`, `lucide-react`, `tailwindcss` v4 (same as today).
+- [ ] Set `web/.env.local` — `NEXT_PUBLIC_API_BASE_URL` (public API), `REVALIDATE_SECRET` (shared secret for the `/api/revalidate` webhook, matches a value `backend/.env` also holds).
 
 > [!TIP]
 > **Done When Verification Criteria**
 > - Running `docker-compose up` successfully boots PostgreSQL and Redis containers.
 > - Running `npm run dev` in `backend/` starts the Express server listening on the configured port.
 > - Running `npm run dev` in `admin/` serves the initial Vite single-page application clean without build errors.
+> - Running `npm run dev` in `web/` serves a blank Next.js app clean without build errors.
 
 ---
 
@@ -106,28 +108,33 @@ Expose high-performance, unauthenticated read endpoints for public web consumpti
 
 ---
 
-## Phase 3: Public Web Portal Data Source Transition (`web/`)
+## Phase 3: Public Web Portal Rebuild on Next.js (`web/`)
 
-Transition the public client application from static imported data files to dynamic API endpoints.
+Rebuild the public client application on Next.js App Router — replacing both the static data imports **and** `react-router-dom`/Vite CSR in one pass. SSR/ISR and the CSR-crawlability fix ship here; there is no separate later SSR phase.
 
 ### Task Checklist
 
-- [ ] Integrate TanStack Query (React Query) into `web/`.
-- [ ] Create `web/src/lib/api.js` API client wrapper configured with `VITE_API_BASE_URL`.
-- [ ] Build `PageRenderer.jsx` wildcard dispatcher component to handle dynamic routes based on slug parameters.
-- [ ] Refactor `web/src/App.jsx`: Replace 40+ static `<Route>` declarations with `<Route path="/*" element={<PageRenderer />} />`.
-- [ ] Update `MegaMenu.jsx`: Replace static data import with dynamic `useQuery(['menu'], fetchMenu)` hook.
-- [ ] Update `useAccessibility.jsx`: Hydrate translation context from `/api/v1/public/translations` on application load.
-- [ ] Update Homepage components (`HeroCarousel`, `AnnouncementsTabs`, `HolidayCalendar`, `NewsTicker`, `QuickServices`, `MinisterProfiles`, `JailInsights`, `PhotoGallery`) to consume API payloads.
-- [ ] Update `Footer.jsx` to fetch dynamic footer links from `/settings`.
-- [ ] Implement UI loading, error, and empty state fallbacks across all dynamic components.
-- [ ] Perform comprehensive visual QA: Verify rendered pages match original static output pixel-for-pixel.
-- [ ] Remove legacy data files (`web/src/data/*.js`) from project build pipeline.
+- [ ] Port existing components (`components/*.jsx`, `hooks/useAccessibility.jsx`, Tailwind config, `assets/`) into the Next.js project structure (`app/`, `components/`, unchanged internals where possible).
+- [ ] Mark components that use hooks/animation/browser APIs (`framer-motion`, `useState`, event handlers) with `"use client"` — most current components need this; keep data-fetching itself server-side where possible.
+- [ ] Create `lib/api.ts` — server-side fetch wrapper for the public API, using `fetch(url, { next: { revalidate: 60, tags: [...] } })` so Next's cache + tag-based revalidation apply automatically.
+- [ ] Build `app/[[...slug]]/page.tsx` — Server Component: reads `params.slug`, joins to a path/slug, fetches `/api/v1/public/pages/:slug` server-side, selects `Template{A-D}` based on `template_key`, renders with fetched blocks. Replaces both `App.jsx`'s 40+ routes and the previously-planned client-side `PageRenderer`.
+- [ ] Build `app/page.tsx` for the homepage (`/`) — either same dynamic pattern with `slug=""`, or its own bespoke Server Component if homepage sections stay hand-composed.
+- [ ] Build `app/api/revalidate/route.ts` — validates `REVALIDATE_SECRET`, accepts `{ path }` or `{ tag }`, calls `revalidatePath`/`revalidateTag`. This is what `backend` calls on every publish/approve/direct-write (wired in Phase 4).
+- [ ] `MegaMenu` — split into a Server Component (fetches `/api/v1/public/menu`, tag `"menu"`) wrapping a small `"use client"` component that only holds open/hover/mobile-toggle UI state.
+- [ ] `useAccessibility` — language/translation state fetched server-side (tag `"translations"`) and passed down as initial data; client context only manages the *current selected language* toggle, not the fetch.
+- [ ] Update Homepage components (`HeroCarousel`, `AnnouncementsTabs`, `HolidayCalendar`, `NewsTicker`, `QuickServices`, `MinisterProfiles`, `JailInsights`, `PhotoGallery`) to receive data as server-fetched props instead of importing static files or fetching client-side.
+- [ ] Update `Footer.jsx` to receive `SiteSettings` as a server-fetched prop (tag `"settings"`).
+- [ ] Implement loading/error UI via Next's `loading.tsx` / `error.tsx` route conventions per route segment.
+- [ ] Perform comprehensive visual QA: verify rendered pages match original static output pixel-for-pixel.
+- [ ] Remove legacy data files (`web/src/data/*.js` equivalents) from the project once QA passes.
+- [ ] Retire the old Vite `web/` app (or archive it) once the Next.js version is verified equivalent.
 
 > [!TIP]
 > **Done When Verification Criteria**
-> - The public site functions dynamically with identical visual output.
+> - The public site functions dynamically with identical visual output, served via Next.js.
 > - Temporarily stopping the backend service causes clean UI error states, confirming complete independence from legacy static JS data files.
+> - `curl` against a live page (no JS execution) returns fully-populated HTML — not an empty `<div id="root">` — proving SSR is actually in effect.
+> - Calling `/api/revalidate` with a known `path` updates that page's served content on the very next request, without a rebuild or redeploy.
 
 ---
 
@@ -178,6 +185,7 @@ sequenceDiagram
   - [ ] `media`: Multipart file upload and media library metadata management.
   - [ ] `gallery`, `officers`, `products`, `facilities`: Direct-write CRUD.
   - [ ] `menu/:id`: Immediate label relabeling and order reindexing.
+- [ ] Build `revalidateWebClient.js` helper — calls `web`'s `POST /api/revalidate` (with `REVALIDATE_SECRET`) whenever public content changes. Wire it into: `pages/:id/approve`, `announcements` approve, `menu` structural approve, `settings` update, and every direct-write mutation listed above (translations, media, gallery, officers, products, menu relabel) — each passing the affected `path` or `tag` (`"menu"`, `"translations"`, `"settings"`). Failure to reach `web` logs a warning but does not fail the admin mutation (Next's own TTL fallback still catches it).
 - [ ] Build System Management routes:
   - [ ] `users`: User administration (Super Admin).
   - [ ] `user-permissions`: Subtree scope permission management grid.
@@ -189,6 +197,7 @@ sequenceDiagram
 > - A Maker user can draft content and submit it for review, but is forbidden (403 Forbidden) from self-approving or publishing.
 > - A Checker user can view pending submissions in their authorized scope, review diffs, and approve items to publish live.
 > - Direct-write endpoints update content immediately while writing comprehensive audit log entries.
+> - Approving a page (or any direct-write save) triggers `/api/revalidate` on `web`, and the change is visible on the public site within seconds — not the Redis TTL window.
 
 ---
 
@@ -248,20 +257,4 @@ Harden backend infrastructure, enforce security headers, and complete formal com
 > [!TIP]
 > **Done When Verification Criteria**
 > - Penetration testing checks (XSS, SQLi, Auth Bypass, IDOR) pass with zero critical findings.
-> - All compliance items in `GIGW-COMPLIANCE-AUDIT.md` marked as requiring CMS integration are fully satisfied.
-
----
-
-## Phase 7: Post-Launch Enhancements — Prerender-on-Publish (SSR / SEO)
-
-Enhance crawler search engine optimization and accessibility without sacrificing instant CMS publish capabilities.
-
-### Task Checklist
-
-- [ ] Implement automated static HTML snapshot generation triggered upon content publication events.
-- [ ] Serve pre-rendered HTML pages directly to search engine bots while hydrating client React applications for users.
-- [ ] Validate search engine crawler indexing against rendered page output.
-
-> [!TIP]
-> **Done When Verification Criteria**
-> - Headless HTTP requests (`curl` without JavaScript execution) receive fully populated HTML content for search engine indexing.
+> - All compliance items in `GIGW-COMPLIANCE-AUDIT.md` marked as requiring CMS integration are fully satisfied, including the crawlability/SEO gap — closed already in Phase 3 via Next.js SSR/ISR, not a separate phase.

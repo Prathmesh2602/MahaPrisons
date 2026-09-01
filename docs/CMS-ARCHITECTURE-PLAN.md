@@ -21,8 +21,8 @@
 ```mermaid
 flowchart TD
     subgraph Clients ["Client Layer"]
-        PublicWeb["Public Web Portal (web)<br/>React 19 + Vite SPA"]
-        AdminPortal["Admin Portal (admin)<br/>Vite + React + TS"]
+        PublicWeb["Public Web Portal (web)<br/>Next.js 15 (App Router) — SSR + ISR"]
+        AdminPortal["Admin Portal (admin)<br/>Vite + React + TS (CSR)"]
     end
 
     subgraph API Gateway ["API & Service Layer"]
@@ -36,13 +36,14 @@ flowchart TD
         MediaStore["Media Storage Service<br/>(Local Disk / S3 Storage)"]
     end
 
-    PublicWeb -->|Fetch content| PublicAPI
+    PublicWeb -->|Server-side fetch at request/build time| PublicAPI
     PublicAPI <-->|Cached responses| RedisCache
     PublicAPI -->|Read queries| DB
-    
+
     AdminPortal -->|Auth & CMS Operations| AdminAPI
     AdminAPI -->|Scoped RBAC & Audit| DB
     AdminAPI -->|Upload Assets| MediaStore
+    AdminAPI -->|On publish/approve: trigger revalidation| PublicWeb
 ```
 
 ---
@@ -50,6 +51,10 @@ flowchart TD
 ## 1. Current State (As-Is Analysis)
 
 The public application (`web/`) operates as a pure client-side React 19 + Vite Single Page Application. The `admin/` and `backend/` modules currently consist of blueprint documentation without executable backend integration.
+
+> [!IMPORTANT]
+> **Framework Decision: `web/` migrates to Next.js (App Router)**
+> The public site's routing is being rebuilt regardless (§6) to go from 40+ static routes to a dynamic, CMS-driven `PageRenderer`. Doing that rebuild in **Next.js instead of staying on Vite/CSR** is the same-sized migration done once, not twice — it resolves the CSR crawlability/SEO gap already flagged in `docs/GIGW-COMPLIANCE-AUDIT.md` at the same time, instead of retrofitting SSR as a separate later phase. `admin/` stays Vite + React (CSR) — it's an authenticated, interactive, non-indexed app; Next.js buys nothing there.
 
 Currently, all application content is hardcoded across static JavaScript and JSON files bundled at build time:
 
@@ -392,17 +397,27 @@ export const blockRegistry = {
 - `PUT /gallery/:id` | `PUT /officers/:id` | `PUT /products/:id` — Standard CRUD management.
 - `PUT /menu/:id` — Relabels navigation labels or order index.
 
+#### Revalidation Webhook (drives Next.js ISR)
+
+- `POST /api/revalidate` (called by `backend`, not by the browser) — hosted on `web`'s Next.js app, protected by a shared secret. `backend` calls this on every event that changes public content: `pages/:id/approve`, `menu` structural approve, `settings` update, and every direct-write mutation (translation, gallery, officer, product, menu relabel). Payload: `{ path: "/administrative/administration" }` or `{ tag: "menu" }` / `{ tag: "translations" }` for cross-cutting data. Internally calls Next's `revalidatePath`/`revalidateTag` — the affected page regenerates and serves fresh on the very next request, no cache TTL wait.
+
 ---
 
-## 6. Frontend Architecture Rework (`web/`)
+## 6. Frontend Architecture Rework (`web/` → Next.js)
 
-1. **Dynamic Routing Engine**: Collapse 40+ explicit static routes into a single wildcard dispatcher:
-   ```jsx
-   <Route path="/*" element={<PageRenderer />} />
+`web/` is rebuilt as a Next.js (App Router) project — replacing `react-router-dom` and the Vite CSR shell, not layered on top of them.
+
+1. **Dynamic Routing Engine**: 40+ explicit `App.jsx` routes collapse into one dynamic catch-all Server Component route:
    ```
-2. **Dynamic Menu System**: Swap static `mockData.js` imports in `MegaMenu.jsx` for React Query hook fetching `/api/v1/public/menu`.
-3. **Global Translation Context**: Hydrate `useAccessibility()` from `/api/v1/public/translations` at initial application launch.
-4. **Legacy Data Retirement**: Transition existing data files (`mockData.js`, `administrativeData.js`, etc.) into database seed scripts before removal from the repository bundle.
+   app/[[...slug]]/page.tsx
+   ```
+   The Server Component reads `params.slug`, calls the public API server-side (`fetch(...)`, no client round-trip needed for first paint), and renders the matching `Template{A-D}` with its `ContentBlock[]` — same template components as today, now fed by a server fetch instead of a static import.
+2. **Rendering & Freshness Strategy**: Pages render via **ISR** (`export const revalidate = ...` as a safety-net TTL) **plus on-demand revalidation** — the admin backend calls the `/api/revalidate` webhook (§5) on publish/approve/direct-write, so a page updates immediately rather than waiting on any TTL. No rebuild/redeploy ever required for a content change — the core CMS requirement — while every visitor and every crawler gets fully-rendered HTML.
+3. **Dynamic Menu System**: `MegaMenu` becomes a Server Component fetching `/api/v1/public/menu` at render time (revalidated via the `menu` tag on webhook), wrapped by a small Client Component only for the interactive open/close/hover state — data fetching itself doesn't need to be client-side anymore.
+4. **Global Translation Context**: `useAccessibility()`'s translation map is fetched server-side once per request (or cached via `revalidateTag('translations')`) and passed down, rather than fetched client-side after mount — removes the current flash-of-Marathi-keys-before-translation-loads risk entirely.
+5. **Legacy Data Retirement**: Transition existing data files (`mockData.js`, `administrativeData.js`, etc.) into database seed scripts before removal from the repository bundle.
+6. **Library compatibility**: `framer-motion` and `lucide-react` both work in Next.js Client Components unchanged (mark components using hooks/animation/interactivity `"use client"`). `<img>` tags can stay as-is initially; migrating to `next/image` is a nice-to-have, not required for this plan.
+7. **No separate SSR phase needed later**: because SSR/ISR ship as part of this rework (Phase 3), the GIGW crawlability gap is closed here — there is no follow-up "Phase 7" retrofit.
 
 ---
 
@@ -434,14 +449,13 @@ Admin Dashboard
 
 | Phase | Milestone Title | Primary Deliverables & Operational Focus |
 | :---: | :--- | :--- |
-| **Phase 0** | Core Infrastructure | Init `backend` & `admin` packages, Docker Postgres+Redis setup, env variables. |
+| **Phase 0** | Core Infrastructure | Init `backend` & `admin` packages, init `web/` as Next.js, Docker Postgres+Redis setup, env variables. |
 | **Phase 1** | Database & Seeding | Execute Prisma migrations, run legacy data parsing seed script. |
 | **Phase 2** | Public Read API | Construct `/api/v1/public` endpoints with Redis caching middleware. |
-| **Phase 3** | Frontend Integration | Replace static imports in `web/` with dynamic API hooks and `PageRenderer`. |
-| **Phase 4** | Auth & Governance API | Build JWT auth, RBAC middlewares, Maker-Checker review queue routes. |
-| **Phase 5** | Admin Portal Interface | Build Admin UI (Navigation Builder, Block Form Builder, Review Queue, Media Library). |
+| **Phase 3** | Frontend Integration | Rebuild `web/` on Next.js App Router: dynamic `[[...slug]]` route, Server Component data fetch, ISR + on-demand `/api/revalidate` webhook. SSR/SEO ships here, not as a later phase. |
+| **Phase 4** | Auth & Governance API | Build JWT auth, RBAC middlewares, Maker-Checker review queue routes, call `/api/revalidate` on every publish/approve/direct-write. |
+| **Phase 5** | Admin Portal Interface | Build Admin UI (Navigation Builder, Block Form Builder, Review Queue, Media Library) — Vite + React (CSR), unchanged. |
 | **Phase 6** | Security & Compliance | XSS sanitization, CORS lockdown, rate limiting, GIGW audit re-assessment. |
-| **Phase 7** | SSR & SEO Enhancements | Implement prerender-on-publish pipeline for crawler accessibility. |
 
 ---
 
@@ -450,4 +464,4 @@ Admin Dashboard
 - **Infrastructure & Database Hosting**: Determine self-hosted PostgreSQL/Redis cluster versus government-managed cloud infrastructure.
 - **Media Asset Storage**: Select local storage mount, S3 object storage, or NIC-provided media infrastructure.
 - **User Directory Seed**: Establish initial administrator accounts and departmental scope mapping (`UserMenuPermission`).
-- **Prerendering Priority**: Evaluate early implementation of Phase 7 (prerender-on-publish) to satisfy GIGW search crawler compliance ahead of launch.
+- **Hosting for Next.js `web/`**: Confirm target hosting supports Next.js server runtime (Node server, or platforms like Vercel/self-hosted Node) rather than pure static hosting — required for ISR/on-demand revalidation to function. Flag to whoever owns govt hosting/NIC infra early, as it may constrain the "self-hosted vs managed" decision above.
