@@ -3,34 +3,57 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';
 
 export const Footer = () => {
-  const { language, t } = useAccessibility();
+  const { language } = useAccessibility();
 
-  const footerLinks = mockHomepageData.footer_links;
   const footerBanners = mockHomepageData.footer_banners;
 
-  // Render clean text helper
-  const getCleanFooterText = (text) => {
-    return t(text);
-  };
+  // Yerawada Open Prison specific links
+  const footerLinks = [
+    { text: language === 'mr' ? 'मुख्यपृष्ठ' : 'Home', href: '#' },
+    { text: language === 'mr' ? 'आमच्याबद्दल' : 'About Us', href: '#' },
+    { text: language === 'mr' ? 'उपक्रम' : 'Activities', href: '#' },
+    { text: language === 'mr' ? 'वेबसाइट धोरणे' : 'Website Policies', href: '#' },
+    { text: language === 'mr' ? 'संपर्क साधा' : 'Contact Us', href: '#' },
+    { text: language === 'mr' ? 'अभिप्राय' : 'Feedback', href: '#' }
+  ];
 
   return (
     <footer className="w-full bg-[#111827] text-gray-400 text-xs smooth-transition">
 
       {/* 1. TOP SECTION: Logo Banners Carousel Container (White Background) */}
-      <div className="w-full bg-white py-5 px-4 md:px-8 border-b border-gray-200 flex justify-center items-center">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-center items-center gap-6 md:gap-10 select-none">
-          {/* Pause Indicator mock matching the screenshot */}
-          <button className="text-gray-400 hover:text-gray-900 transition-colors p-1" title="Pause Carousel">
-            <span className="text-base font-medium">⏸</span>
-          </button>
+      <div className="w-full bg-white py-5 border-b border-gray-200 overflow-hidden relative flex items-center group">
+        <style>
+          {`
+            @keyframes marquee {
+              0% { transform: translateX(0%); }
+              100% { transform: translateX(-50%); }
+            }
+            .animate-marquee {
+              animation: marquee 30s linear infinite;
+              display: flex;
+              width: max-content;
+            }
+            .group:hover .animate-marquee {
+              animation-play-state: paused;
+            }
+          `}
+        </style>
 
-          {footerBanners.map((banner, idx) => (
+        {/* Pause Indicator overlay (visible on hover to show it's paused) */}
+        <div className="absolute left-4 z-10 bg-white shadow rounded p-1 cursor-default opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400">
+           <span className="text-base font-medium" title="Paused">⏸</span>
+        </div>
+
+        {/* Marquee Track */}
+        <div className="animate-marquee gap-10 px-5 items-center">
+          {/* Render the array twice for a seamless infinite scroll loop */}
+          {[...footerBanners, ...footerBanners].map((banner, idx) => (
             <a
               key={idx}
               href={banner.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="opacity-90 hover:opacity-100 transition-all focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 hover:scale-105"
+              className="opacity-90 hover:opacity-100 transition-all focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 shrink-0"
               title={banner.img_alt}
             >
               <img
@@ -45,20 +68,17 @@ export const Footer = () => {
       </div>
 
       {/* 2. MIDDLE SECTION: Central Links Navigation (Dark Gray Background) */}
-      <div className="w-full bg-[#1F2937] py-3.5 px-4 text-center border-b border-gray-800">
+      <div className="w-full bg-[#1F2937] py-3.5 px-4 text-center border-t-4 border-amber-600 border-b border-gray-800">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-xs font-semibold text-white">
           {footerLinks.map((link, idx) => {
-            if (!link.text || idx >= 6) return null; // Only render the first 6 main links as in the screenshot
             return (
               <React.Fragment key={idx}>
                 {idx > 0 && <span className="text-gray-600">|</span>}
                 <a
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="hover:text-amber-400 hover:underline transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded px-1"
                 >
-                  {getCleanFooterText(link.text)}
+                  {link.text}
                 </a>
               </React.Fragment>
             );
@@ -66,7 +86,21 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* 3. BOTTOM SECTION: Copyright & NIC details (Deep Black Background) */}
+      {/* 3. CONTACT SECTION: Address and contact info */}
+      <div className="w-full bg-[#1F2937] py-5 px-4 text-center border-b border-gray-800">
+         <p className="text-gray-300 font-medium text-[13px] leading-relaxed">
+           {language === 'mr' 
+              ? 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६'
+              : 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006'}
+           <br className="md:hidden" />
+           <span className="hidden md:inline text-gray-500 mx-3">|</span>
+           {language === 'mr' ? 'फोन: ०२०-२६६९४०५१' : 'Phone: 020-26694051'}
+           <span className="hidden md:inline text-gray-500 mx-3">|</span>
+           {language === 'mr' ? 'ई-मेल:' : 'Email:'} <a href="mailto:yerwadaop-mh@gov.in" className="hover:text-amber-400 hover:underline">yerwadaop-mh@gov.in</a>
+         </p>
+      </div>
+
+      {/* 4. BOTTOM SECTION: Copyright & NIC details (Deep Black Background) */}
       <div className="w-full bg-[#0A0F1D] py-10 px-6 text-center text-white text-xs leading-relaxed border-t border-gray-900 select-none">
         <div className="max-w-3xl mx-auto flex flex-col items-center gap-8">
 
@@ -74,8 +108,8 @@ export const Footer = () => {
           <div className="flex flex-col gap-1.5 items-center text-[11.5px] md:text-[12px]">
             <div className="font-semibold text-white">
               {language === 'mr'
-                ? 'मालकीची सामग्री महाराष्ट्र कारागृह विभाग'
-                : 'Contents owned and maintained by Maharashtra Prisons Department.'}
+                ? 'मालकीची सामग्री येरवडा खुले कारागृह'
+                : 'Contents owned and maintained by Yerawada Open Prison.'}
             </div>
             <div className="font-medium text-white/85">
               {language === 'mr'
@@ -92,54 +126,8 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Centered S3WaaS, NIC and Digital India Logos separated by dividers */}
-          <div className="flex items-center justify-center gap-6 border-t border-gray-800/60 pt-6 w-full max-w-md">
-            {/* S3WaaS Logo */}
-            <a
-              href="https://s3waas.gov.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 hover:opacity-100 transition-opacity"
-            >
-              <img
-                src="https://mahaprisons.gov.in/wp-content/themes/sdo-theme/images/S3WaaS.svg"
-                alt="S3WaaS"
-                className="h-9 w-auto dark-mode:brightness-125"
-              />
-            </a>
 
-            <div className="w-[1px] h-6 bg-gray-800" />
 
-            {/* NIC Logo */}
-            <a
-              href="https://www.nic.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 hover:opacity-100 transition-opacity"
-            >
-              <img
-                src="https://mahaprisons.gov.in/wp-content/themes/sdo-theme/images/NIC.svg"
-                alt="NIC"
-                className="h-9 w-auto dark-mode:brightness-125"
-              />
-            </a>
-
-            <div className="w-[1px] h-6 bg-gray-800" />
-
-            {/* Digital India Logo */}
-            <a
-              href="https://www.digitalindia.gov.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 hover:opacity-100 transition-opacity"
-            >
-              <img
-                src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2019/03/2019031587.png"
-                alt="Digital India"
-                className="h-14 w-auto"
-              />
-            </a>
-          </div>
         </div>
       </div>
 
