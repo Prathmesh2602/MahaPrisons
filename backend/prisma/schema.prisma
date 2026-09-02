@@ -1,0 +1,241 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             String               @id @default(uuid()) @db.Uuid
+  email          String               @unique
+  name           String
+  role           String               @default("CONTENT_EDITOR") // SUPER_ADMIN, CONTENT_EDITOR, AUDITOR
+  passwordHash   String
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  createdPages      Page[]               @relation("PageCreator")
+  updatedPages      Page[]               @relation("PageUpdater")
+  submittedVersions PageVersion[]        @relation("VersionSubmitter")
+  reviewedVersions  PageVersion[]        @relation("VersionReviewer")
+  uploadedMedia     Media[]
+  permissions       UserMenuPermission[]
+}
+
+model Template {
+  key                 String   @id
+  name                String
+  thumbnailMediaId    String?  @db.Uuid
+  allowedBlockTypes   String[]
+  slotRules           Json?
+  
+  pages               Page[]
+  thumbnail           Media?   @relation(fields: [thumbnailMediaId], references: [id])
+}
+
+enum PageStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+  REJECTED
+  ARCHIVED
+}
+
+model Page {
+  id            String     @id @default(uuid()) @db.Uuid
+  slug          String     @unique
+  menuItemId    String?    @db.Uuid
+  templateKey   String
+  status        PageStatus @default(DRAFT)
+  isPrimary     Boolean    @default(false)
+  titleMr       String
+  titleEn       String
+  meta          Json?
+  createdBy     String     @db.Uuid
+  updatedBy     String     @db.Uuid
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  publishedAt   DateTime?
+
+  template      Template       @relation(fields: [templateKey], references: [key])
+  menuItem      MenuItem?      @relation(fields: [menuItemId], references: [id])
+  blocks        ContentBlock[]
+  versions      PageVersion[]
+  creator       User           @relation("PageCreator", fields: [createdBy], references: [id])
+  updater       User           @relation("PageUpdater", fields: [updatedBy], references: [id])
+  facilities    Facility[]
+}
+
+model ContentBlock {
+  id        String   @id @default(uuid()) @db.Uuid
+  pageId    String   @db.Uuid
+  blockType String
+  order     Int
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+}
+
+enum DecisionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model PageVersion {
+  id             String         @id @default(uuid()) @db.Uuid
+  pageId         String         @db.Uuid
+  blocksSnapshot Json
+  submittedBy    String         @db.Uuid
+  submittedAt    DateTime       @default(now())
+  reviewedBy     String?        @db.Uuid
+  reviewedAt     DateTime?
+  decision       DecisionStatus @default(PENDING)
+  comments       String?
+
+  page           Page           @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  submitter      User           @relation("VersionSubmitter", fields: [submittedBy], references: [id])
+  reviewer       User?          @relation("VersionReviewer", fields: [reviewedBy], references: [id])
+}
+
+model MenuItem {
+  id           String     @id @default(uuid()) @db.Uuid
+  parentId     String?    @db.Uuid
+  labelMr      String
+  labelEn      String
+  href         String
+  pageId       String?    @db.Uuid
+  icon         String?
+  order        Int
+  isMegaGroup  Boolean    @default(false)
+  visible      Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  parent       MenuItem?  @relation("MenuHierarchy", fields: [parentId], references: [id])
+  children     MenuItem[] @relation("MenuHierarchy")
+  page         Page[]
+  permissions  UserMenuPermission[]
+}
+
+model Translation {
+  id        String   @id @default(uuid()) @db.Uuid
+  key       String   @unique
+  mr        String
+  en        String
+  namespace String   @default("global")
+}
+
+model Media {
+  id         String   @id @default(uuid()) @db.Uuid
+  filename   String
+  url        String
+  altMr      String
+  altEn      String
+  uploadedBy String   @db.Uuid
+  createdAt  DateTime @default(now())
+
+  uploader   User     @relation(fields: [uploadedBy], references: [id])
+  templates  Template[]
+}
+
+model SiteSettings {
+  id            String @id @default(uuid()) @db.Uuid
+  logoH1        String
+  logoSpans     Json
+  topbarLinks   Json
+  footerColumns Json
+  contactInfo   Json
+  socialLinks   Json
+}
+
+model Announcement {
+  id          String     @id @default(uuid()) @db.Uuid
+  titleMr     String
+  titleEn     String
+  category    String
+  pdfMediaId  String?    @db.Uuid
+  publishDate DateTime
+  validUntil  DateTime?
+  status      PageStatus @default(DRAFT)
+}
+
+model Product {
+  id            String   @id @default(uuid()) @db.Uuid
+  nameMr        String
+  nameEn        String
+  category      String
+  descriptionMr String
+  descriptionEn String
+  price         Decimal? @db.Decimal(10, 2)
+  images        Json
+  jailUnit      String
+  stockStatus   String   @default("AVAILABLE")
+}
+
+model Facility {
+  id            String   @id @default(uuid()) @db.Uuid
+  nameMr        String
+  nameEn        String
+  category      String
+  descriptionMr String
+  descriptionEn String
+  officers      Json
+  pageId        String?  @db.Uuid
+  page          Page?    @relation(fields: [pageId], references: [id])
+}
+
+model Officer {
+  id            String   @id @default(uuid()) @db.Uuid
+  nameMr        String
+  nameEn        String
+  designationMr String
+  designationEn String
+  photoMediaId  String?  @db.Uuid
+  department    String
+  order         Int
+}
+
+model UserMenuPermission {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  menuItemId String   @db.Uuid
+  canWrite   Boolean  @default(false)
+  canApprove Boolean  @default(false)
+
+  user       User     @relation(fields: [userId], references: [id])
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+}
+
+model AuditLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  action      String
+  resource    String
+  resourceId  String?
+  diff        Json?
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+}
+
+model GalleryAlbum {
+  id          String         @id @default(uuid()) @db.Uuid
+  titleMr     String
+  titleEn     String
+  createdAt   DateTime       @default(now())
+  images      GalleryImage[]
+}
+
+model GalleryImage {
+  id          String       @id @default(uuid()) @db.Uuid
+  albumId     String       @db.Uuid
+  mediaId     String       @db.Uuid
+  order       Int
+  
+  album       GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+}
