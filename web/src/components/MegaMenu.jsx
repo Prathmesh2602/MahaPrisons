@@ -40,8 +40,61 @@ export const MegaMenu = () => {
   const [activeDropdown, setActiveDropdown] = useState(null); // Desktop active top-level dropdown index
   const [activeSubMenu, setActiveSubMenu] = useState(null); // Desktop active sub flyout index
   const [isSticky, setIsSticky] = useState(false);
-  const [splitIndex, setSplitIndex] = useState(mockHomepageData.navigation_menu.length);
+  const [navItems, setNavItems] = useState(mockHomepageData.navigation_menu);
+  const [splitIndex, setSplitIndex] = useState(navItems.length);
   const [toolbarHeight, setToolbarHeight] = useState(41);
+
+  // Fetch live menu from database
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/public/menu`);
+        const data = await res.json();
+        
+        if (data && Array.isArray(data) && data.length > 0) {
+          const formatNav = (items) => {
+             return items.map(dbItem => {
+                const isMegaMenu = dbItem.isMegaGroup;
+                let groups = [];
+                let children = dbItem.children || [];
+                
+                if (isMegaMenu) {
+                   groups = children.map(group => ({
+                      groupTitle: { en: group.labelEn, mr: group.labelMr },
+                      children: (group.children || []).map(link => ({
+                         text: { en: link.labelEn, mr: link.labelMr },
+                         href: link.href
+                      }))
+                   }));
+                   children = []; 
+                } else {
+                   children = children.map(child => ({
+                      text: { en: child.labelEn, mr: child.labelMr },
+                      href: child.href
+                   }));
+                }
+                
+                return {
+                   text: { en: dbItem.labelEn, mr: dbItem.labelMr },
+                   icon: dbItem.icon,
+                   href: dbItem.href,
+                   isMegaMenu,
+                   children,
+                   groups
+                };
+             });
+          };
+          
+          const mappedData = formatNav(data);
+          setNavItems(mappedData);
+          setSplitIndex(mappedData.length);
+        }
+      } catch (err) {
+        console.error("Failed to fetch menu:", err);
+      }
+    };
+    fetchMenu();
+  }, []);
   const containerRef = useRef(null);
   const measuringRef = useRef(null);
 
@@ -163,8 +216,8 @@ export const MegaMenu = () => {
   };
 
   // Split navigation items dynamically based on available width
-  const primaryItems = mockHomepageData.navigation_menu.slice(0, splitIndex);
-  const moreItems = mockHomepageData.navigation_menu.slice(splitIndex);
+  const primaryItems = navItems.slice(0, splitIndex);
+  const moreItems = navItems.slice(splitIndex);
 
   return (
     <>
@@ -184,7 +237,7 @@ export const MegaMenu = () => {
           className="absolute top-0 left-0 h-0 overflow-hidden invisible flex items-center gap-1 text-[13px] font-semibold w-max"
           aria-hidden="true"
         >
-          {mockHomepageData.navigation_menu.map((item, idx) => {
+          {navItems.map((item, idx) => {
             const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
             const isActive = isItemActive(item, location.pathname);
             const IconComponent = item.icon ? iconMap[item.icon] : null;
@@ -439,7 +492,7 @@ export const MegaMenu = () => {
             
             {/* Drawer Menu Items */}
             <div className="flex flex-col gap-1 px-3 py-4 overflow-y-auto custom-scrollbar h-full">
-              {mockHomepageData.navigation_menu.map((item, idx) => {
+              {navItems.map((item, idx) => {
                 const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
                 const isDropdownActive = activeDropdown === idx;
                 const isActive = isItemActive(item, location.pathname);

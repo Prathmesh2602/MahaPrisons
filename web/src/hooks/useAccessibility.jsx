@@ -59,7 +59,11 @@ export const AccessibilityProvider = ({ children }) => {
 
   // Translation helper function
   const t = (key) => {
-    const cleanKey = key.trim();
+    if (!key) return '';
+    if (typeof key === 'object') {
+      return key[language] || key.en || key.mr || '';
+    }
+    const cleanKey = String(key).trim();
     if (translations[cleanKey]) {
       return translations[cleanKey][language];
     }

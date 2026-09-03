@@ -3,8 +3,10 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';
 import { User } from 'lucide-react';
 
-export const MinisterProfiles = () => {
+export const MinisterProfiles = ({ data }) => {
   const { t, language } = useAccessibility();
+  const ministers = data?.ministers?.length > 0 ? data.ministers : mockHomepageData.minister_profiles.slice(0, 4);
+  const seniorOfficers = data?.seniorOfficers?.length > 0 ? data.seniorOfficers : mockHomepageData.minister_profiles.slice(4);
 
   return (
     <div className="w-full pt-[100px] pb-4 px-4 md:px-8 bg-transparent relative overflow-hidden">
@@ -14,8 +16,8 @@ export const MinisterProfiles = () => {
 
       <div className="max-w-7xl mx-auto relative z-10 flex flex-col gap-2 lg:gap-2">
         {[
-          mockHomepageData.minister_profiles.slice(0, 4),
-          mockHomepageData.minister_profiles.slice(4)
+          ministers,
+          seniorOfficers
         ].map((row, rowIdx) => (
           <div key={rowIdx} className="w-full">
             {rowIdx === 1 && (

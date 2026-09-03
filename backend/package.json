@@ -130,6 +130,7 @@
     "router": "^2.2.0",
     "safe-buffer": "^5.2.1",
     "safer-buffer": "^2.1.2",
+    "sanitize-html": "^2.17.7",
     "semver": "^7.8.5",
     "send": "^1.2.1",
     "serve-static": "^2.2.1",
@@ -162,6 +163,7 @@
     "zod": "^4.5.4"
   },
   "scripts": {
+    "dev": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "prisma skills sync || exit 0"
   },

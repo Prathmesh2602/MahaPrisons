@@ -1,21 +1,28 @@
 import React from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 import { mockHomepageData } from '../data/mockData';
 
 export const Footer = () => {
   const { language } = useAccessibility();
+  const { settings } = useSiteSettings();
 
   const footerBanners = mockHomepageData.footer_banners;
 
-  // Yerawada Open Prison specific links
-  const footerLinks = [
-    { text: language === 'mr' ? 'मुख्यपृष्ठ' : 'Home', href: '#' },
-    { text: language === 'mr' ? 'आमच्याबद्दल' : 'About Us', href: '#' },
-    { text: language === 'mr' ? 'उपक्रम' : 'Activities', href: '#' },
-    { text: language === 'mr' ? 'वेबसाइट धोरणे' : 'Website Policies', href: '#' },
-    { text: language === 'mr' ? 'संपर्क साधा' : 'Contact Us', href: '#' },
-    { text: language === 'mr' ? 'अभिप्राय' : 'Feedback', href: '#' }
-  ];
+  const footerLinks = settings?.footerColumns?.length > 0 
+    ? settings.footerColumns 
+    : [
+        { text: language === 'mr' ? 'मुख्यपृष्ठ' : 'Home', href: '#' },
+        { text: language === 'mr' ? 'आमच्याबद्दल' : 'About Us', href: '#' },
+        { text: language === 'mr' ? 'उपक्रम' : 'Activities', href: '#' },
+        { text: language === 'mr' ? 'वेबसाइट धोरणे' : 'Website Policies', href: '#' },
+        { text: language === 'mr' ? 'संपर्क साधा' : 'Contact Us', href: '#' },
+        { text: language === 'mr' ? 'अभिप्राय' : 'Feedback', href: '#' }
+      ];
+
+  const address = settings?.contactInfo?.address || (language === 'mr' ? 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६' : 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006');
+  const phone = settings?.contactInfo?.phone || '020-26694051';
+  const email = settings?.contactInfo?.email || 'yerwadaop-mh@gov.in';
 
   return (
     <footer className="w-full bg-[#111827] text-gray-400 text-xs smooth-transition">
@@ -89,14 +96,12 @@ export const Footer = () => {
       {/* 3. CONTACT SECTION: Address and contact info */}
       <div className="w-full bg-[#1F2937] py-5 px-4 text-center border-b border-gray-800">
          <p className="text-gray-300 font-medium text-[13px] leading-relaxed">
-           {language === 'mr' 
-              ? 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६'
-              : 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006'}
+           {address}
            <br className="md:hidden" />
            <span className="hidden md:inline text-gray-500 mx-3">|</span>
-           {language === 'mr' ? 'फोन: ०२०-२६६९४०५१' : 'Phone: 020-26694051'}
+           {language === 'mr' ? 'फोन:' : 'Phone:'} {phone}
            <span className="hidden md:inline text-gray-500 mx-3">|</span>
-           {language === 'mr' ? 'ई-मेल:' : 'Email:'} <a href="mailto:yerwadaop-mh@gov.in" className="hover:text-amber-400 hover:underline">yerwadaop-mh@gov.in</a>
+           {language === 'mr' ? 'ई-मेल:' : 'Email:'} <a href={`mailto:${email}`} className="hover:text-amber-400 hover:underline">{email}</a>
          </p>
       </div>
 

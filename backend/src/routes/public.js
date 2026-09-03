@@ -1,14 +1,14 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
-const { cacheMiddleware } = require('../redis');
+const { cacheMiddleware } = require('../cache');
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// GET /api/v1/public/pages/:slug
-router.get('/pages/:slug(*)', cacheMiddleware(60), async (req, res) => {
+// GET /api/v1/public/pages/*
+router.get('/pages/*slug', cacheMiddleware(60), async (req, res) => {
   try {
-    const slug = req.params.slug;
+    const slug = Array.isArray(req.params.slug) ? req.params.slug.join('/') : req.params.slug;
     const page = await prisma.page.findUnique({
       where: { slug },
       include: {

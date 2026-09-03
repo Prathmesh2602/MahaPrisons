@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Grid } from 'lucide-react';
 import { galleryItems } from '../data/galleryData';
 
-export const PhotoGallery = () => {
+export const PhotoGallery = ({ data }) => {
   const { language, t } = useAccessibility();
+  const [activeTab, setActiveTab] = useState('photos');
 
-  const galleryInfo = mockHomepageData.gallery;
+  // Safely grab images from backend data or fall back to mock
+  const photos = data?.images?.length > 0 ? data.images : mockHomepageData.gallery.photos;
+  
+  const galleryInfo = {
+    photos: photos,
+    videos: mockHomepageData.gallery.videos
+  };
 
   // Interleave photos with relatable filler blocks to fill masonry gaps
   const mixedItems = [

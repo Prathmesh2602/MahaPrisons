@@ -4,13 +4,13 @@ import { mockHomepageData } from '../data/mockData';
 import { ChevronLeft, ChevronRight, FileText, ArrowRight, Quote } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const HeroCarousel = () => {
+export const HeroCarousel = ({ data }) => {
   const { language, t } = useAccessibility();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const slides = mockHomepageData.hero_carousel;
-  const slideDuration = 6000;
+  const slides = data?.slides || mockHomepageData.hero_carousel;
+  const slideDuration = data?.slideDuration || 6000;
 
   useEffect(() => {
     if (isPaused) return;
@@ -28,10 +28,14 @@ export const HeroCarousel = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  // Director Quote from existing project
-  const dgQuote = language === 'mr'
-    ? "सुरक्षितता, सुधारणा आणि पुनर्वसन ही आमची मुख्य सूत्रे आहेत. आम्ही बंदीवानांना कौशल्यपूर्ण प्रशिक्षण देऊन समाजाचा एक उपयुक्त घटक बनविण्यासाठी कटिबद्ध आहोत."
-    : "Security, correction, and rehabilitation are our guiding pillars. We are committed to equipping inmates with skills to make them productive members of society.";
+  const dgQuote = data?.dgQuote?.[language] || (language === 'mr'
+    ? "सुरक्षितता, सुधारणा आणि पुनर्वसन ही आमची मुख्य सूत्रे आहेत. आम्ही बंदीवानांना कौशल्यपूर्ण प्रशिक्षण देऊन समाजाचा list एक उपयुक्त घटक बनविण्यासाठी कटिबद्ध आहोत."
+    : "Security, correction, and rehabilitation are our guiding pillars. We are committed to equipping inmates with skills to make them productive members of society.");
+    
+  const dgName = data?.dgName?.[language] || (language === 'mr' ? "श्री. सुहास वारके" : "Shri. Suhas Warke");
+  const dgDesignation = data?.dgDesignation?.[language] || (language === 'mr' ? "अपर पोलीस महासंचालक व महानिरीक्षक" : "ADG & Director General");
+  const dgPhoto = data?.dgPhoto || "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/06/202606051649346751.jpeg";
+  const dgLink = data?.dgLink || "https://mahaprisons.gov.in/directors-message/";
 
   return (
     <div className="w-full bg-transparent pt-4 pb-0 px-4 md:px-8 border-gray-200/40 dark-mode:border-gray-850/45 smooth-transition relative z-10">
@@ -147,8 +151,8 @@ export const HeroCarousel = () => {
                 {/* Dignitary Profile details */}
                 <div className="flex items-center gap-4 border-b border-white/10 pb-4">
                   <img
-                    src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/06/202606051649346751.jpeg"
-                    alt="ADG Suhas Warke"
+                    src={dgPhoto}
+                    alt={dgName}
                     className="w-14 h-14 rounded-full object-cover object-top border-2 border-white/30 shadow-md"
                   />
                   <div className="flex flex-col">
@@ -156,10 +160,10 @@ export const HeroCarousel = () => {
                       {language === 'mr' ? 'संचालक संदेश' : "Director's Message"}
                     </span>
                     <h3 className="text-sm font-semibold font-poppins text-white">
-                      {t("श्री. सुहास वारके")}
+                      {dgName}
                     </h3>
                     <p className="text-[10px] font-semibold text-gray-300 leading-tight">
-                      {language === 'mr' ? 'अपर पोलीस महासंचालक व महानिरीक्षक' : 'ADG & Director General'}
+                      {dgDesignation}
                     </p>
                   </div>
                 </div>
@@ -175,7 +179,7 @@ export const HeroCarousel = () => {
                 {/* Action Links */}
                 <div className="pt-2 flex flex-col gap-2">
                   <a
-                    href="https://mahaprisons.gov.in/directors-message/"
+                    href={dgLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-between text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 group/btn cursor-pointer"
@@ -246,8 +250,8 @@ export const HeroCarousel = () => {
         <div className="md:hidden w-full mt-4 bg-white dark-mode:bg-gray-900 border border-gray-200 dark-mode:border-gray-800 rounded-3xl p-6 shadow-md relative">
           <div className="flex items-center gap-4 border-b border-gray-100 dark-mode:border-gray-800 pb-4">
             <img
-              src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/06/202606051649346751.jpeg"
-              alt="ADG Suhas Warke"
+              src={dgPhoto}
+              alt={dgName}
               className="w-14 h-14 rounded-full object-cover object-top border border-gray-200 dark-mode:border-gray-700 shadow-sm"
             />
             <div className="flex flex-col">
@@ -255,10 +259,10 @@ export const HeroCarousel = () => {
                 {language === 'mr' ? 'संचालक संदेश' : "Director's Message"}
               </span>
               <h3 className="text-sm font-semibold font-poppins text-gray-900 dark-mode:text-white">
-                {t("श्री. सुहास वारके")}
+                {dgName}
               </h3>
               <p className="text-[10px] font-semibold text-gray-500 dark-mode:text-gray-400 leading-tight">
-                {language === 'mr' ? 'अपर पोलीस महासंचालक व महानिरीक्षक' : 'ADG & Director General'}
+                {dgDesignation}
               </p>
             </div>
           </div>
@@ -270,7 +274,7 @@ export const HeroCarousel = () => {
           </div>
           <div className="pt-2 flex flex-col gap-2">
             <a
-              href="https://mahaprisons.gov.in/directors-message/"
+              href={dgLink}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between text-xs font-medium text-[#0F3D66] dark-mode:text-blue-400 hover:text-[#1E5AA8] transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 group/btn cursor-pointer"

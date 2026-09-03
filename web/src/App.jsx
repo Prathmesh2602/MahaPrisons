@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AccessibilityProvider } from './hooks/useAccessibility';
+import { SettingsProvider } from './hooks/useSiteSettings';
 import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
+import { PageRenderer } from './pages/PageRenderer';
 import YerawadaOpenJailPage from './pages/PrisonSystem';
 import GalleryPage from './pages/GalleryPage';
 import OurProductsPage from './pages/OurProductsPage';
@@ -50,56 +51,60 @@ import LibraryPage from './pages/facilities/LibraryPage';
 function App() {
   return (
     <AccessibilityProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="yerawada-open-jail" element={<YerawadaOpenJailPage />} />
-            <Route path="gallery" element={<GalleryPage />} />
-            <Route path="our-products" element={<OurProductsPage />} />
-            <Route path="agriculture/nursery" element={<NurseryPage />} />
-            <Route path="agriculture/poultry-farming" element={<PoultryFarmingPage />} />
-            <Route path="agriculture/dairy-farming" element={<DairyFarmingPage />} />
-            <Route path="agriculture/goat-farming" element={<GoatFarmingPage />} />
-            <Route path="agriculture/mushroom-project" element={<MushroomProjectPage />} />
-            <Route path="agriculture/vermicompost-project" element={<VermicompostProjectPage />} />
-            <Route path="agriculture/innovative-activities" element={<InnovativeActivitiesPage />} />
-            
-            <Route path="administrative/administration" element={<AdministrationPage />} />
-            <Route path="administrative/establishment" element={<EstablishmentPage />} />
-            <Route path="administrative/judicial" element={<JudicialPage />} />
-            <Route path="administrative/ration" element={<RationPage />} />
-            <Route path="administrative/canteen" element={<CanteenPage />} />
-            <Route path="administrative/interview" element={<InterviewPage />} />
-            <Route path="administrative/hospital" element={<HospitalPage />} />
-            <Route path="administrative/factory" element={<FactoryPage />} />
-            <Route path="administrative/agriculture" element={<AgricultureDepartmentPage />} />
-            <Route path="administrative/industry" element={<IndustryPage />} />
-            <Route path="administrative/internal-security" element={<InternalSecurityPage />} />
-            <Route path="administrative/construction" element={<ConstructionPage />} />
-            
-            <Route path="social/salon" element={<SalonPage />} />
-            <Route path="social/laundry" element={<LaundryPage />} />
-            <Route path="social/shrinkhala-canteen" element={<ShrinkhalaCanteenPage />} />
-            <Route path="social/mangal-lawn" element={<MangalLawnPage />} />
-            <Route path="social/minda-unit" element={<MindaUnitPage />} />
+      <SettingsProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<PageRenderer />} />
+              <Route path="*" element={<PageRenderer />} />
+              
+              <Route path="yerawada-open-jail" element={<YerawadaOpenJailPage />} />
+              <Route path="gallery" element={<GalleryPage />} />
+              <Route path="our-products" element={<OurProductsPage />} />
+              <Route path="agriculture/nursery" element={<NurseryPage />} />
+              <Route path="agriculture/poultry-farming" element={<PoultryFarmingPage />} />
+              <Route path="agriculture/dairy-farming" element={<DairyFarmingPage />} />
+              <Route path="agriculture/goat-farming" element={<GoatFarmingPage />} />
+              <Route path="agriculture/mushroom-project" element={<MushroomProjectPage />} />
+              <Route path="agriculture/vermicompost-project" element={<VermicompostProjectPage />} />
+              <Route path="agriculture/innovative-activities" element={<InnovativeActivitiesPage />} />
+              
+              <Route path="administrative/administration" element={<AdministrationPage />} />
+              <Route path="administrative/establishment" element={<EstablishmentPage />} />
+              <Route path="administrative/judicial" element={<JudicialPage />} />
+              <Route path="administrative/ration" element={<RationPage />} />
+              <Route path="administrative/canteen" element={<CanteenPage />} />
+              <Route path="administrative/interview" element={<InterviewPage />} />
+              <Route path="administrative/hospital" element={<HospitalPage />} />
+              <Route path="administrative/factory" element={<FactoryPage />} />
+              <Route path="administrative/agriculture" element={<AgricultureDepartmentPage />} />
+              <Route path="administrative/industry" element={<IndustryPage />} />
+              <Route path="administrative/internal-security" element={<InternalSecurityPage />} />
+              <Route path="administrative/construction" element={<ConstructionPage />} />
+              
+              <Route path="social/salon" element={<SalonPage />} />
+              <Route path="social/laundry" element={<LaundryPage />} />
+              <Route path="social/shrinkhala-canteen" element={<ShrinkhalaCanteenPage />} />
+              <Route path="social/mangal-lawn" element={<MangalLawnPage />} />
+              <Route path="social/minda-unit" element={<MindaUnitPage />} />
 
-            <Route path="facilities/prisoner-interview" element={<PrisonerInterviewPage />} />
-            <Route path="facilities/smart-card-phone" element={<SmartCardPhonePage />} />
-            <Route path="facilities/correspondence" element={<CorrespondencePage />} />
-            <Route path="facilities/free-legal-aid" element={<FreeLegalAidPage />} />
-            <Route path="facilities/district-legal-services" element={<DistrictLegalServicesPage />} />
-            <Route path="facilities/furlough-parole" element={<FurloughParolePage />} />
-            <Route path="facilities/remission" element={<RemissionPage />} />
-            <Route path="facilities/hirkani-room" element={<HirkaniRoomPage />} />
-            <Route path="facilities/gymnasium" element={<GymnasiumPage />} />
-            <Route path="facilities/wet-canteen" element={<WetCanteenPage />} />
-            <Route path="facilities/education" element={<EducationPage />} />
-            <Route path="facilities/library" element={<LibraryPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+              <Route path="facilities/prisoner-interview" element={<PrisonerInterviewPage />} />
+              <Route path="facilities/smart-card-phone" element={<SmartCardPhonePage />} />
+              <Route path="facilities/correspondence" element={<CorrespondencePage />} />
+              <Route path="facilities/free-legal-aid" element={<FreeLegalAidPage />} />
+              <Route path="facilities/district-legal-services" element={<DistrictLegalServicesPage />} />
+              <Route path="facilities/furlough-parole" element={<FurloughParolePage />} />
+              <Route path="facilities/remission" element={<RemissionPage />} />
+              <Route path="facilities/hirkani-room" element={<HirkaniRoomPage />} />
+              <Route path="facilities/gymnasium" element={<GymnasiumPage />} />
+              <Route path="facilities/wet-canteen" element={<WetCanteenPage />} />
+              <Route path="facilities/education" element={<EducationPage />} />
+              <Route path="facilities/library" element={<LibraryPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </SettingsProvider>
     </AccessibilityProvider>
   );
 }

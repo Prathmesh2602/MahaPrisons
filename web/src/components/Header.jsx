@@ -1,9 +1,13 @@
 import React from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 
 export const Header = () => {
   const { language } = useAccessibility();
+  const { settings } = useSiteSettings();
 
+  const titleEn = settings?.logoH1 || 'Yerwada Open District Prison Pune';
+  const titleMr = settings?.logoSpans?.[0] || 'येरवडा खुले जिल्हा कारागृह, पुणे';
 
   return (
     <header className="w-full bg-white/45 backdrop-blur-md text-gray-900 py-1.5 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4 dark-mode:bg-gray-900/35 dark-mode:text-gray-100 dark-mode:border-gray-800/40 smooth-transition relative z-10 devanagari-force">
@@ -30,10 +34,10 @@ export const Header = () => {
         {/* Title Texts */}
         <div className="flex flex-col">
           <span className="text-xs md:text-[14px] font-medium font-poppins text-[#0F3D66] dark-mode:text-blue-300 leading-tight mb-1">
-            {language === 'mr' ? 'Yerwada Open District Prison Pune' : 'येरवडा खुले जिल्हा कारागृह, पुणे'}
+            {language === 'mr' ? titleEn : titleMr}
           </span>
           <h1 className="text-base md:text-lg lg:text-xl font-semibold text-[#111827] dark-mode:text-white leading-tight">
-            {language === 'mr' ? 'येरवडा खुले जिल्हा कारागृह, पुणे' : 'Yerwada Open District Prison Pune'}
+            {language === 'mr' ? titleMr : titleEn}
           </h1>
         </div>
 

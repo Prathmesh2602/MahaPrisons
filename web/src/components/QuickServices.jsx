@@ -3,9 +3,12 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';
 import { Phone, Shield, ShieldAlert, HeartHandshake, UserCheck, HelpCircle, Link2, ArrowRight } from 'lucide-react';
 
-export const QuickServices = () => {
+export const QuickServices = ({ data }) => {
   const { language, t } = useAccessibility();
-  const links = mockHomepageData.important_links;
+
+  // Safely grab links from backend data or fall back to mock
+  const links = data?.links?.length > 0 ? data.links : mockHomepageData.important_links;
+  const helplines = data?.helplines?.length > 0 ? data.helplines : mockHomepageData.helpline_services;
 
   // Helper function to return relevant Lucide Icons for government services
   const getIcon = (idx) => {
@@ -76,7 +79,7 @@ export const QuickServices = () => {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {mockHomepageData.helpline_services.map((service, idx) => {
+              {helplines.map((service, idx) => {
                 const parts = service.text.split(':');
                 const number = parts[1] ? parts[1].trim() : '';
                 const translatedTitle = t(service.text).split(':')[0];
