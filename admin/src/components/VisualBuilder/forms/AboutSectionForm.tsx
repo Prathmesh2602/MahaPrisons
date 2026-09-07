@@ -1,5 +1,7 @@
 import React from 'react';
-import { FormGroup, LanguageInput } from './FormElements';
+import { FormGroup, LanguageInput, ArrayEditor } from './FormElements';
+import { MediaPicker } from '../../MediaPicker';
+import { User } from 'lucide-react';
 
 export const AboutSectionForm = ({ data, onChange }) => {
   const heading = data?.heading || {};
@@ -23,6 +25,37 @@ export const AboutSectionForm = ({ data, onChange }) => {
           />
         </FormGroup>
       </div>
+
+      <ArrayEditor
+        title="Officers In Charge"
+        items={data?.officers || []}
+        onChange={(newOfficers) => onChange({ ...data, officers: newOfficers })}
+        newItemTemplate={{ img: '', name: {en:'', mr:''}, desg: {en:'', mr:''} }}
+        renderItem={(item, updateItem, index) => (
+          <div className="space-y-4">
+            <MediaPicker 
+              label="Profile Photo"
+              value={item.img}
+              onSelect={(val) => updateItem({ ...item, img: val })}
+              fallbackIcon={<User className="w-10 h-10 text-gray-400" />}
+            />
+            
+            <FormGroup label="Name">
+              <LanguageInput 
+                value={item.name || {en:'', mr:''}} 
+                onChange={(val) => updateItem({ ...item, name: val })} 
+              />
+            </FormGroup>
+
+            <FormGroup label="Designation">
+              <LanguageInput 
+                value={item.desg || {en:'', mr:''}} 
+                onChange={(val) => updateItem({ ...item, desg: val })} 
+              />
+            </FormGroup>
+          </div>
+        )}
+      />
     </div>
   );
 };

@@ -16,28 +16,7 @@ export const AboutSection = ({ data }) => {
     ? "येरवडा खुले जिल्हा कारागृह मध्ये आपले स्वागत आहे"
     : "Welcome to Yerwada Open District Prison");
 
-  const openJailOfficers = [
-    {
-      name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
-      desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१",
-      img: "/gallary/Shamkant%20shedge.png"
-    },
-    {
-      name: "श्री. नागेश एम. कांबळे",
-      desg: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १",
-      img: "/gallary/Nagesh%20Kamble.png"
-    },
-    {
-      name: "श्री. नागनाथ एन. भाणवसे",
-      desg: "तुरुंग अधिकारी श्रेणी २",
-      img: ""
-    },
-    {
-      name: "श्रीमती निशा डी. श्रेयेकर",
-      desg: "तुरुंग अधिकारी श्रेणी २",
-      img: "/gallary/nisha%20shreyekar.png"
-    }
-  ];
+  const openJailOfficers = data?.officers || [];
 
   return (
     <div className="w-full py-8 px-4 md:px-8 bg-[#F8FAFC] dark-mode:bg-[#080B11] relative overflow-hidden">
@@ -120,8 +99,8 @@ export const AboutSection = ({ data }) => {
                     </div>
 
                     {/* Name & Designation */}
-                    <span className="text-[13px] md:text-[14px] font-semibold text-[#0F3D66] dark-mode:text-blue-300 text-center mb-1 leading-tight">{t(officer.name)}</span>
-                    <span className="text-[10px] md:text-[11px] text-gray-500 dark-mode:text-gray-400 text-center leading-snug px-1 font-medium">{t(officer.desg)}</span>
+                    <span className="text-[13px] md:text-[14px] font-semibold text-[#0F3D66] dark-mode:text-blue-300 text-center mb-1 leading-tight">{officer.name?.[lang] || t(officer.name)}</span>
+                    <span className="text-[10px] md:text-[11px] text-gray-500 dark-mode:text-gray-400 text-center leading-snug px-1 font-medium">{officer.desg?.[lang] || t(officer.desg)}</span>
 
                   </div>
                 ))}

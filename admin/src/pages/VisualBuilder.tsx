@@ -9,9 +9,9 @@ export const VisualBuilder = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
   
-  const [page, setPage] = useState(null);
-  const [blocks, setBlocks] = useState([]);
-  const [selectedBlockId, setSelectedBlockId] = useState(null);
+  const [page, setPage] = useState<any>(null);
+  const [blocks, setBlocks] = useState<any[]>([]);
+  const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   

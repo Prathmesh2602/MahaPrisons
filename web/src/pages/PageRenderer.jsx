@@ -9,6 +9,7 @@ import PhotoGallery from '../components/PhotoGallery';
 import JailInsights from '../components/JailInsights';
 import QuickServices from '../components/QuickServices';
 import MinisterProfiles from '../components/MinisterProfiles';
+import GalleryPage from './GalleryPage';
 import { HomePage } from './HomePage';
 
 const COMPONENT_MAP = {
@@ -19,6 +20,7 @@ const COMPONENT_MAP = {
   'ANNOUNCEMENTS': AnnouncementsTabs,
   'HOLIDAY_CALENDAR': HolidayCalendar,
   'PHOTO_GALLERY': PhotoGallery,
+  'FULL_GALLERY': GalleryPage,
   'QUICK_SERVICES': QuickServices,
   'RICH_TEXT': ({ data }) => <div className="max-w-4xl mx-auto p-8 prose dark:prose-invert" dangerouslySetInnerHTML={{ __html: data?.html || '<h1>Empty Rich Text</h1><p>Start typing...</p>' }} />
 };
@@ -31,6 +33,7 @@ const BLOCK_ID_MAP = {
   'ANNOUNCEMENTS': 'announcements',
   'HOLIDAY_CALENDAR': 'calendar',
   'PHOTO_GALLERY': 'gallery',
+  'FULL_GALLERY': 'full-gallery',
   'QUICK_SERVICES': 'services',
 };
 
@@ -113,7 +116,7 @@ export const PageRenderer = () => {
     <div className="flex flex-col w-full">
       {blocksToRender.map((block) => {
         const Component = COMPONENT_MAP[block.blockType];
-        if (!Component) return <div key={block.id || Math.random()} className="p-4 bg-red-100 text-red-700">Unknown block: {block.blockType}</div>;
+        if (!Component) return null;
         
         const blockIdAttr = BLOCK_ID_MAP[block.blockType];
 

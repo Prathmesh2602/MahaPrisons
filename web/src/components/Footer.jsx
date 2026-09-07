@@ -20,7 +20,7 @@ export const Footer = () => {
         { text: language === 'mr' ? 'अभिप्राय' : 'Feedback', href: '#' }
       ];
 
-  const address = settings?.contactInfo?.address || (language === 'mr' ? 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६' : 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006');
+  const address = settings?.contactInfo?.address?.[language] || settings?.contactInfo?.address || (language === 'mr' ? 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६' : 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006');
   const phone = settings?.contactInfo?.phone || '020-26694051';
   const email = settings?.contactInfo?.email || 'yerwadaop-mh@gov.in';
 
@@ -85,7 +85,7 @@ export const Footer = () => {
                   href={link.href}
                   className="hover:text-amber-400 hover:underline transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded px-1"
                 >
-                  {link.text}
+                  {link.text?.[language] || link.text}
                 </a>
               </React.Fragment>
             );

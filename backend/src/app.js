@@ -7,6 +7,7 @@ const publicRoutes = require('./routes/public');
 const adminRoutes = require('./routes/admin');
 const uploadRoutes = require('./routes/upload');
 const settingsRoutes = require('./routes/settings');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/api/v1/admin/auth', authLimiter);
 app.use('/api/v1/public', publicRoutes);
 app.use('/api/v1/upload', uploadRoutes);
 app.use('/api/v1/settings', settingsRoutes);
+app.use('/api/v1/ai', aiRoutes);
 
 // Apply HTML Sanitizer only to admin mutating routes to protect CMS content
 app.use('/api/v1/admin', sanitizePayload, adminRoutes);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormGroup, LanguageInput, ArrayEditor, TextField, TextArea } from './FormElements';
+import { FormGroup, LanguageInput, ArrayEditor, TextField, TextArea, SubSection } from './FormElements';
 import { MediaPicker } from '../../MediaPicker';
 
 export const HeroCarouselForm = ({ data, onChange }) => {
@@ -94,44 +94,57 @@ export const HeroCarouselForm = ({ data, onChange }) => {
         )}
       />
 
-      <div className="border-t border-gray-200 pt-6">
-        <h4 className="font-semibold text-gray-700 mb-4">Director General's Quote</h4>
-        <FormGroup label="Director General Name">
-          <LanguageInput 
-            value={data?.dgName || {en:'', mr:''}} 
-            onChange={(val) => onChange({ ...data, dgName: val })} 
-          />
-        </FormGroup>
-        
-        <FormGroup label="Designation">
-          <LanguageInput 
-            value={data?.dgDesignation || {en:'', mr:''}} 
-            onChange={(val) => onChange({ ...data, dgDesignation: val })} 
-          />
-        </FormGroup>
+      <SubSection 
+        title="Director General's Quote"
+        value={{
+          dgName: data?.dgName,
+          dgDesignation: data?.dgDesignation,
+          dgQuote: data?.dgQuote,
+          dgPhoto: data?.dgPhoto,
+          dgLink: data?.dgLink
+        }}
+        onChange={(val) => onChange({ ...data, ...val })}
+      >
+        {(val, updateVal) => (
+          <div className="space-y-4">
+            <FormGroup label="Director General Name">
+              <LanguageInput 
+                value={val?.dgName || {en:'', mr:''}} 
+                onChange={(newVal) => updateVal({ ...val, dgName: newVal })} 
+              />
+            </FormGroup>
+            
+            <FormGroup label="Designation">
+              <LanguageInput 
+                value={val?.dgDesignation || {en:'', mr:''}} 
+                onChange={(newVal) => updateVal({ ...val, dgDesignation: newVal })} 
+              />
+            </FormGroup>
 
-        <FormGroup label="Quote Content">
-          <LanguageInput 
-            value={data?.dgQuote || {en:'', mr:''}} 
-            onChange={(val) => onChange({ ...data, dgQuote: val })} 
-            isTextArea
-          />
-        </FormGroup>
+            <FormGroup label="Quote Content">
+              <LanguageInput 
+                value={val?.dgQuote || {en:'', mr:''}} 
+                onChange={(newVal) => updateVal({ ...val, dgQuote: newVal })} 
+                isTextArea
+              />
+            </FormGroup>
 
-        <MediaPicker 
-          label="Profile Photo"
-          value={data?.dgPhoto || ''}
-          onSelect={(val) => onChange({ ...data, dgPhoto: val })}
-        />
+            <MediaPicker 
+              label="Profile Photo"
+              value={val?.dgPhoto || ''}
+              onSelect={(newVal) => updateVal({ ...val, dgPhoto: newVal })}
+            />
 
-        <FormGroup label="Read Full Message Link">
-          <TextField 
-            value={data?.dgLink || ''} 
-            onChange={(val) => onChange({ ...data, dgLink: val })} 
-            placeholder="https://..."
-          />
-        </FormGroup>
-      </div>
+            <FormGroup label="Read Full Message Link">
+              <TextField 
+                value={val?.dgLink || ''} 
+                onChange={(newVal) => updateVal({ ...val, dgLink: newVal })} 
+                placeholder="https://..."
+              />
+            </FormGroup>
+          </div>
+        )}
+      </SubSection>
     </div>
   );
 };

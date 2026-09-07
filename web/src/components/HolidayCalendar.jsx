@@ -3,9 +3,12 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHolidays2026 } from '../data/mockData';
 import { ChevronLeft, ChevronRight, Calendar, Info } from 'lucide-react';
 
-export const HolidayCalendar = () => {
+export const HolidayCalendar = ({ data }) => {
   const { language, t } = useAccessibility();
   const [currentDate, setCurrentDate] = useState(new Date());
+  
+  // Use dynamic data or fallback to mock
+  const [holidays] = useState(data?.holidays || mockHolidays2026);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth(); // 0-indexed
@@ -50,7 +53,7 @@ export const HolidayCalendar = () => {
   const getHolidayForDay = (day) => {
     if (!day) return null;
     const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    return mockHolidays2026.find(h => h.date === dateString) || null;
+    return holidays.find(h => h.date === dateString) || null;
   };
 
   // Check if a day index is weekend
@@ -60,7 +63,7 @@ export const HolidayCalendar = () => {
   };
 
   // Get active month holidays list for side display
-  const activeMonthHolidays = mockHolidays2026.filter(h => {
+  const activeMonthHolidays = holidays.filter(h => {
     const hDate = new Date(h.date);
     return hDate.getFullYear() === year && hDate.getMonth() === month;
   });
@@ -75,7 +78,7 @@ export const HolidayCalendar = () => {
             {language === 'mr' ? 'कार्यालयीन दिनदर्शिका' : 'Office Calendar'}
           </span>
           <h2 className="text-xl md:text-2xl font-semibold text-[#0F3D66] dark-mode:text-blue-300 font-poppins relative inline-block pb-3">
-            {t("Holiday Calendar")}
+            {data?.title?.[language] || t("Holiday Calendar")}
             <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-amber-500 rounded-full" />
           </h2>
         </div>
@@ -156,7 +159,7 @@ export const HolidayCalendar = () => {
                   <div 
                     key={idx} 
                     className={cellClass}
-                    title={holiday ? holiday.title : undefined}
+                    title={holiday ? (typeof holiday.title === 'string' ? holiday.title : holiday.title?.[language]) : undefined}
                   >
                     <span>{day}</span>
                     {holiday && (
@@ -226,7 +229,9 @@ export const HolidayCalendar = () => {
                         <div className="flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${isGazetted ? 'bg-red-500' : 'bg-amber-500'}`} />
                           <span className="text-xs font-medium text-gray-700 dark-mode:text-gray-250 leading-tight">
-                            {h.title.split('/')[language === 'mr' ? 1 : 0].trim()}
+                            {typeof h.title === 'string' 
+                              ? h.title.split('/')[language === 'mr' ? 1 : 0].trim()
+                              : (h.title?.[language] || '')}
                           </span>
                         </div>
                         <span className="text-[10px] font-medium text-gray-500 dark-mode:text-gray-400 bg-white border border-gray-150 px-2 py-0.5 rounded-full whitespace-nowrap dark-mode:bg-gray-800 dark-mode:border-gray-700">

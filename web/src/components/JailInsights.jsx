@@ -12,9 +12,16 @@ import {
   Landmark
 } from 'lucide-react';
 
-const JailInsights = () => {
-  const { language } = useAccessibility();
-  const t = (text) => translations[text]?.[language] || text;
+const JailInsights = ({ data }) => {
+  const { language, t } = useAccessibility();
+  const lang = language;
+
+  // Use dynamic data or fallback
+  const title = data?.title?.[lang] || (lang === 'mr' ? "येरवडा खुले कारागृह: एक दृष्टिक्षेप" : "Yerwada Open Prison: At a Glance");
+  const subtitle = data?.subtitle?.[lang] || (lang === 'mr' ? "अधिक माहितीसाठी" : "For more information");
+  const youtubeLink = data?.youtubeLink || "https://www.youtube.com/@CShamkant";
+  
+  const insightCards = data?.cards || [];
 
   return (
     <section className="py-8 md:py-10 bg-gradient-to-b from-gray-50 to-[#F1F5F9] dark-mode:from-gray-900 dark-mode:to-gray-900 overflow-hidden relative border-b border-gray-200/60 dark-mode:border-gray-850">

@@ -48,14 +48,14 @@ export const HomePage = () => {
         <AnnouncementsTabs />
       </div>
 
-      <div id="calendar">
-        {/* Interactive React month-by-month calendar */}
-        <HolidayCalendar />
-      </div>
-
       <div id="gallery">
         {/* Slide Photo Gallery & map */}
         <PhotoGallery />
+      </div>
+
+      <div id="calendar">
+        {/* Interactive React month-by-month calendar */}
+        <HolidayCalendar />
       </div>
 
       <div id="services">

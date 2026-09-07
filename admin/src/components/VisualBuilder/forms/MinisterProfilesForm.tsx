@@ -1,6 +1,7 @@
 import React from 'react';
-import { FormGroup, LanguageInput, ArrayEditor, TextField } from './FormElements';
+import { FormGroup, LanguageInput, ArrayEditor } from './FormElements';
 import { MediaPicker } from '../../MediaPicker';
+import { User } from 'lucide-react';
 
 export const MinisterProfilesForm = ({ data, onChange }) => {
   return (
@@ -25,6 +26,7 @@ export const MinisterProfilesForm = ({ data, onChange }) => {
               label="Profile Photo"
               value={item.img_src}
               onSelect={(val) => updateItem({ ...item, img_src: val })}
+              fallbackIcon={<User className="w-10 h-10 text-gray-400" />}
             />
             
             <FormGroup label="Name">
@@ -55,6 +57,7 @@ export const MinisterProfilesForm = ({ data, onChange }) => {
               label="Profile Photo"
               value={item.img_src}
               onSelect={(val) => updateItem({ ...item, img_src: val })}
+              fallbackIcon={<User className="w-10 h-10 text-gray-400" />}
             />
             
             <FormGroup label="Name">

@@ -6,6 +6,8 @@ import { JailInsightsForm } from './forms/JailInsightsForm';
 import { MinisterProfilesForm } from './forms/MinisterProfilesForm';
 import { PhotoGalleryForm } from './forms/PhotoGalleryForm';
 import { HolidayCalendarForm } from './forms/HolidayCalendarForm';
+import { AnnouncementsTabsForm } from './forms/AnnouncementsTabsForm';
+import { FullGalleryForm } from './forms/FullGalleryForm';
 
 export const BlockFormRenderer = ({ blockType, data, onChange }) => {
   // If the block type has a specialized form, render it
@@ -35,6 +37,14 @@ export const BlockFormRenderer = ({ blockType, data, onChange }) => {
 
   if (blockType === 'HOLIDAY_CALENDAR') {
     return <HolidayCalendarForm data={data} onChange={onChange} />;
+  }
+
+  if (blockType === 'ANNOUNCEMENTS') {
+    return <AnnouncementsTabsForm data={data} onChange={onChange} />;
+  }
+
+  if (blockType === 'FULL_GALLERY') {
+    return <FullGalleryForm data={data} onChange={onChange} />;
   }
 
   // Fallback to raw JSON editor for unimplemented block types

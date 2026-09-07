@@ -5,7 +5,6 @@ import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
 import { PageRenderer } from './pages/PageRenderer';
 import YerawadaOpenJailPage from './pages/PrisonSystem';
-import GalleryPage from './pages/GalleryPage';
 import OurProductsPage from './pages/OurProductsPage';
 import NurseryPage from './pages/agriculture/NurseryPage';
 import PoultryFarmingPage from './pages/agriculture/PoultryFarmingPage';
@@ -60,7 +59,6 @@ function App() {
               <Route path="*" element={<PageRenderer />} />
               
               <Route path="yerawada-open-jail" element={<YerawadaOpenJailPage />} />
-              <Route path="gallery" element={<GalleryPage />} />
               <Route path="our-products" element={<OurProductsPage />} />
               <Route path="agriculture/nursery" element={<NurseryPage />} />
               <Route path="agriculture/poultry-farming" element={<PoultryFarmingPage />} />

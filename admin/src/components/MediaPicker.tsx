@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Upload, X, Image as ImageIcon, Loader2, Check } from 'lucide-react';
 import { apiFetch } from '../utils/api';
 
-export const MediaPicker = ({ onSelect, label = 'Image', value }) => {
+export const MediaPicker = ({ onSelect, label = 'Image', value, fallbackIcon = null }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mediaList, setMediaList] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -81,10 +81,21 @@ export const MediaPicker = ({ onSelect, label = 'Image', value }) => {
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+            className="relative overflow-hidden w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-colors"
           >
-            <ImageIcon className="w-6 h-6 mb-1" />
-            <span className="text-xs font-medium">Select</span>
+            {fallbackIcon ? (
+               <div className="absolute inset-0 bg-gray-50 flex items-center justify-center">
+                 {fallbackIcon}
+                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                   <span className="text-white text-xs px-2 py-1 bg-blue-600 rounded">Select</span>
+                 </div>
+               </div>
+            ) : (
+              <>
+                <ImageIcon className="w-6 h-6 mb-1" />
+                <span className="text-xs font-medium">Select</span>
+              </>
+            )}
           </button>
         )}
         

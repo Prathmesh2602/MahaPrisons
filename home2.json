@@ -1,0 +1,806 @@
+{
+  "id": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+  "slug": "home",
+  "menuItemId": null,
+  "templateKey": "homepage",
+  "status": "PUBLISHED",
+  "isPrimary": false,
+  "titleMr": "मुख्यपृष्ठ",
+  "titleEn": "Homepage",
+  "meta": null,
+  "createdBy": "0d7b87b1-f1ad-4ce5-a6ce-13322310b9bd",
+  "updatedBy": "0d7b87b1-f1ad-4ce5-a6ce-13322310b9bd",
+  "createdAt": "2026-09-02T07:38:42.869Z",
+  "updatedAt": "2026-09-02T08:44:40.694Z",
+  "publishedAt": null,
+  "blocks": [
+    {
+      "id": "c98e45e0-3d34-4f3e-9236-07e960b605f8",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "HEADER_BANNER",
+      "order": -1,
+      "data": {
+        "logoH1": "Maharashtra Prisons and Correctional Services",
+        "emblemImg": "/logo.jpeg",
+        "logoSpans": [
+          "महाराष्ट्र कारागृह आणि सुधार सेवा"
+        ],
+        "digitalIndiaImg": "/uploads/digital_india.png"
+      },
+      "createdAt": "2026-09-04T07:03:22.152Z",
+      "updatedAt": "2026-09-04T07:03:22.152Z"
+    },
+    {
+      "id": "ada6c164-d928-4e5a-95ad-6310117d8f7b",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "HERO_CAROUSEL",
+      "order": 0,
+      "data": {
+        "dgLink": "https://mahaprisons.gov.in/directors-message/",
+        "dgName": {
+          "en": "Shri. Suhas Warke",
+          "mr": "श्री. सुहास वारके"
+        },
+        "slides": [
+          {
+            "cta1": {
+              "en": "Our Journey",
+              "mr": "आमचा प्रवास",
+              "href": "#"
+            },
+            "cta2": {
+              "en": "View Initiatives",
+              "mr": "उपक्रम पहा",
+              "href": "#"
+            },
+            "title": {
+              "en": "Yerawada Open Prison",
+              "mr": "येरवडा खुले कारागृह"
+            },
+            "img_alt": "येरवडा खुले कारागृह",
+            "img_src": "/gallary/rehab_hero.png",
+            "category": {
+              "en": "Rehabilitation",
+              "mr": "पुनर्वसन"
+            },
+            "statement": {
+              "en": "Path of transformation through labor.",
+              "mr": "श्रमातून परिवर्तनाची वाट."
+            },
+            "description": {
+              "en": "A new direction in rehabilitation through discipline, skills, labor, and self-reliance.",
+              "mr": "शिस्त, कौशल्य, श्रम आणि स्वावलंबनाच्या माध्यमातून पुनर्वसनाची नवी दिशा."
+            }
+          },
+          {
+            "cta1": {
+              "en": "Farming Activities",
+              "mr": "शेती उपक्रम",
+              "href": "#"
+            },
+            "cta2": null,
+            "title": {
+              "en": "Bond with Soil",
+              "mr": "मातीशी नातं"
+            },
+            "img_alt": "शेती उपक्रम",
+            "img_src": "/gallary/farming_hero.png",
+            "category": {
+              "en": "Agriculture",
+              "mr": "शेती"
+            },
+            "statement": {
+              "en": "Stepping towards self-reliance.",
+              "mr": "स्वावलंबनाकडे वाटचाल."
+            },
+            "description": {
+              "en": "Building skills and responsibility through farming and allied activities.",
+              "mr": "शेती आणि पूरक उपक्रमांच्या माध्यमातून कौशल्य आणि जबाबदारीची जडणघडण."
+            }
+          },
+          {
+            "cta1": {
+              "en": "View Training",
+              "mr": "प्रशिक्षण पहा",
+              "href": "#"
+            },
+            "cta2": null,
+            "title": {
+              "en": "Self-reliance through Skills",
+              "mr": "कौशल्यातून आत्मनिर्भरतेकडे"
+            },
+            "img_alt": "कौशल्य विकास केंद्र",
+            "img_src": "/gallary/skills_hero.png",
+            "category": {
+              "en": "Skill Development",
+              "mr": "कौशल्य विकास"
+            },
+            "statement": {
+              "en": "Preparing for new opportunities.",
+              "mr": "नव्या संधींची तयारी."
+            },
+            "description": {
+              "en": "Empowerment through vocational training and productive activities.",
+              "mr": "व्यावसायिक प्रशिक्षण आणि उत्पादनाच्या माध्यमातून नव्या संधींची तयारी."
+            }
+          },
+          {
+            "cta1": {
+              "en": "Industrial Activities",
+              "mr": "उद्योग उपक्रम",
+              "href": "#"
+            },
+            "cta2": null,
+            "title": {
+              "en": "Opportunity for Labor, Direction for Future.",
+              "mr": "श्रमाला संधी, भविष्याला दिशा."
+            },
+            "img_alt": "उद्योग विभाग",
+            "img_src": "/gallary/industry_hero.png",
+            "category": {
+              "en": "Production & Industry",
+              "mr": "उत्पादन व उद्योग"
+            },
+            "statement": {
+              "en": "Developing discipline and confidence.",
+              "mr": "शिस्त आणि आत्मविश्वासाचा विकास."
+            },
+            "description": {
+              "en": "Fostering skill, discipline, and self-belief through productive work.",
+              "mr": "उत्पादक कामातून कौशल्य, शिस्त आणि आत्मविश्वासाचा विकास."
+            }
+          },
+          {
+            "cta1": {
+              "en": "Our Products",
+              "mr": "आमची उत्पादने",
+              "href": "#"
+            },
+            "cta2": null,
+            "title": {
+              "en": "Preparing for a New Life",
+              "mr": "नव्या आयुष्याची तयारी"
+            },
+            "img_alt": "पुनर्वसन उपक्रम",
+            "img_src": "/gallary/reintegration_hero.png",
+            "category": {
+              "en": "Reintegration",
+              "mr": "पुनर्वसन"
+            },
+            "statement": {
+              "en": "Reintegration into society.",
+              "mr": "समाजात पुनर्स्थापना."
+            },
+            "description": {
+              "en": "Getting ready for reintegration into society through responsibility and self-sufficiency.",
+              "mr": "जबाबदारी आणि स्वावलंबनाच्या माध्यमातून समाजात पुनर्स्थापनेची तयारी."
+            }
+          }
+        ],
+        "dgPhoto": "/uploads/de9cafee-b613-4792-bf5f-c2a2789a51ab.jpeg",
+        "dgQuote": {
+          "en": "Security, correction, and rehabilitation are our guiding pillars. We are committed to equipping inmates with skills to make them productive members of society.",
+          "mr": "सुरक्षितता, सुधारणा आणि पुनर्वसन ही आमची मुख्य सूत्रे आहेत. आम्ही बंदीवानांना कौशल्यपूर्ण प्रशिक्षण देऊन समाजाचा एक उपयुक्त घटक बनविण्यासाठी कटिबद्ध आहोत."
+        },
+        "dgDesignation": {
+          "en": "ADG & Director General",
+          "mr": "अपर पोलीस महासंचालक व महानिरीक्षक"
+        },
+        "slideDuration": 6000
+      },
+      "createdAt": "2026-09-02T10:37:29.089Z",
+      "updatedAt": "2026-09-03T11:04:14.771Z"
+    },
+    {
+      "id": "9422bf7e-5807-470a-a2d2-9e0ae0091d2d",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "MINISTER_PROFILES",
+      "order": 1,
+      "data": {
+        "title": {
+          "en": "Dignitaries Profile",
+          "mr": "मान्यवर प्रोफाइल"
+        },
+        "ministers": [
+          {
+            "desg": "माननीय मुख्यमंत्री महोदय",
+            "name": "श्री. देवेंद्र फडणवीस",
+            "img_alt": "श्री. देवेंद्र फडणवीस",
+            "img_src": "/uploads/2dac45d2-3a47-49a8-a28c-c346fbab06b6.jpg"
+          },
+          {
+            "desg": "माननीय उपमुख्यमंत्री",
+            "name": "श्री. एकनाथ शिंदे",
+            "img_alt": "श्री. एकनाथ शिंदे",
+            "img_src": "/uploads/76568564-2de0-449f-9527-822240851a6b.jpg"
+          },
+          {
+            "desg": "माननीय उपमुख्यमंत्री",
+            "name": "श्रीमती.सुनेत्रा पवार",
+            "img_alt": "श्रीमती. सुनेत्रा पवार",
+            "img_src": "/uploads/81e589fd-a93a-4a37-b792-db966294071f.jpg"
+          },
+          {
+            "desg": "Director General of Prisons and Correctional Services",
+            "name": "श्री. सुहास वारके",
+            "img_alt": "ADG Suhas Warke (IPS)",
+            "img_src": "/uploads/5b02fea9-107e-4eca-bcc7-104a646b48be.jpeg"
+          }
+        ],
+        "seniorOfficers": [
+          {
+            "desg": "विशेष कारागृह महानिरीक्षक, महाराष्ट्र राज्य",
+            "name": "श्री. योगेश देसाई",
+            "img_alt": "Yogesh Desai",
+            "img_src": "/gallary/yogesh%20desai.png"
+          },
+          {
+            "desg": "कारागृह उपमहानिरीक्षक, पश्चिम विभाग, येरवडा",
+            "name": "श्री. सुनील ढमाळ",
+            "img_alt": "Sunil Dhamal",
+            "img_src": "/gallary/Sunil%20Dhamal.png"
+          },
+          {
+            "desg": "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१",
+            "name": "श्री. शामकांत शालन चंद्रकांत शेडगे",
+            "img_alt": "Shamkant Shedge",
+            "img_src": "/gallary/Shamkant%20shedge.png"
+          }
+        ]
+      },
+      "createdAt": "2026-09-02T10:37:29.110Z",
+      "updatedAt": "2026-09-03T11:20:30.430Z"
+    },
+    {
+      "id": "36df8615-2232-40bc-89fd-1fc7392594de",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "ABOUT_SECTION",
+      "order": 2,
+      "data": {
+        "content": {
+          "en": "The Yerwada Open Jail is a specialized rehabilitation facility located in the expansive campus of the historic Yerwada Central Jail in Pune. Established in 1956, it was the first 'Open Institution' in Maharashtra, marking a significant milestone in progressive prison administration. It primarily houses inmates serving life sentences who have demonstrated excellent conduct and successfully completed at least five years in the high-security central prison. Operating under minimal security without traditional confinement cells, the facility strongly emphasizes psychological reform and vocational empowerment. Inmates are actively engaged in productive activities such as extensive organic farming—supplying fresh produce to neighboring institutions—and animal husbandry. This progressive approach ensures inmates acquire vital livelihood skills, facilitating their successful and responsible reintegration into society upon release.",
+          "mr": "येरवडा खुले कारागृह हे पुण्याच्या ऐतिहासिक येरवडा मध्यवर्ती कारागृहाच्या विस्तीर्ण ५१२ एकर परिसरात वसलेले एक विशेष पुनर्वसन आणि सुधार केंद्र आहे. १९५६ मध्ये स्थापित झालेले हे महाराष्ट्रातील पहिले 'खुले कारागृह' होते, जे प्रगतशील कारागृह प्रशासनातील एक महत्त्वाचे पाऊल मानले जाते. येथे प्रामुख्याने जन्मठेपेची शिक्षा भोगत असलेल्या, चांगली वर्तणूक असलेल्या आणि मध्यवर्ती कारागृहात किमान ५ वर्षे पूर्ण केलेल्या बंदीवानांना ठेवले जाते. हे कारागृह पारंपारिक बंदिस्त कोठड्यांविना, कमीत कमी सुरक्षिततेवर चालते. येथे बंदीवानांच्या मानसिक सुधारणेवर आणि व्यावसायिक सक्षमीकरणावर विशेष भर दिला जातो. बंदीवानांना सेंद्रिय शेती आणि पशुपालन यांसारख्या उत्पादक कामांमध्ये सक्रियपणे गुंतवले जाते; येथील सेंद्रिय शेतीतून इतर कारागृहांनाही ताज्या भाज्यांचा पुरवठा केला जातो. या प्रगतशील दृष्टिकोनामुळे बंदीवानांना उपजीविकेचे महत्त्वपूर्ण कौशल्य प्राप्त होते, ज्यामुळे त्यांची समाजात एक जबाबदार नागरिक म्हणून यशस्वीपणे पुनर्रचना होण्यास मदत होते."
+        },
+        "heading": {
+          "en": "Welcome to Yerwada Open District Prison",
+          "mr": "येरवडा खुले जिल्हा कारागृह मध्ये आपले स्वागत आहे"
+        },
+        "officers": [
+          {
+            "img": "/gallary/Shamkant%20shedge.png",
+            "name": {
+              "en": "Shri. Shamkant Shalan Chandrakant Shedge",
+              "mr": "श्री. शामकांत शालन चंद्रकांत शेडगे"
+            },
+            "designation": {
+              "en": "Superintendent, Yerwada Open District Prison, Class-1",
+              "mr": "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१"
+            }
+          },
+          {
+            "img": "/gallary/Nagesh%20Kamble.png",
+            "name": {
+              "en": "Shri. Nagesh M. Kamble",
+              "mr": "श्री. नागेश एम. कांबळे"
+            },
+            "designation": {
+              "en": "Senior Prison Officer (Admin & Other) Class 1",
+              "mr": "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १"
+            }
+          },
+          {
+            "img": "",
+            "name": {
+              "en": "Shri. Nagnath N. Bhanavse",
+              "mr": "श्री. नागनाथ एन. भाणवसे"
+            },
+            "designation": {
+              "en": "Prison Officer Class 2",
+              "mr": "तुरुंग अधिकारी श्रेणी २"
+            }
+          },
+          {
+            "img": "/gallary/nisha%20shreyekar.png",
+            "name": {
+              "en": "Smt. Nisha D. Shreyekar",
+              "mr": "श्रीमती निशा डी. श्रेयेकर"
+            },
+            "designation": {
+              "en": "Prison Officer Class 2",
+              "mr": "तुरुंग अधिकारी श्रेणी २"
+            }
+          }
+        ]
+      },
+      "createdAt": "2026-09-02T10:37:29.101Z",
+      "updatedAt": "2026-09-04T05:36:03.610Z"
+    },
+    {
+      "id": "f790210b-441e-4db2-b227-7886389122f3",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "JAIL_INSIGHTS",
+      "order": 3,
+      "data": {
+        "cards": [
+          {
+            "icon": "HeartHandshake",
+            "title": {
+              "en": "Rehabilitation",
+              "mr": "सुधारणा आणि पुनर्वसन"
+            },
+            "description": {
+              "en": "Special efforts for overall development.",
+              "mr": "कैद्यांच्या सर्वांगीण विकासासाठी विशेष प्रयत्न."
+            }
+          },
+          {
+            "icon": "Sprout",
+            "title": {
+              "en": "Agriculture",
+              "mr": "शेती आणि वृक्षारोपण"
+            },
+            "description": {
+              "en": "Large scale plantation.",
+              "mr": "पर्यावरण संवर्धनासाठी वृक्षारोपण."
+            }
+          },
+          {
+            "icon": "Wrench",
+            "title": {
+              "en": "Skill Development",
+              "mr": "कौशल्य विकास कार्यक्रम"
+            },
+            "description": {
+              "en": "Vocational training.",
+              "mr": "व्यावसायिक प्रशिक्षणातून स्वावलंबन."
+            }
+          },
+          {
+            "icon": "Utensils",
+            "title": {
+              "en": "Restaurant",
+              "mr": "शृंखला उपहारगृह"
+            },
+            "description": {
+              "en": "Hotel run by inmates.",
+              "mr": "कैद्यांमार्फत चालवले जाणारे हॉटेल."
+            }
+          },
+          {
+            "icon": "Landmark",
+            "title": {
+              "en": "Historical Heritage",
+              "mr": "ऐतिहासिक वारसा"
+            },
+            "description": {
+              "en": "Great history.",
+              "mr": "मोठा इतिहास लाभला असून महात्मा गांधी..."
+            }
+          },
+          {
+            "icon": "BookOpen",
+            "title": {
+              "en": "Education",
+              "mr": "शिक्षण आणि साक्षरता"
+            },
+            "description": {
+              "en": "Basic literacy.",
+              "mr": "मूलभूत साक्षरता आणि उच्च शिक्षण."
+            }
+          }
+        ],
+        "title": {
+          "en": "Yerwada Open Prison: At a Glance",
+          "mr": "येरवडा खुले कारागृह: एक दृष्टिक्षेप"
+        },
+        "subtitle": {
+          "en": "For more information",
+          "mr": "अधिक माहितीसाठी"
+        },
+        "youtubeLink": "https://www.youtube.com/@CShamkant"
+      },
+      "createdAt": "2026-09-02T10:37:29.107Z",
+      "updatedAt": "2026-09-02T11:43:22.044Z"
+    },
+    {
+      "id": "029e6873-528d-4326-8d7f-4d0a941f2dbf",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "ANNOUNCEMENTS",
+      "order": 4,
+      "data": {
+        "tabs": [
+          {
+            "items": [
+              {
+                "date": "03 Jul 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%89%e0%a4%ae%e0%a5%87%e0%a4%a6%e0%a4%b5%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%82%e0%a4%a8%e0%a4%be-%e0%a4%b8%e0%a5%82%e0%a4%9a%e0%a4%a8%e0%a4%be-%e0%a4%85%e0%a4%82%e0%a4%a4%e0%a4%bf%e0%a4%ae/",
+                "text": "उमेदवारांना सूचना – अंतिम प्रतिक्षा यादीतील १०२ उमेदवारांपैकी गैरहजर राहीलेल्या ३८ उमेदवारांचे मूळ दस्तऐवज पडताळणीबाबत"
+              },
+              {
+                "date": "02 Jul 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%b0%e0%a4%b5%e0%a4%a4%e0%a5%8d%e0%a4%af%e0%a4%be/",
+                "text": "करवत्या"
+              },
+              {
+                "date": "30 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0%e0%a5%87-%e0%a4%aa%e0%a4%a1%e0%a4%a4%e0%a4%be%e0%a4%b3%e0%a4%a3%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97/",
+                "text": "कागदपत्रे पडताळणी – कारागृह शिपाई भरती – पश्चिम विभाग, पुणे"
+              },
+              {
+                "date": "25 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%a4%e0%a4%be%e0%a4%b0%e0%a5%80/",
+                "text": "कातारी"
+              },
+              {
+                "date": "20 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%b6%e0%a4%bf%e0%a4%aa%e0%a4%be%e0%a4%88-%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6-2/",
+                "text": "कारागृह शिपाई भरती – कागदपत्र पडताळणीसाठी शेवटची संधी-छ. संभाजीनगर"
+              },
+              {
+                "date": "18 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%b6%e0%a4%bf%e0%a4%aa%e0%a4%be%e0%a4%88-%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80-%e0%a4%b5%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b9-%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80/",
+                "text": "कारागृह शिपाई भरती – छ. संभाजीनगर – मूळ कागदपत्र तपासणी करीता गैरहजर उदेमवारांना तिसरी व अंतिम नोटीस"
+              },
+              {
+                "date": "15 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%b6%e0%a4%bf%e0%a4%aa%e0%a4%be%e0%a4%88-%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80-%e0%a4%b8%e0%a4%a8-%e0%a5%a8%e0%a5%a6%e0%a5%a8/",
+                "text": "कारागृह शिपाई भरती सन २०२२-२३ या भरती प्रक्रियेतील अंतिम प्रतिक्षा यादीतील ०७ उमेदवारांना मूळ दस्तऐवज पडताळणीकरीता उपस्थित राहणेबाबत…"
+              }
+            ],
+            "tab_title": "भरती"
+          },
+          {
+            "items": [
+              {
+                "date": "10 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%af%e0%a5%87%e0%a4%b0%e0%a4%b5%e0%a4%a1%e0%a4%be-%e0%a4%ae%e0%a4%a7%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%b0%e0%a5%8d%e0%a4%a4%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83-4/",
+                "text": "येरवडा मध्यवर्ती कारागृह _स्क्रॅप लिलाव_फोटो"
+              },
+              {
+                "date": "08 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%af%e0%a5%87%e0%a4%b0%e0%a4%b5%e0%a4%a1%e0%a4%be-%e0%a4%ae%e0%a4%a7%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%b0%e0%a5%8d%e0%a4%a4%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83-3/",
+                "text": "येरवडा मध्यवर्ती कारागृह _स्क्रॅप साहित्य_स्क्रॅप आयटम_वजन_किंमत_फोटो_विवरण"
+              },
+              {
+                "date": "05 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%b2%e0%a4%bf%e0%a4%b2%e0%a4%be%e0%a4%b5%e0%a4%be%e0%a4%a4-%e0%a4%b8%e0%a4%b9%e0%a4%ad%e0%a4%be%e0%a4%97%e0%a5%80-%e0%a4%b9%e0%a5%8b%e0%a4%a3%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b8%e0%a4%be%e0%a4%a0/",
+                "text": "लिलावात सहभागी होण्यासाठी पात्रता निकष"
+              },
+              {
+                "date": "02 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/auction_tender_yerwada-central-prison_detail/",
+                "text": "विक्री_नोंदणी _येरवडा मध्यवर्ती कारागृह _तपशील"
+              },
+              {
+                "date": "01 Jun 2026",
+                "href": "https://mahaprisons.gov.in/notice/%e0%a4%af%e0%a5%87%e0%a4%b0%e0%a4%b5%e0%a4%a1%e0%a4%be-%e0%a4%ae%e0%a4%a7%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%b0%e0%a5%8d%e0%a4%a4%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83-2/",
+                "text": "येरवडा मध्यवर्ती कारागृहांतील भंगार सामग्रीचा लिलाव"
+              }
+            ],
+            "tab_title": "निविदा"
+          },
+          {
+            "items": [
+              {
+                "date": "24 Mar 2026",
+                "href": "/uploads/59a3ce66-5210-4b1f-9d35-6537c9c43a73.pdf",
+                "text": "लिपीक पदाची तात्पुरती सेवाजेष्ठता सुची सन 2026"
+              },
+              {
+                "date": "12 Mar 2026",
+                "href": "/uploads/865e35de-eb84-43ec-9252-e30cbfb29a60.pdf",
+                "text": "तात्पुरती सेवा जेष्ठता सुची _ तुरुंगाधिकारी श्रेणी-1 _ दि.01.01.1993 ते दि.31.12.2026"
+              },
+              {
+                "date": "12 Mar 2026",
+                "href": "/uploads/5c169534-0b59-4eea-90e5-5b149e2efc97.pdf",
+                "text": "तात्पुरती सेवा जेष्ठता सुची _ वरिष्ठ लिपीक _ दि.01.01.2026 रोजीची"
+              },
+              {
+                "date": "23 Feb 2026",
+                "href": "/uploads/6e9192cb-f967-41c1-b06d-cc0181b14ee0.pdf",
+                "text": "कारागृह विभागातील लघुलेखक संवर्गातील पदांची दि.०१.०१.२०२६ रोजीची तात्पुरती सेवाजेष्ठता सूची प्रसिद्ध करणेबाबत.."
+              },
+              {
+                "date": "23 Feb 2026",
+                "href": "/uploads/80838e45-0e65-45b1-ae36-a2be7c88175b.pdf",
+                "text": "कारागृह विभागातील तांत्रिक संवर्गातील पदोन्नतीच्या पदांची दि.०१.०१.२०२६ रोजीची तात्पुरती सेवाजेष्ठता सूची प्रसिद्ध करणेबाबत"
+              }
+            ],
+            "tab_title": "कागदपत्रे"
+          }
+        ],
+        "title": {
+          "en": "Latest Announcements",
+          "mr": "ताज्या घडामोडी"
+        }
+      },
+      "createdAt": "2026-09-02T10:37:29.117Z",
+      "updatedAt": "2026-09-03T11:04:29.343Z"
+    },
+    {
+      "id": "370fb72c-36ca-4fe2-a655-cb8625109efc",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "HOLIDAY_CALENDAR",
+      "order": 5,
+      "data": {
+        "title": {
+          "en": "Holiday Calendar",
+          "mr": "सुट्ट्यांचे कॅलेंडर"
+        },
+        "holidays": [
+          {
+            "date": "2026-01-26",
+            "type": "gazetted",
+            "title": "Republic Day / प्रजासत्ताक दिन"
+          },
+          {
+            "date": "2026-02-19",
+            "type": "gazetted",
+            "title": "Chhatrapati Shivaji Maharaj Jayanti / छत्रपती शिवाजी महाराज जयंती"
+          },
+          {
+            "date": "2026-02-26",
+            "type": "gazetted",
+            "title": "Mahashivratri / महाशिवरात्री"
+          },
+          {
+            "date": "2026-03-14",
+            "type": "gazetted",
+            "title": "Holi / होळी"
+          },
+          {
+            "date": "2026-03-19",
+            "type": "gazetted",
+            "title": "Gudi Padwa / गुढीपाडवा"
+          },
+          {
+            "date": "2026-03-28",
+            "type": "gazetted",
+            "title": "Ram Navami / रामनवमी"
+          },
+          {
+            "date": "2026-04-14",
+            "type": "gazetted",
+            "title": "Dr. Babasaheb Ambedkar Jayanti / डॉ. बाबासाहेब आंबेडकर जयंती"
+          },
+          {
+            "date": "2026-04-03",
+            "type": "gazetted",
+            "title": "Good Friday / गुड फ्रायडे"
+          },
+          {
+            "date": "2026-05-01",
+            "type": "gazetted",
+            "title": "Maharashtra Day / महाराष्ट्र दिन"
+          },
+          {
+            "date": "2026-05-26",
+            "type": "restricted",
+            "title": "Buddha Purnima / बुद्ध पौर्णिमा"
+          },
+          {
+            "date": "2026-06-25",
+            "type": "restricted",
+            "title": "Bakri Eid / बकरी ईद"
+          },
+          {
+            "date": "2026-07-26",
+            "type": "restricted",
+            "title": "Moharram / मोहरम"
+          },
+          {
+            "date": "2026-08-15",
+            "type": "gazetted",
+            "title": "Independence Day / स्वातंत्र्य दिन"
+          },
+          {
+            "date": "2026-08-28",
+            "type": "restricted",
+            "title": "Raksha Bandhan / रक्षाबंधन"
+          },
+          {
+            "date": "2026-09-15",
+            "type": "gazetted",
+            "title": "Ganesh Chaturthi / गणेश चतुर्थी"
+          },
+          {
+            "date": "2026-09-25",
+            "type": "restricted",
+            "title": "Anant Chaturdashi / अनंत चतुर्दशी"
+          },
+          {
+            "date": "2026-10-02",
+            "type": "gazetted",
+            "title": "Mahatma Gandhi Jayanti / महात्मा गांधी जयंती"
+          },
+          {
+            "date": "2026-10-21",
+            "type": "gazetted",
+            "title": "Dussehra / दसरा"
+          },
+          {
+            "date": "2026-11-08",
+            "type": "gazetted",
+            "title": "Diwali (Laxmi Pujan) / दिवाळी लक्ष्मीपूजन"
+          },
+          {
+            "date": "2026-11-09",
+            "type": "gazetted",
+            "title": "Diwali Balipratipada / दिवाळी बलिप्रतिपदा"
+          },
+          {
+            "date": "2026-11-10",
+            "type": "gazetted",
+            "title": "Bhaubeej / भाऊबीज"
+          },
+          {
+            "date": "2026-11-23",
+            "type": "restricted",
+            "title": "Guru Nanak Jayanti / गुरु नानक जयंती"
+          },
+          {
+            "date": "2026-12-25",
+            "type": "gazetted",
+            "title": "Christmas / नाताळ"
+          }
+        ]
+      },
+      "createdAt": "2026-09-02T10:37:29.121Z",
+      "updatedAt": "2026-09-02T11:43:22.055Z"
+    },
+    {
+      "id": "25d7106a-db99-4e1f-96a5-d96d557f29a0",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "PHOTO_GALLERY",
+      "order": 6,
+      "data": {
+        "title": {
+          "en": "Photo Gallery",
+          "mr": "फोटो गॅलरी"
+        },
+        "gallery": {
+          "items": [
+            {
+              "href": "https://mahaprisons.gov.in/wp-content/uploads/2025/01/202501222131506397.jpg",
+              "img_alt": "महाराष्ट्र विभागांचा नकाशा",
+              "img_src": "/uploads/fc3ab5fe-f84c-4858-a5cd-2caabc8d2e77.jpg"
+            }
+          ],
+          "view_all_href": "http://preview.s3waas.gov.in/photo-gallery/"
+        }
+      },
+      "createdAt": "2026-09-02T10:37:29.125Z",
+      "updatedAt": "2026-09-03T11:04:30.608Z"
+    },
+    {
+      "id": "f6fe3cbf-985e-48ff-8bb4-8b06d80ad039",
+      "pageId": "5f6409bc-8d75-4a95-8a6d-c89b4e392800",
+      "blockType": "QUICK_SERVICES",
+      "order": 7,
+      "data": {
+        "links": [
+          {
+            "href": "https://www.india.gov.in/",
+            "text": "National Portal of India",
+            "title": "National Portal of India"
+          },
+          {
+            "href": "https://www.maharashtra.gov.in/",
+            "text": "महाराष्ट्र शासन",
+            "title": "महाराष्ट्र शासन"
+          },
+          {
+            "href": "https://maharashtratourism.gov.in/",
+            "text": "महाराष्ट्र पर्यटन",
+            "title": "महाराष्ट्र पर्यटन"
+          },
+          {
+            "href": "https://aaplesarkar.mahaonline.gov.in",
+            "text": "Aaple Sarkar",
+            "title": "Aaple Sarkar"
+          },
+          {
+            "href": "https://rtionline.maharashtra.gov.in",
+            "text": "RTI Online",
+            "title": "RTI Online"
+          },
+          {
+            "href": "http://maharashtra.etenders.in/",
+            "text": "Maharashtra E-Tender",
+            "title": "Maharashtra E-Tender"
+          },
+          {
+            "href": "http://departmentalinquirymarathi.blogspot.com/",
+            "text": "Department Enquiry",
+            "title": "Department Enquiry"
+          },
+          {
+            "href": "https://eprisons.nic.in/NPIP/public/MyVisitRegistration",
+            "text": "Emulakat for Prisoners and Lawyers",
+            "title": "Emulakat for Prisoners and Lawyers"
+          },
+          {
+            "href": "https://x.com/mahaprison",
+            "text": "ट्विटर",
+            "title": "ट्विटर"
+          },
+          {
+            "href": "https://www.instagram.com/themaharashtraprison/",
+            "text": "Instagram",
+            "title": "Instagram"
+          },
+          {
+            "href": "https://www.facebook.com/mahaprisondepartment/",
+            "text": "फेसबुक",
+            "title": "फेसबुक"
+          }
+        ],
+        "title": {
+          "en": "Quick Services & Important Links",
+          "mr": "जलद सेवा आणि महत्त्वाच्या लिंक्स"
+        },
+        "subtitle": {
+          "en": "Important contact numbers and related government website links are available below for the convenience of citizens.",
+          "mr": "नागरिकांच्या सुविधेसाठी महत्त्वाचे संपर्क क्रमांक आणि संबंधित शासकीय संकेतस्थळांच्या लिंक्स खालीलप्रमाणे उपलब्ध आहेत."
+        },
+        "helplines": [
+          {
+            "href": "#",
+            "text": "Citizen’s Call center:155300",
+            "img_alt": "",
+            "img_src": ""
+          },
+          {
+            "href": "#",
+            "text": "Emergency Police:100",
+            "img_alt": "",
+            "img_src": ""
+          },
+          {
+            "href": "#",
+            "text": "Emergency Helpline:112",
+            "img_alt": "",
+            "img_src": ""
+          },
+          {
+            "href": "#",
+            "text": "Crime Stopper:1090",
+            "img_alt": "",
+            "img_src": ""
+          },
+          {
+            "href": "#",
+            "text": "Women Helpline:1091",
+            "img_alt": "",
+            "img_src": ""
+          },
+          {
+            "href": "#",
+            "text": "Child Helpline:1098",
+            "img_alt": "",
+            "img_src": ""
+          }
+        ]
+      },
+      "createdAt": "2026-09-02T10:37:29.103Z",
+      "updatedAt": "2026-09-02T11:43:22.068Z"
+    }
+  ],
+  "template": {
+    "key": "homepage",
+    "name": "Homepage Template",
+    "thumbnailMediaId": null,
+    "allowedBlockTypes": [
+      "HeroCarousel",
+      "MinisterProfiles",
+      "AboutSection",
+      "JailInsights",
+      "AnnouncementsTabs",
+      "HolidayCalendar",
+      "PhotoGallery",
+      "QuickServices"
+    ],
+    "slotRules": {}
+  }
+}

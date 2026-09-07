@@ -13,11 +13,11 @@ const pastelColors = [
   'bg-teal-50 dark-mode:bg-teal-950/40 border-teal-100/80 dark-mode:border-teal-900/50'
 ];
 
-export const AnnouncementsTabs = () => {
+export const AnnouncementsTabs = ({ data }) => {
   const { language, t } = useAccessibility();
   const [activeTab, setActiveTab] = useState(0);
 
-  const tabs = mockHomepageData.announcements_tabs;
+  const tabs = data?.tabs || mockHomepageData.announcements_tabs;
 
   // English translation map for tab items since data starts in Marathi
   const getTabTitle = (title) => {

@@ -261,7 +261,7 @@ export const ArrayEditor = ({ items, onChange, renderItem, newItemTemplate, titl
   const { handleChange, undo, redo, reset, canUndo, canRedo } = useSectionHistory(items || [], onChange);
 
   const handleAdd = () => {
-    handleChange([...(items || []), newItemTemplate]);
+    handleChange([newItemTemplate, ...(items || [])]);
   };
 
   const handleRemove = (index) => {
@@ -328,6 +328,29 @@ export const ArrayEditor = ({ items, onChange, renderItem, newItemTemplate, titl
             isLast={index === items.length - 1}
           />
         ))}
+      </div>
+    </div>
+  );
+};
+
+export const SubSection = ({ title, value, onChange, children }) => {
+  const { handleChange, undo, redo, reset, canUndo, canRedo } = useSectionHistory(value || {}, onChange);
+
+  return (
+    <div className="border border-gray-200 rounded-lg overflow-hidden bg-white mb-4 shadow-sm mt-6">
+      <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-gray-50">
+        <h4 className="font-semibold text-gray-700 text-sm flex items-center gap-2">{title}</h4>
+        
+        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded px-1 py-0.5 shadow-sm">
+          <button onClick={undo} disabled={!canUndo} title="Undo Section Edits" className="p-1 text-gray-500 hover:text-blue-600 disabled:opacity-30 disabled:hover:text-gray-500 transition-colors"><Undo2 size={14}/></button>
+          <button onClick={redo} disabled={!canRedo} title="Redo Section Edits" className="p-1 text-gray-500 hover:text-blue-600 disabled:opacity-30 disabled:hover:text-gray-500 transition-colors"><Redo2 size={14}/></button>
+          <div className="w-px h-3 bg-gray-300 mx-0.5"></div>
+          <button onClick={reset} title="Reset Section" className="p-1 text-gray-500 hover:text-red-500 transition-colors"><RotateCcw size={14}/></button>
+        </div>
+      </div>
+      
+      <div className="p-4 flex flex-col gap-3">
+        {children(value || {}, handleChange)}
       </div>
     </div>
   );
