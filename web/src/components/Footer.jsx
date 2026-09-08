@@ -113,8 +113,8 @@ export const Footer = () => {
             </div>
             <div className="font-medium text-white/85">
               {language === 'mr'
-                ? 'राष्ट्रीय माहिती विज्ञान केंद्र,'
-                : 'Developed and hosted by National Informatics Centre,'}
+                ? 'Analityca Buisness Solutions द्वारे विकसित आणि होस्ट केलेले'
+                : 'Developed and hosted by Analityca Buisness Solutions'}
             </div>
             <div className="font-medium text-white/85">
               {language === 'mr'
