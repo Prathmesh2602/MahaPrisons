@@ -35,6 +35,9 @@ const isItemActive = (item, pathname) => {
   return false;
 };
 
+/**
+ * @param {{ menuData?: any[] }} props
+ */
 export default function MegaMenu({ menuData = [] }) {
   const { language, t } = useAccessibility();
   const location = usePathname();
@@ -222,7 +225,7 @@ export default function MegaMenu({ menuData = [] }) {
                 onMouseLeave={handleDropdownLeave}
               >
                 <Link
-                  to={item.href}
+                  href={item.href || '#'}
                   className={`px-2 py-2.5 flex items-center gap-1.5 transition-all whitespace-nowrap focus:outline focus:outline-2 focus:outline-amber-500 h-full ${isActive
                     ? 'bg-amber-500 rounded text-[#fff] font-[500] px-3 hover:bg-amber-600'
                     : 'hover:bg-black/5 rounded dark-mode:hover:bg-white/5 text-black dark-mode:text-gray-100'
@@ -241,7 +244,7 @@ export default function MegaMenu({ menuData = [] }) {
                     {item.children?.map((child, cIdx) => (
                       <Link
                         key={cIdx}
-                        to={child.href}
+                        href={child.href || '#'}
                         className="w-full px-4 py-2 text-[13px] font-medium text-[#0F3D66] dark-mode:text-blue-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500"
                       >
                         <span className="flex-1 text-left whitespace-normal leading-snug">{t(child.text)}</span>
@@ -265,7 +268,7 @@ export default function MegaMenu({ menuData = [] }) {
                             return (
                               <div key={cIdx} className="relative group/sub">
                                 <Link
-                                  to={hasSub ? '#' : child.href}
+                                  href={hasSub ? '#' : (child.href || '#')}
                                   onClick={(e) => hasSub && e.preventDefault()}
                                   className="text-[13px] font-medium text-[#0F3D66] dark-mode:text-blue-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 transition-colors py-1 px-1.5 rounded flex items-start gap-1 cursor-pointer w-full justify-between"
                                 >
@@ -280,7 +283,7 @@ export default function MegaMenu({ menuData = [] }) {
                                     {child.children.map((subChild, scIdx) => (
                                       <Link
                                         key={scIdx}
-                                        to={subChild.href}
+                                        href={subChild.href || '#'}
                                         className="w-full px-3 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 transition-colors flex items-start"
                                       >
                                         <span className="whitespace-normal leading-tight text-left">{t(subChild.text)}</span>
@@ -336,7 +339,7 @@ export default function MegaMenu({ menuData = [] }) {
                         onMouseEnter={() => handleSubMenuHover(mIdx)}
                       >
                         <Link
-                          to={hasSubChildren ? '#' : item.href}
+                          href={hasSubChildren ? '#' : (item.href || '#')}
                           onClick={(e) => hasSubChildren && e.preventDefault()}
                           className={`w-full px-4 py-2 text-[13px] font-medium flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 ${
                             isItemActive(item, location.pathname) 
@@ -360,7 +363,7 @@ export default function MegaMenu({ menuData = [] }) {
                             {!item.isMegaMenu && item.children?.map((subChild, scIdx) => (
                               <Link
                                 key={scIdx}
-                                to={subChild.href}
+                                href={subChild.href || '#'}
                                 className="w-full px-4 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500"
                               >
                                 <span className="flex-1 text-left whitespace-normal leading-snug">{t(subChild.text)}</span>
@@ -375,7 +378,7 @@ export default function MegaMenu({ menuData = [] }) {
                                 {group.children?.map((subChild, scIdx) => (
                                   <Link
                                     key={scIdx}
-                                    to={subChild.href || '#'}
+                                    href={subChild.href || '#'}
                                     className="w-full px-4 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start transition-colors border-b border-gray-100 last:border-0 dark-mode:border-gray-800"
                                   >
                                     <span className="whitespace-normal leading-snug text-left">{t(subChild.text)}</span>
@@ -456,7 +459,7 @@ export default function MegaMenu({ menuData = [] }) {
                       onClick={() => hasChildren ? toggleDropdownMobile(idx) : null}
                     >
                       <Link
-                        to={hasChildren ? '#' : item.href}
+                        href={hasChildren ? '#' : (item.href || '#')}
                         className="text-sm font-semibold flex items-center gap-2.5"
                         onClick={(e) => {
                           if (hasChildren) e.preventDefault();
@@ -479,7 +482,7 @@ export default function MegaMenu({ menuData = [] }) {
                         {item.children?.map((child, cIdx) => (
                           <Link
                             key={cIdx}
-                            to={child.href}
+                            href={child.href || '#'}
                             className="block px-3 py-1.5 text-[13px] font-medium text-blue-200 hover:bg-white/10 hover:text-white rounded transition-colors"
                             onClick={() => setMobileMenuOpen(false)}
                           >
@@ -502,7 +505,7 @@ export default function MegaMenu({ menuData = [] }) {
                               return (
                                 <div key={cIdx}>
                                   <Link
-                                    to={hasSub ? '#' : child.href}
+                                    href={hasSub ? '#' : (child.href || '#')}
                                     className="block px-3 py-1 text-[13px] font-medium text-blue-200 hover:bg-white/10 hover:text-white rounded transition-colors"
                                     onClick={(e) => {
                                       if (hasSub) {
@@ -519,7 +522,7 @@ export default function MegaMenu({ menuData = [] }) {
                                       {child.children.map((subChild, scIdx) => (
                                         <Link
                                           key={scIdx}
-                                          to={subChild.href}
+                                          href={subChild.href || '#'}
                                           className="block px-3 py-1 text-[12px] font-normal text-gray-300 hover:bg-white/10 hover:text-white rounded transition-colors"
                                           onClick={() => setMobileMenuOpen(false)}
                                         >
@@ -546,5 +549,4 @@ export default function MegaMenu({ menuData = [] }) {
   );
 };
 
-export default MegaMenu;
 
