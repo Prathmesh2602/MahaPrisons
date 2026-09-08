@@ -263,6 +263,25 @@ router.put('/translations/:id', requireAuth, requireRole(['CONTENT_EDITOR', 'SUP
   }
 });
 
+router.get('/menu', requireAuth, requireRole(['CONTENT_EDITOR', 'SUPER_ADMIN']), async (req, res) => {
+  try {
+    const items = await prisma.menuItem.findMany({
+      orderBy: { order: 'asc' }
+    });
+
+    const buildTree = (parentId = null) => {
+      return items
+        .filter(item => item.parentId === parentId)
+        .map(item => ({ ...item, children: buildTree(item.id) }));
+    };
+
+    res.json(buildTree(null));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 router.post('/menu', requireAuth, requireRole(['CONTENT_EDITOR', 'SUPER_ADMIN']), auditLogger('CREATE_MENU'), async (req, res) => {
   try {
     const { labelEn, labelMr, href, icon, parentId, isMegaGroup, order } = req.body;

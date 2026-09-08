@@ -40,9 +40,22 @@ router.get('/menu', cacheMiddleware(120), async (req, res) => {
 
     // Helper to construct hierarchy tree
     const buildTree = (parentId = null) => {
-      return items
+      const children = items
         .filter(item => item.parentId === parentId)
         .map(item => ({ ...item, children: buildTree(item.id) }));
+
+      return children.map(child => {
+        const megaGroups = child.children.filter(c => c.isMegaGroup);
+        if (megaGroups.length > 0) {
+          child.isMegaMenu = true;
+          child.groups = megaGroups.map(g => ({
+            groupTitle: g.labelMr,
+            children: g.children
+          }));
+          child.children = child.children.filter(c => !c.isMegaGroup);
+        }
+        return child;
+      });
     };
 
     res.json(buildTree(null));

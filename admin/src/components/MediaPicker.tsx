@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Upload, X, Image as ImageIcon, Loader2, Check } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { apiFetch } from '../utils/api';
 
 export const MediaPicker = ({ onSelect, label = 'Image', value, fallbackIcon = null }) => {

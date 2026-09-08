@@ -14,11 +14,8 @@ export interface MenuItem {
   children?: MenuItem[];
 }
 
-// Note: public endpoint for tree fetching
 export const getMenuTree = async (): Promise<MenuItem[]> => {
-  const response = await fetch('http://localhost:5000/api/v1/public/menu');
-  if (!response.ok) throw new Error('Failed to fetch menu');
-  return response.json();
+  return apiClient('/menu');
 };
 
 export const createMenuItem = async (data: Partial<MenuItem>) => {

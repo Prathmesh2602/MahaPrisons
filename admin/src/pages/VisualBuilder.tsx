@@ -153,7 +153,7 @@ export const VisualBuilder = () => {
           <div className="w-full h-full bg-white rounded-lg shadow-inner overflow-hidden border border-gray-300 mx-auto max-w-screen-xl">
             <iframe
               ref={iframeRef}
-              src={`http://localhost:5173/preview?previewSlug=${page.slug}&preview=true`}
+              src={`${import.meta.env.VITE_PREVIEW_URL || 'http://localhost:5174'}/preview?previewSlug=${page.slug}&preview=true`}
               className="w-full h-full border-none"
               title="Visual Preview"
               onLoad={() => {
