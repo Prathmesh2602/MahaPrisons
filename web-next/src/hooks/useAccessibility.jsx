@@ -9,15 +9,24 @@ const AccessibilityContext = createContext(undefined);
 
 export const AccessibilityProvider = ({ children, initialTranslations = {} }) => {
   const [translationsDict] = useState(initialTranslations);
-  const [language, setLanguage] = useState(() => {
-    return localStorage.getItem('language') || 'mr';
-  });
+  const [language, setLanguage] = useState('mr');
   const [contrast, setContrast] = useState('normal');
   const [fontSize, setFontSize] = useState(0);
   const [invertColors, setInvertColors] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('language', language);
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('language');
+      if (saved) {
+        setLanguage(saved);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('language', language);
+    }
   }, [language]);
   const [bhashiniVoiceActive, setBhashiniVoiceActive] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);

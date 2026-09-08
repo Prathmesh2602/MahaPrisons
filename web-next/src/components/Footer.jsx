@@ -135,6 +135,5 @@ export default function Footer({ settings = {} }) {
     </footer>
   );
 };
-export default Footer;
 
 

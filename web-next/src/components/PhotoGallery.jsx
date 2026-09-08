@@ -73,7 +73,7 @@ export const PhotoGallery = () => {
           </div>
 
           <Link
-            to="/gallery"
+            href="/gallery"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-white dark-mode:bg-gray-900 border-2 border-[#0F3D66] dark-mode:border-blue-400 text-[#0F3D66] dark-mode:text-blue-400 font-semibold text-sm hover:bg-[#0F3D66] hover:text-white dark-mode:hover:bg-blue-400 dark-mode:hover:text-gray-900 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 dark-mode:focus:ring-blue-900/30 shadow-sm hover:shadow-md"

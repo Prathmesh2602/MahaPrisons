@@ -1,0 +1,806 @@
+{
+  "title": "Homepage | महाराष्ट्र कारागृह विभाग | MahaPrisons | भारत",
+  "logo_h1": "Maharashtra Prisons and Correctional Services",
+  "logo_spans": [],
+  "topbar_links": [
+    {
+      "text": "",
+      "href": "#SkipContent",
+      "title": "",
+      "aria-label": "मुख्य मजकुराकडे"
+    },
+    {
+      "text": "",
+      "href": "javascript:void(0);",
+      "title": "Site Search",
+      "aria-label": "Site Search"
+    },
+    {
+      "text": "",
+      "href": "https://mahaprisons.gov.in/%e0%a4%b8%e0%a4%be%e0%a4%87%e0%a4%9f%e0%a4%ae%e0%a5%85%e0%a4%aa/",
+      "title": "",
+      "aria-label": "साइटमॅप"
+    },
+    {
+      "text": "प्रवेशयोग्यता साधने",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "प्रवेशयोग्यता साधने"
+    },
+    {
+      "text": "उच्च कॉन्ट्रास्ट",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "उच्च कॉन्ट्रास्ट"
+    },
+    {
+      "text": "सामान्य कॉन्ट्रास्ट",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "सामान्य कॉन्ट्रास्ट - निवडलेला"
+    },
+    {
+      "text": "हायलाइट लिंक्स",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "हायलाइट लिंक्स"
+    },
+    {
+      "text": "Invert",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "Invert Color"
+    },
+    {
+      "text": "Saturation",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "Saturation"
+    },
+    {
+      "text": "फॉन्ट आकार वाढवा",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "फॉन्ट आकार वाढवा"
+    },
+    {
+      "text": "फॉन्ट आकार कमी करा",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "फॉन्ट आकार कमी करा"
+    },
+    {
+      "text": "सामान्य फॉन्ट",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "सामान्य फॉन्ट"
+    },
+    {
+      "text": "मजकुरातील अंतर",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "मजकुरातील अंतर"
+    },
+    {
+      "text": "रेषेची उंची",
+      "href": "javascript:void(0);",
+      "title": "",
+      "aria-label": "रेषेची उंची"
+    },
+    {
+      "text": "Hide Images",
+      "href": "https://mahaprisons.gov.in/मदत/",
+      "title": "",
+      "aria-label": "Hide Images"
+    },
+    {
+      "text": "Big Cursor",
+      "href": "",
+      "title": "",
+      "aria-label": "Big Cursor"
+    },
+    {
+      "text": "Text to Speech",
+      "href": "javascript:void(0)",
+      "title": "",
+      "aria-label": "Text to Speech"
+    },
+    {
+      "text": "महाराष्ट्र शासन",
+      "href": "https://www.maharashtra.gov.in",
+      "title": "",
+      "aria-label": ""
+    },
+    {
+      "text": "Government of Maharashtra",
+      "href": "https://www.maharashtra.gov.in",
+      "title": "",
+      "aria-label": ""
+    }
+  ],
+  "navigation_menu": [
+    {
+      "text": "मुख्यपृष्ठ",
+      "href": "/",
+      "title": "",
+      "children": []
+    },
+    {
+      "text": "विभागाविषयी",
+      "href": "https://mahaprisons.gov.in/%e0%a4%b5%e0%a4%bf%e0%a4%ad%e0%a4%be%e0%a4%97%e0%a4%be%e0%a4%b5%e0%a4%bf%e0%a4%b7%e0%a4%af%e0%a5%80/",
+      "title": "",
+      "children": [
+        {
+          "text": "परिचय",
+          "href": "https://mahaprisons.gov.in/about-department/%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%9a%e0%a4%af/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "दृष्टी आणि ध्येय",
+          "href": "https://mahaprisons.gov.in/content-category/%e0%a4%a6%e0%a5%83%e0%a4%b7%e0%a5%8d%e0%a4%9f%e0%a5%80-%e0%a4%86%e0%a4%a3%e0%a4%bf-%e0%a4%a7%e0%a5%8d%e0%a4%af%e0%a5%87%e0%a4%af/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "कारागृहांचा इतिहास",
+          "href": "https://mahaprisons.gov.in/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9%e0%a4%be%e0%a4%82%e0%a4%9a%e0%a4%be-%e0%a4%87%e0%a4%a4%e0%a4%bf%e0%a4%b9%e0%a4%be%e0%a4%b8/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "संस्थात्मक रचना",
+          "href": "https://mahaprisons.gov.in/%e0%a4%95%e0%a5%8b%e0%a4%a3%e0%a4%be%e0%a4%9a%e0%a5%87-%e0%a4%95%e0%a5%8b%e0%a4%a3/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "महाराष्ट्रातील कारागृहे",
+      "href": "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%b9%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%b7%e0%a5%8d%e0%a4%9f%e0%a5%8d%e0%a4%b0%e0%a4%be%e0%a4%a4%e0%a5%80%e0%a4%b2-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9%e0%a5%87/",
+      "title": "",
+      "children": [
+        {
+          "text": "कारागृह मुख्यालय, पुणे",
+          "href": "https://mahaprisons.gov.in/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%ae%e0%a5%81%e0%a4%96%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b2%e0%a4%af-%e0%a4%aa%e0%a5%81%e0%a4%a3%e0%a5%87/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "पश्चिम क्षेत्र",
+          "href": "https://mahaprisons.gov.in/%e0%a4%aa%e0%a4%b6%e0%a5%8d%e0%a4%9a%e0%a4%bf%e0%a4%ae-%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a5%87%e0%a4%a4%e0%a5%8d%e0%a4%b0/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "पूर्व क्षेत्र",
+          "href": "https://mahaprisons.gov.in/%e0%a4%aa%e0%a5%82%e0%a4%b0%e0%a5%8d%e0%a4%b5-%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a5%87%e0%a4%a4%e0%a5%8d%e0%a4%b0/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "दक्षिण क्षेत्र",
+          "href": "https://mahaprisons.gov.in/%e0%a4%a6%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a4%bf%e0%a4%a3-%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a5%87%e0%a4%a4%e0%a5%8d%e0%a4%b0/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "मध्य विभाग, छ.संभाजीनगर",
+          "href": "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%a7%e0%a5%8d%e0%a4%af-%e0%a4%b5%e0%a4%bf%e0%a4%ad%e0%a4%be%e0%a4%97/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "नाशिक विभाग",
+          "href": "https://mahaprisons.gov.in/%e0%a4%a8%e0%a4%be%e0%a4%b6%e0%a4%bf%e0%a4%95-%e0%a4%b5%e0%a4%bf%e0%a4%ad%e0%a4%be%e0%a4%97/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "सूचना",
+      "href": "https://mahaprisons.gov.in/%e0%a4%b8%e0%a5%82%e0%a4%9a%e0%a4%a8%e0%a4%be/",
+      "title": "",
+      "children": [
+        {
+          "text": "कायदे व नियम",
+          "href": "https://mahaprisons.gov.in/%e0%a4%95%e0%a4%be%e0%a4%af%e0%a4%a6%e0%a5%87-%e0%a4%b5-%e0%a4%a8%e0%a4%bf%e0%a4%af%e0%a4%ae/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "परिपत्रके",
+          "href": "https://mahaprisons.gov.in/notice-category/%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0%e0%a4%95%e0%a5%87/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "घोषणा ( सामान्य)",
+          "href": "https://mahaprisons.gov.in/notice-category/%e0%a4%98%e0%a5%8b%e0%a4%b7%e0%a4%a3%e0%a4%be-%e0%a4%b8%e0%a4%be%e0%a4%ae%e0%a4%be%e0%a4%a8%e0%a5%8d%e0%a4%af/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "भरती",
+          "href": "https://mahaprisons.gov.in/notice-category/%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "निविदा",
+          "href": "https://mahaprisons.gov.in/notice-category/%e0%a4%a8%e0%a4%bf%e0%a4%b5%e0%a4%bf%e0%a4%a6%e0%a4%be/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "तक्रार निवारण",
+      "href": "https://mahaprisons.gov.in/%e0%a4%a4%e0%a4%95%e0%a5%8d%e0%a4%b0%e0%a4%be%e0%a4%b0-%e0%a4%a8%e0%a4%bf%e0%a4%b5%e0%a4%be%e0%a4%b0%e0%a4%a3/",
+      "title": "",
+      "children": []
+    },
+    {
+      "text": "नागरिकांविषयी",
+      "href": "https://mahaprisons.gov.in/e0-a4-a8-e0-a4-be-e0-a4-97-e0-a4-b0-e0-a4-bf-e0-a4-95-e0-a4-be-e0-a4-82-e0-a4-b5-e0-a4-bf-e0-a4-b7-e0-a4-af-e0-a5-80/",
+      "title": "",
+      "children": []
+    },
+    {
+      "text": "योजना/कार्यक्रम",
+      "href": "https://mahaprisons.gov.in/%e0%a4%af%e0%a5%8b%e0%a4%9c%e0%a4%a8%e0%a4%be-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a5%8d%e0%a4%af%e0%a4%95%e0%a5%8d%e0%a4%b0%e0%a4%ae/",
+      "title": "",
+      "children": [
+        {
+          "text": "राज्य सरकार",
+          "href": "https://mahaprisons.gov.in/provider/%e0%a4%b0%e0%a4%be%e0%a4%9c%e0%a5%8d%e0%a4%af-%e0%a4%b8%e0%a4%b0%e0%a4%95%e0%a4%be%e0%a4%b0-mr/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "उत्पादन",
+      "href": "https://mahaprisons.gov.in/%e0%a4%89%e0%a4%a4%e0%a5%8d%e0%a4%aa%e0%a4%be%e0%a4%a6%e0%a4%a8/",
+      "title": "",
+      "children": [
+        {
+          "text": "कृषी",
+          "href": "https://mahaprisons.gov.in/%e0%a4%95%e0%a5%83%e0%a4%b7%e0%a5%80/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "उद्योग",
+          "href": "https://mahaprisons.gov.in/%e0%a4%89%e0%a4%a6%e0%a5%8d%e0%a4%af%e0%a5%8b%e0%a4%97/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "कागदपत्रे",
+      "href": "https://mahaprisons.gov.in/%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0%e0%a5%87/",
+      "title": "",
+      "children": [
+        {
+          "text": "निर्देशिका",
+          "href": "https://mahaprisons.gov.in/%e0%a4%a8%e0%a4%bf%e0%a4%b0%e0%a5%8d%e0%a4%a6%e0%a5%87%e0%a4%b6%e0%a4%bf%e0%a4%95%e0%a4%be-mr/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "सामान्य बदली",
+          "href": "https://mahaprisons.gov.in/document-category/%e0%a4%b8%e0%a4%be%e0%a4%ae%e0%a4%be%e0%a4%a8%e0%a5%8d%e0%a4%af-%e0%a4%ac%e0%a4%a6%e0%a4%b2%e0%a5%80/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "सेवाज्येष्ठता यादी",
+          "href": "https://mahaprisons.gov.in/document-category/%e0%a4%b8%e0%a5%87%e0%a4%b5%e0%a4%be%e0%a4%9c%e0%a5%8d%e0%a4%af%e0%a5%87%e0%a4%b7%e0%a5%8d%e0%a4%a0%e0%a4%a4%e0%a4%be-%e0%a4%af%e0%a4%be%e0%a4%a6%e0%a5%80/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "नागरिकांची सनद",
+          "href": "https://mahaprisons.gov.in/document-category/%e0%a4%a8%e0%a4%be%e0%a4%97%e0%a4%b0%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%82%e0%a4%9a%e0%a5%80-%e0%a4%b8%e0%a4%a8%e0%a4%a6/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "माहितीचा अधिकार कागदपत्रे",
+          "href": "https://mahaprisons.gov.in/document-category/%e0%a4%ae%e0%a4%be%e0%a4%b9%e0%a4%bf%e0%a4%a4%e0%a5%80%e0%a4%9a%e0%a4%be-%e0%a4%85%e0%a4%a7%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%b0-%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "सुधारात्मक कार्यक्रम",
+      "href": "https://mahaprisons.gov.in/%e0%a4%b8%e0%a5%81%e0%a4%a7%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%a4%e0%a5%8d%e0%a4%ae%e0%a4%95-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a5%8d%e0%a4%af%e0%a4%95%e0%a5%8d%e0%a4%b0%e0%a4%ae/",
+      "title": "",
+      "children": [
+        {
+          "text": "सुविधा",
+          "href": "https://mahaprisons.gov.in/%e0%a4%b8%e0%a5%81%e0%a4%b5%e0%a4%bf%e0%a4%a7%e0%a4%be/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "व्यावसायिक प्रशिक्षण",
+          "href": "https://mahaprisons.gov.in/%e0%a4%b5%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b5%e0%a4%b8%e0%a4%be%e0%a4%af%e0%a4%bf%e0%a4%95-%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%b6%e0%a4%bf%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a4%a3/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "आरोग्य शिबीरे",
+          "href": "https://mahaprisons.gov.in/%e0%a4%86%e0%a4%b0%e0%a5%8b%e0%a4%97%e0%a5%8d%e0%a4%af-%e0%a4%b6%e0%a4%bf%e0%a4%ac%e0%a5%80%e0%a4%b0%e0%a5%87/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "प्रकाशने",
+      "href": "https://mahaprisons.gov.in/e0-a4-aa-e0-a5-8d-e0-a4-b0-e0-a4-95-e0-a4-be-e0-a4-b6-e0-a4-a8-e0-a5-87/",
+      "title": "",
+      "children": [
+        {
+          "text": "मासिके/प्रसिध्दी पत्रके",
+          "href": "https://mahaprisons.gov.in/publication-type/%e0%a4%ae%e0%a4%be%e0%a4%b8%e0%a4%bf%e0%a4%95%e0%a5%87-%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%b8%e0%a4%bf%e0%a4%a7%e0%a5%8d%e0%a4%a6%e0%a5%80-%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0%e0%a4%95%e0%a5%87/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "महाराष्ट्र कारागृह नियमावली",
+          "href": "https://mahaprisons.gov.in/publication-type/%e0%a4%ae%e0%a4%b9%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%b7%e0%a5%8d%e0%a4%9f%e0%a5%8d%e0%a4%b0-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%a8%e0%a4%bf%e0%a4%af%e0%a4%ae%e0%a4%be/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "प्रशिक्षण पुस्तिका",
+          "href": "https://mahaprisons.gov.in/publication-type/%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%b6%e0%a4%bf%e0%a4%95%e0%a5%8d%e0%a4%b7%e0%a4%a3-%e0%a4%aa%e0%a5%81%e0%a4%b8%e0%a5%8d%e0%a4%a4%e0%a4%bf%e0%a4%95%e0%a4%be/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "माहितीचा अधिकार",
+      "href": "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%be%e0%a4%b9%e0%a4%bf%e0%a4%a4%e0%a5%80%e0%a4%9a%e0%a4%be-%e0%a4%85%e0%a4%a7%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%b0/",
+      "title": "",
+      "children": [
+        {
+          "text": "माहितीचा अधिकार कागदपत्रे",
+          "href": "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%be%e0%a4%b9%e0%a4%bf%e0%a4%a4%e0%a5%80%e0%a4%9a%e0%a4%be-%e0%a4%85%e0%a4%a7%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%b0-%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0/",
+          "title": "",
+          "children": []
+        },
+        {
+          "text": "माहिती अधिकार संपर्क (पीआयओ / एपीआयओ / एए)",
+          "href": "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%be%e0%a4%b9%e0%a4%bf%e0%a4%a4%e0%a5%80%e0%a4%9a%e0%a4%be-%e0%a4%85%e0%a4%a7%e0%a4%bf%e0%a4%95%e0%a4%be%e0%a4%b0-%e0%a4%b8%e0%a4%82%e0%a4%aa%e0%a4%b0%e0%a5%8d%e0%a4%95-%e0%a4%aa/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "मीडिया कॉर्नर",
+      "href": "https://mahaprisons.gov.in/%e0%a4%ae%e0%a5%80%e0%a4%a1%e0%a4%bf%e0%a4%af%e0%a4%be-%e0%a4%95%e0%a5%89%e0%a4%b0%e0%a5%8d%e0%a4%a8%e0%a4%b0-2/",
+      "title": "",
+      "children": [
+        {
+          "text": "छायाचित्र दालन",
+          "href": "https://mahaprisons.gov.in/%e0%a4%9b%e0%a4%be%e0%a4%af%e0%a4%be%e0%a4%9a%e0%a4%bf%e0%a4%a4%e0%a5%8d%e0%a4%b0-%e0%a4%a6%e0%a4%be%e0%a4%b2%e0%a4%a8/",
+          "title": "",
+          "children": []
+        }
+      ]
+    },
+    {
+      "text": "100 दिवसांची कार्यालयीन सुधारणांची विशेष मोहिम – दुसरा टप्पा",
+      "href": "https://mahaprisons.gov.in/e0-a5-a7-e0-a5-a6-e0-a5-a6-e0-a4-a6-e0-a4-bf-e0-a4-b5-e0-a4-b8-e0-a4-be-e0-a4-82-e0-a4-9a-e0-a4-be-e0-a4-95-e0-a4-be-e0-a4-b0-e0-a5-8d-e0-a4-af-e0-a4-95-e0-a5-8d-e0-a4-b0-e0-a4-ae-e0-a4-85/",
+      "title": "",
+      "children": []
+    }
+  ],
+  "news_ticker": [
+    {
+      "text": "कारागृह विभागातील निम्न श्रेणी या पदाची दिनांक 01.01.2024 रोजीची तात्पुरती सेवाज्येष्ठता सूची प्रसिध्द करणेबाबत.नवीन",
+      "href": "https://mahaprisons.gov.in/document/regarding-publication-of-provisional-service-merit-list-dated-01-01-2024-for-the-post-of-lower-grade-in-the-prisons-department/"
+    },
+    {
+      "text": "लिपीक संवर्गीय कर्मचारी यांची दि. १९/०६/२०२४ ते २१/०६/२०२४ या कालावधीत घेण्यात अलेल्या अर्हताकारी परीक्षेचा निकाल जाहीर करणेबाबत.नवीन",
+      "href": "https://mahaprisons.gov.in/notice/regarding-the-announcement-of-the-results-of-the-qualifying-examination-conducted-from-19-06-2024-to-21-06-2024-for-clerical-category-employees/"
+    }
+  ],
+  "hero_carousel": [
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/07/20260703755665836.jpeg",
+      "img_alt": "पुण्यश्लोक अहिल्यादेवी होळकर शेतकरी कर्जमुक्ती योजना",
+      "caption": "पुण्यश्लोक अहिल्यादेवी होळकर शेतकरी कर्जमुक्ती योजना"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2025/01/202501221085479752.jpg",
+      "img_alt": "मंत्रालय मुंबई",
+      "caption": "मंत्रालय मुंबईमंत्रालय मुंबई"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2025/01/20250122476252478.jpg",
+      "img_alt": "मंत्रालय मुंबई",
+      "caption": "मंत्रालय मुंबई"
+    }
+  ],
+  "minister_profiles": [
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2025/01/2025012261249385.jpg",
+      "img_alt": "श्री. देवेंद्र फडणवीस",
+      "name": "श्री. देवेंद्र फडणवीस",
+      "desg": "माननीय मुख्यमंत्री महोदय"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2025/01/202501221097700001.jpg",
+      "img_alt": "श्री. एकनाथ शिंदे",
+      "name": "श्री. एकनाथ शिंदे",
+      "desg": "माननीय उपमुख्यमंत्री"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/02/202602091228963919.jpg",
+      "img_alt": "श्रीमती. सुनेत्रा पवार",
+      "name": "श्रीमती.सुनेत्रा पवार",
+      "desg": "माननीय उपमुख्यमंत्री"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/06/202606051649346751.jpeg",
+      "img_alt": "ADG Suhas Warke (IPS)",
+      "name": "श्री. सुहास वारके",
+      "desg": "Director General of Prisons and Correctional Services"
+    }
+  ],
+  "about_section": {
+    "title": "विभागाविषयी",
+    "content": "",
+    "read_more_href": ""
+  },
+  "helpline_services": [
+    {
+      "text": "Citizen’s Call center:155300",
+      "href": "",
+      "img_src": "",
+      "img_alt": ""
+    },
+    {
+      "text": "Emergency Police:100",
+      "href": "",
+      "img_src": "",
+      "img_alt": ""
+    },
+    {
+      "text": "Emergency Helpline:112",
+      "href": "",
+      "img_src": "",
+      "img_alt": ""
+    },
+    {
+      "text": "Crime Stopper:1090",
+      "href": "",
+      "img_src": "",
+      "img_alt": ""
+    },
+    {
+      "text": "Women Helpline:1091",
+      "href": "",
+      "img_src": "",
+      "img_alt": ""
+    },
+    {
+      "text": "Child Helpline:1098",
+      "href": "",
+      "img_src": "",
+      "img_alt": ""
+    }
+  ],
+  "gallery": {
+    "items": [
+      {
+        "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2025/01/202501222131506397.jpg",
+        "img_alt": "महाराष्ट्र विभागांचा नकाशा",
+        "href": ""
+      },
+      {
+        "img_src": "",
+        "img_alt": "",
+        "href": ""
+      },
+      {
+        "img_src": "",
+        "img_alt": "",
+        "href": ""
+      }
+    ],
+    "view_all_href": "http://preview.s3waas.gov.in/photo-gallery/"
+  },
+  "important_links": [
+    {
+      "text": "National Portal of India",
+      "href": "https://www.india.gov.in/",
+      "title": ""
+    },
+    {
+      "text": "महाराष्ट्र शासन",
+      "href": "https://www.maharashtra.gov.in/",
+      "title": ""
+    },
+    {
+      "text": "महाराष्ट्र पर्यटन",
+      "href": "https://maharashtratourism.gov.in/",
+      "title": ""
+    },
+    {
+      "text": "Aaple Sarkar",
+      "href": "https://aaplesarkar.mahaonline.gov.in",
+      "title": ""
+    },
+    {
+      "text": "RTI Online",
+      "href": "https://rtionline.maharashtra.gov.in",
+      "title": ""
+    },
+    {
+      "text": "Maharashtra E-Tender",
+      "href": "http://maharashtra.etenders.in/",
+      "title": ""
+    },
+    {
+      "text": "Department Enquiry",
+      "href": "http://departmentalinquirymarathi.blogspot.com/",
+      "title": ""
+    },
+    {
+      "text": "Emulakat for Prisoners and Lawyers",
+      "href": "https://eprisons.nic.in/NPIP/public/MyVisitRegistration",
+      "title": ""
+    },
+    {
+      "text": "ट्विटर",
+      "href": "https://x.com/mahaprison",
+      "title": ""
+    },
+    {
+      "text": "Instagram",
+      "href": "https://www.instagram.com/themaharashtraprison/",
+      "title": ""
+    },
+    {
+      "text": "फेसबुक",
+      "href": "https://www.facebook.com/mahaprisondepartment/",
+      "title": ""
+    }
+  ],
+  "announcements_tabs": [
+    {
+      "tab_title": "भरती",
+      "items": [
+        {
+          "text": "उमेदवारांना सूचना – अंतिम प्रतिक्षा यादीतील १०२ उमेदवारांपैकी गैरहजर राहीलेल्या ३८ उमेदवारांचे मूळ दस्तऐवज पडताळणीबाबत",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%89%e0%a4%ae%e0%a5%87%e0%a4%a6%e0%a4%b5%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%82%e0%a4%a8%e0%a4%be-%e0%a4%b8%e0%a5%82%e0%a4%9a%e0%a4%a8%e0%a4%be-%e0%a4%85%e0%a4%82%e0%a4%a4%e0%a4%bf%e0%a4%ae/",
+          "date": ""
+        },
+        {
+          "text": "करवत्या",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%b0%e0%a4%b5%e0%a4%a4%e0%a5%8d%e0%a4%af%e0%a4%be/",
+          "date": ""
+        },
+        {
+          "text": "कागदपत्रे पडताळणी – कारागृह शिपाई भरती – पश्चिम विभाग, पुणे",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0%e0%a5%87-%e0%a4%aa%e0%a4%a1%e0%a4%a4%e0%a4%be%e0%a4%b3%e0%a4%a3%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97/",
+          "date": ""
+        },
+        {
+          "text": "कातारी",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%a4%e0%a4%be%e0%a4%b0%e0%a5%80/",
+          "date": ""
+        },
+        {
+          "text": "कारागृह शिपाई भरती – कागदपत्र पडताळणीसाठी शेवटची संधी-छ. संभाजीनगर",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%b6%e0%a4%bf%e0%a4%aa%e0%a4%be%e0%a4%88-%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%97%e0%a4%a6-2/",
+          "date": ""
+        },
+        {
+          "text": "कारागृह शिपाई भरती – छ. संभाजीनगर – मूळ कागदपत्र तपासणी करीता गैरहजर उदेमवारांना तिसरी व अंतिम नोटीस",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%b6%e0%a4%bf%e0%a4%aa%e0%a4%be%e0%a4%88-%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80-%e0%a4%9b-%e0%a4%b8%e0%a4%82%e0%a4%ad/",
+          "date": ""
+        },
+        {
+          "text": "कारागृह शिपाई भरती सन २०२२-२३ या भरती प्रक्रियेतील अंतिम प्रतिक्षा यादीतील ०७ उमेदवारांना मूळ दस्तऐवज पडताळणीकरीता उपस्थित राहणेबाबत…",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83%e0%a4%b9-%e0%a4%b6%e0%a4%bf%e0%a4%aa%e0%a4%be%e0%a4%88-%e0%a4%ad%e0%a4%b0%e0%a4%a4%e0%a5%80-%e0%a4%b8%e0%a4%a8-%e0%a5%a8%e0%a5%a6%e0%a5%a8/",
+          "date": ""
+        }
+      ]
+    },
+    {
+      "tab_title": "निविदा",
+      "items": [
+        {
+          "text": "येरवडा मध्यवर्ती कारागृह _स्क्रॅप लिलाव_फोटो",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%af%e0%a5%87%e0%a4%b0%e0%a4%b5%e0%a4%a1%e0%a4%be-%e0%a4%ae%e0%a4%a7%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%b0%e0%a5%8d%e0%a4%a4%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83-4/",
+          "date": ""
+        },
+        {
+          "text": "येरवडा मध्यवर्ती कारागृह _स्क्रॅप साहित्य_स्क्रॅप आयटम_वजन_किंमत_फोटो_विवरण",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%af%e0%a5%87%e0%a4%b0%e0%a4%b5%e0%a4%a1%e0%a4%be-%e0%a4%ae%e0%a4%a7%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%b0%e0%a5%8d%e0%a4%a4%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83-3/",
+          "date": ""
+        },
+        {
+          "text": "लिलावात सहभागी होण्यासाठी पात्रता निकष",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%b2%e0%a4%bf%e0%a4%b2%e0%a4%be%e0%a4%b5%e0%a4%be%e0%a4%a4-%e0%a4%b8%e0%a4%b9%e0%a4%ad%e0%a4%be%e0%a4%97%e0%a5%80-%e0%a4%b9%e0%a5%8b%e0%a4%a3%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b8%e0%a4%be%e0%a4%a0/",
+          "date": ""
+        },
+        {
+          "text": "विक्री_नोंदणी _येरवडा मध्यवर्ती कारागृह _तपशील",
+          "href": "https://mahaprisons.gov.in/notice/auction_tender_yerwada-central-prison_detail/",
+          "date": ""
+        },
+        {
+          "text": "येरवडा मध्यवर्ती कारागृहांतील भंगार सामग्रीचा लिलाव",
+          "href": "https://mahaprisons.gov.in/notice/%e0%a4%af%e0%a5%87%e0%a4%b0%e0%a4%b5%e0%a4%a1%e0%a4%be-%e0%a4%ae%e0%a4%a7%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%b0%e0%a5%8d%e0%a4%a4%e0%a5%80-%e0%a4%95%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%97%e0%a5%83-2/",
+          "date": ""
+        }
+      ]
+    },
+    {
+      "tab_title": "कागदपत्रे",
+      "items": [
+        {
+          "text": "लिपीक पदाची तात्पुरती सेवाजेष्ठता सुची सन 2026",
+          "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/03/202603241442150231.pdf",
+          "date": ""
+        },
+        {
+          "text": "तात्पुरती सेवा जेष्ठता सुची _ तुरुंगाधिकारी श्रेणी-1 _ दि.01.01.1993 ते दि.31.12.2026",
+          "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/03/202603122014464002.pdf",
+          "date": ""
+        },
+        {
+          "text": "तात्पुरती सेवा जेष्ठता सुची _ वरिष्ठ लिपीक _ दि.01.01.2026 रोजीची",
+          "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/03/20260312305773862.pdf",
+          "date": ""
+        },
+        {
+          "text": "कारागृह विभागातील लघुलेखक संवर्गातील पदांची दि.०१.०१.२०२६ रोजीची तात्पुरती सेवाजेष्ठता सूची प्रसिद्ध करणेबाबत..",
+          "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/02/202602231371509840.pdf",
+          "date": ""
+        },
+        {
+          "text": "कारागृह विभागातील तांत्रिक संवर्गातील पदोन्नतीच्या पदांची दि.०१.०१.२०२६ रोजीची तात्पुरती सेवाजेष्ठता सूची प्रसिद्ध करणेबाबत",
+          "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/02/202602231238232966.pdf",
+          "date": ""
+        }
+      ]
+    }
+  ],
+  "all_pdf_downloads": [
+    {
+      "text": "लिपीक पदाची तात्पुरती सेवाजेष्ठता सुची सन 2026",
+      "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/03/202603241442150231.pdf",
+      "title": "डाउनलोड"
+    },
+    {
+      "text": "तात्पुरती सेवा जेष्ठता सुची _ तुरुंगाधिकारी श्रेणी-1 _ दि.01.01.1993 ते दि.31.12.2026",
+      "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/03/202603122014464002.pdf",
+      "title": "डाउनलोड"
+    },
+    {
+      "text": "तात्पुरती सेवा जेष्ठता सुची _ वरिष्ठ लिपीक _ दि.01.01.2026 रोजीची",
+      "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/03/20260312305773862.pdf",
+      "title": "डाउनलोड"
+    },
+    {
+      "text": "कारागृह विभागातील लघुलेखक संवर्गातील पदांची दि.०१.०१.२०२६ रोजीची तात्पुरती सेवाजेष्ठता सूची प्रसिद्ध करणेबाबत..",
+      "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/02/202602231371509840.pdf",
+      "title": "डाउनलोड"
+    },
+    {
+      "text": "कारागृह विभागातील तांत्रिक संवर्गातील पदोन्नतीच्या पदांची दि.०१.०१.२०२६ रोजीची तात्पुरती सेवाजेष्ठता सूची प्रसिद्ध करणेबाबत",
+      "href": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/02/202602231238232966.pdf",
+      "title": "डाउनलोड"
+    }
+  ],
+  "footer_banners": [
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2019/03/2019032275.png",
+      "img_alt": "ओपन गव्हर्नमेंट डेटा (OGD) प्लॅटफॉर्म इंडिया",
+      "href": "https://data.gov.in/"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2019/03/2019032259.png",
+      "img_alt": "मेक इन इंडिया बॅनर",
+      "href": "http://www.makeinindia.com/"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2019/03/2019032251.png",
+      "img_alt": "अविश्वसनीय भारत",
+      "href": "https://incredibleindia.org/"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/04/202604061557347410.png",
+      "img_alt": "भारताचे राष्ट्रीय पोर्टल",
+      "href": "https://www.india.gov.in/"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2019/05/2019052265.png",
+      "img_alt": "डिजिटल भारत",
+      "href": "http://www.digitalindia.gov.in/"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2019/03/2019032217.png",
+      "img_alt": "भारताचे पंतप्रधान",
+      "href": "https://www.pmindia.gov.in/"
+    },
+    {
+      "img_src": "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2019/04/2019041050.png",
+      "img_alt": "मायगव्ह",
+      "href": "https://www.mygov.in/"
+    }
+  ],
+  "footer_links": [
+    {
+      "text": "अभिप्राय",
+      "href": "https://mahaprisons.gov.in/%e0%a4%85%e0%a4%ad%e0%a4%bf%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%be%e0%a4%af/",
+      "title": ""
+    },
+    {
+      "text": "वेबसाइट धोरणे",
+      "href": "https://mahaprisons.gov.in/%e0%a4%b5%e0%a5%87%e0%a4%ac%e0%a4%b8%e0%a4%be%e0%a4%87%e0%a4%9f-%e0%a4%a7%e0%a5%8b%e0%a4%b0%e0%a4%a3%e0%a5%87/",
+      "title": ""
+    },
+    {
+      "text": "आमच्याशी संपर्क साधा",
+      "href": "https://mahaprisons.gov.in/%e0%a4%86%e0%a4%ae%e0%a4%9a%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b6%e0%a5%80-%e0%a4%b8%e0%a4%82%e0%a4%aa%e0%a4%b0%e0%a5%8d%e0%a4%95-%e0%a4%b8%e0%a4%be%e0%a4%a7%e0%a4%be/",
+      "title": ""
+    },
+    {
+      "text": "मदत",
+      "href": "https://mahaprisons.gov.in/%e0%a4%ae%e0%a4%a6%e0%a4%a4/",
+      "title": ""
+    },
+    {
+      "text": "वेब माहिती व्यवस्थापक",
+      "href": "https://mahaprisons.gov.in/%e0%a4%b5%e0%a5%87%e0%a4%ac-%e0%a4%ae%e0%a4%be%e0%a4%b9%e0%a4%bf%e0%a4%a4%e0%a5%80-%e0%a4%b5%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%b8%e0%a5%8d%e0%a4%a5%e0%a4%be%e0%a4%aa%e0%a4%95/",
+      "title": ""
+    },
+    {
+      "text": "अभ्यागत सारांश",
+      "href": "https://mahaprisons.gov.in/%e0%a4%85%e0%a4%ad%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%97%e0%a4%a4-%e0%a4%b8%e0%a4%be%e0%a4%b0%e0%a4%be%e0%a4%82%e0%a4%b6/",
+      "title": ""
+    },
+    {
+      "text": "राष्ट्रीय माहिती विज्ञान केंद्र",
+      "href": "http://www.nic.in/",
+      "title": ""
+    },
+    {
+      "text": "भारत सरकारचे इलेक्ट्रॉनिक्स आणि माहिती तंत्रज्ञान मंत्रालय",
+      "href": "http://meity.gov.in/",
+      "title": ""
+    },
+    {
+      "text": "",
+      "href": "https://s3waas.gov.in/",
+      "title": ""
+    },
+    {
+      "text": "",
+      "href": "http://www.nic.in/",
+      "title": ""
+    },
+    {
+      "text": "",
+      "href": "http://www.digitalindia.gov.in/",
+      "title": ""
+    }
+  ],
+  "copyrights_text": "मालकीची सामग्री महाराष्ट्र कारागृह विभागराष्ट्रीय माहिती विज्ञान केंद्र,भारत सरकारचे इलेक्ट्रॉनिक्स आणि माहिती तंत्रज्ञान मंत्रालयद्वारे विकसित आणि होस्ट केलेले.शेवटचे अद्यावत:जुलै 03, 2026"
+}

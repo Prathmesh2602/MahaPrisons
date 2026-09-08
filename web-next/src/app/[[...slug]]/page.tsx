@@ -1,5 +1,11 @@
-import { fetchPage, fetchAnnouncements } from '@/lib/api';
+import { fetchPage } from '@/lib/api';
 import { notFound } from 'next/navigation';
+
+interface ContentBlockItem {
+  id: string;
+  blockType: string;
+  data: unknown;
+}
 
 import HeroCarousel from '@/components/HeroCarousel';
 import AboutSection from '@/components/AboutSection';
@@ -48,7 +54,7 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug?:
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
       <h1 className="text-4xl font-bold mb-8 text-[#0F3D66]">{page.titleEn}</h1>
       <div className="flex flex-col gap-8">
-        {page.blocks.map((block: any) => (
+        {page.blocks.map((block: ContentBlockItem) => (
           <div key={block.id} className="p-4 bg-white rounded shadow glass-card">
             <h3 className="font-semibold text-lg">{block.blockType}</h3>
             <pre className="text-xs overflow-auto bg-gray-50 p-2 mt-2">{JSON.stringify(block.data, null, 2)}</pre>

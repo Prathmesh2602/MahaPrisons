@@ -23,7 +23,7 @@ export default function Error({
           </svg>
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong!</h2>
-        <p className="text-gray-600 mb-6 text-sm">We couldn't load this page. Please try again.</p>
+        <p className="text-gray-600 mb-6 text-sm">We couldn&apos;t load this page. Please try again.</p>
         <button
           onClick={() => reset()}
           className="bg-[#0F3D66] text-white px-6 py-2 rounded font-medium hover:bg-[#0a2944] transition-colors"

@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: 'Missing path or tag payload' }, { status: 400 });
   } catch (err) {
+    console.error('Revalidation error:', err);
     return NextResponse.json({ message: 'Error processing revalidation request' }, { status: 500 });
   }
 }
