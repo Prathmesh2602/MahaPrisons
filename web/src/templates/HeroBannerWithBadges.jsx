@@ -1,3 +1,4 @@
+"use client";
 import React, { useLayoutEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';

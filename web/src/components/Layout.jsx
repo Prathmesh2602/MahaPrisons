@@ -1,6 +1,6 @@
+"use client";
 import React from 'react';
 import { useScroll, useTransform, motion } from 'framer-motion';
-import { Outlet } from 'react-router-dom';
 
 import AccessibilityToolbar from './AccessibilityToolbar';
 import Header from './Header';
@@ -9,7 +9,7 @@ import Footer from './Footer';
 import LiveWallpaperBg from './LiveWallpaperBg';
 import ScrollToTopButton from './ScrollToTopButton';
 
-export const Layout = () => {
+export const Layout = ({ children }) => {
   // Scroll transforms for bottom section orbs
   const { scrollY } = useScroll();
   const yBlob3 = useTransform(scrollY, [0, 1800], [0, -120]);
@@ -43,7 +43,7 @@ export const Layout = () => {
 
       {/* Main Content Body Slot - Rendered by React Router */}
       <main id="main-content" className="flex-1 flex flex-col focus:outline-none relative z-10">
-        <Outlet />
+        {children}
       </main>
 
       {/* NIC copyright footer list */}

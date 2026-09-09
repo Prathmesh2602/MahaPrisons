@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import GalleryHeader from './components/GalleryHeader';
 import MasonryGrid from './components/MasonryGrid';

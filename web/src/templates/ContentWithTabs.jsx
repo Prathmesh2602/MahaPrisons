@@ -1,3 +1,4 @@
+"use client";
 import React, { useLayoutEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';

@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from 'react';
 import HeroSection from './components/HeroSection';
 import ProductsGrid from './components/ProductsGrid';

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { Search, GitFork, Settings2, ChevronDown, Check, Sun, Moon, Volume2, VolumeX, Type, ExternalLink } from 'lucide-react';

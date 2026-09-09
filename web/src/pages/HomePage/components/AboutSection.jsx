@@ -1,5 +1,6 @@
+"use client";
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useAccessibility } from '../../../hooks/useAccessibility';
 import { ArrowRight, User } from 'lucide-react';
 
@@ -87,7 +88,7 @@ export const AboutSection = () => {
               {/* Read More button */}
               <div className="flex justify-center sm:justify-start">
                 <Link
-                  to="/yerawada-open-jail"
+                  href="/yerawada-open-jail"
                   className="inline-flex items-center gap-2 px-8 py-3 bg-[#0F3D66] hover:bg-[#1E5AA8] text-white rounded-full font-medium text-xs shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all group focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer"
                 >
                   <span>{t("अधिक वाचा …")}</span>

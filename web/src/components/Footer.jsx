@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';

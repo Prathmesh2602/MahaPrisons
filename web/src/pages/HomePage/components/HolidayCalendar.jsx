@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { useAccessibility } from '../../../hooks/useAccessibility';
 import { mockHolidays2026 } from '../../../data/mockData';

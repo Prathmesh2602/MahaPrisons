@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { translations } from '../data/translations';
 
@@ -8,7 +9,10 @@ const AccessibilityContext = createContext(undefined);
 
 export const AccessibilityProvider = ({ children }) => {
   const [language, setLanguage] = useState(() => {
-    return localStorage.getItem('language') || 'mr';
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('language') || 'mr';
+    }
+    return 'mr';
   });
   const [contrast, setContrast] = useState('normal');
   const [fontSize, setFontSize] = useState(0);

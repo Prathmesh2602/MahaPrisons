@@ -1,5 +1,6 @@
+"use client";
 import React, { useLayoutEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { redirect } from 'next/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { agricultureData } from '../data/agricultureData';
@@ -33,7 +34,7 @@ const HeroFeatureList = ({ dataId }) => {
   const data = agricultureData[dataId];
 
   if (!data) {
-    return <Navigate to="/" replace />;
+    redirect("/");
   }
 
   const fadeUpVariant = {

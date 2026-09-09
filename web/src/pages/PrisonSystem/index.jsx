@@ -1,3 +1,4 @@
+"use client";
 import React, { useLayoutEffect } from 'react';
 import HeroSection from './components/HeroSection';
 import OverviewStats from './components/OverviewStats';

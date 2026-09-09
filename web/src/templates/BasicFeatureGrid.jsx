@@ -1,3 +1,4 @@
+"use client";
 import React, { useLayoutEffect } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';

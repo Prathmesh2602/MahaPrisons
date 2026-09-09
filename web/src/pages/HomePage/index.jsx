@@ -1,5 +1,6 @@
+"use client";
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname as useLocation } from 'next/navigation';
 import HeroCarousel from './components/HeroCarousel';
 import MinisterProfiles from './components/MinisterProfiles';
 import QuickServices from './components/QuickServices';

@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { Map } from 'lucide-react';
 import { useAccessibility } from '../../../hooks/useAccessibility';

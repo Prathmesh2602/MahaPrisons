@@ -1,14 +1,14 @@
 # MahaPrisons CMS Task Sheet
 
 ## Step 1: Next.js Frontend Foundation Migration
-- [ ] Rename existing `web/` directory to `web-legacy/`.
-- [ ] Initialize a brand new Next.js 15 project in `web/` using `npx create-next-app@latest`. Configure it to use App Router and TypeScript.
-- [ ] Port over all existing `assets`, Tailwind CSS v4 configurations, and global CSS.
-- [ ] Port the static data store (`mockData.js`, `translations.js`).
-- [ ] Port universal layout components (`MegaMenu.jsx`, `Footer.jsx`) and context hooks (`useAccessibility.jsx`).
-- [ ] Recreate the client-side React Router routing logic using Next.js App Router dynamic routes (`app/[...slug]/page.tsx`).
-- [ ] Port over the 22 semantic templates (`HeroStatsGrid.jsx`, `ContactInfoGrid.jsx`, etc.).
-- [ ] **Verification:** Run `npm run dev`. Verify the site renders identically to the Vite version.
+- [x] Rename existing `web/` directory to `web-legacy/`.
+- [x] Initialize a brand new Next.js 15 project in `web/` using `npx create-next-app@latest`. Configure it to use App Router and TypeScript.
+- [x] Port over all existing `assets`, Tailwind CSS v4 configurations, and global CSS.
+- [x] Port the static data store (`mockData.js`, `translations.js`).
+- [x] Port universal layout components (`MegaMenu.jsx`, `Footer.jsx`) and context hooks (`useAccessibility.jsx`).
+- [x] Recreate the client-side React Router routing logic using Next.js App Router dynamic routes (`app/[...slug]/page.tsx`).
+- [x] Port over the 22 semantic templates (`HeroStatsGrid.jsx`, `ContactInfoGrid.jsx`, etc.).
+- [x] **Verification:** Run `npm run dev`. Verify the site renders identically to the Vite version.
 
 ## Step 2: Backend & Unified Database Skeleton
 - [ ] Provision local PostgreSQL and Redis containers using `docker-compose.yml`.

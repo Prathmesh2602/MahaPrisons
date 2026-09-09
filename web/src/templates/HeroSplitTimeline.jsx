@@ -1,5 +1,6 @@
+"use client";
 import React, { useLayoutEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { redirect } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { administrativeData } from '../data/administrativeData';
@@ -17,7 +18,7 @@ const HeroSplitTimeline = ({ dataId }) => {
 
   const data = administrativeData[dataId];
 
-  if (!data) return <Navigate to="/" replace />;
+  if (!data) redirect("/");
 
   const getTranslation = (obj) => {
     if (!obj) return '';
