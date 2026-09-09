@@ -1,8 +1,8 @@
 import React from 'react';
-import TemplateB from './templates/TemplateB';
+import HeroStatsGrid from '../../templates/HeroStatsGrid';
 
 export const HospitalPage = () => {
-  return <TemplateB dataId="hospital" />;
+  return <HeroStatsGrid dataId="hospital" />;
 };
 
 export default HospitalPage;

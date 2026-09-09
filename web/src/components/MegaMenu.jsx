@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { mockHomepageData } from '../data/mockData';
-import { Menu, X, ChevronDown, ChevronRight, Home, ChevronLeft, Shield, Briefcase, Sprout, HeartHandshake, LayoutGrid, Palette, Award, Map, Package, PhoneCall } from 'lucide-react';
+import { Menu, X, ChevronDown, ChevronRight, Home, ChevronLeft, Shield, Briefcase, Sprout, HeartHandshake, LayoutGrid, Palette, Award, Map, Package, PhoneCall, Image } from 'lucide-react';
 
 const iconMap = {
-  Home, Shield, Briefcase, Sprout, HeartHandshake, LayoutGrid, Palette, Award, Map, Package, PhoneCall
+  Home, Shield, Briefcase, Sprout, HeartHandshake, LayoutGrid, Palette, Award, Map, Package, PhoneCall, Image
 };
 
 const iconColorMap = {
@@ -19,7 +19,8 @@ const iconColorMap = {
   Award: 'text-yellow-600',
   Map: 'text-teal-600',
   Package: 'text-orange-600',
-  PhoneCall: 'text-sky-600'
+  PhoneCall: 'text-sky-600',
+  Image: 'text-pink-600'
 };
 
 const isItemActive = (item, pathname) => {
@@ -354,7 +355,7 @@ export const MegaMenu = () => {
 
                         {/* Flyout Sub-menu (Opens to the left) */}
                         {hasSubChildren && isSubActive && (
-                          <div className="absolute right-full top-0 mr-1 min-w-[240px] max-h-[80vh] overflow-y-auto bg-white text-gray-900 shadow-lg shadow-black/10 rounded-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-right-2 duration-150 custom-scrollbar">
+                          <div className="absolute right-full top-0 min-w-[240px] max-h-[80vh] overflow-y-auto bg-white text-gray-900 shadow-lg shadow-black/10 rounded-lg py-2 z-50 glass-effect dark-mode:bg-gray-850 dark-mode:text-gray-100 dark-mode:shadow-black/40 animate-in fade-in slide-in-from-right-2 duration-150 custom-scrollbar">
                             {!item.isMegaMenu && item.children?.map((subChild, scIdx) => (
                               <Link
                                 key={scIdx}

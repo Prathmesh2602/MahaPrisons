@@ -1,8 +1,8 @@
 import React from 'react';
-import TemplateC from './templates/TemplateC';
+import HeroThreeColGrid from '../../templates/HeroThreeColGrid';
 
 export const AgricultureDepartmentPage = () => {
-  return <TemplateC dataId="agriculture" />;
+  return <HeroThreeColGrid dataId="agriculture" />;
 };
 
 export default AgricultureDepartmentPage;

@@ -1,15 +1,15 @@
 import React, { useLayoutEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAccessibility } from '../../../hooks/useAccessibility';
-import { administrativeData } from '../../../data/administrativeData';
+import { useAccessibility } from '../hooks/useAccessibility';
+import { administrativeData } from '../data/administrativeData';
 import { Users, FileText, GitMerge, Briefcase, PieChart, Network, GraduationCap, Heart, UserPlus, BookOpen, CreditCard, Scale, Clock, ShieldCheck, FileSignature, Gavel, ClipboardList, MapPin, Mail, Phone } from 'lucide-react';
 
 const iconMap = {
   Users, FileText, GitMerge, Briefcase, PieChart, Network, GraduationCap, Heart, UserPlus, BookOpen, CreditCard, Scale, Clock, ShieldCheck, FileSignature, Gavel, ClipboardList
 };
 
-const TemplateA = ({ dataId }) => {
+const HeroFeaturesTimelineLayout = ({ dataId }) => {
   const { language } = useAccessibility();
 
   useLayoutEffect(() => {
@@ -149,4 +149,4 @@ const TemplateA = ({ dataId }) => {
   );
 };
 
-export default TemplateA;
+export default HeroFeaturesTimelineLayout;

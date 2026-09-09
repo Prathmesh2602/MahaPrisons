@@ -1,11 +1,11 @@
 import React, { useLayoutEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useAccessibility } from '../../../hooks/useAccessibility';
-import { administrativeData } from '../../../data/administrativeData';
+import { useAccessibility } from '../hooks/useAccessibility';
+import { administrativeData } from '../data/administrativeData';
 import { Activity, Zap, Factory } from 'lucide-react';
 
-const TemplateC = ({ dataId }) => {
+const HeroThreeColGrid = ({ dataId }) => {
   const { language } = useAccessibility();
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
@@ -138,4 +138,4 @@ const TemplateC = ({ dataId }) => {
   );
 };
 
-export default TemplateC;
+export default HeroThreeColGrid;

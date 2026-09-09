@@ -1,8 +1,8 @@
 import React from 'react';
-import TemplateA from './templates/TemplateA';
+import HeroFeaturesTimelineLayout from '../../templates/HeroFeaturesTimelineLayout';
 
 export const AdministrationPage = () => {
-  return <TemplateA dataId="administration" />;
+  return <HeroFeaturesTimelineLayout dataId="administration" />;
 };
 
 export default AdministrationPage;

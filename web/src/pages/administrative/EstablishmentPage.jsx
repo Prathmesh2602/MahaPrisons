@@ -1,8 +1,8 @@
 import React from 'react';
-import TemplateA from './templates/TemplateA';
+import HeroFeaturesTimelineLayout from '../../templates/HeroFeaturesTimelineLayout';
 
 export const EstablishmentPage = () => {
-  return <TemplateA dataId="establishment" />;
+  return <HeroFeaturesTimelineLayout dataId="establishment" />;
 };
 
 export default EstablishmentPage;

@@ -159,22 +159,22 @@ export const mockHomepageData = {
         {
           groupTitle: "प्रबोधन व जनजागृती",
           children: [
-            { text: "प्रबोधन कार्यक्रम", href: "#", title: "प्रबोधन कार्यक्रम", children: [] },
-            { text: "व्यसनमुक्ती कार्यक्रम", href: "#", title: "व्यसनमुक्ती कार्यक्रम", children: [] }
+            { text: "प्रबोधन कार्यक्रम", href: "/cultural/awareness-programs", title: "प्रबोधन कार्यक्रम", children: [] },
+            { text: "व्यसनमुक्ती कार्यक्रम", href: "/cultural/de-addiction", title: "व्यसनमुक्ती कार्यक्रम", children: [] }
           ]
         },
         {
           groupTitle: "प्रशिक्षण व व्यक्तिमत्त्व विकास",
           children: [
-            { text: "व्यावसायिक प्रशिक्षण", href: "#", title: "व्यावसायिक प्रशिक्षण", children: [] }
+            { text: "व्यावसायिक प्रशिक्षण", href: "/cultural/vocational-training", title: "व्यावसायिक प्रशिक्षण", children: [] }
           ]
         },
         {
           groupTitle: "योग व आध्यात्मिक उपक्रम",
           children: [
-            { text: "योग, ध्यान व धारणा", href: "#", title: "योग, ध्यान व धारणा", children: [] },
-            { text: "प्राणिक हीलिंग", href: "#", title: "प्राणिक हीलिंग", children: [] },
-            { text: "कीर्तन व भजन", href: "#", title: "कीर्तन व भजन", children: [] }
+            { text: "योग, ध्यान व धारणा", href: "/cultural/yoga-meditation", title: "योग, ध्यान व धारणा", children: [] },
+            { text: "प्राणिक हीलिंग", href: "/cultural/pranic-healing", title: "प्राणिक हीलिंग", children: [] },
+            { text: "कीर्तन व भजन", href: "/cultural/kirtan-bhajan", title: "कीर्तन व भजन", children: [] }
           ]
         }
       ]
@@ -185,11 +185,11 @@ export const mockHomepageData = {
       href: "#",
       title: "उल्लेखनीय कार्य",
       children: [
-        { text: "उल्लेखनीय उपक्रम", href: "#", title: "उल्लेखनीय उपक्रम", children: [] },
-        { text: "महत्त्वपूर्ण प्रकल्प", href: "#", title: "महत्त्वपूर्ण प्रकल्प", children: [] },
-        { text: "पुरस्कार व गौरव", href: "#", title: "पुरस्कार व गौरव", children: [] },
-        { text: "उत्कृष्ट कार्यपद्धती", href: "#", title: "उत्कृष्ट कार्यपद्धती", children: [] },
-        { text: "परिणाम व यशोगाथा", href: "#", title: "परिणाम व यशोगाथा", children: [] }
+        { text: "उल्लेखनीय उपक्रम", href: "/notable-work/initiatives", title: "उल्लेखनीय उपक्रम", children: [] },
+        { text: "महत्त्वपूर्ण प्रकल्प", href: "/notable-work/important-projects", title: "महत्त्वपूर्ण प्रकल्प", children: [] },
+        { text: "पुरस्कार व गौरव", href: "/notable-work/awards-honors", title: "पुरस्कार व गौरव", children: [] },
+        { text: "उत्कृष्ट कार्यपद्धती", href: "/notable-work/best-practices", title: "उत्कृष्ट कार्यपद्धती", children: [] },
+        { text: "परिणाम व यशोगाथा", href: "/notable-work/success-stories", title: "परिणाम व यशोगाथा", children: [] }
       ]
     },
     {
@@ -202,17 +202,17 @@ export const mockHomepageData = {
         {
           groupTitle: "अभ्यासभेटी",
           children: [
-            { text: "शैक्षणिक अभ्यासभेट", href: "#", title: "शैक्षणिक अभ्यासभेट", children: [] },
-            { text: "संस्थात्मक अभ्यासभेट", href: "#", title: "संस्थात्मक अभ्यासभेट", children: [] }
+            { text: "शैक्षणिक अभ्यासभेट", href: "/tours-visits/educational-visits", title: "शैक्षणिक अभ्यासभेट", children: [] },
+            { text: "संस्थात्मक अभ्यासभेट", href: "/tours-visits/institutional-visits", title: "संस्थात्मक अभ्यासभेट", children: [] }
           ]
         },
         {
           groupTitle: "प्रशासकीय दौरे",
           children: [
-            { text: "अधिकारी दौरे", href: "#", title: "अधिकारी दौरे", children: [] },
-            { text: "मान्यवर भेटी", href: "#", title: "मान्यवर भेटी", children: [] },
-            { text: "निरीक्षण दौरे", href: "#", title: "निरीक्षण दौरे", children: [] },
-            { text: "विभागीय भेटी", href: "#", title: "विभागीय भेटी", children: [] }
+            { text: "अधिकारी दौरे", href: "/tours-visits/official-tours", title: "अधिकारी दौरे", children: [] },
+            { text: "मान्यवर भेटी", href: "/tours-visits/dignitary-visits", title: "मान्यवर भेटी", children: [] },
+            { text: "निरीक्षण दौरे", href: "/tours-visits/inspection-tours", title: "निरीक्षण दौरे", children: [] },
+            { text: "विभागीय भेटी", href: "/tours-visits/departmental-visits", title: "विभागीय भेटी", children: [] }
           ]
         }
       ]
@@ -222,6 +222,13 @@ export const mockHomepageData = {
       icon: "Package",
       href: "/our-products",
       title: "आमची उत्पादने",
+      children: []
+    },
+    {
+      text: "फोटो गॅलरी",
+      icon: "Image",
+      href: "/gallery",
+      title: "फोटो गॅलरी",
       children: []
     },
     {

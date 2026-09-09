@@ -1,8 +1,8 @@
 import React from 'react';
-import TemplateD from './templates/TemplateD';
+import HeroSplitTimeline from '../../templates/HeroSplitTimeline';
 
 export const InternalSecurityPage = () => {
-  return <TemplateD dataId="internal-security" />;
+  return <HeroSplitTimeline dataId="internal-security" />;
 };
 
 export default InternalSecurityPage;

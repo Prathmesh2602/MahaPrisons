@@ -1,8 +1,8 @@
 import React from 'react';
-import TemplateD from './templates/TemplateD';
+import HeroSplitTimeline from '../../templates/HeroSplitTimeline';
 
 export const ConstructionPage = () => {
-  return <TemplateD dataId="construction" />;
+  return <HeroSplitTimeline dataId="construction" />;
 };
 
 export default ConstructionPage;

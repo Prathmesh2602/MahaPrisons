@@ -1,8 +1,8 @@
 import React from 'react';
-import TemplateC from './templates/TemplateC';
+import HeroThreeColGrid from '../../templates/HeroThreeColGrid';
 
 export const FactoryPage = () => {
-  return <TemplateC dataId="factory" />;
+  return <HeroThreeColGrid dataId="factory" />;
 };
 
 export default FactoryPage;

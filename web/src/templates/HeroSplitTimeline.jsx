@@ -1,11 +1,11 @@
 import React, { useLayoutEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAccessibility } from '../../../hooks/useAccessibility';
-import { administrativeData } from '../../../data/administrativeData';
+import { useAccessibility } from '../hooks/useAccessibility';
+import { administrativeData } from '../data/administrativeData';
 import { ShieldAlert, Target, Shield } from 'lucide-react';
 
-const TemplateD = ({ dataId }) => {
+const HeroSplitTimeline = ({ dataId }) => {
   const { language } = useAccessibility();
 
   useLayoutEffect(() => {
@@ -140,4 +140,4 @@ const TemplateD = ({ dataId }) => {
   );
 };
 
-export default TemplateD;
+export default HeroSplitTimeline;

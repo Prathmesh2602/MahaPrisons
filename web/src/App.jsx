@@ -4,8 +4,8 @@ import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import YerawadaOpenJailPage from './pages/PrisonSystem';
-import GalleryPage from './pages/GalleryPage';
-import OurProductsPage from './pages/OurProductsPage';
+import GalleryPage from './pages/Gallery';
+import OurProductsPage from './pages/OurProducts';
 import NurseryPage from './pages/agriculture/NurseryPage';
 import PoultryFarmingPage from './pages/agriculture/PoultryFarmingPage';
 import DairyFarmingPage from './pages/agriculture/DairyFarmingPage';
@@ -46,6 +46,24 @@ import WetCanteenPage from './pages/facilities/WetCanteenPage';
 import EducationPage from './pages/facilities/EducationPage';
 import LibraryPage from './pages/facilities/LibraryPage';
 
+import AwarenessProgramsPage from './pages/cultural/AwarenessProgramsPage';
+import DeAddictionPage from './pages/cultural/DeAddictionPage';
+import VocationalTrainingPage from './pages/cultural/VocationalTrainingPage';
+import YogaMeditationPage from './pages/cultural/YogaMeditationPage';
+import PranicHealingPage from './pages/cultural/PranicHealingPage';
+import KirtanBhajanPage from './pages/cultural/KirtanBhajanPage';
+import NotableInitiativesPage from './pages/notable-work/NotableInitiativesPage';
+import ImportantProjectsPage from './pages/notable-work/ImportantProjectsPage';
+import AwardsHonorsPage from './pages/notable-work/AwardsHonorsPage';
+import BestPracticesPage from './pages/notable-work/BestPracticesPage';
+import SuccessStoriesPage from './pages/notable-work/SuccessStoriesPage';
+import EducationalVisitsPage from './pages/tours-visits/EducationalVisitsPage';
+import InstitutionalVisitsPage from './pages/tours-visits/InstitutionalVisitsPage';
+import OfficialToursPage from './pages/tours-visits/OfficialToursPage';
+import DignitaryVisitsPage from './pages/tours-visits/DignitaryVisitsPage';
+import InspectionToursPage from './pages/tours-visits/InspectionToursPage';
+import DepartmentalVisitsPage from './pages/tours-visits/DepartmentalVisitsPage';
+import ContactPage from './pages/contact';
 
 function App() {
   return (
@@ -97,6 +115,24 @@ function App() {
             <Route path="facilities/wet-canteen" element={<WetCanteenPage />} />
             <Route path="facilities/education" element={<EducationPage />} />
             <Route path="facilities/library" element={<LibraryPage />} />
+            <Route path="cultural/awareness-programs" element={<AwarenessProgramsPage />} />
+            <Route path="cultural/de-addiction" element={<DeAddictionPage />} />
+            <Route path="cultural/vocational-training" element={<VocationalTrainingPage />} />
+            <Route path="cultural/yoga-meditation" element={<YogaMeditationPage />} />
+            <Route path="cultural/pranic-healing" element={<PranicHealingPage />} />
+            <Route path="cultural/kirtan-bhajan" element={<KirtanBhajanPage />} />
+            <Route path="notable-work/initiatives" element={<NotableInitiativesPage />} />
+            <Route path="notable-work/important-projects" element={<ImportantProjectsPage />} />
+            <Route path="notable-work/awards-honors" element={<AwardsHonorsPage />} />
+            <Route path="notable-work/best-practices" element={<BestPracticesPage />} />
+            <Route path="notable-work/success-stories" element={<SuccessStoriesPage />} />
+            <Route path="tours-visits/educational-visits" element={<EducationalVisitsPage />} />
+            <Route path="tours-visits/institutional-visits" element={<InstitutionalVisitsPage />} />
+            <Route path="tours-visits/official-tours" element={<OfficialToursPage />} />
+            <Route path="tours-visits/dignitary-visits" element={<DignitaryVisitsPage />} />
+            <Route path="tours-visits/inspection-tours" element={<InspectionToursPage />} />
+            <Route path="tours-visits/departmental-visits" element={<DepartmentalVisitsPage />} />
+            <Route path="contact" element={<ContactPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

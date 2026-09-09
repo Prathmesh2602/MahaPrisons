@@ -1,15 +1,15 @@
 import React, { useLayoutEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAccessibility } from '../../../hooks/useAccessibility';
-import { administrativeData } from '../../../data/administrativeData';
+import { useAccessibility } from '../hooks/useAccessibility';
+import { administrativeData } from '../data/administrativeData';
 import { CheckCircle, Apple, Sparkles, CreditCard, Tag, Receipt, Video, Armchair, Phone, Stethoscope, Brain, Ambulance, Clock } from 'lucide-react';
 
 const iconMap = {
   CheckCircle, Apple, Sparkles, CreditCard, Tag, Receipt, Video, Armchair, Phone, Stethoscope, Brain, Ambulance
 };
 
-const TemplateB = ({ dataId }) => {
+const HeroStatsGrid = ({ dataId }) => {
   const { language } = useAccessibility();
 
   useLayoutEffect(() => {
@@ -148,4 +148,4 @@ const TemplateB = ({ dataId }) => {
   );
 };
 
-export default TemplateB;
+export default HeroStatsGrid;

@@ -1,8 +1,8 @@
 import React from 'react';
-import TemplateB from './templates/TemplateB';
+import HeroStatsGrid from '../../templates/HeroStatsGrid';
 
 export const RationPage = () => {
-  return <TemplateB dataId="ration" />;
+  return <HeroStatsGrid dataId="ration" />;
 };
 
 export default RationPage;
