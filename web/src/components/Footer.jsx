@@ -118,10 +118,14 @@ export const Footer = () => {
             </div>
             <div className="font-medium text-white/85">
               {language === 'mr'
-                ? 'Analytica Business Solutions द्वारे विकसित आणि होस्ट केलेले'
-                : 'Developed and hosted by Analytica Business Solutions'}
+                ? 'राष्ट्रीय माहिती विज्ञान केंद्र,'
+                : 'Developed and hosted by National Informatics Centre,'}
             </div>
-           
+            <div className="font-medium text-white/85">
+              {language === 'mr'
+                ? 'भारत सरकारचे इलेक्ट्रॉनिक्स आणि माहिती तंत्रज्ञान मंत्रालय द्वारे विकसित आणि होस्ट केलेले.'
+                : 'Ministry of Electronics & Information Technology, Government of India.'}
+            </div>
             <div className="mt-1.5 text-[9.5px] font-medium text-white/60 uppercase tracking-wider">
               {language === 'mr' ? 'शेवटचे अद्ययावत: जुलै ०३, २०२६' : 'Last Updated: Jul 03, 2026'}
             </div>
