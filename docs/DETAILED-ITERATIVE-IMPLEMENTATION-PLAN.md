@@ -67,7 +67,8 @@ This roadmap avoids large "floating" work phases. Every single step must be buil
 #### Tasks:
 - **Backend API:** Create a REST endpoint `GET /api/v1/menu` that recursively fetches the `PageNode` table where `isMenuItem = true`, structured as a nested JSON tree.
 - **Backend API:** Create `GET /api/v1/settings` to fetch global configuration (site logos, accessibility links).
-- **Database Seed:** Write a Node.js seed script to parse the static `mockHomepageData.navigation_menu` and recursively insert the tree into the `PageNode` PostgreSQL table.
+- **Database Seed:** Write a Node.js seed script to parse the static `mockData.js` object.
+  - **Important Data Seeding Requirement:** If any image paths in the static data (e.g., hero carousels, galleries, officer profiles) are defined as external HTTP links or remote URLs, the seed script must automatically download the physical image files, save them locally into the backend's media storage, and link the new `Media` database record to the local file path. No external hotlinking should remain after seeding.
 - **Next.js Integration:** Update `MegaMenu.jsx` and `Footer.jsx` to execute a server-side `fetch()` against the backend API, replacing imports from `mockData.js`.
 - **Verification:** Start the Next.js app and Express backend. The Mega Menu must load properly. Shut down the Express backend—the menu should break or show a loading error. Restart it to confirm connectivity.
 
