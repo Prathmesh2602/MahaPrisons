@@ -18,37 +18,23 @@ async function safeJsonFetch(url: string, options?: RequestInit) {
 }
 
 export async function fetchPage(slug: string) {
-  return safeJsonFetch(`${API_BASE}/pages/${slug}`, {
-    next: { revalidate: 60, tags: ['pages', `page-${slug}`] }
-  });
+  // Mock page implementation since backend is disabled
+  return null;
 }
 
 export async function fetchMenu() {
-  const data = await safeJsonFetch(`${API_BASE}/menu`, {
-    next: { revalidate: 60, tags: ['menu'] }
-  });
-  return data && Array.isArray(data) && data.length > 0 ? data : (mockHomepageData.navigation_menu || []);
+  return mockHomepageData.navigation_menu || [];
 }
 
 export async function fetchTranslations() {
-  const data = await safeJsonFetch(`${API_BASE}/translations`, {
-    next: { revalidate: 300, tags: ['translations'] }
-  });
-  return data && Object.keys(data).length > 0 ? data : defaultTranslations;
+  return defaultTranslations;
 }
 
 export async function fetchSettings() {
-  const data = await safeJsonFetch(`${API_BASE}/settings`, {
-    next: { revalidate: 300, tags: ['settings'] }
-  });
-  return data && Object.keys(data).length > 0 ? data : mockHomepageData;
+  return mockHomepageData;
 }
 
 export async function fetchAnnouncements(category?: string) {
-  const url = category ? `${API_BASE}/announcements?category=${category}` : `${API_BASE}/announcements`;
-  const data = await safeJsonFetch(url, {
-    next: { revalidate: 60, tags: ['announcements'] }
-  });
-  return data && Array.isArray(data) ? data : [];
+  return [];
 }
 
