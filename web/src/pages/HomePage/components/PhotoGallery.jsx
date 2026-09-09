@@ -1,9 +1,9 @@
 import React from 'react';
-import { useAccessibility } from '../hooks/useAccessibility';
-import { mockHomepageData } from '../data/mockData';
+import { useAccessibility } from '../../../hooks/useAccessibility';
+import { mockHomepageData } from '../../../data/mockData';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Grid } from 'lucide-react';
-import { galleryItems } from '../data/galleryData';
+import { galleryItems } from '../../../data/galleryData';
 
 export const PhotoGallery = () => {
   const { language, t } = useAccessibility();

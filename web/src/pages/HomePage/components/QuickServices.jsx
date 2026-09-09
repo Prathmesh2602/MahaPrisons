@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAccessibility } from '../hooks/useAccessibility';
-import { mockHomepageData } from '../data/mockData';
+import { useAccessibility } from '../../../hooks/useAccessibility';
+import { mockHomepageData } from '../../../data/mockData';
 import { Phone, Shield, ShieldAlert, HeartHandshake, UserCheck, HelpCircle, Link2, ArrowRight } from 'lucide-react';
 
 export const QuickServices = () => {

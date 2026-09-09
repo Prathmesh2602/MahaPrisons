@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import HeroCarousel from '../components/HeroCarousel';
-import MinisterProfiles from '../components/MinisterProfiles';
-import QuickServices from '../components/QuickServices';
-import AboutSection from '../components/AboutSection';
-import AnnouncementsTabs from '../components/AnnouncementsTabs';
-import HolidayCalendar from '../components/HolidayCalendar';
-import PhotoGallery from '../components/PhotoGallery';
-import JailInsights from '../components/JailInsights';
+import HeroCarousel from './components/HeroCarousel';
+import MinisterProfiles from './components/MinisterProfiles';
+import QuickServices from './components/QuickServices';
+import AboutSection from './components/AboutSection';
+import AnnouncementsTabs from './components/AnnouncementsTabs';
+import HolidayCalendar from './components/HolidayCalendar';
+import PhotoGallery from './components/PhotoGallery';
+import JailInsights from './components/JailInsights';
 
 export const HomePage = () => {
   const location = useLocation();

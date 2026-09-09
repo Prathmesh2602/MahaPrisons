@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAccessibility } from '../hooks/useAccessibility';
+import { useAccessibility } from '../../../hooks/useAccessibility';
 import { ArrowRight, User } from 'lucide-react';
 
 export const AboutSection = () => {

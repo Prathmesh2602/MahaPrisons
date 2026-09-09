@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAccessibility } from '../hooks/useAccessibility';
-import { mockHomepageData } from '../data/mockData';
+import { useAccessibility } from '../../../hooks/useAccessibility';
+import { mockHomepageData } from '../../../data/mockData';
 import { User } from 'lucide-react';
 
 export const MinisterProfiles = () => {

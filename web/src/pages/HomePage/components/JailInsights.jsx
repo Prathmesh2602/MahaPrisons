@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAccessibility } from '../hooks/useAccessibility';
-import { translations } from '../data/translations';
+import { useAccessibility } from '../../../hooks/useAccessibility';
+import { translations } from '../../../data/translations';
 import { 
   HeartHandshake, 
   Utensils, 

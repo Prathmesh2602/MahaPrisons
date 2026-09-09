@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAccessibility } from '../hooks/useAccessibility';
-import { mockHomepageData } from '../data/mockData';
+import { useAccessibility } from '../../../hooks/useAccessibility';
+import { mockHomepageData } from '../../../data/mockData';
 import { Bell, ArrowRight, Download, FileText, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
