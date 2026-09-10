@@ -101,7 +101,7 @@ const HeroBannerWithArticles = ({ dataId }) => {
         {/* Elegant Footer */}
         <div className="max-w-2xl mx-auto text-center font-poppins">
           <h4 className="text-sm tracking-[0.2em] uppercase text-[#8B7355] dark-mode:text-[#C1A88B] mb-6">
-            {language === 'mr' ? '?????? ??????' : 'Contact Information'}
+            {language === 'mr' ? 'संपर्क माहिती' : 'Contact Information'}
           </h4>
           <div className="flex flex-col items-center gap-4 text-[#5A534C] dark-mode:text-[#B6AFA5]">
             <span className="flex items-center gap-2"><MapPin className="w-4 h-4"/> {getTranslation(data.contactInfo.address)}</span>

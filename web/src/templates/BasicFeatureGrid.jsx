@@ -48,7 +48,7 @@ const BasicFeatureGrid = ({ dataId }) => {
 
             <h2 className="text-2xl font-bold text-gray-900 dark-mode:text-white mb-6 flex items-center gap-3">
               <Shield className="w-6 h-6 text-indigo-500" />
-              {language === 'mr' ? '?????? ??????????' : 'Key Features'}
+              {language === 'mr' ? 'प्रमुख वैशिष्ट्ये' : 'Key Features'}
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -71,7 +71,7 @@ const BasicFeatureGrid = ({ dataId }) => {
             {/* Stats Widget */}
             <div className="bg-white dark-mode:bg-gray-800 rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark-mode:border-gray-700">
               <h3 className="text-lg font-bold uppercase tracking-wider text-gray-400 mb-6 border-b border-gray-100 dark-mode:border-gray-700 pb-3">
-                {language === 'mr' ? '?????????????' : 'At a Glance'}
+                {language === 'mr' ? 'दृष्टिक्षेपात' : 'At a Glance'}
               </h3>
               <div className="space-y-6">
                 {data.stats.map((stat, idx) => {
@@ -94,7 +94,7 @@ const BasicFeatureGrid = ({ dataId }) => {
             {/* Contact Widget */}
             <div className="bg-indigo-600 rounded-3xl p-8 shadow-xl text-white sticky top-24">
               <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                {language === 'mr' ? '?????? ????' : 'Contact Us'}
+                {language === 'mr' ? 'संपर्क साधा' : 'Contact Us'}
               </h3>
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
@@ -111,7 +111,7 @@ const BasicFeatureGrid = ({ dataId }) => {
                 </div>
               </div>
               <button className="w-full mt-8 py-3 bg-white text-indigo-700 rounded-xl font-bold shadow-md hover:bg-indigo-50 transition-colors">
-                {language === 'mr' ? '???????? ???? ???' : 'Apply for Aid'}
+                {language === 'mr' ? 'मदतीसाठी अर्ज करा' : 'Apply for Aid'}
               </button>
             </div>
 
