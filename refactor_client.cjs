@@ -34,7 +34,8 @@ files.forEach(file => {
                 content.includes('useAccessibility') || 
                 content.includes('useScroll') || 
                 content.includes('useTransform') || 
-                content.includes('useRef')) {
+                content.includes('useRef') ||
+                content.includes('framer-motion')) {
                 content = '"use client";\n' + content;
                 modified = true;
             }

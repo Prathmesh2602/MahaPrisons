@@ -189,7 +189,7 @@ export const MegaMenu = () => {
         >
           {mockHomepageData.navigation_menu.map((item, idx) => {
             const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
-            const isActive = isItemActive(item, location.pathname);
+            const isActive = isItemActive(item, location);
             const IconComponent = item.icon ? iconMap[item.icon] : null;
             const iconColor = item.icon ? iconColorMap[item.icon] : 'text-gray-500';
             return (
@@ -212,7 +212,7 @@ export const MegaMenu = () => {
           {primaryItems.map((item, idx) => {
             const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
             const isDropdownActive = activeDropdown === idx;
-            const isActive = isItemActive(item, location.pathname);
+            const isActive = isItemActive(item, location);
             const IconComponent = item.icon ? iconMap[item.icon] : null;
 
             return (
@@ -310,7 +310,7 @@ export const MegaMenu = () => {
             >
               <button
                 className={`px-3.5 py-3.5 flex items-center gap-1 transition-all h-full focus:outline focus:outline-2 focus:outline-amber-500 cursor-pointer ${
-                  moreItems.some(item => isItemActive(item, location.pathname))
+                  moreItems.some(item => isItemActive(item, location))
                     ? 'bg-amber-500 rounded text-[#fff] hover:bg-amber-600'
                     : activeDropdown === 99
                       ? 'bg-black/5 dark-mode:bg-white/5 text-black dark-mode:text-gray-100'
@@ -445,7 +445,7 @@ export const MegaMenu = () => {
               {mockHomepageData.navigation_menu.map((item, idx) => {
                 const hasChildren = (item.children && item.children.length > 0) || (item.groups && item.groups.length > 0);
                 const isDropdownActive = activeDropdown === idx;
-                const isActive = isItemActive(item, location.pathname);
+                const isActive = isItemActive(item, location);
                 const IconComponent = item.icon ? iconMap[item.icon] : null;
 
                 return (

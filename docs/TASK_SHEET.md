@@ -11,11 +11,11 @@
 - [x] **Verification:** Run `npm run dev`. Verify the site renders identically to the Vite version.
 
 ## Step 2: Backend & Unified Database Skeleton
-- [ ] Provision local PostgreSQL and Redis containers using `docker-compose.yml`.
-- [ ] Initialize an Express.js backend in `backend/` with Prisma ORM.
-- [ ] Define the Prisma schema focused on the Unified Architecture (`PageNode`, `ContentBlock`).
-- [ ] Run `npx prisma migrate dev` to generate the database.
-- [ ] **Verification:** Start the Express server. Hit `GET /api/health`. Connect to PostgreSQL and verify the schema.
+- [x] Provision local PostgreSQL and Redis containers using `docker-compose.yml`. (Mapped to port 5435 to avoid conflict)
+- [x] Initialize an Express.js backend in `backend/` with Prisma ORM.
+- [x] Define the Prisma schema focused on the Unified Architecture (`PageNode`, `ContentBlock`).
+- [x] Run `npx prisma db push` to generate the database schema in the Docker container.
+- [x] **Verification:** Start the Express server. Hit `GET /api/health`. Connect to PostgreSQL and verify the schema.
 
 ## Step 3: Dynamic Navigation & Universal Settings
 - [ ] **Backend API:** Create REST endpoint `GET /api/v1/menu`.

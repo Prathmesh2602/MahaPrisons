@@ -14,12 +14,14 @@ export const HomePage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.hash) {
-      const id = location.hash.replace('#', '');
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const id = window.location.hash.replace('#', '');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     } else {
       window.scrollTo(0, 0);
     }
@@ -28,39 +30,31 @@ export const HomePage = () => {
   return (
     <>
       <div id="hero">
-        {/* Carousel & Minister grid */}
         <HeroCarousel />
-        {/* Dignitary card grid */}
         <MinisterProfiles />
       </div>
 
       <div id="about">
-        {/* Welcoming About department copy */}
         <AboutSection />
       </div>
 
       <div id="insights">
-        {/* Jail Insights Section */}
         <JailInsights />
       </div>
 
       <div id="announcements">
-        {/* Tabbed Tenders & Notices */}
         <AnnouncementsTabs />
       </div>
 
       <div id="calendar">
-        {/* Interactive React month-by-month calendar */}
         <HolidayCalendar />
       </div>
 
       <div id="gallery">
-        {/* Slide Photo Gallery & map */}
         <PhotoGallery />
       </div>
 
       <div id="services">
-        {/* Quick Services & Links */}
         <QuickServices />
       </div>
     </>
