@@ -72,13 +72,14 @@ export const SettingsEditor = () => {
   // History for Undo/Redo
   const [history, setHistory] = useState<any[]>([{
     header: headerConfig,
-    footer: footerConfig
+    footer: footerConfig,
+    wallpaper: wallpaperConfig
   }]);
   const [historyIndex, setHistoryIndex] = useState(0);
 
-  const updateHistoryState = (hConf: any, fConf: any) => {
+  const updateHistoryState = (hConf: any, fConf: any, wConf: any) => {
     const newHistory = history.slice(0, historyIndex + 1);
-    newHistory.push({ header: hConf, footer: fConf });
+    newHistory.push({ header: hConf, footer: fConf, wallpaper: wConf });
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
   };
@@ -89,7 +90,7 @@ export const SettingsEditor = () => {
     (val) => {
       const newConfig = { ...headerConfig, logo_src: val.logo_src, logo_link: val.logo_link };
       setHeaderConfig(newConfig);
-      updateHistoryState(newConfig, footerConfig);
+      updateHistoryState(newConfig, footerConfig, wallpaperConfig);
     }
   );
 
@@ -99,7 +100,7 @@ export const SettingsEditor = () => {
     (val) => {
       const newConfig = { ...headerConfig, right_logos: val };
       setHeaderConfig(newConfig);
-      updateHistoryState(newConfig, footerConfig);
+      updateHistoryState(newConfig, footerConfig, wallpaperConfig);
     }
   );
 
@@ -109,7 +110,7 @@ export const SettingsEditor = () => {
     (val) => {
       const newConfig = { ...headerConfig, title_en: val.title_en, title_mr: val.title_mr };
       setHeaderConfig(newConfig);
-      updateHistoryState(newConfig, footerConfig);
+      updateHistoryState(newConfig, footerConfig, wallpaperConfig);
     }
   );
 
@@ -119,7 +120,7 @@ export const SettingsEditor = () => {
     (val) => {
       const newConfig = { ...headerConfig, subtitle_en: val.subtitle_en, subtitle_mr: val.subtitle_mr };
       setHeaderConfig(newConfig);
-      updateHistoryState(newConfig, footerConfig);
+      updateHistoryState(newConfig, footerConfig, wallpaperConfig);
     }
   );
 
@@ -129,7 +130,7 @@ export const SettingsEditor = () => {
     (val) => {
       const newConfig = { ...footerConfig, links: val };
       setFooterConfig(newConfig);
-      updateHistoryState(headerConfig, newConfig);
+      updateHistoryState(headerConfig, newConfig, wallpaperConfig);
     }
   );
 
@@ -139,7 +140,7 @@ export const SettingsEditor = () => {
     (val) => {
       const newConfig = { ...footerConfig, contact: val };
       setFooterConfig(newConfig);
-      updateHistoryState(headerConfig, newConfig);
+      updateHistoryState(headerConfig, newConfig, wallpaperConfig);
     }
   );
 
