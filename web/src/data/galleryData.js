@@ -1,6 +1,6 @@
 export const galleryItems = [
   {
-    img_src: "/gallary/1.jpeg",
+    img_src: "http://localhost:5000/uploads/1.jpeg",
     img_alt: "Shrinkhala Restaurant - Yerawada Open Prison, Pune",
     title_mr: "श्रृंखला उपहारगृह - येरवडा खुले कारागृह, पुणे",
     title_en: "Shrinkhala Restaurant - Yerawada Open Prison, Pune",
@@ -8,7 +8,7 @@ export const galleryItems = [
     desc_en: "Operated by inmates of Yerawada Open Prison, Pune, 'Shrinkhala Restaurant' offers delicious, high-quality food prepared by inmates, promoting culinary skills."
   },
   {
-    img_src: "/gallary/2.jpeg",
+    img_src: "http://localhost:5000/uploads/2.jpeg",
     img_alt: "Yerawada Open Prison Statistics",
     title_mr: "कारागृह सांख्यिकी आणि वैशिष्ट्ये",
     title_en: "Prison Statistics & Key Features",
@@ -16,7 +16,7 @@ export const galleryItems = [
     desc_en: "Key figures of Yerawada Open Prison featuring an authorized capacity of 400 inmates, 230 current population, and a vast 265-acre campus focusing on rehabilitation."
   },
   {
-    img_src: "/gallary/3.jpeg",
+    img_src: "http://localhost:5000/uploads/3.jpeg",
     img_alt: "Maharashtra Prison Department Institutions",
     title_mr: "महाराष्ट्रातील खुल्या सुधारक संस्थांची रचना",
     title_en: "Open Correctional Facilities in Maharashtra",
@@ -24,7 +24,7 @@ export const galleryItems = [
     desc_en: "Overview of Maharashtra Prison Department's open facilities including 5 Open Jails, 12 Semi-Open Jails, 2 Female Open Jails, and 1 Open Colony."
   },
   {
-    img_src: "/gallary/4.jpeg",
+    img_src: "http://localhost:5000/uploads/4.jpeg",
     img_alt: "Agriculture Section - Yerawada Open Prison",
     title_mr: "कृषी विभाग - येरवडा खुले कारागृह",
     title_en: "Agriculture Section - Yerawada Open Prison",
@@ -32,7 +32,7 @@ export const galleryItems = [
     desc_en: "Inmates of Yerawada Open Prison engaged in farming activities, learning modern agricultural methods, organic crop production, and harvesting on farmlands."
   },
   {
-    img_src: "/gallary/5.jpeg",
+    img_src: "http://localhost:5000/uploads/5.jpeg",
     img_alt: "K. K. Mangal Lawn - Yerawada Open Prison",
     title_mr: "के.के. मंगल लॉन - येरवडा खुले कारागृह",
     title_en: "K. K. Mangal Lawn - Yerawada Open Prison",
@@ -40,7 +40,7 @@ export const galleryItems = [
     desc_en: "K. K. Mangal Lawn is a spacious wedding and event venue managed and maintained by Yerawada Open Prison inmates, providing landscaping and gardening training."
   },
   {
-    img_src: "/gallary/6.jpeg",
+    img_src: "http://localhost:5000/uploads/6.jpeg",
     img_alt: "Press Section - Maharashtra Prison Industry",
     title_mr: "प्रेस (इस्त्री) विभाग - महाराष्ट्र कारागृह उद्योग",
     title_en: "Press Section - Maharashtra Prison Industry",
@@ -48,7 +48,7 @@ export const galleryItems = [
     desc_en: "A professional ironing and laundry service department operated by inmates at Yerawada, training them in commercial laundry operations and garment care."
   },
   {
-    img_src: "/gallary/7.jpeg",
+    img_src: "http://localhost:5000/uploads/7.jpeg",
     img_alt: "Salon Unit - Yerawada Open & District Prison",
     title_mr: "सलून विभाग - येरवडा खुले व जिल्हा कारागृह",
     title_en: "Salon Unit - Yerawada Open & District Prison",
@@ -56,7 +56,7 @@ export const galleryItems = [
     desc_en: "A vocational salon unit operated by inmates providing professional training in haircutting, grooming, and personal care services for self-reliance."
   },
   {
-    img_src: "/gallary/8.jpeg",
+    img_src: "http://localhost:5000/uploads/8.jpeg",
     img_alt: "Nursery Section - Yerawada Open Prison",
     title_mr: "रोपवाटिका (नर्सरी) विभाग - येरवडा खुले कारागृह",
     title_en: "Nursery Section - Yerawada Open Prison",
@@ -64,7 +64,7 @@ export const galleryItems = [
     desc_en: "A greenhouse nursery program where inmates are trained in scientific horticulture, composting, and cultivating quality plants for a greener environment."
   },
   {
-    img_src: "/gallary/9.jpeg",
+    img_src: "http://localhost:5000/uploads/9.jpeg",
     img_alt: "Masonry Unit - Yerawada Open Prison",
     title_mr: "गवंडी काम आणि बांधकाम विभाग - येरवडा खुले कारागृह",
     title_en: "Masonry Unit - Yerawada Open Prison",
@@ -72,7 +72,7 @@ export const galleryItems = [
     desc_en: "Inmates undergoing vocational training in bricklaying, cement mixing, and masonry construction to build vocational skills."
   },
   {
-    img_src: "/gallary/10.jpeg",
+    img_src: "http://localhost:5000/uploads/10.jpeg",
     img_alt: "Cattle Farming & Dairy Unit",
     title_mr: "गोपालन आणि दुग्धव्यवसाय विभाग - येरवडा खुले कारागृह",
     title_en: "Cattle Farming & Dairy Unit - Yerawada Open Prison",
@@ -80,7 +80,7 @@ export const galleryItems = [
     desc_en: "Inmates learning dairy farming, cattle care, milk production, and livestock management, supporting self-sustainability."
   },
   {
-    img_src: "/gallary/11.jpeg",
+    img_src: "http://localhost:5000/uploads/11.jpeg",
     img_alt: "Poultry Farming",
     title_mr: "कुक्कुटपालन विभाग - येरवडा खुले कारागृह",
     title_en: "Poultry Farming - Yerawada Open Prison",
@@ -88,7 +88,7 @@ export const galleryItems = [
     desc_en: "Training in poultry farming, including feeding, care, disease control, and poultry farm management for inmates."
   },
   {
-    img_src: "/gallary/12.jpeg",
+    img_src: "http://localhost:5000/uploads/12.jpeg",
     img_alt: "Laundry Unit - Yerawada Central Prison",
     title_mr: "कपडे धुलाई आणि इस्त्री केंद्र - येरवडा मध्यवर्ती कारागृह",
     title_en: "Laundry Unit - Yerawada Central Prison",
@@ -96,7 +96,7 @@ export const galleryItems = [
     desc_en: "A commercial-grade laundry facility at Yerawada Central Jail, providing garment washing and ironing services with focus on hygiene and dignity."
   },
   {
-    img_src: "/gallary/13.jpeg",
+    img_src: "http://localhost:5000/uploads/13.jpeg",
     img_alt: "Minda Industrial Unit (Wire Harnessing)",
     title_mr: "मिंडा उद्योग विभाग (वायर हार्नेसिंग) - येरवडा खुले कारागृह",
     title_en: "Minda Industrial Unit (Wire Harnessing) - Yerawada Open Prison",
@@ -104,7 +104,7 @@ export const galleryItems = [
     desc_en: "An industrial collaboration with Minda Industries, where inmates are trained in automotive wire harnessing assembly, promoting advanced industrial skills."
   },
   {
-    img_src: "/gallary/14.jpeg",
+    img_src: "http://localhost:5000/uploads/14.jpeg",
     img_alt: "Factory & Power Loom Unit",
     title_mr: "कारखाना आणि यंत्रमाग विभाग - येरवडा खुले कारागृह",
     title_en: "Factory & Power Loom Unit - Yerawada Open Prison",
@@ -112,7 +112,7 @@ export const galleryItems = [
     desc_en: "An industrial power loom factory where inmates produce fabrics for government use, developing advanced textile manufacturing and operations skills."
   },
   {
-    img_src: "/gallary/15.jpeg",
+    img_src: "http://localhost:5000/uploads/15.jpeg",
     img_alt: "Shrinkhala Canteen - Yerawada Open Prison",
     title_mr: "श्रृंखला उपाहारगृह (कॅन्टीन) - येरवडा खुले कारागृह",
     title_en: "Shrinkhala Canteen - Yerawada Open Prison",
@@ -120,7 +120,7 @@ export const galleryItems = [
     desc_en: "A popular open-air canteen serving delicious, home-style meals prepared under strict hygiene standards by Yerawada Open Jail inmates."
   },
   {
-    img_src: "/gallary/16.jpeg",
+    img_src: "http://localhost:5000/uploads/16.jpeg",
     img_alt: "Traditional Wedding Art & Wall Painting",
     title_mr: "भिंतीवरील पारंपारिक चित्रकला - के.के. मंगल लॉन",
     title_en: "Traditional Wedding Art & Wall Painting - K.K. Mangal Lawn",
@@ -128,7 +128,7 @@ export const galleryItems = [
     desc_en: "A beautiful wedding-themed mural painted on the wall of K. K. Mangal Lawn by talented prison inmates, highlighting their artistic reform."
   },
   {
-    img_src: "/gallary/17.jpeg",
+    img_src: "http://localhost:5000/uploads/17.jpeg",
     img_alt: "Inmate Gym & Fitness Center",
     title_mr: "व्यायामशाळा आणि फिटनेस केंद्र - येरवडा खुले कारागृह",
     title_en: "Inmate Gym & Fitness Center - Yerawada Open Prison",
@@ -136,7 +136,7 @@ export const galleryItems = [
     desc_en: "A fully equipped indoor gym facility inside the prison premises to encourage physical fitness, strength training, and active health among inmates."
   },
   {
-    img_src: "/gallary/WhatsApp Image 2026-07-20 at 19.57.30.jpeg",
+    img_src: "http://localhost:5000/uploads/WhatsApp_Image_2026-07-20_at_19.57.30.jpeg",
     img_alt: "Inmate Fitness & Gym Center (Alternate View)",
     title_mr: "कारागृह व्यायामशाळा विभाग (दुसरे दृश्य)",
     title_en: "Inmate Fitness & Gym Center (Alternate View)",

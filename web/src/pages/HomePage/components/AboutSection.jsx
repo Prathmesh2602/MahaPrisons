@@ -21,12 +21,12 @@ export const AboutSection = () => {
     {
       name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
       desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१",
-      img: "/gallary/Shamkant%20shedge.png"
+      img: "http://localhost:5000/uploads/Shamkant_shedge.png"
     },
     {
       name: "श्री. नागेश एम. कांबळे",
       desg: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १",
-      img: "/gallary/Nagesh%20Kamble.png"
+      img: "http://localhost:5000/uploads/Nagesh_Kamble.png"
     },
     {
       name: "श्री. नागनाथ एन. भाणवसे",
@@ -36,7 +36,7 @@ export const AboutSection = () => {
     {
       name: "श्रीमती निशा डी. श्रेयेकर",
       desg: "तुरुंग अधिकारी श्रेणी २",
-      img: "/gallary/nisha%20shreyekar.png"
+      img: "http://localhost:5000/uploads/nisha_shreyekar.png"
     }
   ];
 
@@ -64,7 +64,7 @@ export const AboutSection = () => {
               {/* Header: Logo + Title */}
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6 mb-6">
                 <img
-                  src="/logo.jpeg"
+                  src="http://localhost:5000/uploads/logo.jpeg"
                   alt={t("कारागृह लोगो")}
                   className="w-16 md:w-20 h-auto object-contain mix-blend-multiply dark-mode:mix-blend-screen shrink-0"
                 />

@@ -3,13 +3,14 @@ import React from 'react';
 import { useScroll, useTransform, motion } from 'framer-motion';
 
 import AccessibilityToolbar from './AccessibilityToolbar';
+
 import Header from './Header';
 import MegaMenu from './MegaMenu';
 import Footer from './Footer';
 import LiveWallpaperBg from './LiveWallpaperBg';
 import ScrollToTopButton from './ScrollToTopButton';
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children, menuData, settingsData }) => {
   // Scroll transforms for bottom section orbs
   const { scrollY } = useScroll();
   const yBlob3 = useTransform(scrollY, [0, 1800], [0, -120]);
@@ -36,10 +37,10 @@ export const Layout = ({ children }) => {
       <AccessibilityToolbar />
 
       {/* Premium Title Branding Header */}
-      <Header />
+      <Header settingsData={settingsData} />
 
       {/* Desktop Light Gray / Sticky Accordion mega menu */}
-      <MegaMenu />
+      <MegaMenu menuData={menuData} />
 
       {/* Main Content Body Slot - Rendered by React Router */}
       <main id="main-content" className="flex-1 flex flex-col focus:outline-none relative z-10">
@@ -47,7 +48,7 @@ export const Layout = ({ children }) => {
       </main>
 
       {/* NIC copyright footer list */}
-      <Footer />
+      <Footer settingsData={settingsData} />
 
       {/* Global Scroll to Top Button */}
       <ScrollToTopButton />

@@ -1,22 +1,27 @@
 "use client";
 import React from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { mockHomepageData } from '../data/mockData';
-
-export const Footer = () => {
+export const Footer = ({ settingsData }) => {
   const { language } = useAccessibility();
 
-  const footerBanners = mockHomepageData.footer_banners;
+  const footerBanners = settingsData?.value?.footer_banners || [];
 
-  // Yerawada Open Prison specific links
-  const footerLinks = [
-    { text: language === 'mr' ? 'मुख्यपृष्ठ' : 'Home', href: '#' },
-    { text: language === 'mr' ? 'आमच्याबद्दल' : 'About Us', href: '#' },
-    { text: language === 'mr' ? 'उपक्रम' : 'Activities', href: '#' },
-    { text: language === 'mr' ? 'वेबसाइट धोरणे' : 'Website Policies', href: '#' },
-    { text: language === 'mr' ? 'संपर्क साधा' : 'Contact Us', href: '#' },
-    { text: language === 'mr' ? 'अभिप्राय' : 'Feedback', href: '#' }
+
+  const defaultLinks = [
+    { text_en: 'Home', text_mr: 'मुख्यपृष्ठ', href: '#' },
+    { text_en: 'About Us', text_mr: 'आमच्याबद्दल', href: '#' },
+    { text_en: 'Activities', text_mr: 'उपक्रम', href: '#' },
+    { text_en: 'Website Policies', text_mr: 'वेबसाइट धोरणे', href: '#' },
+    { text_en: 'Contact Us', text_mr: 'संपर्क साधा', href: '#' },
+    { text_en: 'Feedback', text_mr: 'अभिप्राय', href: '#' }
   ];
+
+  const configLinks = settingsData?.footer_config?.links || defaultLinks;
+  
+  const footerLinks = configLinks.map((link) => ({
+    text: language === 'mr' ? (link.text_mr || link.text_en) : (link.text_en || link.text_mr),
+    href: link.href
+  }));
 
   return (
     <footer className="w-full bg-[#111827] text-gray-400 text-xs smooth-transition">
@@ -91,13 +96,19 @@ export const Footer = () => {
       <div className="w-full bg-[#1F2937] py-5 px-4 text-center border-b border-gray-800">
          <p className="text-gray-300 font-medium text-[13px] leading-relaxed">
            {language === 'mr' 
-              ? 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६'
-              : 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006'}
+              ? settingsData?.footer_config?.contact?.address_mr || 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६'
+              : settingsData?.footer_config?.contact?.address_en || 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006'}
            <br className="md:hidden" />
            <span className="hidden md:inline text-gray-500 mx-3">|</span>
-           {language === 'mr' ? 'फोन: ०२०-२६६९४०५१' : 'Phone: 020-26694051'}
+           {language === 'mr' ? 'फोन: ' : 'Phone: '}
+           {language === 'mr' 
+              ? settingsData?.footer_config?.contact?.phone_mr || '०२०-२६६९४०५१' 
+              : settingsData?.footer_config?.contact?.phone_en || '020-26694051'}
            <span className="hidden md:inline text-gray-500 mx-3">|</span>
-           {language === 'mr' ? 'ई-मेल:' : 'Email:'} <a href="mailto:yerwadaop-mh@gov.in" className="hover:text-amber-400 hover:underline">yerwadaop-mh@gov.in</a>
+           {language === 'mr' ? 'ई-मेल: ' : 'Email: '} 
+           <a href={`mailto:${settingsData?.footer_config?.contact?.email || 'yerwadaop-mh@gov.in'}`} className="hover:text-amber-400 hover:underline">
+             {settingsData?.footer_config?.contact?.email || 'yerwadaop-mh@gov.in'}
+           </a>
          </p>
       </div>
 
@@ -109,8 +120,8 @@ export const Footer = () => {
           <div className="flex flex-col gap-1.5 items-center text-[11.5px] md:text-[12px]">
             <div className="font-semibold text-white">
               {language === 'mr'
-                ? 'मालकीची सामग्री येरवडा खुले कारागृह'
-                : 'Contents owned and maintained by Yerawada Open Prison.'}
+                ? settingsData?.footer_config?.copyright_mr || 'मालकीची सामग्री येरवडा खुले कारागृह'
+                : settingsData?.footer_config?.copyright_en || 'Contents owned and maintained by Yerawada Open Prison.'}
             </div>
             <div className="font-medium text-white/85">
               {language === 'mr'

@@ -69,12 +69,12 @@ export const yerawadaOpenJailData = {
       {
         name: { en: "Shri. Shamkant Shalan Chandrakant Shedge", mr: "श्री. शामकांत शालन चंद्रकांत शेडगे" },
         role: { en: "Superintendent, Yerawada Open Jail", mr: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१" },
-        img: "/gallary/Shamkant%20shedge.png"
+        img: "http://localhost:5000/uploads/Shamkant_shedge.png"
       },
       {
         name: { en: "Shri. Nagesh M. Kamble", mr: "श्री. नागेश एम. कांबळे" },
         role: { en: "Senior Jailor", mr: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १" },
-        img: "/gallary/Nagesh%20Kamble.png"
+        img: "http://localhost:5000/uploads/Nagesh_Kamble.png"
       },
       {
         name: { en: "Shri. Nagnath N. Bhanvase", mr: "श्री. नागनाथ एन. भाणवसे" },
@@ -84,27 +84,27 @@ export const yerawadaOpenJailData = {
       {
         name: { en: "Smt. Nisha D. Shreyakar", mr: "श्रीमती निशा डी. श्रेयेकर" },
         role: { en: "Jailor Grade 2", mr: "तुरुंग अधिकारी श्रेणी २" },
-        img: "/gallary/nisha%20shreyekar.png"
+        img: "http://localhost:5000/uploads/nisha_shreyekar.png"
       },
       {
         name: { en: "Smt. Nita Uke", mr: "श्रीमती नीता उके" },
         role: { en: "Office Superintendent", mr: "कार्यालयीन अधीक्षक" },
-        img: "/gallary/Nita%20Uke,%20Office%20Superintendent.png"
+        img: "http://localhost:5000/uploads/Nita_Uke,_Office_Superintendent.png"
       },
       {
         name: { en: "Smt. Sneha Dalal", mr: "श्रीमती स्नेहा दलाल" },
         role: { en: "Senior Clerk", mr: "वरिष्ठ लिपिक" },
-        img: "/gallary/Sneha%20Dalal,%20Senior%20Clerk.png"
+        img: "http://localhost:5000/uploads/Sneha_Dalal,_Senior_Clerk.png"
       },
       {
         name: { en: "Shri. Govind Gawade", mr: "श्री. गोविंद गावडे" },
         role: { en: "Senior Clerk", mr: "वरिष्ठ लिपिक" },
-        img: "/gallary/श्री गोविंद गावडे वरिष्ठ लिपिक.png"
+        img: "http://localhost:5000/uploads/श्री_गोविंद_गावडे_वरिष्ठ_लिपिक.png"
       },
       {
         name: { en: "Shri. Pravin Khuspe", mr: "श्री. प्रवीण खुस्पे" },
         role: { en: "Clerk", mr: "लिपिक" },
-        img: "/gallary/श्री प्रवीण खुस्पे, लिपिक.png"
+        img: "http://localhost:5000/uploads/श्री_प्रवीण_खुस्पे,_लिपिक.png"
       },
       { name: { en: "Shri. Sunil Gayakwad", mr: "श्री. सुनील गायकवाड" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
       { name: { en: "Shri. Balaji Sawant", mr: "श्री. बालाजी सावंत" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
@@ -120,7 +120,7 @@ export const yerawadaOpenJailData = {
     list: [
       {
         id: "agriculture",
-        image: "/gallary/cropped/Agriculture.png",
+        image: "http://localhost:5000/uploads/Agriculture.png",
         title: { en: "Agriculture Section", mr: "कृषी विभाग" },
         desc: {
           en: "Inmates of Yerawada Open Prison engaged in farming activities, learning modern agricultural methods, organic crop production, and harvesting on farmlands.",
@@ -129,7 +129,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "nursery",
-        image: "/gallary/cropped/nursery_section_enhanced_4k.jpg",
+        image: "http://localhost:5000/uploads/nursery_section_enhanced_4k.jpg",
         title: { en: "Nursery Section", mr: "रोपवाटिका (नर्सरी) विभाग" },
         desc: {
           en: "A greenhouse nursery program where inmates are trained in scientific horticulture, composting, and cultivating quality plants for a greener environment.",
@@ -138,7 +138,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "dairy",
-        image: "/gallary/cropped/cattle_farming_enhanced_4k.jpg",
+        image: "http://localhost:5000/uploads/cattle_farming_enhanced_4k.jpg",
         title: { en: "Cattle Farming & Dairy Unit", mr: "गोपालन आणि दुग्धव्यवसाय विभाग" },
         desc: {
           en: "Inmates learning dairy farming, cattle care, milk production, and livestock management, supporting self-sustainability.",
@@ -147,7 +147,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "poultry",
-        image: "/gallary/cropped/poultry_farming_enhanced_4k.jpg",
+        image: "http://localhost:5000/uploads/poultry_farming_enhanced_4k.jpg",
         title: { en: "Poultry Farming", mr: "कुक्कुटपालन विभाग" },
         desc: {
           en: "Training in poultry farming, including feeding, care, disease control, and poultry farm management for inmates.",
@@ -156,7 +156,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "lawn",
-        image: "/gallary/cropped/kk_mangal_lawn_hd_rectangle.jpg",
+        image: "http://localhost:5000/uploads/kk_mangal_lawn_hd_rectangle.jpg",
         title: { en: "K. K. Mangal Lawn", mr: "के.के. मंगल लॉन" },
         desc: {
           en: "K. K. Mangal Lawn is a spacious wedding and event venue managed and maintained by Yerawada Open Prison inmates, providing landscaping and gardening training.",
@@ -165,7 +165,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "factory",
-        image: "/gallary/cropped/factory.jpeg",
+        image: "http://localhost:5000/uploads/factory.jpeg",
         title: { en: "Factory & Power Loom Unit", mr: "कारखाना आणि यंत्रमाग विभाग" },
         desc: {
           en: "An industrial power loom factory where inmates produce fabrics for government use, developing advanced textile manufacturing and operations skills.",
@@ -174,7 +174,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "minda",
-        image: "/gallary/cropped/minda_unit_enhanced_4k.jpg",
+        image: "http://localhost:5000/uploads/minda_unit_enhanced_4k.jpg",
         title: { en: "Minda Industrial Unit", mr: "मिंडा उद्योग विभाग (वायर हार्नेसिंग)" },
         desc: {
           en: "An industrial collaboration with Minda Industries, where inmates are trained in automotive wire harnessing assembly, promoting advanced industrial skills.",
@@ -183,7 +183,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "masonry",
-        image: "/gallary/cropped/masonry_unit_enhanced_4k.jpg",
+        image: "http://localhost:5000/uploads/masonry_unit_enhanced_4k.jpg",
         title: { en: "Masonry Unit", mr: "गवंडी काम आणि बांधकाम विभाग" },
         desc: {
           en: "Inmates undergoing vocational training in bricklaying, cement mixing, and masonry construction to build vocational skills.",
@@ -192,7 +192,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "press",
-        image: "/gallary/cropped/press section.jpg",
+        image: "http://localhost:5000/uploads/press_section.jpg",
         title: { en: "Press Section", mr: "प्रेस (इस्त्री) विभाग" },
         desc: {
           en: "A professional ironing and laundry service department operated by inmates at Yerawada, training them in commercial laundry operations and garment care.",
@@ -201,7 +201,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "laundry",
-        image: "/gallary/cropped/laundry_unit_enhanced_4k.jpg",
+        image: "http://localhost:5000/uploads/laundry_unit_enhanced_4k.jpg",
         title: { en: "Laundry Unit", mr: "कपडे धुलाई आणि इस्त्री केंद्र" },
         desc: {
           en: "A commercial-grade laundry facility at Yerawada Central Jail, providing garment washing and ironing services with focus on hygiene and dignity.",
@@ -210,7 +210,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "salon",
-        image: "/gallary/cropped/salon_unit.jpg",
+        image: "http://localhost:5000/uploads/salon_unit.jpg",
         title: { en: "Salon Unit", mr: "सलून विभाग" },
         desc: {
           en: "A vocational salon unit operated by inmates providing professional training in haircutting, grooming, and personal care services for self-reliance.",
@@ -219,7 +219,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "canteen",
-        image: "/gallary/cropped/shrunkhala canteen.png",
+        image: "http://localhost:5000/uploads/shrunkhala_canteen.png",
         title: { en: "Shrinkhala Canteen", mr: "श्रृंखला उपाहारगृह (कॅन्टीन)" },
         desc: {
           en: "A popular open-air canteen serving delicious, home-style meals prepared under strict hygiene standards by Yerawada Open Jail inmates.",
@@ -228,7 +228,7 @@ export const yerawadaOpenJailData = {
       },
       {
         id: "gym",
-        image: "/gallary/cropped/Gym.png",
+        image: "http://localhost:5000/uploads/Gym.png",
         title: { en: "Inmate Gym & Fitness Center", mr: "व्यायामशाळा आणि फिटनेस केंद्र" },
         desc: {
           en: "A fully equipped indoor gym facility inside the prison premises to encourage physical fitness, strength training, and active health among inmates.",

@@ -31,6 +31,8 @@ export const HomePage = () => {
     <>
       <div id="hero">
         <HeroCarousel />
+      </div>
+      <div id="ministers">
         <MinisterProfiles />
       </div>
 

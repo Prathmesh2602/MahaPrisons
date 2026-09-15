@@ -7,6 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  MAKER
+  CHECKER
+  SUPER_ADMIN
+}
+
+enum ReviewStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
 model PageNode {
   id           String         @id @default(uuid())
   slug         String         @unique
@@ -33,4 +46,85 @@ model ContentBlock {
   updatedAt   DateTime  @updatedAt
 
   @@index([pageNodeId])
+}
+
+model Menu {
+  id        String     @id @default(uuid())
+  name      String     @unique // e.g. "main_navigation"
+  items     MenuItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model MenuItem {
+  id        String     @id @default(uuid())
+  menuId    String
+  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  parentId  String?
+  parent    MenuItem?  @relation("MenuHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  MenuItem[] @relation("MenuHierarchy")
+  label_mr  String
+  label_en  String
+  href      String?
+  icon      String?
+  order     Int        @default(0)
+  groups    Json?      // Stores mega menu sub-categories
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([menuId])
+  @@index([parentId])
+}
+
+model SiteSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(MAKER)
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  revisions Revision[] @relation("CreatedRevisions")
+  reviews   Revision[] @relation("ReviewedRevisions")
+}
+
+model Revision {
+  id           String       @id @default(uuid())
+  modelName    String       // e.g. "MenuItem", "SiteSetting", "PageNode"
+  recordId     String?      // ID of the target record, null if new creation
+  proposedData Json         // The complete JSON representation of the proposed state
+  status       ReviewStatus @default(PENDING_REVIEW)
+  rejectReason String?
+  
+  createdById  String
+  createdBy    User         @relation("CreatedRevisions", fields: [createdById], references: [id])
+  
+  reviewedById String?
+  reviewedBy   User?        @relation("ReviewedRevisions", fields: [reviewedById], references: [id])
+  
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  
+  @@index([modelName, recordId])
+  @@index([status])
+}
+
+model Media {
+  id        String   @id @default(uuid())
+  filename  String
+  filepath  String
+  mimetype  String
+  size      Int
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

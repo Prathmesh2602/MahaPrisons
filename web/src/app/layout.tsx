@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Layout from "../components/Layout";
-import { AccessibilityProvider } from "../hooks/useAccessibility";
-import ScrollToTop from "../components/ScrollToTop";
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
@@ -26,12 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} smooth-transition antialiased`}>
-        <AccessibilityProvider>
-          <ScrollToTop />
-          <Layout>
-            {children}
-          </Layout>
-        </AccessibilityProvider>
+        {children}
       </body>
     </html>
   );

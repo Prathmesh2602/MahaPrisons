@@ -2,25 +2,47 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const LiveWallpaperBg = () => {
+export const LiveWallpaperBg = ({ settingsData }) => {
   const [activeImage, setActiveImage] = useState(0);
+  const [wallpaperImages, setWallpaperImages] = useState([
+    "http://localhost:5000/uploads/wallpaper_1.jpg",
+    "http://localhost:5000/uploads/wallpaper_2.jpg",
+    "http://localhost:5000/uploads/wallpaper_3.jpg",
+    "http://localhost:5000/uploads/wallpaper_4.jpg",
+    "http://localhost:5000/uploads/wallpaper_5.jpg"
+  ]);
+  const [animationTime, setAnimationTime] = useState(4.8);
 
-  // 5 High-Definition, fast-loading Indian Flag & Maharashtra Police themed wallpapers
-  const indianThemeImages = [
-    "https://images.unsplash.com/photo-1589330273594-fade1ee91647?q=80&w=1200&auto=format&fit=crop", // Waving Tricolor Indian Flag in clear blue sky
-    "https://images.unsplash.com/photo-1622396481328-9b1b78cdd9fd?q=80&w=1200&auto=format&fit=crop", // Government HQ Administrative Illumination (patriotic theme)
-    "https://images.unsplash.com/photo-1532375810709-75b1da00537c?q=80&w=1200&auto=format&fit=crop", // Close-up Tricolor Flag close-up details
-    "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1200&auto=format&fit=crop", // India Gate National Memorial Monument
-    "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?q=80&w=1200&auto=format&fit=crop" // Gateway of India, Mumbai (Maharashtra heritage theme)
-  ];
+  useEffect(() => {
+    if (settingsData && settingsData.wallpaper_config) {
+      if (settingsData.wallpaper_config.images && settingsData.wallpaper_config.images.length > 0) {
+        setWallpaperImages(settingsData.wallpaper_config.images);
+      }
+      if (settingsData.wallpaper_config.animationTime) {
+        setAnimationTime(Number(settingsData.wallpaper_config.animationTime));
+      }
+    } else {
+      // Fetch live wallpaper settings from backend
+      fetch('http://localhost:5000/api/v1/settings/wallpaper_config')
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.images && data.images.length > 0) {
+            setWallpaperImages(data.images);
+          }
+          if (data && data.animationTime) {
+            setAnimationTime(Number(data.animationTime));
+          }
+        })
+        .catch(err => console.error('Failed to load wallpaper config', err));
+    }
+  }, [settingsData]);
 
-  // Snappy image rotation - changed from 9 seconds to 4.8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveImage((prev) => (prev + 1) % indianThemeImages.length);
-    }, 4800);
+      setActiveImage((prev) => (prev + 1) % wallpaperImages.length);
+    }, animationTime * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [wallpaperImages, animationTime]);
 
   // Floating particle/crosshair configurations
   const particles = [
@@ -38,23 +60,25 @@ export const LiveWallpaperBg = () => {
       {/* 1. Snappy Indian-Themed Background Slideshow (Opacity 70% with fast crossfade) */}
       <div className="absolute inset-0 z-0 opacity-[0.70] brightness-95 contrast-110">
         <AnimatePresence mode="wait">
-          <motion.img
-            key={activeImage}
-            src={indianThemeImages[activeImage]}
-            alt="Indian / Police Theme Wallpaper"
-            initial={{ opacity: 0, scale: 1.03 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              transition: { duration: 1.2 }
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.99,
-              transition: { duration: 0.8 }
-            }}
-            className="w-full h-full object-cover"
-          />
+          {wallpaperImages.length > 0 && (
+            <motion.img
+              key={activeImage}
+              src={wallpaperImages[activeImage]}
+              alt="Indian / Police Theme Wallpaper"
+              initial={{ opacity: 0, scale: 1.03 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                transition: { duration: 1.2 }
+              }}
+              exit={{
+                opacity: 0,
+                scale: 0.99,
+                transition: { duration: 0.8 }
+              }}
+              className="w-full h-full object-cover"
+            />
+          )}
         </AnimatePresence>
       </div>
 

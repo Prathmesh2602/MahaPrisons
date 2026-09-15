@@ -116,7 +116,7 @@ export const PhotoGallery = () => {
                 if (item.style === 'logo') {
                   return (
                     <div key={`m1-f-${idx}`} className="break-inside-avoid relative rounded-xl overflow-hidden mb-3 sm:mb-4 shadow-sm bg-gray-50 dark-mode:bg-gray-900 border border-gray-100 dark-mode:border-gray-800 flex items-center justify-center p-6 min-h-[140px]">
-                      <img src="/logo.jpeg" alt="logo" className="w-16 h-auto opacity-40 mix-blend-multiply dark-mode:mix-blend-screen grayscale" />
+                      <img src="http://localhost:5000/uploads/logo.jpeg" alt="logo" className="w-16 h-auto opacity-40 mix-blend-multiply dark-mode:mix-blend-screen grayscale" />
                     </div>
                   );
                 }
@@ -158,7 +158,7 @@ export const PhotoGallery = () => {
                 if (item.style === 'logo') {
                   return (
                     <div key={`m2-f-${idx}`} className="break-inside-avoid relative rounded-xl overflow-hidden mb-3 sm:mb-4 shadow-sm bg-gray-50 dark-mode:bg-gray-900 border border-gray-100 dark-mode:border-gray-800 flex items-center justify-center p-6 min-h-[140px]">
-                      <img src="/logo.jpeg" alt="logo" className="w-16 h-auto opacity-40 mix-blend-multiply dark-mode:mix-blend-screen grayscale" />
+                      <img src="http://localhost:5000/uploads/logo.jpeg" alt="logo" className="w-16 h-auto opacity-40 mix-blend-multiply dark-mode:mix-blend-screen grayscale" />
                     </div>
                   );
                 }

@@ -1,6 +1,6 @@
 export const socialActivitiesData = {
   salon: {
-    heroImage: '/gallary/7.jpeg',
+    heroImage: 'http://localhost:5000/uploads/7.jpeg',
     title: { mr: 'केशकर्तनालय (सलून) विभाग', en: 'Hair Salon & Grooming Unit' },
     subtitle: { mr: 'कौशल्य विकास आणि स्वावलंबन', en: 'Skill Development and Self-Reliance' },
     description: {
@@ -21,8 +21,8 @@ export const socialActivitiesData = {
   },
 
   laundry: {
-    heroImage1: '/gallary/12.jpeg',
-    heroImage2: '/gallary/6.jpeg',
+    heroImage1: 'http://localhost:5000/uploads/12.jpeg',
+    heroImage2: 'http://localhost:5000/uploads/6.jpeg',
     title: { mr: 'धुलाईगृह आणि इस्त्री केंद्र', en: 'Laundry & Press Unit' },
     subtitle: { mr: 'स्वच्छता आणि व्यावसायिक कौशल्ये', en: 'Hygiene and Professional Skills' },
     description: {
@@ -46,8 +46,8 @@ export const socialActivitiesData = {
   },
 
   canteen: {
-    heroImage: '/gallary/1.jpeg',
-    secondaryImage: '/gallary/15.jpeg',
+    heroImage: 'http://localhost:5000/uploads/1.jpeg',
+    secondaryImage: 'http://localhost:5000/uploads/15.jpeg',
     title: { mr: 'श्रृंखला उपाहारगृह', en: 'Shrinkhala Restaurant' },
     subtitle: { mr: 'रुचकर आणि सात्विक भोजन', en: 'Delicious and Pure Food' },
     description: {
@@ -69,8 +69,8 @@ export const socialActivitiesData = {
   },
 
   mangalLawn: {
-    heroImage: '/gallary/5.jpeg',
-    muralImage: '/gallary/16.jpeg',
+    heroImage: 'http://localhost:5000/uploads/5.jpeg',
+    muralImage: 'http://localhost:5000/uploads/16.jpeg',
     title: { mr: 'के. के. मंगल लॉन', en: 'K. K. Mangal Lawn' },
     subtitle: { mr: 'भव्य विवाह व कार्यक्रम स्थळ', en: 'Grand Wedding & Event Venue' },
     description: {
@@ -86,7 +86,7 @@ export const socialActivitiesData = {
   },
 
   mindaUnit: {
-    heroImage: '/gallary/13.jpeg',
+    heroImage: 'http://localhost:5000/uploads/13.jpeg',
     title: { mr: 'मिंडा युनिट (वायर हार्नेसिंग)', en: 'Minda Industrial Unit' },
     subtitle: { mr: 'ऑटोमोबाईल तांत्रिक प्रशिक्षण', en: 'Automobile Technical Training' },
     description: {

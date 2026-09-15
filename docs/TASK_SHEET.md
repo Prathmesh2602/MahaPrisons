@@ -18,20 +18,20 @@
 - [x] **Verification:** Start the Express server. Hit `GET /api/health`. Connect to PostgreSQL and verify the schema.
 
 ## Step 3: Dynamic Navigation & Universal Settings
-- [ ] **Backend API:** Create REST endpoint `GET /api/v1/menu`.
-- [ ] **Backend API:** Create `GET /api/v1/settings` to fetch global configuration.
-- [ ] **Database Seed:** Write a Node.js seed script to parse the static `mockData.js` object. Download external physical image files.
-- [ ] **Next.js Integration:** Update `MegaMenu.jsx` and `Footer.jsx` to execute a server-side `fetch()` against the backend API.
-- [ ] **Verification:** Start the Next.js app and Express backend to confirm Mega Menu loads dynamically.
+- [x] **Backend API:** Create REST endpoint `GET /api/v1/menu`.
+- [x] **Backend API:** Create `GET /api/v1/settings` to fetch global configuration.
+- [x] **Database Seed:** Write a Node.js seed script to parse the static `mockData.js` object. Download external physical image files.
+- [x] **Next.js Integration:** Update `MegaMenu.jsx` and `Footer.jsx` to execute a server-side `fetch()` against the backend API.
+- [x] **Verification:** Start the Next.js app and Express backend to confirm Mega Menu loads dynamically.
 
 ## Step 4: Admin Portal Base & Editing Universals
-- [ ] **Admin Scaffold:** Run `npm create vite@latest admin -- --template react-ts`. Configure Tailwind CSS, React Router, React Hook Form.
-- [ ] **Authentication:** Build a secure login screen with JWT token storage.
-- [ ] **Hook Development:** `usePhoneticInput` and `useTranslation`.
-- [ ] **Menu Editor:** Build an interactive drag-and-drop tree view.
-- [ ] **Settings Form:** Build the bilingual Site Settings editor.
-- [ ] **Backend Integration:** Build secure `POST`/`PUT` endpoints for the menu and settings with RBAC middleware.
-- [ ] **Verification:** Log into the Admin panel, edit phonetically, translate, save, and see live updates.
+- [x] **Admin Scaffold:** Run `npm create vite@latest admin -- --template react-ts`. Configure Tailwind CSS, React Router, React Hook Form.
+- [x] **Authentication:** Build a secure login screen with JWT token storage.
+- [x] **Hook Development:** `usePhoneticInput` and `useTranslation`.
+- [x] **Menu Editor:** Build an interactive drag-and-drop tree view.
+- [x] **Settings Form:** Build the bilingual Site Settings editor.
+- [x] **Backend Integration:** Build secure `POST`/`PUT` endpoints for the menu and settings with RBAC middleware.
+- [x] **Verification:** Log into the Admin panel, edit phonetically, translate, save, and see live updates.
 
 ## Step 5: Live Preview Page Editor (Iterative Feature Rollout)
 ### Iteration 1: The Homepage

@@ -24,7 +24,7 @@ export const HeroSection = () => {
         transition={{ duration: 2, ease: "easeOut" }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[#F8FAFC] via-[#0F3D66]/60 to-[#0F3D66]/80 dark-mode:from-[#080B11] dark-mode:via-gray-900/80 dark-mode:to-gray-900/90 z-10" />
-        <img src="/gallary/rehab_hero.png" alt="Rehabilitation" className="w-full h-full object-cover opacity-60 dark-mode:opacity-40" />
+        <img src="http://localhost:5000/uploads/rehab_hero.png" alt="Rehabilitation" className="w-full h-full object-cover opacity-60 dark-mode:opacity-40" />
       </motion.div>
       <div className="container mx-auto px-4 md:px-8 relative z-20 text-center max-w-5xl text-white mt-4 pb-8">
         <motion.div

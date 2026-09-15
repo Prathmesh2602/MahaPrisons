@@ -14,13 +14,7 @@ export const mockHomepageData = {
       icon: "Home",
       href: "/",
       title: "मुख्यपृष्ठ",
-      children: [
-        { text: "परिचय", href: "/#about", title: "About", children: [] },
-        { text: "घोषणा आणि निविदा", href: "/#announcements", title: "Announcements", children: [] },
-        { text: "सुट्ट्यांचे कॅलेंडर", href: "/#calendar", title: "Calendar", children: [] },
-        { text: "फोटो गॅलरी", href: "/#gallery", title: "Gallery", children: [] },
-        { text: "जलद सेवा", href: "/#services", title: "Services", children: [] }
-      ]
+      children: []
     },
     {
       text: "कारागृह व्यवस्था",
@@ -251,7 +245,7 @@ export const mockHomepageData = {
   ],
   hero_carousel: [
     {
-      img_src: "/gallary/rehab_hero.png",
+      img_src: "http://localhost:5000/uploads/rehab_hero.png",
       img_alt: "येरवडा खुले कारागृह",
       category: { mr: "पुनर्वसन", en: "Rehabilitation" },
       title: { mr: "येरवडा खुले कारागृह", en: "Yerawada Open Prison" },
@@ -261,7 +255,7 @@ export const mockHomepageData = {
       cta2: { mr: "उपक्रम पहा", en: "View Initiatives", href: "#" }
     },
     {
-      img_src: "/gallary/farming_hero.png",
+      img_src: "http://localhost:5000/uploads/farming_hero.png",
       img_alt: "शेती उपक्रम",
       category: { mr: "शेती", en: "Agriculture" },
       title: { mr: "मातीशी नातं", en: "Bond with Soil" },
@@ -271,7 +265,7 @@ export const mockHomepageData = {
       cta2: null
     },
     {
-      img_src: "/gallary/skills_hero.png",
+      img_src: "http://localhost:5000/uploads/skills_hero.png",
       img_alt: "कौशल्य विकास केंद्र",
       category: { mr: "कौशल्य विकास", en: "Skill Development" },
       title: { mr: "कौशल्यातून आत्मनिर्भरतेकडे", en: "Self-reliance through Skills" },
@@ -281,7 +275,7 @@ export const mockHomepageData = {
       cta2: null
     },
     {
-      img_src: "/gallary/industry_hero.png",
+      img_src: "http://localhost:5000/uploads/industry_hero.png",
       img_alt: "उद्योग विभाग",
       category: { mr: "उत्पादन व उद्योग", en: "Production & Industry" },
       title: { mr: "श्रमाला संधी, भविष्याला दिशा.", en: "Opportunity for Labor, Direction for Future." },
@@ -291,7 +285,7 @@ export const mockHomepageData = {
       cta2: null
     },
     {
-      img_src: "/gallary/reintegration_hero.png",
+      img_src: "http://localhost:5000/uploads/reintegration_hero.png",
       img_alt: "पुनर्वसन उपक्रम",
       category: { mr: "पुनर्वसन", en: "Reintegration" },
       title: { mr: "नव्या आयुष्याची तयारी", en: "Preparing for a New Life" },
@@ -327,19 +321,19 @@ export const mockHomepageData = {
       desg: "Director General of Prisons and Correctional Services"
     },
     {
-      img_src: "/gallary/yogesh%20desai.png",
+      img_src: "http://localhost:5000/uploads/yogesh_desai.png",
       img_alt: "Yogesh Desai",
       name: "श्री. योगेश देसाई",
       desg: "विशेष कारागृह महानिरीक्षक, महाराष्ट्र राज्य"
     },
     {
-      img_src: "/gallary/Sunil%20Dhamal.png",
+      img_src: "http://localhost:5000/uploads/Sunil_Dhamal.png",
       img_alt: "Sunil Dhamal",
       name: "श्री. सुनील ढमाळ",
       desg: "कारागृह उपमहानिरीक्षक, पश्चिम विभाग, येरवडा"
     },
     {
-      img_src: "/gallary/Shamkant%20shedge.png",
+      img_src: "http://localhost:5000/uploads/Shamkant_shedge.png",
       img_alt: "Shamkant Shedge",
       name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
       desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१"
