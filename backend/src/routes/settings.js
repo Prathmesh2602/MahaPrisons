@@ -23,18 +23,20 @@ router.get('/:key', async (req, res) => {
 });
 
 // GET /api/v1/settings
-// Fetches global site settings (legacy)
+// Fetches combined site settings
 router.get('/', async (req, res) => {
   try {
-    const config = await prisma.siteSetting.findUnique({
-      where: { key: 'global_config' }
+    const [header, footer, wallpaper] = await Promise.all([
+      prisma.siteSetting.findUnique({ where: { key: 'header_config' } }),
+      prisma.siteSetting.findUnique({ where: { key: 'footer_config' } }),
+      prisma.siteSetting.findUnique({ where: { key: 'wallpaper_config' } })
+    ]);
+
+    res.json({
+      header_config: header ? header.value : null,
+      footer_config: footer ? footer.value : null,
+      wallpaper_config: wallpaper ? wallpaper.value : null
     });
-
-    if (!config) {
-      return res.status(404).json({ error: 'Settings not found' });
-    }
-
-    res.json(config.value);
   } catch (error) {
     console.error('Settings fetch error:', error);
     res.status(500).json({ error: 'Internal Server Error' });

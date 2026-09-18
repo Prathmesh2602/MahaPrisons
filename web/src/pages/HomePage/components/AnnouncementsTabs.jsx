@@ -14,22 +14,29 @@ const pastelColors = [
   'bg-teal-50 dark-mode:bg-teal-950/40 border-teal-100/80 dark-mode:border-teal-900/50'
 ];
 
-export const AnnouncementsTabs = () => {
+export const AnnouncementsTabs = ({ data }) => {
   const { language, t } = useAccessibility();
   const [activeTab, setActiveTab] = useState(0);
 
-  const tabs = mockHomepageData.announcements_tabs;
+  const tabs = data || mockHomepageData.announcements_tabs;
 
   // English translation map for tab items since data starts in Marathi
-  const getTabTitle = (title) => {
-    if (title === "भरती") return t("भरती");
-    if (title === "निविदा") return t("निविदा");
-    if (title === "कागदपत्रे") return t("कागदपत्रे");
-    return t(title);
+  const getTabTitle = (tab) => {
+    if (tab.title) {
+      return tab.title[language] || tab.title.mr;
+    }
+    if (tab.tab_title === "भरती") return t("भरती");
+    if (tab.tab_title === "निविदा") return t("निविदा");
+    if (tab.tab_title === "कागदपत्रे") return t("कागदपत्रे");
+    return t(tab.tab_title);
   };
 
   // English translations for notice items
   const getNoticeText = (text, tabIdx, itemIdx) => {
+    if (typeof text === 'object' && text !== null) {
+      return text[language] || text.mr;
+    }
+    
     if (language === 'mr') return text;
 
     // Recruitment Translations
@@ -74,7 +81,7 @@ export const AnnouncementsTabs = () => {
   };
 
   return (
-    <div className="w-full bg-slate-50 dark-mode:bg-gray-950 py-20 px-4 md:px-8 border-b border-gray-200/60 dark-mode:border-gray-850 smooth-transition">
+    <div className="w-full bg-slate-50 dark-mode:bg-gray-950 py-20 px-4 md:px-8 border-b border-gray-200/60 dark-mode:border-gray-850 smooth-transition" data-block-type="announcements_tabs">
       <div className="max-w-7xl mx-auto">
         
         {/* Section title & Tabs */}
@@ -107,7 +114,7 @@ export const AnnouncementsTabs = () => {
                 aria-selected={idx === activeTab ? "true" : "false"}
                 role="tab"
               >
-                {getTabTitle(tab.tab_title)}
+                {getTabTitle(tab)}
               </button>
             ))}
           </div>
@@ -126,7 +133,7 @@ export const AnnouncementsTabs = () => {
             >
               {tabs[activeTab]?.items.map((item, idx) => {
                 const text = getNoticeText(item.text, activeTab, idx);
-                const isPdf = item.href.endsWith('.pdf');
+                const isPdf = item.href?.endsWith('.pdf') || false;
                 const cardColorClass = pastelColors[idx % pastelColors.length];
 
                 return (

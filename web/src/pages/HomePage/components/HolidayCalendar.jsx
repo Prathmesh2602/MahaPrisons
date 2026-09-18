@@ -1,12 +1,38 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAccessibility } from '../../../hooks/useAccessibility';
 import { mockHolidays2026 } from '../../../data/mockData';
 import { ChevronLeft, ChevronRight, Calendar, Info } from 'lucide-react';
 
-export const HolidayCalendar = () => {
+export const HolidayCalendar = ({ data }) => {
   const { language, t } = useAccessibility();
   const [currentDate, setCurrentDate] = useState(new Date());
+  
+  const holidays = data || mockHolidays2026 || [];
+  
+  const prevDataRef = React.useRef(data);
+  useEffect(() => {
+    if (data && prevDataRef.current !== data) {
+      const oldHolidays = prevDataRef.current || [];
+      const newHolidays = data || [];
+      let changedHoliday = null;
+      if (newHolidays.length !== oldHolidays.length) {
+        changedHoliday = newHolidays.find(h => !oldHolidays.some(old => old.date === h.date && old.title === h.title)) || newHolidays[newHolidays.length - 1];
+      } else {
+        changedHoliday = newHolidays.find((h, i) => {
+          const old = oldHolidays[i];
+          return !old || old.date !== h.date || old.type !== h.type || old.title !== h.title;
+        });
+      }
+      if (changedHoliday && changedHoliday.date) {
+        const d = new Date(changedHoliday.date);
+        if (!isNaN(d.getTime())) {
+          setCurrentDate(d);
+        }
+      }
+      prevDataRef.current = data;
+    }
+  }, [data]);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth(); // 0-indexed
@@ -51,7 +77,7 @@ export const HolidayCalendar = () => {
   const getHolidayForDay = (day) => {
     if (!day) return null;
     const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    return mockHolidays2026.find(h => h.date === dateString) || null;
+    return holidays.find(h => h.date === dateString) || null;
   };
 
   // Check if a day index is weekend
@@ -61,13 +87,21 @@ export const HolidayCalendar = () => {
   };
 
   // Get active month holidays list for side display
-  const activeMonthHolidays = mockHolidays2026.filter(h => {
+  const activeMonthHolidays = holidays.filter(h => {
     const hDate = new Date(h.date);
     return hDate.getFullYear() === year && hDate.getMonth() === month;
   });
 
+  const getHolidayTitle = (holiday, lang) => {
+    if (!holiday) return '';
+    if (lang === 'mr') {
+      return holiday.title_mr || (holiday.title?.includes('/') ? holiday.title.split('/')[1]?.trim() : holiday.title) || '';
+    }
+    return holiday.title_en || (holiday.title?.includes('/') ? holiday.title.split('/')[0]?.trim() : holiday.title) || '';
+  };
+
   return (
-    <div className="w-full py-4 md:py-6 px-4 md:px-8 bg-[#F1F5F9] dark-mode:bg-gray-900 border-b border-gray-200/60 dark-mode:border-gray-850 smooth-transition">
+    <div className="w-full py-4 md:py-6 px-4 md:px-8 bg-[#F1F5F9] dark-mode:bg-gray-900 border-b border-gray-200/60 dark-mode:border-gray-850 smooth-transition" data-block-type="holiday_calendar">
       <div className="max-w-6xl mx-auto">
         
         {/* Section title */}
@@ -138,14 +172,17 @@ export const HolidayCalendar = () => {
                 } else {
                   cellClass += "border ";
                   
-                  if (isToday) {
-                    cellClass += "bg-[#1E5AA8] text-white border-[#1E5AA8] shadow-md font-medium ";
-                  } else if (holiday) {
+                  if (holiday) {
                     if (holiday.type === 'gazetted') {
-                      cellClass += "bg-red-50 border-red-200 text-red-700 font-medium hover:bg-red-100/80 dark-mode:bg-red-950/20 dark-mode:border-red-900/50 dark-mode:text-red-300 ";
+                      cellClass += "bg-red-50 border-red-300 text-red-700 font-medium hover:bg-red-100/80 dark-mode:bg-red-950/20 dark-mode:border-red-900/50 dark-mode:text-red-300 ";
                     } else {
-                      cellClass += "bg-amber-50 border-amber-200 text-amber-700 font-medium hover:bg-amber-100/80 dark-mode:bg-amber-950/20 dark-mode:border-amber-900/50 dark-mode:text-amber-300 ";
+                      cellClass += "bg-amber-50 border-amber-300 text-amber-700 font-medium hover:bg-amber-100/80 dark-mode:bg-amber-950/20 dark-mode:border-amber-900/50 dark-mode:text-amber-300 ";
                     }
+                    if (isToday) {
+                      cellClass += "ring-2 ring-[#1E5AA8] ring-offset-1 ";
+                    }
+                  } else if (isToday) {
+                    cellClass += "bg-[#1E5AA8] text-white border-[#1E5AA8] shadow-md font-medium ";
                   } else if (isWeekend) {
                     cellClass += "bg-[#F8FAFC] border-gray-100 text-red-550 dark-mode:bg-gray-800/40 dark-mode:border-gray-800/40 ";
                   } else {
@@ -157,7 +194,7 @@ export const HolidayCalendar = () => {
                   <div 
                     key={idx} 
                     className={cellClass}
-                    title={holiday ? holiday.title : undefined}
+                    title={holiday ? getHolidayTitle(holiday, language) : undefined}
                   >
                     <span>{day}</span>
                     {holiday && (
@@ -227,7 +264,7 @@ export const HolidayCalendar = () => {
                         <div className="flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${isGazetted ? 'bg-red-500' : 'bg-amber-500'}`} />
                           <span className="text-xs font-medium text-gray-700 dark-mode:text-gray-250 leading-tight">
-                            {h.title.split('/')[language === 'mr' ? 1 : 0].trim()}
+                            {getHolidayTitle(h, language)}
                           </span>
                         </div>
                         <span className="text-[10px] font-medium text-gray-500 dark-mode:text-gray-400 bg-white border border-gray-150 px-2 py-0.5 rounded-full whitespace-nowrap dark-mode:bg-gray-800 dark-mode:border-gray-700">

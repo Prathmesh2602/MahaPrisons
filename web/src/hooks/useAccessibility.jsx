@@ -63,12 +63,20 @@ export const AccessibilityProvider = ({ children }) => {
 
   // Translation helper function
   const t = (key) => {
-    const cleanKey = key.trim();
+    if (!key) return '';
+    
+    // If key is a bilingual object, return the appropriate language string directly
+    if (typeof key === 'object') {
+      return key[language] || key.en || key.mr || '';
+    }
+
+    // Otherwise proceed with dictionary lookup
+    const cleanKey = String(key).trim();
     if (translations[cleanKey]) {
       return translations[cleanKey][language];
     }
     // Return key if no translation found
-    return key;
+    return String(key);
   };
 
   // Text to Speech logic

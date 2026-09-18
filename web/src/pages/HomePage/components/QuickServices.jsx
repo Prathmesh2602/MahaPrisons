@@ -2,34 +2,27 @@
 import React from 'react';
 import { useAccessibility } from '../../../hooks/useAccessibility';
 import { mockHomepageData } from '../../../data/mockData';
-import { Phone, Shield, ShieldAlert, HeartHandshake, UserCheck, HelpCircle, Link2, ArrowRight } from 'lucide-react';
+import { Phone, Link2, ArrowRight } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-export const QuickServices = () => {
+export const QuickServices = ({ data }) => {
   const { language, t } = useAccessibility();
-  const links = mockHomepageData.important_links;
+  const links = data?.important_links || mockHomepageData.important_links || [];
+  const helplines = data?.helplines || mockHomepageData.helpline_services || [];
 
-  // Helper function to return relevant Lucide Icons for government services
-  const getIcon = (idx) => {
-    switch (idx) {
-      case 0: return <UserCheck className="w-5 h-5 text-teal-600 dark-mode:text-teal-400" />;
-      case 1: return <ShieldAlert className="w-5 h-5 text-red-600 dark-mode:text-red-400" />;
-      case 2: return <Shield className="w-5 h-5 text-blue-600 dark-mode:text-blue-400" />;
-      case 3: return <ShieldAlert className="w-5 h-5 text-amber-600 dark-mode:text-amber-400" />;
-      case 4: return <HeartHandshake className="w-5 h-5 text-pink-650 dark-mode:text-pink-400" />;
-      case 5: return <HelpCircle className="w-5 h-5 text-indigo-600 dark-mode:text-indigo-400" />;
-      default: return <Phone className="w-5 h-5 text-gray-600" />;
-    }
+  // Helper function to dynamically render Lucide Icons based on selected string
+  const getIconByString = (iconName) => {
+    const IconComponent = LucideIcons[iconName] || LucideIcons.Phone;
+    return <IconComponent className="w-5 h-5 text-gray-700 dark-mode:text-gray-300" />;
   };
 
   const getIconBg = (idx) => {
-    switch (idx) {
+    switch (idx % 4) {
       case 0: return 'bg-teal-50 dark-mode:bg-teal-950/25 border-teal-100 dark-mode:border-teal-900/40';
       case 1: return 'bg-red-50 dark-mode:bg-red-950/25 border-red-100 dark-mode:border-red-900/40';
       case 2: return 'bg-blue-50 dark-mode:bg-blue-950/25 border-blue-100 dark-mode:border-blue-900/40';
       case 3: return 'bg-amber-50 dark-mode:bg-amber-950/25 border-amber-100 dark-mode:border-amber-900/40';
-      case 4: return 'bg-pink-50 dark-mode:bg-pink-950/25 border-pink-100 dark-mode:border-pink-900/40';
-      case 5: return 'bg-indigo-50 dark-mode:bg-indigo-950/25 border-indigo-100 dark-mode:border-indigo-900/40';
-      default: return 'bg-gray-50 border-gray-150';
+      default: return 'bg-teal-50 dark-mode:bg-teal-950/25 border-teal-100 dark-mode:border-teal-900/40';
     }
   };
 
@@ -48,7 +41,7 @@ export const QuickServices = () => {
   };
 
   return (
-    <div className="w-full py-10 px-4 md:px-8 bg-gradient-to-b from-white to-[#F8FAFC] dark-mode:from-gray-950 dark-mode:to-gray-900 smooth-transition relative overflow-hidden border-b border-gray-200/60 dark-mode:border-gray-850">
+    <div className="w-full py-10 px-4 md:px-8 bg-gradient-to-b from-white to-[#F8FAFC] dark-mode:from-gray-950 dark-mode:to-gray-900 smooth-transition relative overflow-hidden border-b border-gray-200/60 dark-mode:border-gray-850" data-block-type="quick_services">
       {/* Decorative background blur objects */}
       <span className="absolute -top-32 -left-32 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
       <span className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -58,11 +51,11 @@ export const QuickServices = () => {
         {/* Section title */}
         <div className="text-center mb-8">
           <h2 className="text-xl md:text-2xl font-semibold text-[#0F3D66] dark-mode:text-blue-300 font-poppins relative inline-block pb-3">
-            {t("जलद सेवा आणि महत्त्वाच्या लिंक्स")}
+            {data?.header?.title?.[language] || data?.header?.title?.mr || t("जलद सेवा आणि महत्त्वाच्या लिंक्स")}
             <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full shadow-sm" />
           </h2>
           <p className="mt-2 text-gray-600 dark-mode:text-gray-400 text-xs md:text-sm max-w-2xl mx-auto">
-            {t("नागरिकांच्या सुविधेसाठी महत्त्वाचे संपर्क क्रमांक आणि संबंधित शासकीय संकेतस्थळांच्या लिंक्स खालीलप्रमाणे उपलब्ध आहेत.")}
+            {data?.header?.subtitle?.[language] || data?.header?.subtitle?.mr || t("नागरिकांच्या सुविधेसाठी महत्त्वाचे संपर्क क्रमांक आणि संबंधित शासकीय संकेतस्थळांच्या लिंक्स खालीलप्रमाणे उपलब्ध आहेत.")}
           </p>
         </div>
 
@@ -77,11 +70,10 @@ export const QuickServices = () => {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {mockHomepageData.helpline_services.map((service, idx) => {
-                const parts = service.text.split(':');
-                const number = parts[1] ? parts[1].trim() : '';
-                const translatedTitle = t(service.text).split(':')[0];
-                const translatedNumber = t(service.text).split(':')[1] || number;
+              {helplines.map((service, idx) => {
+                const number = service.phone || service.text?.split(':')[1]?.trim() || '';
+                const translatedTitle = service.title?.[language] || service.title?.mr || t(service.text?.split(':')[0]);
+                const translatedNumber = number;
 
                 return (
                   <a
@@ -92,7 +84,7 @@ export const QuickServices = () => {
                     <span className="absolute -top-12 -right-12 w-24 h-24 bg-[#0F766E]/5 group-hover:bg-[#0F766E]/10 rounded-full blur-xl transition-all duration-500" />
                     
                     <div className={`w-10 h-10 rounded-xl border shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0 ${getIconBg(idx)}`}>
-                      {getIcon(idx)}
+                      {getIconByString(service.icon)}
                     </div>
 
                     <div className="flex flex-col overflow-hidden">
@@ -135,7 +127,7 @@ export const QuickServices = () => {
                         <Link2 className="w-2.5 h-2.5" />
                       </div>
                       <span className="text-[11px] md:text-xs font-medium text-gray-700 dark-mode:text-gray-300 group-hover:text-[#0F3D66] dark-mode:group-hover:text-blue-400 transition-colors leading-tight truncate">
-                        {t(link.text)}
+                        {link.title?.[language] || link.title?.mr || t(link.text)}
                       </span>
                     </div>
 

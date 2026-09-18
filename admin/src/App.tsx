@@ -6,8 +6,9 @@ import { MenuEditor } from './pages/MenuEditor';
 import { SettingsEditor } from './pages/SettingsEditor';
 import { ReviewDashboard } from './pages/ReviewDashboard';
 import { UserManagement } from './pages/UserManagement';
+import { PageEditor } from './pages/PageEditor';
 import { Button } from './components/Button';
-import { LayoutDashboard, Settings, Menu as MenuIcon, LogOut, CheckSquare, Shield, Image as ImageIcon, FileText, Users, X } from 'lucide-react';
+import { LayoutDashboard, Settings, Menu as MenuIcon, LogOut, CheckSquare, Shield, ShieldCheck, Image as ImageIcon, FileText, Users, X } from 'lucide-react';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { token } = useAuth();
@@ -191,6 +192,7 @@ const AppRoutes = () => {
       <Route path="/settings" element={<ProtectedRoute><DashboardLayout><SettingsEditor /></DashboardLayout></ProtectedRoute>} />
       <Route path="/review" element={<ProtectedRoute><DashboardLayout><ReviewDashboard /></DashboardLayout></ProtectedRoute>} />
       <Route path="/users" element={<ProtectedRoute><DashboardLayout><UserManagement /></DashboardLayout></ProtectedRoute>} />
+      <Route path="/page-editor" element={<ProtectedRoute><DashboardLayout><PageEditor /></DashboardLayout></ProtectedRoute>} />
     </Routes>
   );
 };

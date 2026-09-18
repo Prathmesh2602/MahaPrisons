@@ -49,6 +49,12 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
     return map[key] || key;
   };
 
+  const formatValue = (val: any) => {
+    if (val === null || val === undefined) return 'None';
+    if (typeof val === 'object') return JSON.stringify(val);
+    return String(val);
+  };
+
   const renderSiteSettingDiff = () => {
     // oldData is array of {key, value}, newData is array of {key, value}
     const changes: any[] = [];
@@ -78,16 +84,16 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
               {change.type === 'added' ? (
                 <div className="flex items-center gap-2 text-green-700 bg-green-50 p-2 rounded">
                   <PlusCircle size={16} /> 
-                  <span className="font-semibold">{String(change.new)}</span>
+                  <span className="font-semibold">{formatValue(change.new)}</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-4">
                   <div className="flex-1 bg-red-50 text-red-700 p-2 rounded line-through opacity-70">
-                    {String(change.old)}
+                    {formatValue(change.old)}
                   </div>
                   <ArrowRight size={20} className="text-gray-400 shrink-0" />
                   <div className="flex-1 bg-green-50 text-green-700 p-2 rounded font-semibold border border-green-100">
-                    {String(change.new)}
+                    {formatValue(change.new)}
                   </div>
                 </div>
               )}
@@ -180,11 +186,11 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
                       <div className="font-semibold text-gray-600 mb-1">{getFriendlyFieldName(f.field)}</div>
                       <div className="flex items-center gap-4">
                         <div className="flex-1 bg-red-50 text-red-700 p-2 rounded line-through opacity-70">
-                          {String(f.old || 'None')}
+                          {formatValue(f.old)}
                         </div>
                         <ArrowRight size={16} className="text-gray-400 shrink-0" />
                         <div className="flex-1 bg-green-50 text-green-700 p-2 rounded font-semibold border border-green-100">
-                          {String(f.new || 'None')}
+                          {formatValue(f.new)}
                         </div>
                       </div>
                     </div>

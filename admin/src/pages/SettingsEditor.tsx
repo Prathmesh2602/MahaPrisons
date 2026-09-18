@@ -85,7 +85,7 @@ export const SettingsEditor = () => {
   };
 
   const logoHist = useBlockHistory(
-    { logo_src: DEFAULT_HEADER_CONFIG.logo_src, logo_link: DEFAULT_HEADER_CONFIG.logo_link },
+    { logo_src: savedHeaderConfig.logo_src, logo_link: savedHeaderConfig.logo_link },
     { logo_src: headerConfig.logo_src, logo_link: headerConfig.logo_link },
     (val) => {
       const newConfig = { ...headerConfig, logo_src: val.logo_src, logo_link: val.logo_link };
@@ -95,7 +95,7 @@ export const SettingsEditor = () => {
   );
 
   const rightLogosHist = useBlockHistory(
-    DEFAULT_HEADER_CONFIG.right_logos || [],
+    savedHeaderConfig.right_logos || [],
     headerConfig.right_logos || [],
     (val) => {
       const newConfig = { ...headerConfig, right_logos: val };
@@ -105,7 +105,7 @@ export const SettingsEditor = () => {
   );
 
   const titleHist = useBlockHistory(
-    { title_en: DEFAULT_HEADER_CONFIG.title_en, title_mr: DEFAULT_HEADER_CONFIG.title_mr },
+    { title_en: savedHeaderConfig.title_en, title_mr: savedHeaderConfig.title_mr },
     { title_en: headerConfig.title_en, title_mr: headerConfig.title_mr },
     (val) => {
       const newConfig = { ...headerConfig, title_en: val.title_en, title_mr: val.title_mr };
@@ -115,7 +115,7 @@ export const SettingsEditor = () => {
   );
 
   const subtitleHist = useBlockHistory(
-    { subtitle_en: DEFAULT_HEADER_CONFIG.subtitle_en, subtitle_mr: DEFAULT_HEADER_CONFIG.subtitle_mr },
+    { subtitle_en: savedHeaderConfig.subtitle_en, subtitle_mr: savedHeaderConfig.subtitle_mr },
     { subtitle_en: headerConfig.subtitle_en, subtitle_mr: headerConfig.subtitle_mr },
     (val) => {
       const newConfig = { ...headerConfig, subtitle_en: val.subtitle_en, subtitle_mr: val.subtitle_mr };
@@ -125,7 +125,7 @@ export const SettingsEditor = () => {
   );
 
   const footerLinksHist = useBlockHistory(
-    DEFAULT_FOOTER_CONFIG.links || [],
+    savedFooterConfig.links || [],
     footerConfig.links || [],
     (val) => {
       const newConfig = { ...footerConfig, links: val };
@@ -135,7 +135,7 @@ export const SettingsEditor = () => {
   );
 
   const contactInfoHist = useBlockHistory(
-    DEFAULT_FOOTER_CONFIG.contact || {},
+    savedFooterConfig.contact || {},
     footerConfig.contact || {},
     (val) => {
       const newConfig = { ...footerConfig, contact: val };
@@ -145,7 +145,7 @@ export const SettingsEditor = () => {
   );
 
   const wallpaperImagesHist = useBlockHistory(
-    DEFAULT_WALLPAPER_CONFIG.images || [],
+    savedWallpaperConfig.images || [],
     wallpaperConfig.images || [],
     (val) => {
       setWallpaperConfig({ ...wallpaperConfig, images: val });
@@ -153,7 +153,7 @@ export const SettingsEditor = () => {
   );
 
   const wallpaperAnimHist = useBlockHistory(
-    DEFAULT_WALLPAPER_CONFIG.animationTime || 4.8,
+    savedWallpaperConfig.animationTime || 4.8,
     wallpaperConfig.animationTime || 4.8,
     (val) => {
       setWallpaperConfig({ ...wallpaperConfig, animationTime: val });
@@ -184,21 +184,21 @@ export const SettingsEditor = () => {
       const res = await axios.get(`http://localhost:5000/api/v1/settings/${key}`);
       if (res.data && Object.keys(res.data).length > 0) {
         if (key === 'header_config') {
-          setHeaderConfig(prev => {
+          setHeaderConfig((prev: any) => {
             const newConf = { ...prev, ...res.data };
             setSavedHeaderConfig(newConf);
             updateHistoryState(newConf, footerConfig, wallpaperConfig);
             return newConf;
           });
         } else if (key === 'footer_config') {
-          setFooterConfig(prev => {
+          setFooterConfig((prev: any) => {
             const newConf = { ...prev, ...res.data };
             setSavedFooterConfig(newConf);
             updateHistoryState(headerConfig, newConf, wallpaperConfig);
             return newConf;
           });
         } else if (key === 'wallpaper_config') {
-          setWallpaperConfig(prev => {
+          setWallpaperConfig((prev: any) => {
             const newConf = { ...prev, ...res.data };
             setSavedWallpaperConfig(newConf);
             updateHistoryState(headerConfig, footerConfig, newConf);
@@ -345,6 +345,14 @@ export const SettingsEditor = () => {
     updateHistoryState(headerConfig, footerConfig, newConfig);
   };
 
+  const marathiToEnglishDigits = (text: string) => {
+    const marathiDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+    return text.split('').map(char => {
+      const index = marathiDigits.indexOf(char);
+      return index !== -1 ? index : char;
+    }).join('');
+  };
+
   const handleCustomTranslate = async (text: string, callback: (translated: string) => void) => {
     if (!text.trim()) return;
     try {
@@ -432,15 +440,21 @@ export const SettingsEditor = () => {
       } else {
         alert('Changes saved and published!');
       }
-    } catch (err) {
-      alert('Failed to save settings');
+    } catch (err: any) {
+      console.error(err);
+      const errMsg = err.response?.data?.error || err.message || 'Unknown error';
+      if (err.response?.status === 401) {
+        alert('Session expired or unauthorized. Please log out and log back in.');
+      } else {
+        alert(`Failed to save settings: ${errMsg}`);
+      }
     }
   };
 
   if (activeTab === 'DASHBOARD') {
     return (
       <div>
-        <div className="bg-white border-b border-slate-200 px-6 py-3 flex justify-between items-center">
+        <div className="bg-white border-b border-slate-200 px-6 py-2 flex justify-between items-center">
           <h1 className="text-xl font-bold text-slate-800">Settings & Configuration</h1>
         </div>
         <div className="p-8">
@@ -451,7 +465,7 @@ export const SettingsEditor = () => {
               onClick={() => setActiveTab('HEADER')}
               className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-blue-300 cursor-pointer transition-all flex flex-col items-center text-center group"
             >
-              <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                 <Layout size={32} />
               </div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">Header Component</h3>
@@ -462,7 +476,7 @@ export const SettingsEditor = () => {
               onClick={() => setActiveTab('FOOTER')}
               className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-indigo-300 cursor-pointer transition-all flex flex-col items-center text-center group"
             >
-              <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                 <Type size={32} />
               </div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">Footer Component</h3>
@@ -473,7 +487,7 @@ export const SettingsEditor = () => {
               onClick={() => setActiveTab('WALLPAPER')}
               className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-amber-300 cursor-pointer transition-all flex flex-col items-center text-center group"
             >
-              <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                 <Monitor size={32} />
               </div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">Live Wallpaper</h3>
@@ -484,7 +498,7 @@ export const SettingsEditor = () => {
               onClick={() => setIsProfilePopupOpen(true)}
               className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-emerald-300 cursor-pointer transition-all flex flex-col items-center text-center group"
             >
-              <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                 <ShieldCheck size={32} />
               </div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">Profile & Security</h3>
@@ -502,7 +516,7 @@ export const SettingsEditor = () => {
 
       {/* LEFT PANE: LIVE PREVIEW */}
       <div className="w-full md:w-[70%] h-[40vh] md:h-auto flex flex-col border-b md:border-b-0 md:border-r border-slate-200 bg-white shrink-0">
-        <div className="p-3 border-b border-slate-200 bg-slate-100 font-semibold text-sm text-slate-700 flex justify-between items-center">
+        <div className="p-2 border-b border-slate-200 bg-slate-100 font-semibold text-sm text-slate-700 flex justify-between items-center">
           Live Preview
           <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full animate-pulse">Syncing...</span>
         </div>
@@ -519,39 +533,40 @@ export const SettingsEditor = () => {
       </div>
 
       {/* RIGHT PANE: EDITOR CONTROLS */}
-      <div className="w-full md:w-[30%] flex flex-col bg-white overflow-y-auto flex-1">
+      <div className="w-full md:w-[30%] flex flex-col bg-white overflow-y-auto flex-1 relative">
 
-        {/* TABS */}
-        <div className="flex items-center border-b border-slate-200 p-2 gap-2 bg-slate-50 sticky top-0 z-10 overflow-x-auto">
-          <Button onClick={() => setActiveTab('DASHBOARD')} variant="ghost" size="sm" className="mr-2 text-slate-500 shrink-0" title="Back to Dashboard">
-            <ArrowLeft size={18} />
-          </Button>
-          <button
-            onClick={() => setActiveTab('HEADER')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${activeTab === 'HEADER' ? 'bg-white shadow-sm text-blue-600 border border-slate-200' : 'text-slate-500 hover:bg-slate-200/50'}`}
-          >
-            Header
-          </button>
-          <button
-            onClick={() => setActiveTab('FOOTER')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${activeTab === 'FOOTER' ? 'bg-white shadow-sm text-blue-600 border border-slate-200' : 'text-slate-500 hover:bg-slate-200/50'}`}
-          >
-            Footer
-          </button>
-          <button
-            onClick={() => setActiveTab('WALLPAPER')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${activeTab === 'WALLPAPER' ? 'bg-white shadow-sm text-blue-600 border border-slate-200' : 'text-slate-500 hover:bg-slate-200/50'}`}
-          >
-            Wallpaper
-          </button>
-        </div>
+        {/* STICKY TOP BAR */}
+        <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-200 shadow-[0_4px_6px_-6px_rgba(0,0,0,0.1)]">
+          {/* TABS */}
+          <div className="flex items-center border-b border-slate-200 p-2 gap-2 bg-slate-50 overflow-x-auto">
+            <Button onClick={() => setActiveTab('DASHBOARD')} variant="ghost" size="sm" className="mr-2 text-slate-500 shrink-0" title="Back to Dashboard">
+              <ArrowLeft size={18} />
+            </Button>
+            <button
+              onClick={() => setActiveTab('HEADER')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${activeTab === 'HEADER' ? 'bg-white shadow-sm text-blue-600 border border-slate-200' : 'text-slate-500 hover:bg-slate-200/50'}`}
+            >
+              Header
+            </button>
+            <button
+              onClick={() => setActiveTab('FOOTER')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${activeTab === 'FOOTER' ? 'bg-white shadow-sm text-blue-600 border border-slate-200' : 'text-slate-500 hover:bg-slate-200/50'}`}
+            >
+              Footer
+            </button>
+            <button
+              onClick={() => setActiveTab('WALLPAPER')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${activeTab === 'WALLPAPER' ? 'bg-white shadow-sm text-blue-600 border border-slate-200' : 'text-slate-500 hover:bg-slate-200/50'}`}
+            >
+              Wallpaper
+            </button>
+          </div>
 
-        {/* EDITOR BODY */}
-        <div className="px-3 py-6 flex-1 overflow-x-hidden">
-          {activeTab === 'HEADER' && (
-            <div className="space-y-6">
-
+          {/* DYNAMIC HEADER CONTROLS */}
+          <div className="px-2 pt-3">
+            {activeTab === 'HEADER' && (
               <EditorFormHeader
+                className="border-none pb-3"
                 title="Header"
                 onUndo={handleUndo}
                 canUndo={historyIndex > 0}
@@ -563,8 +578,45 @@ export const SettingsEditor = () => {
                 saveText={user?.role === 'MAKER' ? 'Send for Review' : 'Save & Publish'}
                 saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
               />
+            )}
+            {activeTab === 'FOOTER' && (
+              <EditorFormHeader
+                className="border-none pb-3"
+                title="Footer"
+                onUndo={handleUndo}
+                canUndo={historyIndex > 0}
+                onRedo={handleRedo}
+                canRedo={historyIndex < history.length - 1}
+                onReset={handleReset}
+                onSave={() => handleSave('footer_config', footerConfig)}
+                isSaveDisabled={JSON.stringify(footerConfig) === JSON.stringify(savedFooterConfig)}
+                saveText={user?.role === 'MAKER' ? 'Send for Review' : 'Save & Publish'}
+                saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
+              />
+            )}
+            {activeTab === 'WALLPAPER' && (
+              <EditorFormHeader
+                className="border-none pb-3"
+                title="Live Wallpaper"
+                onUndo={handleUndo}
+                canUndo={historyIndex > 0}
+                onRedo={handleRedo}
+                canRedo={historyIndex < history.length - 1}
+                onReset={handleReset}
+                onSave={() => handleSave('wallpaper_config', wallpaperConfig)}
+                isSaveDisabled={JSON.stringify(wallpaperConfig) === JSON.stringify(savedWallpaperConfig)}
+                saveText={user?.role === 'MAKER' ? 'Send for Review' : 'Save & Publish'}
+                saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
+              />
+            )}
+          </div>
+        </div>
 
-              <div className="space-y-6">
+        {/* EDITOR BODY */}
+        <div className="p-2 flex-1 overflow-x-hidden bg-white">
+          {activeTab === 'HEADER' && (
+
+              <div className="space-y-2">
 
                 {/* Main Logo Section */}
                 <EditorBlock>
@@ -575,7 +627,7 @@ export const SettingsEditor = () => {
                   />
 
                   {/* Main Logo */}
-                  <div className="flex items-center gap-4 mb-3 bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm">
                     <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-md p-1.5 flex items-center justify-center shrink-0">
                       {headerConfig.logo_src ? (
                         <img src={headerConfig.logo_src} alt="Logo" className="max-w-full max-h-full object-contain" />
@@ -593,7 +645,7 @@ export const SettingsEditor = () => {
                             onChange={(e) => updateHeaderConfig('logo_src', e.target.value)}
                             className="flex-1 border border-slate-300 rounded-md px-2 py-1.5 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none min-w-0"
                           />
-                          <Button onClick={() => { setMediaTarget('logo_src'); setIsMediaPopupOpen(true); }} variant="secondary" className="px-3 py-1 h-auto shrink-0 flex items-center justify-center gap-1.5" title="Select Image">
+                          <Button onClick={() => { setMediaTarget('logo_src'); setIsMediaPopupOpen(true); }} variant="secondary" className="px-2 py-1 h-auto shrink-0 flex items-center justify-center gap-1.5" title="Select Image">
                             <ImageIcon size={14} /> <span className="text-xs font-medium">Browse</span>
                           </Button>
                         </div>
@@ -615,12 +667,12 @@ export const SettingsEditor = () => {
                     title="Right-Side Logos"
                     history={rightLogosHist}
                     rightAction={<Button onClick={addRightLogo} variant="secondary" size="sm" className="whitespace-nowrap shrink-0">+ Add Logo</Button>}
-                    className="mt-6 mb-4"
+                    className="mt-6 mb-2"
                   />
 
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {(headerConfig.right_logos || []).map((logo: any, idx: number) => (
-                      <div key={idx} className="flex items-center gap-4 bg-white p-3 rounded-lg border border-slate-200 shadow-sm relative pr-10">
+                      <div key={idx} className="flex items-center gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm relative pr-10">
                         {/* Order & Remove Controls */}
                         <div className="absolute right-2 top-2 bottom-2 flex flex-col justify-between items-center">
                           <button onClick={() => removeRightLogo(idx)} className="text-slate-400 hover:text-red-500 p-1" title="Remove">
@@ -653,7 +705,7 @@ export const SettingsEditor = () => {
                                 onChange={(e) => updateRightLogo(idx, 'src', e.target.value)}
                                 className="flex-1 border border-slate-300 rounded-md px-2 py-1.5 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none min-w-0"
                               />
-                              <Button onClick={() => { setMediaTarget(`right_logo_${idx}`); setIsMediaPopupOpen(true); }} variant="secondary" className="px-3 py-1 h-auto shrink-0 flex items-center justify-center gap-1.5" title="Select Image">
+                              <Button onClick={() => { setMediaTarget(`right_logo_${idx}`); setIsMediaPopupOpen(true); }} variant="secondary" className="px-2 py-1 h-auto shrink-0 flex items-center justify-center gap-1.5" title="Select Image">
                                 <ImageIcon size={14} /> <span className="text-xs font-medium">Browse</span>
                               </Button>
                             </div>
@@ -672,13 +724,13 @@ export const SettingsEditor = () => {
                       </div>
                     ))}
                     {(!headerConfig.right_logos || headerConfig.right_logos.length === 0) && (
-                      <div className="text-center text-slate-500 py-4 text-xs border border-dashed border-slate-300 rounded-lg">No additional logos added.</div>
+                      <div className="text-center text-slate-500 py-2 text-xs border border-dashed border-slate-300 rounded-lg">No additional logos added.</div>
                     )}
                   </div>
                 </EditorBlock>
 
                 {/* Title Section */}
-                <EditorBlock className="space-y-4">
+                <EditorBlock className="space-y-2">
                   <EditorBlockHeader
                     title="Main Title"
                     history={titleHist}
@@ -691,13 +743,14 @@ export const SettingsEditor = () => {
                   />
                   <PhoneticInput
                     label="Title (English)"
+                    transliterate={false}
                     value={headerConfig.title_en}
                     onChange={(val) => updateHeaderConfig('title_en', val)}
                   />
                 </EditorBlock>
 
                 {/* Subtitle Section */}
-                <EditorBlock className="space-y-4">
+                <EditorBlock className="space-y-2">
                   <EditorBlockHeader
                     title="Subtitle"
                     history={subtitleHist}
@@ -710,30 +763,16 @@ export const SettingsEditor = () => {
                   />
                   <PhoneticInput
                     label="Subtitle (English)"
+                    transliterate={false}
                     value={headerConfig.subtitle_en}
                     onChange={(val) => updateHeaderConfig('subtitle_en', val)}
                   />
                 </EditorBlock>
-              </div>
-
             </div>
           )}
 
           {activeTab === 'FOOTER' && (
-            <div className="space-y-6">
-
-              <EditorFormHeader
-                title="Footer"
-                onUndo={handleUndo}
-                canUndo={historyIndex > 0}
-                onRedo={handleRedo}
-                canRedo={historyIndex < history.length - 1}
-                onReset={handleReset}
-                onSave={() => handleSave('footer_config', footerConfig)}
-                isSaveDisabled={JSON.stringify(footerConfig) === JSON.stringify(savedFooterConfig)}
-                saveText={user?.role === 'MAKER' ? 'Send for Review' : 'Save & Publish'}
-                saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
-              />
+            <div className="space-y-2">
 
               {/* Dynamic Links Section */}
               <EditorBlock>
@@ -743,13 +782,13 @@ export const SettingsEditor = () => {
                   rightAction={<Button onClick={addFooterLink} variant="secondary" size="sm" className="whitespace-nowrap shrink-0">+ Add Link</Button>}
                 />
 
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {(footerConfig.links || []).map((link: any, idx: number) => (
                     <div key={idx} className="bg-white p-4 border border-slate-200 rounded-lg relative">
                       <button onClick={() => removeFooterLink(idx)} className="absolute top-2 right-2 text-slate-400 hover:text-red-500 p-1">
                         <Trash2 size={16} />
                       </button>
-                      <div className="flex flex-col gap-4 pr-6">
+                      <div className="flex flex-col gap-2 pr-6">
                         <PhoneticInput
                           label="Link Text (Marathi)"
                           value={link.text_mr || ''}
@@ -758,11 +797,12 @@ export const SettingsEditor = () => {
                         />
                         <PhoneticInput
                           label="Link Text (English)"
+                          transliterate={false}
                           value={link.text_en || ''}
                           onChange={(val) => updateFooterLink(idx, 'text_en', val)}
                         />
                       </div>
-                      <div className="mt-3">
+                      <div className="mt-2">
                         <label className="block text-xs font-medium text-slate-700 mb-1">URL (Redirection Link)</label>
                         <input
                           type="text"
@@ -775,13 +815,13 @@ export const SettingsEditor = () => {
                     </div>
                   ))}
                   {(!footerConfig.links || footerConfig.links.length === 0) && (
-                    <div className="text-center text-slate-500 py-4 text-sm">No links added.</div>
+                    <div className="text-center text-slate-500 py-2 text-sm">No links added.</div>
                   )}
                 </div>
               </EditorBlock>
 
               {/* Contact Info Section */}
-              <EditorBlock className="space-y-4">
+              <EditorBlock className="space-y-2">
                 <EditorBlockHeader
                   title="Contact Information"
                   history={contactInfoHist}
@@ -795,25 +835,30 @@ export const SettingsEditor = () => {
                 />
                 <PhoneticInput
                   label="Address (English)"
+                  transliterate={false}
                   value={footerConfig.contact?.address_en || ''}
                   onChange={(val) => updateFooterContact('address_en', val)}
                 />
 
-                <div className="flex flex-col gap-4 mt-4">
+                <div className="flex flex-col gap-2 mt-2">
                   <PhoneticInput
                     label="Phone Number (Marathi digits)"
                     value={footerConfig.contact?.phone_mr || ''}
                     onChange={(val) => updateFooterContact('phone_mr', val)}
-                    onTranslate={(text) => handleCustomTranslate(text, (res) => updateFooterContact('phone_en', res))}
+                    onTranslate={(text) => {
+                      const translated = marathiToEnglishDigits(text);
+                      updateFooterContact('phone_en', translated);
+                    }}
                   />
                   <PhoneticInput
                     label="Phone Number (English)"
+                    transliterate={false}
                     value={footerConfig.contact?.phone_en || ''}
                     onChange={(val) => updateFooterContact('phone_en', val)}
                   />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-2">
                   <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
                   <input
                     type="email"
@@ -828,21 +873,9 @@ export const SettingsEditor = () => {
           )}
 
           {activeTab === 'WALLPAPER' && (
-            <div className="space-y-6">
-              <EditorFormHeader
-                title="BG Settings"
-                onUndo={handleUndo}
-                canUndo={historyIndex > 0}
-                onRedo={handleRedo}
-                canRedo={historyIndex < history.length - 1}
-                onReset={handleReset}
-                onSave={() => handleSave('wallpaper_config', wallpaperConfig)}
-                isSaveDisabled={JSON.stringify(wallpaperConfig) === JSON.stringify(savedWallpaperConfig)}
-                saveText={user?.role === 'MAKER' ? 'Send for Review' : 'Save & Publish'}
-                saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
-              />
+            <div className="space-y-2">
 
-              <EditorBlock className="space-y-4">
+              <EditorBlock className="space-y-2">
                 <EditorBlockHeader
                   title="Animation Speed"
                   history={wallpaperAnimHist}
@@ -868,13 +901,13 @@ export const SettingsEditor = () => {
                   history={wallpaperImagesHist}
                 />
 
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {(wallpaperConfig.images || []).map((img: string, idx: number) => (
                     <div key={idx} className="bg-white p-4 border border-slate-200 rounded-lg relative">
                       <button onClick={() => removeWallpaperImage(idx)} className="absolute top-2 right-2 text-slate-400 hover:text-red-500 p-1">
                         <Trash2 size={16} />
                       </button>
-                      <div className="flex gap-4 items-start">
+                      <div className="flex gap-2 items-start">
                         <div className="w-32 h-20 bg-slate-100 rounded-md overflow-hidden border border-slate-200 flex items-center justify-center relative group shrink-0">
                           {img ? (
                             <img src={img} alt={`Wallpaper ${idx + 1}`} className="w-full h-full object-cover" />
@@ -988,13 +1021,13 @@ function ProfilePasswordPopup({ isOpen, onClose }: { isOpen: boolean, onClose: (
   return (
     <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-[100] backdrop-blur-sm p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-        <div className="flex justify-between items-center px-6 py-4 border-b border-slate-200 bg-slate-50">
+        <div className="flex justify-between items-center px-6 py-2 border-b border-slate-200 bg-slate-50">
           <h2 className="font-bold text-lg text-slate-800">Change Password</h2>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-full hover:bg-slate-200">
             <X size={20} />
           </button>
         </div>
-        <form onSubmit={handleChangePassword} className="p-6 space-y-4">
+        <form onSubmit={handleChangePassword} className="p-6 space-y-2">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Current Password</label>
             <div className="relative">
@@ -1041,7 +1074,7 @@ function ProfilePasswordPopup({ isOpen, onClose }: { isOpen: boolean, onClose: (
               </button>
             </div>
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-slate-100 mt-6 pt-4">
+          <div className="pt-4 flex justify-end gap-2 border-t border-slate-100 mt-6 pt-4">
             <Button type="button" variant="ghost" onClick={onClose}>Cancel</Button>
             <Button type="submit" variant="primary">Update Password</Button>
           </div>

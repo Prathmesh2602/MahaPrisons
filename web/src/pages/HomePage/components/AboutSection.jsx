@@ -4,44 +4,44 @@ import Link from 'next/link';
 import { useAccessibility } from '../../../hooks/useAccessibility';
 import { ArrowRight, User } from 'lucide-react';
 
-export const AboutSection = () => {
+export const AboutSection = ({ data }) => {
   const { language, t } = useAccessibility();
   const lang = language;
 
   // Bilingual paragraph content about the department
   const aboutText = lang === 'mr'
-    ? "येरवडा खुले कारागृह हे पुण्याच्या ऐतिहासिक येरवडा मध्यवर्ती कारागृहाच्या विस्तीर्ण ५१२ एकर परिसरात वसलेले एक विशेष पुनर्वसन आणि सुधार केंद्र आहे. १९५६ मध्ये स्थापित झालेले हे महाराष्ट्रातील पहिले 'खुले कारागृह' होते, जे प्रगतशील कारागृह प्रशासनातील एक महत्त्वाचे पाऊल मानले जाते. येथे प्रामुख्याने जन्मठेपेची शिक्षा भोगत असलेल्या, चांगली वर्तणूक असलेल्या आणि मध्यवर्ती कारागृहात किमान ५ वर्षे पूर्ण केलेल्या बंदीवानांना ठेवले जाते. हे कारागृह पारंपारिक बंदिस्त कोठड्यांविना, कमीत कमी सुरक्षिततेवर चालते. येथे बंदीवानांच्या मानसिक सुधारणेवर आणि व्यावसायिक सक्षमीकरणावर विशेष भर दिला जातो. बंदीवानांना सेंद्रिय शेती आणि पशुपालन यांसारख्या उत्पादक कामांमध्ये सक्रियपणे गुंतवले जाते; येथील सेंद्रिय शेतीतून इतर कारागृहांनाही ताज्या भाज्यांचा पुरवठा केला जातो. या प्रगतशील दृष्टिकोनामुळे बंदीवानांना उपजीविकेचे महत्त्वपूर्ण कौशल्य प्राप्त होते, ज्यामुळे त्यांची समाजात एक जबाबदार नागरिक म्हणून यशस्वीपणे पुनर्रचना होण्यास मदत होते."
-    : "The Yerwada Open Jail is a specialized rehabilitation facility located in the expansive campus of the historic Yerwada Central Jail in Pune. Established in 1956, it was the first 'Open Institution' in Maharashtra, marking a significant milestone in progressive prison administration. It primarily houses inmates serving life sentences who have demonstrated excellent conduct and successfully completed at least five years in the high-security central prison. Operating under minimal security without traditional confinement cells, the facility strongly emphasizes psychological reform and vocational empowerment. Inmates are actively engaged in productive activities such as extensive organic farming—supplying fresh produce to neighboring institutions—and animal husbandry. This progressive approach ensures inmates acquire vital livelihood skills, facilitating their successful and responsible reintegration into society upon release.";
+    ? (data?.aboutText?.mr || "येरवडा खुले कारागृह हे पुण्याच्या ऐतिहासिक येरवडा मध्यवर्ती कारागृहाच्या विस्तीर्ण ५१२ एकर परिसरात वसलेले एक विशेष पुनर्वसन आणि सुधार केंद्र आहे. १९५६ मध्ये स्थापित झालेले हे महाराष्ट्रातील पहिले 'खुले कारागृह' होते, जे प्रगतशील कारागृह प्रशासनातील एक महत्त्वाचे पाऊल मानले जाते. येथे प्रामुख्याने जन्मठेपेची शिक्षा भोगत असलेल्या, चांगली वर्तणूक असलेल्या आणि मध्यवर्ती कारागृहात किमान ५ वर्षे पूर्ण केलेल्या बंदीवानांना ठेवले जाते. हे कारागृह पारंपारिक बंदिस्त कोठड्यांविना, कमीत कमी सुरक्षिततेवर चालते. येथे बंदीवानांच्या मानसिक सुधारणेवर आणि व्यावसायिक सक्षमीकरणावर विशेष भर दिला जातो. बंदीवानांना सेंद्रिय शेती आणि पशुपालन यांसारख्या उत्पादक कामांमध्ये सक्रियपणे गुंतवले जाते; येथील सेंद्रिय शेतीतून इतर कारागृहांनाही ताज्या भाज्यांचा पुरवठा केला जातो. या प्रगतशील दृष्टिकोनामुळे बंदीवानांना उपजीविकेचे महत्त्वपूर्ण कौशल्य प्राप्त होते, ज्यामुळे त्यांची समाजात एक जबाबदार नागरिक म्हणून यशस्वीपणे पुनर्रचना होण्यास मदत होते.")
+    : (data?.aboutText?.en || "The Yerwada Open Jail is a specialized rehabilitation facility located in the expansive campus of the historic Yerwada Central Jail in Pune. Established in 1956, it was the first 'Open Institution' in Maharashtra, marking a significant milestone in progressive prison administration. It primarily houses inmates serving life sentences who have demonstrated excellent conduct and successfully completed at least five years in the high-security central prison. Operating under minimal security without traditional confinement cells, the facility strongly emphasizes psychological reform and vocational empowerment. Inmates are actively engaged in productive activities such as extensive organic farming—supplying fresh produce to neighboring institutions—and animal husbandry. This progressive approach ensures inmates acquire vital livelihood skills, facilitating their successful and responsible reintegration into society upon release.");
 
   const welcomeTitle = lang === 'mr'
-    ? "येरवडा खुले जिल्हा कारागृह मध्ये आपले स्वागत आहे"
-    : "Welcome to Yerwada Open District Prison";
+    ? (data?.welcomeTitle?.mr || "येरवडा खुले जिल्हा कारागृह मध्ये आपले स्वागत आहे")
+    : (data?.welcomeTitle?.en || "Welcome to Yerwada Open District Prison");
 
-  const openJailOfficers = [
+  const openJailOfficers = data?.openJailOfficers || [
     {
-      name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
-      desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१",
+      name: { mr: "श्री. शामकांत शालन चंद्रकांत शेडगे", en: "Shri. Shamkant Shedge" },
+      desg: { mr: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१", en: "Superintendent" },
       img: "http://localhost:5000/uploads/Shamkant_shedge.png"
     },
     {
-      name: "श्री. नागेश एम. कांबळे",
-      desg: "वरिष्ठ तुरुंग अधिकारी (प्रशासकीय व इतर) श्रेणी १",
+      name: { mr: "श्री. नागेश एम. कांबळे", en: "Shri. Nagesh M. Kamble" },
+      desg: { mr: "वरिष्ठ तुरुंग अधिकारी श्रेणी १", en: "Senior Prison Officer" },
       img: "http://localhost:5000/uploads/Nagesh_Kamble.png"
     },
     {
-      name: "श्री. नागनाथ एन. भाणवसे",
-      desg: "तुरुंग अधिकारी श्रेणी २",
+      name: { mr: "श्री. नागनाथ एन. भाणवसे", en: "Shri. Nagnath N. Bhanvase" },
+      desg: { mr: "तुरुंग अधिकारी श्रेणी २", en: "Prison Officer Class 2" },
       img: ""
     },
     {
-      name: "श्रीमती निशा डी. श्रेयेकर",
-      desg: "तुरुंग अधिकारी श्रेणी २",
+      name: { mr: "श्रीमती निशा डी. श्रेयेकर", en: "Smt. Nisha D. Shreyekar" },
+      desg: { mr: "तुरुंग अधिकारी श्रेणी २", en: "Prison Officer Class 2" },
       img: "http://localhost:5000/uploads/nisha_shreyekar.png"
     }
   ];
 
   return (
-    <div className="w-full py-8 px-4 md:px-8 bg-[#F8FAFC] dark-mode:bg-[#080B11] relative overflow-hidden">
+    <div className="w-full py-8 px-4 md:px-8 bg-[#F8FAFC] dark-mode:bg-[#080B11] relative overflow-hidden" data-block-type="about_section">
 
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-teal-500/5 dark-mode:bg-teal-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -112,7 +112,7 @@ export const AboutSection = () => {
                     <div className="relative mb-4">
                       <div className="absolute inset-0 bg-gradient-to-tr from-amber-400 to-teal-500 rounded-full blur opacity-10 group-hover:opacity-40 transition-opacity duration-300 scale-110" />
                       {officer.img ? (
-                        <img src={officer.img} alt={t(officer.name)} className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover object-top border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300" />
+                        <img src={officer.img} alt={officer.name[lang] || officer.name.mr} className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover object-top border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300" />
                       ) : (
                         <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-[3px] border-white dark-mode:border-gray-800 shadow-sm relative z-10 group-hover:scale-105 transition-transform duration-300 bg-white flex items-center justify-center">
                           <User className="w-10 h-10 md:w-12 md:h-12 text-[#94A3B8]" strokeWidth={2} />
@@ -121,8 +121,12 @@ export const AboutSection = () => {
                     </div>
 
                     {/* Name & Designation */}
-                    <span className="text-[13px] md:text-[14px] font-semibold text-[#0F3D66] dark-mode:text-blue-300 text-center mb-1 leading-tight">{t(officer.name)}</span>
-                    <span className="text-[10px] md:text-[11px] text-gray-500 dark-mode:text-gray-400 text-center leading-snug px-1 font-medium">{t(officer.desg)}</span>
+                    <h4 className="text-xs md:text-sm font-semibold text-gray-900 dark-mode:text-white font-poppins leading-tight group-hover:text-amber-500 transition-colors text-center">
+                      {officer.name[lang] || officer.name.mr}
+                    </h4>
+                    <p className="text-[10px] md:text-[11px] text-gray-500 dark-mode:text-gray-400 mt-0.5 line-clamp-2 text-center">
+                      {officer.desg[lang] || officer.desg.mr}
+                    </p>
 
                   </div>
                 ))}

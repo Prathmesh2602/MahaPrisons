@@ -6,38 +6,33 @@ import Link from 'next/link';
 import { ArrowUpRight, Grid } from 'lucide-react';
 import { galleryItems } from '../../../data/galleryData';
 
-export const PhotoGallery = () => {
+export const PhotoGallery = ({ data }) => {
   const { language, t } = useAccessibility();
 
-  const galleryInfo = mockHomepageData.gallery;
+  const galleryInfo = data || mockHomepageData.gallery;
 
-  // Interleave photos with relatable filler blocks to fill masonry gaps
-  const mixedItems = [
-    galleryItems[0],
-    galleryItems[1],
+  const photos = data?.items?.length ? data.items : galleryItems;
+  
+  const fillers = [
     { type: 'filler', style: 'quote', text_mr: 'सुधारणा आणि पुनर्वसन', text_en: 'Reform and Rehabilitation' },
-    galleryItems[2],
-    galleryItems[3],
-    galleryItems[4],
     { type: 'filler', style: 'stat', value: '1956', label_mr: 'स्थापना वर्ष', label_en: 'Established' },
-    galleryItems[5],
-    galleryItems[6],
     { type: 'filler', style: 'logo' },
-    galleryItems[7],
-    galleryItems[8],
-    galleryItems[9],
     { type: 'filler', style: 'quote', text_mr: 'श्रमातून स्वावलंबन', text_en: 'Self-reliance through labor' },
-    galleryItems[10],
-    galleryItems[11],
-    galleryItems[12],
-    { type: 'filler', style: 'stat', value: '265+', label_mr: 'एकर परिसर', label_en: 'Acres Campus' },
-    galleryItems[13],
-    galleryItems[14],
-    galleryItems[15],
+    { type: 'filler', style: 'stat', value: '265+', label_mr: 'एकर परिसर', label_en: 'Acres Campus' }
   ];
 
+  const mixedItems = [];
+  let fillerIdx = 0;
+  for (let i = 0; i < photos.length; i++) {
+    mixedItems.push(photos[i]);
+    // Interleave fillers at specific intervals (after 2nd, 5th, 7th, 10th, 13th item)
+    if ([1, 4, 6, 9, 12].includes(i) && fillerIdx < fillers.length) {
+      mixedItems.push(fillers[fillerIdx++]);
+    }
+  }
+
   return (
-    <div className="w-full bg-white dark-mode:bg-gray-950 py-8 border-b border-gray-200 dark-mode:border-gray-800 smooth-transition overflow-hidden">
+    <div className="w-full bg-white dark-mode:bg-gray-950 py-8 border-b border-gray-200 dark-mode:border-gray-800 smooth-transition overflow-hidden" data-block-type="photo_gallery">
       <style>
         {`
           @keyframes marquee {

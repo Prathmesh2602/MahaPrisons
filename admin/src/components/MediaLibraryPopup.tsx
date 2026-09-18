@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Button } from './Button';
-import { X, Upload, Image as ImageIcon, Search, Trash2, Loader2 } from 'lucide-react';
+import { X, Upload, Image as ImageIcon, Search, Trash2, Loader2, FileText } from 'lucide-react';
 
 interface MediaLibraryPopupProps {
   isOpen: boolean;
@@ -116,7 +116,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
                 type="file" 
                 ref={fileInputRef} 
                 className="hidden" 
-                accept="image/*"
+                accept="image/*,application/pdf"
                 onChange={handleFileChange}
               />
               <Button onClick={handleUploadClick} variant="outline" disabled={isUploading} icon={isUploading ? <Loader2 className="animate-spin" size={16}/> : <Upload size={16} />}>
@@ -145,7 +145,16 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
                       selectedImg === fullUrl ? 'border-blue-500 shadow-md ring-2 ring-blue-500/20' : 'border-slate-200 hover:border-blue-300'
                     }`}
                   >
-                    <img src={fullUrl} alt={item.filename} className="w-full h-full object-contain p-2" />
+                    {fullUrl.toLowerCase().endsWith('.pdf') ? (
+                      <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-slate-50">
+                        <FileText size={40} className="text-red-500 mb-2" />
+                        <span className="text-[10px] text-center font-medium text-slate-700 leading-tight break-all line-clamp-3" title={item.filename}>
+                          {item.filename}
+                        </span>
+                      </div>
+                    ) : (
+                      <img src={fullUrl} alt={item.filename} className="w-full h-full object-contain p-2" />
+                    )}
                     
                     {/* Delete Button (visible on hover) */}
                     <button 
@@ -181,7 +190,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
               }
             }}
           >
-            Insert Image
+            Insert Media
           </Button>
         </div>
       </div>

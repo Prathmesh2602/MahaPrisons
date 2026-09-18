@@ -8,6 +8,8 @@ interface PhoneticInputProps {
   onChange?: (value: string) => void;
   onTranslate?: (text: string) => void;
   className?: string;
+  multiline?: boolean;
+  transliterate?: boolean;
 }
 
 export const PhoneticInput: React.FC<PhoneticInputProps> = ({
@@ -17,6 +19,8 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
   onChange,
   onTranslate,
   className = '',
+  multiline = false,
+  transliterate = true,
 }) => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -116,6 +120,8 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
   };
 
   const checkActiveWord = (text: string, cursorPosition: number) => {
+    if (!transliterate) return;
+    
     const activeWord = getActiveWord(text, cursorPosition);
     
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -194,18 +200,33 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
           </span>
         )}
       </div>
-      <input
-        ref={inputRef}
-        type="text"
-        value={value}
-        onChange={handleInput}
-        onKeyDown={handleKeyDown}
-        onKeyUp={handleCursorChange}
-        onMouseUp={handleCursorChange}
-        onFocus={handleCursorChange}
-        className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors"
-        placeholder={placeholder}
-      />
+      {multiline ? (
+        <textarea
+          ref={inputRef as any}
+          value={value}
+          onChange={handleInput as any}
+          onKeyDown={handleKeyDown as any}
+          onKeyUp={handleCursorChange as any}
+          onMouseUp={handleCursorChange as any}
+          onFocus={handleCursorChange as any}
+          className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors min-h-[80px] resize-y"
+          placeholder={placeholder}
+          rows={3}
+        />
+      ) : (
+        <input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
+          onKeyUp={handleCursorChange}
+          onMouseUp={handleCursorChange}
+          onFocus={handleCursorChange}
+          className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors"
+          placeholder={placeholder}
+        />
+      )}
       
       {/* Dropdown Suggestions or States */}
       {(suggestions.length > 0 || isFetching || fetchError) && (

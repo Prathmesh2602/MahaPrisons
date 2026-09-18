@@ -4,19 +4,25 @@ import { useAccessibility } from '../../../hooks/useAccessibility';
 import { mockHomepageData } from '../../../data/mockData';
 import { User } from 'lucide-react';
 
-export const MinisterProfiles = () => {
+export const MinisterProfiles = ({ data }) => {
   const { t, language } = useAccessibility();
+  const profilesData = data || mockHomepageData.minister_profiles || [];
+  
+  // Backwards compatibility: If data is a flat array, slice it. Otherwise, use the structured object.
+  const isStructured = !Array.isArray(profilesData) && profilesData.ministers;
+  const ministers = isStructured ? profilesData.ministers : profilesData.slice(0, 4);
+  const seniorOfficers = isStructured ? profilesData.seniorOfficers : profilesData.slice(4);
 
   return (
-    <div className="w-full pt-[100px] pb-4 px-4 md:px-8 bg-transparent relative overflow-hidden">
+    <div className="w-full pt-[100px] pb-4 px-4 md:px-8 bg-transparent relative overflow-hidden" data-block-type="minister_profiles">
       {/* Decorative background ambient glows for the section */}
       <div className="absolute top-0 left-1/4 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-gradient-to-br from-[#1E5AA8]/15 to-transparent rounded-full blur-[80px] -z-10 mix-blend-multiply dark-mode:mix-blend-screen opacity-80 animate-pulse" style={{ animationDuration: '5s' }} />
       <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] bg-gradient-to-tl from-amber-500/15 to-transparent rounded-full blur-[60px] -z-10 mix-blend-multiply dark-mode:mix-blend-screen opacity-80 animate-pulse" style={{ animationDuration: '7s', animationDelay: '1s' }} />
 
       <div className="max-w-7xl mx-auto relative z-10 flex flex-col gap-2 lg:gap-2">
         {[
-          mockHomepageData.minister_profiles.slice(0, 4),
-          mockHomepageData.minister_profiles.slice(4)
+          ministers,
+          seniorOfficers
         ].map((row, rowIdx) => (
           <div key={rowIdx} className="w-full">
             {rowIdx === 1 && (

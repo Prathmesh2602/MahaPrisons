@@ -31,6 +31,7 @@ const usersRoutes = require('./routes/users');
 const transliterateRoutes = require('./routes/transliterate');
 const translateRoutes = require('./routes/translate');
 const mediaRoutes = require('./routes/media');
+const pagesRoutes = require('./routes/pages');
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/menu', menuRoutes);
@@ -40,6 +41,7 @@ app.use('/api/v1/users', usersRoutes);
 app.use('/api/v1/transliterate', transliterateRoutes);
 app.use('/api/v1/translate', translateRoutes);
 app.use('/api/v1/media', mediaRoutes);
+app.use('/api/v1/pages', pagesRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

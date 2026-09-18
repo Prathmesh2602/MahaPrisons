@@ -71,9 +71,12 @@ router.get('/:id/diff', authMiddleware, requireRole(['CHECKER', 'SUPER_ADMIN']),
     const newData = revision.proposedData;
 
     if (revision.modelName === 'SiteSetting') {
-      const currentSettings = await prisma.siteSetting.findMany();
-      // Format as key-value pair for easier diffing
-      oldData = currentSettings.map(s => ({ key: s.key, value: s.value }));
+      const currentSetting = await prisma.siteSetting.findUnique({ where: { key: revision.recordId } });
+      const currentVal = currentSetting ? currentSetting.value : {};
+      // Format as key-value pair of the individual fields for easier diffing
+      oldData = Object.keys(currentVal).map(k => ({ key: k, value: currentVal[k] }));
+      const newObj = revision.proposedData || {};
+      newData = Object.keys(newObj).map(k => ({ key: k, value: newObj[k] }));
     } else if (revision.modelName === 'Menu') {
       const menu = await prisma.menu.findUnique({ where: { name: 'main_navigation' } });
       if (menu) {
@@ -168,15 +171,11 @@ router.post('/:id/approve', authMiddleware, requireRole(['CHECKER', 'SUPER_ADMIN
       }
       
       if (revision.modelName === 'SiteSetting') {
-         // Loop over settings array and update each key
-         const settings = payload;
-         for (const setting of settings) {
-           await tx.siteSetting.upsert({
-             where: { key: setting.key },
-             update: { value: setting.value },
-             create: { key: setting.key, value: setting.value }
-           });
-         }
+        await tx.siteSetting.upsert({
+          where: { key: revision.recordId },
+          update: { value: payload },
+          create: { key: revision.recordId, value: payload }
+        });
       }
     });
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { ArrowUp, ArrowDown, Plus, Edit2, Trash2, ChevronRight, ChevronDown, LayoutGrid, X } from 'lucide-react';
@@ -15,6 +16,7 @@ type EditPath = {
 type ItemType = 'root' | 'child' | 'groupHeader' | 'groupChild';
 
 export const MenuEditor = () => {
+  const navigate = useNavigate();
   const [items, setItems] = useState<any[]>([]);
   const [history, setHistory] = useState<any[][]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
@@ -316,6 +318,10 @@ export const MenuEditor = () => {
           )}
           {type === 'groupHeader' && (
             <button onClick={(e) => { e.stopPropagation(); addGroupChild(path.rootIndex, path.groupIndex!); }} className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded p-1.5 transition-colors" title="Add Mega Menu Link"><Plus size={14} /></button>
+          )}
+
+          {item.href && item.href !== '#' && (
+            <button onClick={(e) => { e.stopPropagation(); navigate(`/page-editor?slug=${item.href}`); }} className="text-emerald-500 hover:text-emerald-700 hover:bg-emerald-50 rounded p-1.5 transition-colors" title="Edit Page Content"><LayoutGrid size={14} /></button>
           )}
 
           <button onClick={(e) => { e.stopPropagation(); openEditPane(item, path, type); }} className="text-orange-500 hover:text-orange-700 hover:bg-orange-50 rounded p-1.5 transition-colors" title="Edit"><Edit2 size={14} /></button>

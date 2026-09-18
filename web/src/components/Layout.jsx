@@ -19,7 +19,7 @@ export const Layout = ({ children, menuData, settingsData }) => {
   return (
     <div className="w-full min-h-screen flex flex-col bg-[#F8FAFC] dark-mode:bg-[#080B11] smooth-transition relative font-poppins">
       {/* GRAPHICAL LIVE WALLPAPER BACKGROUND */}
-      <LiveWallpaperBg />
+      <LiveWallpaperBg settingsData={settingsData} />
 
       {/* Bottom section decorative parallax blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">

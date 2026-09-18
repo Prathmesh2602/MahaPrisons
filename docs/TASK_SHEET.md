@@ -35,10 +35,10 @@
 
 ## Step 5: Live Preview Page Editor (Iterative Feature Rollout)
 ### Iteration 1: The Homepage
-- [ ] **Database:** Expand `ContentBlock` schema. Seed the Homepage content.
-- [ ] **Admin Split-Pane UI:** Left Pane (iframe), Right Pane (Zod forms). Establish `postMessage` communication.
-- [ ] **Next.js Integration:** Update `app/page.tsx` to fetch `ContentBlock` records.
-- [ ] **Verification:** Edit Homepage Hero section in Admin UI and see iframe preview update.
+- [x] **Database:** Expand `ContentBlock` schema. Seed the Homepage content.
+- [x] **Admin Split-Pane UI:** Left Pane (iframe), Right Pane (Zod forms). Establish `postMessage` communication.
+- [x] **Next.js Integration:** Update `app/page.tsx` to fetch `ContentBlock` records.
+- [x] **Verification:** Edit Homepage Hero section in Admin UI and see iframe preview update.
 
 ### Iteration 2: Structured Data (Gallery & Officers)
 - [ ] **Database:** Create `Media`, `Gallery`, and `Officer` tables.

@@ -5,27 +5,33 @@ import { mockHomepageData } from '../../../data/mockData';
 import { ChevronLeft, ChevronRight, FileText, ArrowRight, Quote } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const HeroCarousel = () => {
+export const HeroCarousel = ({ slidesData }) => {
   const { language, t } = useAccessibility();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const slides = mockHomepageData.hero_carousel;
+  const data = slidesData || mockHomepageData.hero_carousel;
+  // If the admin passes an empty slides array (e.g., initial state), fallback to mock data so the preview is visible
+  const slides = (Array.isArray(data.slides) && data.slides.length > 0) ? data.slides : mockHomepageData.hero_carousel.slides;
+  const directorMessage = data.directorMessage || mockHomepageData.hero_carousel.directorMessage || {};
+  
   const slideDuration = 6000;
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || !slides || slides.length === 0) return;
     const timer = setInterval(() => {
       handleNext();
     }, slideDuration);
     return () => clearInterval(timer);
-  }, [currentSlide, isPaused, slides.length]);
+  }, [currentSlide, isPaused, slides?.length]);
 
   const handleNext = () => {
+    if (!slides || slides.length === 0) return;
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const handlePrev = () => {
+    if (!slides || slides.length === 0) return;
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
@@ -35,7 +41,7 @@ export const HeroCarousel = () => {
     : "Security, correction, and rehabilitation are our guiding pillars. We are committed to equipping inmates with skills to make them productive members of society.";
 
   return (
-    <div className="w-full bg-transparent pt-4 pb-0 px-4 md:px-8 border-gray-200/40 dark-mode:border-gray-850/45 smooth-transition relative z-10">
+    <div data-block-type="hero_carousel" className="w-full bg-transparent pt-4 pb-0 px-4 md:px-8 border-gray-200/40 dark-mode:border-gray-850/45 smooth-transition relative z-10">
       <div className="max-w-7xl mx-auto w-full relative group">
 
         {/* Immersive Hero Wrapper */}
@@ -140,16 +146,17 @@ export const HeroCarousel = () => {
             </div>
 
             {/* Right Side: Static Floating Leadership Message */}
-            <div className="hidden md:flex w-[320px] lg:w-[380px] flex-col justify-center h-full z-30">
-              <div className="bg-white/10 dark-mode:bg-gray-900/40 backdrop-blur-xl border border-white/20 dark-mode:border-gray-700/50 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+            {directorMessage?.name && (
+            <div className="hidden md:flex w-[320px] lg:w-[380px] flex-col justify-center h-full z-30 pointer-events-auto">
+              <div className="bg-white/10 dark-mode:bg-gray-900/40 backdrop-blur-xl border border-white/20 dark-mode:border-gray-700/50 rounded-3xl p-6 shadow-2xl relative overflow-hidden group/message transition-all duration-300 hover:bg-white/20">
                 {/* Subtle design grid pattern overlay */}
                 <span className="absolute -top-12 -right-12 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
 
                 {/* Dignitary Profile details */}
                 <div className="flex items-center gap-4 border-b border-white/10 pb-4">
                   <img
-                    src="https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/06/202606051649346751.jpeg"
-                    alt="ADG Suhas Warke"
+                    src={directorMessage?.image}
+                    alt={directorMessage?.name?.[language] || "Director"}
                     className="w-14 h-14 rounded-full object-cover object-top border-2 border-white/30 shadow-md"
                   />
                   <div className="flex flex-col">
@@ -157,10 +164,10 @@ export const HeroCarousel = () => {
                       {language === 'mr' ? 'संचालक संदेश' : "Director's Message"}
                     </span>
                     <h3 className="text-sm font-semibold font-poppins text-white">
-                      {t("श्री. सुहास वारके")}
+                      {directorMessage?.name?.[language]}
                     </h3>
                     <p className="text-[10px] font-semibold text-gray-300 leading-tight">
-                      {language === 'mr' ? 'अपर पोलीस महासंचालक व महानिरीक्षक' : 'ADG & Director General'}
+                      {directorMessage?.designation?.[language]}
                     </p>
                   </div>
                 </div>
@@ -169,14 +176,14 @@ export const HeroCarousel = () => {
                 <div className="my-5 relative flex-1 flex items-center">
                   <Quote className="absolute -top-2 -left-1 w-6 h-6 text-white/10 rotate-180" />
                   <p className="text-xs font-semibold text-gray-100 leading-relaxed font-poppins relative pl-3">
-                    {dgQuote}
+                    {directorMessage?.quote?.[language]}
                   </p>
                 </div>
 
                 {/* Action Links */}
                 <div className="pt-2 flex flex-col gap-2">
                   <a
-                    href="https://mahaprisons.gov.in/directors-message/"
+                    href={directorMessage?.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-between text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 rounded p-1 group/btn cursor-pointer"
@@ -190,6 +197,7 @@ export const HeroCarousel = () => {
                 </div>
               </div>
             </div>
+            )}
 
           </div>
 

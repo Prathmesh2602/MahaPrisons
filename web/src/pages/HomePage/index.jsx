@@ -10,8 +10,21 @@ import HolidayCalendar from './components/HolidayCalendar';
 import PhotoGallery from './components/PhotoGallery';
 import JailInsights from './components/JailInsights';
 
-export const HomePage = () => {
+export const HomePage = ({ pageData }) => {
   const location = useLocation();
+
+  // Extract blocks from pageData
+  const blocks = pageData?.contentBlocks || [];
+  const getBlock = (type) => blocks.find(b => b.blockType === type)?.content || null;
+
+  const heroCarouselData = getBlock('hero_carousel');
+  const ministerProfilesData = getBlock('minister_profiles');
+  const aboutSectionData = getBlock('about_section');
+  const jailInsightsData = getBlock('jail_insights');
+  const announcementsTabsData = getBlock('announcements_tabs');
+  const holidayCalendarData = getBlock('holiday_calendar');
+  const photoGalleryData = getBlock('photo_gallery');
+  const quickServicesData = getBlock('quick_services');
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.hash) {
@@ -30,34 +43,34 @@ export const HomePage = () => {
   return (
     <>
       <div id="hero">
-        <HeroCarousel />
+        <HeroCarousel slidesData={heroCarouselData} />
       </div>
       <div id="ministers">
-        <MinisterProfiles />
+        <MinisterProfiles data={ministerProfilesData} />
       </div>
 
       <div id="about">
-        <AboutSection />
+        <AboutSection data={aboutSectionData} />
       </div>
 
       <div id="insights">
-        <JailInsights />
+        <JailInsights data={jailInsightsData} />
       </div>
 
       <div id="announcements">
-        <AnnouncementsTabs />
+        <AnnouncementsTabs data={announcementsTabsData} />
       </div>
 
       <div id="calendar">
-        <HolidayCalendar />
+        <HolidayCalendar data={holidayCalendarData} />
       </div>
 
       <div id="gallery">
-        <PhotoGallery />
+        <PhotoGallery data={photoGalleryData} />
       </div>
 
       <div id="services">
-        <QuickServices />
+        <QuickServices data={quickServicesData} />
       </div>
     </>
   );

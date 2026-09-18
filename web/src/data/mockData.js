@@ -243,7 +243,15 @@ export const mockHomepageData = {
       href: "https://mahaprisons.gov.in/notice/regarding-the-announcement-of-the-results-of-the-qualifying-examination-conducted-from-19-06-2024-to-21-06-2024-for-clerical-category-employees/"
     }
   ],
-  hero_carousel: [
+  hero_carousel: {
+    directorMessage: {
+      name: { mr: "श्री. सुहास वारके", en: "Shri. Suhas Warke" },
+      designation: { mr: "अपर पोलीस महासंचालक व महानिरीक्षक", en: "ADG & Director General" },
+      quote: { mr: "सुरक्षितता, सुधारणा आणि पुनर्वसन ही आमची मुख्य सूत्रे आहेत. आम्ही बंदीवानांना कौशल्यपूर्ण प्रशिक्षण देऊन समाजाचा एक उपयुक्त घटक बनविण्यासाठी कटिबद्ध आहोत.", en: "Security, correction, and rehabilitation are our guiding pillars. We are committed to equipping inmates with skills to make them productive members of society." },
+      image: "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2026/06/202606051649346751.jpeg",
+      link: "https://mahaprisons.gov.in/directors-message/"
+    },
+    slides: [
     {
       img_src: "http://localhost:5000/uploads/rehab_hero.png",
       img_alt: "येरवडा खुले कारागृह",
@@ -294,7 +302,8 @@ export const mockHomepageData = {
       cta1: { mr: "आमची उत्पादने", en: "Our Products", href: "#" },
       cta2: null
     }
-  ],
+  ]
+  },
   minister_profiles: [
     {
       img_src: "https://cdnbbsr.s3waas.gov.in/s32c6ae45a3e88aee548c0714fad7f8269/uploads/2025/01/2025012261249385.jpg",
