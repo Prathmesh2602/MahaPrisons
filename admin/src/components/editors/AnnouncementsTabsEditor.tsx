@@ -54,10 +54,9 @@ const AnnouncementItemBlock = ({
       {isExpanded && (
         <div className="p-2 border-t border-slate-200 space-y-2 bg-white">
           <div className="space-y-1">
-            <PhoneticInput multiline label="Notice Text (Marathi)" value={currentItem.text?.mr} onChange={(val) => handleLocalUpdate('text.mr', val)} onTranslate={(text) => onTranslate(text, (val: string) => handleLocalUpdate('text.en', val))} />
-            <PhoneticInput multiline label="Notice Text (English)" transliterate={false} value={currentItem.text?.en} onChange={(val) => handleLocalUpdate('text.en', val)} />
+            <PhoneticInput multiline label="Notice Text " value={currentItem.text?.mr} onChange={(val) => handleLocalUpdate('text.mr', val)} englishValue={currentItem.text?.en} onEnglishChange={(val) => handleLocalUpdate('text.en', val)} />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col gap-2">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-slate-600">Date (DD/MM/YYYY)</label>
               <input type="text" className="w-full text-sm border border-slate-300 rounded p-1.5 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" value={currentItem.date} onChange={(e) => handleLocalUpdate('date', e.target.value)} />
@@ -171,8 +170,7 @@ const TabBlock = ({
       {isExpanded && (
         <div className="p-4 border-t border-slate-200 bg-white">
           <div className="space-y-1 mb-2 border-l-4 border-l-blue-500 pl-3">
-            <PhoneticInput label="Tab Title (Marathi)" value={currentTab.title?.mr} onChange={(val) => handleLocalUpdate('title.mr', val)} onTranslate={(text) => onTranslate(text, (val: string) => handleLocalUpdate('title.en', val))} />
-            <PhoneticInput label="Tab Title (English)" transliterate={false} value={currentTab.title?.en} onChange={(val) => handleLocalUpdate('title.en', val)} />
+            <PhoneticInput label="Tab Title " value={currentTab.title?.mr} onChange={(val) => handleLocalUpdate('title.mr', val)} englishValue={currentTab.title?.en} onEnglishChange={(val) => handleLocalUpdate('title.en', val)} />
           </div>
           
           <div className="flex justify-between items-center mb-2">

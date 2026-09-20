@@ -43,13 +43,11 @@ const IntroDescriptionBlock = ({ introData, onUpdateFull, onTranslateRoot, isExp
       {isExpanded && (
         <div className="flex flex-col gap-2 p-2 bg-white border border-slate-200 rounded-lg shadow-sm border-l-4 border-l-blue-500">
           <div className="space-y-1">
-            <PhoneticInput label="Welcome Title (Marathi)" value={currentData.welcomeTitle?.mr} onChange={(val) => handleLocalUpdate('welcomeTitle.mr', val)} onTranslate={(text) => onTranslateRoot(text, 'welcomeTitle.en')} />
-            <PhoneticInput label="Welcome Title (English)" transliterate={false} value={currentData.welcomeTitle?.en} onChange={(val) => handleLocalUpdate('welcomeTitle.en', val)} />
+            <PhoneticInput label="Welcome Title " value={currentData.welcomeTitle?.mr} onChange={(val) => handleLocalUpdate('welcomeTitle.mr', val)} englishValue={currentData.welcomeTitle?.en} onEnglishChange={(val) => handleLocalUpdate('welcomeTitle.en', val)} />
           </div>
           <hr className="border-t border-slate-100 my-1" />
           <div className="space-y-1">
-            <PhoneticInput multiline label="About Text (Marathi)" value={currentData.aboutText?.mr} onChange={(val) => handleLocalUpdate('aboutText.mr', val)} onTranslate={(text) => onTranslateRoot(text, 'aboutText.en')} />
-            <PhoneticInput multiline label="About Text (English)" transliterate={false} value={currentData.aboutText?.en} onChange={(val) => handleLocalUpdate('aboutText.en', val)} />
+            <PhoneticInput multiline label="About Text " value={currentData.aboutText?.mr} onChange={(val) => handleLocalUpdate('aboutText.mr', val)} englishValue={currentData.aboutText?.en} onEnglishChange={(val) => handleLocalUpdate('aboutText.en', val)} />
           </div>
         </div>
       )}
@@ -113,14 +111,12 @@ const OfficerProfileBlock = ({
             </div>
             <div className="flex-1 space-y-2">
               <div className="space-y-1">
-                <PhoneticInput label="Name (Marathi)" value={currentOfficer.name?.mr} onChange={(val) => handleLocalUpdate('name.mr', val)} onTranslate={(text) => onTranslate(text, index, 'name.en')} />
-                <PhoneticInput label="Name (English)" transliterate={false} value={currentOfficer.name?.en} onChange={(val) => handleLocalUpdate('name.en', val)} />
+                <PhoneticInput label="Name " value={currentOfficer.name?.mr} onChange={(val) => handleLocalUpdate('name.mr', val)} englishValue={currentOfficer.name?.en} onEnglishChange={(val) => handleLocalUpdate('name.en', val)} />
               </div>
             </div>
           </div>
           <div className="space-y-1">
-            <PhoneticInput label="Designation (Marathi)" value={currentOfficer.desg?.mr} onChange={(val) => handleLocalUpdate('desg.mr', val)} onTranslate={(text) => onTranslate(text, index, 'desg.en')} />
-            <PhoneticInput label="Designation (English)" transliterate={false} value={currentOfficer.desg?.en} onChange={(val) => handleLocalUpdate('desg.en', val)} />
+            <PhoneticInput label="Designation " value={currentOfficer.desg?.mr} onChange={(val) => handleLocalUpdate('desg.mr', val)} englishValue={currentOfficer.desg?.en} onEnglishChange={(val) => handleLocalUpdate('desg.en', val)} />
           </div>
         </div>
       )}

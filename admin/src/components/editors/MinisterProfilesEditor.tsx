@@ -72,15 +72,13 @@ const MinisterProfileBlock = ({
             
             <div className="flex-1 space-y-2">
               <div className="space-y-1">
-                <PhoneticInput label="Name (Marathi)" value={currentProfile.name?.mr} onChange={(val) => handleLocalUpdate('name.mr', val)} onTranslate={(text) => onTranslate(text, section, index, 'name.en')} />
-                <PhoneticInput label="Name (English)" transliterate={false} value={currentProfile.name?.en} onChange={(val) => handleLocalUpdate('name.en', val)} />
+                <PhoneticInput label="Name " value={currentProfile.name?.mr} onChange={(val) => handleLocalUpdate('name.mr', val)} englishValue={currentProfile.name?.en} onEnglishChange={(val) => handleLocalUpdate('name.en', val)} />
               </div>
             </div>
           </div>
 
           <div className="space-y-1">
-            <PhoneticInput label="Designation (Marathi)" value={currentProfile.desg?.mr} onChange={(val) => handleLocalUpdate('desg.mr', val)} onTranslate={(text) => onTranslate(text, section, index, 'desg.en')} />
-            <PhoneticInput label="Designation (English)" transliterate={false} value={currentProfile.desg?.en} onChange={(val) => handleLocalUpdate('desg.en', val)} />
+            <PhoneticInput label="Designation " value={currentProfile.desg?.mr} onChange={(val) => handleLocalUpdate('desg.mr', val)} englishValue={currentProfile.desg?.en} onEnglishChange={(val) => handleLocalUpdate('desg.en', val)} />
           </div>
         </div>
       )}

@@ -5,13 +5,13 @@ import { useAccessibility } from '../../../hooks/useAccessibility';
 import { yerawadaOpenJailData } from '../../../data/yerawadaOpenJailData';
 import { History } from 'lucide-react';
 
-export const HistoryTimeline = () => {
+export const HistoryTimeline = ({ data: propData }) => {
   const { language } = useAccessibility();
-  const data = yerawadaOpenJailData;
-  const getTranslation = (obj) => obj[language] || obj.en;
+  const data = propData || yerawadaOpenJailData.timeline;
+  const getTranslation = (obj) => obj?.[language] || obj?.en || "";
 
   return (
-    <section className="mb-20">
+    <section data-block-type="prison_timeline" className="mb-20">
       <div className="text-center mb-16">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -21,7 +21,7 @@ export const HistoryTimeline = () => {
         >
           <History className="w-8 h-8" />
         </motion.div>
-        <h3 className="text-2xl md:text-3xl font-semibold text-[#0F3D66] dark-mode:text-white mb-6">{getTranslation(data.timeline.title)}</h3>
+        <h3 className="text-2xl md:text-3xl font-semibold text-[#0F3D66] dark-mode:text-white mb-6">{getTranslation(data.title)}</h3>
         <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-amber-500 mx-auto rounded-full" />
       </div>
 
@@ -29,7 +29,7 @@ export const HistoryTimeline = () => {
         <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-100 via-amber-200 to-blue-100 dark-mode:from-gray-800 dark-mode:via-amber-900/30 dark-mode:to-gray-800 md:-translate-x-1/2 rounded-full" />
 
         <div className="space-y-12">
-          {data.timeline.events.map((event, idx) => (
+          {data.events?.map((event, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 50 }}

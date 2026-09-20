@@ -5,10 +5,10 @@ import { useAccessibility } from '../../../hooks/useAccessibility';
 import { yerawadaOpenJailData } from '../../../data/yerawadaOpenJailData';
 import { User } from 'lucide-react';
 
-export const AdministrationSection = () => {
+export const AdministrationSection = ({ data: propData }) => {
   const { language } = useAccessibility();
-  const data = yerawadaOpenJailData;
-  const getTranslation = (obj) => obj[language] || obj.en;
+  const data = propData || yerawadaOpenJailData.administration;
+  const getTranslation = (obj) => obj?.[language] || obj?.en || "";
 
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 40 },
@@ -21,12 +21,12 @@ export const AdministrationSection = () => {
   };
 
   return (
-    <section className="mb-20">
+    <section data-block-type="prison_administration" className="mb-20">
       <div className="bg-white dark-mode:bg-gray-850 rounded-[3rem] p-8 md:p-16 shadow-2xl shadow-blue-900/5 dark-mode:shadow-black/20 border border-gray-100 dark-mode:border-gray-800">
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <h3 className="text-2xl md:text-3xl font-semibold text-[#0F3D66] dark-mode:text-white mb-6">{getTranslation(data.administration.title)}</h3>
+          <h3 className="text-2xl md:text-3xl font-semibold text-[#0F3D66] dark-mode:text-white mb-6">{getTranslation(data.title)}</h3>
           <p className="text-base text-gray-600 dark-mode:text-gray-400 leading-relaxed">
-            {getTranslation(data.administration.description)}
+            {getTranslation(data.description)}
           </p>
         </div>
 
@@ -38,7 +38,7 @@ export const AdministrationSection = () => {
             viewport={{ once: true }}
             className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4"
           >
-            {data.administration.staff.slice(0, 6).map((member, idx) => (
+            {data.staff?.slice(0, 6).map((member, idx) => (
               <motion.div
                 key={idx}
                 variants={fadeUpVariant}
@@ -61,7 +61,7 @@ export const AdministrationSection = () => {
             ))}
           </motion.div>
 
-          {data.administration.staff.length > 6 && (
+          {data.staff?.length > 6 && (
             <motion.div
               variants={staggerContainer}
               initial="hidden"
@@ -69,7 +69,7 @@ export const AdministrationSection = () => {
               viewport={{ once: true }}
               className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4"
             >
-              {data.administration.staff.slice(6).map((member, idx) => (
+              {data.staff?.slice(6).map((member, idx) => (
                 <motion.div
                   key={`row2-${idx}`}
                   variants={fadeUpVariant}

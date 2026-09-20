@@ -6,7 +6,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { administrativeData } from '../data/administrativeData';
 import { ShieldAlert, Target, Shield } from 'lucide-react';
 
-const HeroSplitTimeline = ({ dataId }) => {
+const HeroSplitTimeline = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
 
   useLayoutEffect(() => {
@@ -16,7 +16,7 @@ const HeroSplitTimeline = ({ dataId }) => {
     document.documentElement.style.scrollBehavior = originalStyle;
   }, []);
 
-  const data = administrativeData[dataId];
+  const data = dynamicData || administrativeData[dataId];
 
   if (!data) redirect("/");
 
@@ -29,7 +29,7 @@ const HeroSplitTimeline = ({ dataId }) => {
     <div className="w-full bg-[#111111] dark-mode:bg-black pb-24 min-h-screen text-gray-300">
       
       {/* Strict Minimalist Hero */}
-      <div className="relative pt-24 pb-16 px-6 border-b border-red-900/50 bg-[#0a0a0a]">
+      <div data-block-type="template_general" className="relative pt-24 pb-16 px-6 border-b border-red-900/50 bg-[#0a0a0a]">
         <div className="container mx-auto max-w-6xl flex flex-col md:flex-row gap-10 items-end">
           <div className="flex-1">
             <motion.div 
@@ -38,7 +38,7 @@ const HeroSplitTimeline = ({ dataId }) => {
             >
               <Shield className="w-6 h-6" />
               <span className="uppercase tracking-[0.2em] text-sm font-bold">
-                {language === 'mr' ? 'सुरक्षा व पायाभूत सुविधा' : 'Security & Infrastructure'}
+                {data.labels?.security ? getTranslation(data.labels.security) : (language === 'mr' ? 'सुरक्षा व पायाभूत सुविधा' : 'Security & Infrastructure')}
               </span>
             </motion.div>
             
@@ -77,14 +77,14 @@ const HeroSplitTimeline = ({ dataId }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
           
           {/* Core Protocols (Left) */}
-          <div>
+          <div data-block-type="template_coreProtocols">
             <h3 className="text-2xl font-bold text-gray-100 mb-8 uppercase tracking-widest flex items-center gap-3">
               <Target className="w-6 h-6 text-red-500" />
-              {language === 'mr' ? 'मुख्य प्रोटोकॉल' : 'Core Protocols'}
+              {data.labels?.protocols ? getTranslation(data.labels.protocols) : (language === 'mr' ? 'मुख्य प्रोटोकॉल' : 'Core Protocols')}
             </h3>
             
             <div className="space-y-6">
-              {data.coreProtocols.map((protocol, idx) => (
+              {(data.coreProtocols || []).map((protocol, idx) => (
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
                   key={idx} className="bg-[#1a1a1a] border border-gray-800 p-6 hover:border-red-900/50 transition-colors"
@@ -97,13 +97,13 @@ const HeroSplitTimeline = ({ dataId }) => {
           </div>
 
           {/* Infrastructure (Right) */}
-          <div>
+          <div data-block-type="template_infrastructure">
             <h3 className="text-2xl font-bold text-gray-100 mb-8 uppercase tracking-widest text-right">
-              {language === 'mr' ? 'पायाभूत सुविधा' : 'Infrastructure'}
+              {data.labels?.infrastructure ? getTranslation(data.labels.infrastructure) : (language === 'mr' ? 'पायाभूत सुविधा' : 'Infrastructure')}
             </h3>
             
             <div className="space-y-6">
-              {data.infrastructure.map((infra, idx) => (
+              {(data.infrastructure || []).map((infra, idx) => (
                 <motion.div 
                   initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
                   key={idx} className="group relative overflow-hidden border border-gray-800 bg-[#1a1a1a] h-32 flex items-center"
@@ -122,13 +122,14 @@ const HeroSplitTimeline = ({ dataId }) => {
 
         {/* Alert Box */}
         <motion.div 
+          data-block-type="template_alertMessage"
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="bg-red-950/20 border border-red-900 p-8 flex flex-col md:flex-row items-center gap-6"
         >
           <ShieldAlert className="w-12 h-12 text-red-500 flex-shrink-0" />
           <div>
             <h4 className="text-red-500 font-bold uppercase tracking-widest mb-2">
-              {language === 'mr' ? 'महत्त्वाची सूचना' : 'Important Notice'}
+              {data.labels?.notice ? getTranslation(data.labels.notice) : (language === 'mr' ? 'महत्त्वाची सूचना' : 'Important Notice')}
             </h4>
             <p className="text-red-200/80 text-lg">
               {getTranslation(data.alertMessage)}

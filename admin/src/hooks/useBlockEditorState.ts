@@ -3,10 +3,11 @@ import axios from 'axios';
 import { useBlockHistory } from './useBlockHistory';
 
 export const useBlockEditorState = (blockId: string, initialData: any, onPreviewUpdate: (data: any) => void) => {
-  const [data, setData] = useState<any>(initialData);
-  const [savedData, setSavedData] = useState<any>(initialData);
+  const safeInitialData = initialData || {};
+  const [data, setData] = useState<any>(safeInitialData);
+  const [savedData, setSavedData] = useState<any>(safeInitialData);
   
-  const historyRef = useRef<any[]>([JSON.parse(JSON.stringify(initialData))]);
+  const historyRef = useRef<any[]>([JSON.parse(JSON.stringify(safeInitialData))]);
   const historyIndexRef = useRef(0);
   // Dummy state just to trigger re-renders for UI when history changes
   const [historyTrigger, setHistoryTrigger] = useState(0);

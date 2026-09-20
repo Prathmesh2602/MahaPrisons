@@ -10,7 +10,7 @@ const iconMap = {
   Sprout, Award, LayoutGrid, HeartHandshake, CheckCircle2, Activity, MapPin
 };
 
-const HeroFeatureList = ({ dataId }) => {
+const HeroFeatureList = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
 
   useLayoutEffect(() => {
@@ -31,7 +31,7 @@ const HeroFeatureList = ({ dataId }) => {
     return obj[language] || obj.en;
   };
 
-  const data = agricultureData[dataId];
+  const data = dynamicData || agricultureData[dataId];
 
   if (!data) {
     redirect("/");
@@ -53,7 +53,7 @@ const HeroFeatureList = ({ dataId }) => {
   return (
     <div className="w-full bg-[#F8FAFC] dark-mode:bg-[#080B11] pb-24 font-poppins overflow-hidden min-h-screen">
       {/* Hero Section with Parallax */}
-      <section className="relative h-[65vh] overflow-hidden flex items-center justify-center bg-[#0F3D66] dark-mode:bg-gray-950">
+      <section data-block-type="template_general" className="relative h-[65vh] overflow-hidden flex items-center justify-center bg-[#0F3D66] dark-mode:bg-gray-950">
         <motion.div
           style={{ y: yHero, opacity: opacityHero }}
           className="absolute inset-0 z-0 bg-cover bg-center"
@@ -102,13 +102,14 @@ const HeroFeatureList = ({ dataId }) => {
         {/* Highlights Cards */}
         <section className="mb-20">
           <motion.div
+            data-block-type="template_highlights"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto"
           >
-            {data.highlights.map((highlight, idx) => {
+            {(data.highlights || []).map((highlight, idx) => {
               const IconComponent = highlight.icon && iconMap[highlight.icon] ? iconMap[highlight.icon] : CheckCircle2;
               return (
                 <motion.div
@@ -131,77 +132,46 @@ const HeroFeatureList = ({ dataId }) => {
           </motion.div>
         </section>
 
-        {/* Details Section (Image Left, Text Right) */}
-        {data.detailsSection && (
-          <section className="mb-20">
-            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-              <motion.div 
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="w-full lg:w-1/2"
-              >
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <img src={data.detailsSection.image} alt={getTranslation(data.detailsSection.title)} className="w-full h-[350px] object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" />
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="w-full lg:w-1/2"
-              >
-                <div className="w-12 h-1.5 bg-amber-500 rounded-full mb-6" />
-                <h3 className="text-2xl md:text-3xl font-bold text-[#0F3D66] dark-mode:text-white mb-6 leading-tight">
-                  {getTranslation(data.detailsSection.title)}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 dark-mode:text-gray-400 leading-relaxed">
-                  {getTranslation(data.detailsSection.description)}
-                </p>
-              </motion.div>
-            </div>
-          </section>
-        )}
-
-        {/* Impact Section (Text Left, Image Right) */}
-        {data.impactSection && (
-          <section className="mb-20">
-            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center gap-10 lg:gap-16 bg-white/50 dark-mode:bg-gray-850/50 rounded-[3rem] p-8 md:p-12 border border-gray-100 dark-mode:border-gray-800">
-              <motion.div 
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="w-full lg:w-1/2"
-              >
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <img src={data.impactSection.image} alt={getTranslation(data.impactSection.title)} className="w-full h-[350px] object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" />
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="w-full lg:w-1/2"
-              >
-                <div className="w-12 h-1.5 bg-green-500 rounded-full mb-6" />
-                <h3 className="text-2xl md:text-3xl font-bold text-[#0F3D66] dark-mode:text-white mb-6 leading-tight">
-                  {getTranslation(data.impactSection.title)}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 dark-mode:text-gray-400 leading-relaxed">
-                  {getTranslation(data.impactSection.description)}
-                </p>
-              </motion.div>
-            </div>
-          </section>
-        )}
+        {/* Dynamic Content Sections */}
+        <div data-block-type="template_contentSections">
+          {(data.contentSections || []).map((section, index) => {
+            const isLeftImage = section.imagePosition !== 'right'; // Default to left if undefined
+            return (
+              <section key={`contentSection-${index}`} className="mb-16">
+                <div className={`max-w-6xl mx-auto flex flex-col ${isLeftImage ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-10 lg:gap-16 bg-white/50 dark-mode:bg-gray-850/50 rounded-[3rem] p-8 md:p-12 border border-gray-100 dark-mode:border-gray-800`}>
+                  <motion.div 
+                  initial={{ opacity: 0, x: isLeftImage ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="w-full lg:w-1/2"
+                >
+                  <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 group">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <img src={section.image} alt={getTranslation(section.title)} className="w-full h-[350px] object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" />
+                  </div>
+                </motion.div>
+                
+                <motion.div 
+                  initial={{ opacity: 0, x: isLeftImage ? 50 : -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="w-full lg:w-1/2"
+                >
+                  <div className={`w-12 h-1.5 ${isLeftImage ? 'bg-amber-500' : 'bg-green-500'} rounded-full mb-6`} />
+                  <h3 className="text-2xl md:text-3xl font-bold text-[#0F3D66] dark-mode:text-white mb-6 leading-tight">
+                    {getTranslation(section.title)}
+                  </h3>
+                  <p className="text-base md:text-lg text-gray-600 dark-mode:text-gray-400 leading-relaxed">
+                    {getTranslation(section.description)}
+                  </p>
+                </motion.div>
+              </div>
+            </section>
+          );
+        })}
+        </div>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const iconMap = {
   Users, FileText, GitMerge, Briefcase, PieChart, Network, GraduationCap, Heart, UserPlus, BookOpen, CreditCard, Scale, Clock, ShieldCheck, FileSignature, Gavel, ClipboardList
 };
 
-const HeroFeaturesTimelineLayout = ({ dataId }) => {
+const HeroFeaturesTimelineLayout = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
 
   useLayoutEffect(() => {
@@ -20,7 +20,7 @@ const HeroFeaturesTimelineLayout = ({ dataId }) => {
     document.documentElement.style.scrollBehavior = originalStyle;
   }, []);
 
-  const data = administrativeData[dataId];
+  const data = dynamicData || administrativeData[dataId];
 
   if (!data) redirect("/");
 
@@ -41,7 +41,7 @@ const HeroFeaturesTimelineLayout = ({ dataId }) => {
   return (
     <div className="w-full bg-slate-50 dark-mode:bg-slate-900 pb-20 font-poppins min-h-screen">
       {/* Corporate Hero */}
-      <div className="relative h-[50vh] min-h-[400px] flex items-center">
+      <div data-block-type="template_general" className="relative h-[50vh] min-h-[400px] flex items-center">
         <div className="absolute inset-0 z-0">
           <img src={data.heroImage} alt={getTranslation(data.title)} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-slate-900/70 mix-blend-multiply" />
@@ -73,10 +73,11 @@ const HeroFeaturesTimelineLayout = ({ dataId }) => {
       <div className="container mx-auto px-6 -mt-16 relative z-20">
         {/* Stats Section */}
         <motion.div 
+          data-block-type="template_stats"
           variants={containerVariants} initial="hidden" animate="visible"
           className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
         >
-          {data.stats.map((stat, idx) => {
+          {(data.stats || []).map((stat, idx) => {
             const Icon = iconMap[stat.icon] || FileText;
             return (
               <motion.div key={idx} variants={itemVariants} className="bg-white dark-mode:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-100 dark-mode:border-slate-700 flex items-center gap-6">
@@ -94,13 +95,13 @@ const HeroFeaturesTimelineLayout = ({ dataId }) => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Main Functions */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2" data-block-type="template_keyFunctions">
             <h3 className="text-2xl font-bold text-slate-800 dark-mode:text-white mb-8 flex items-center gap-3">
               <span className="w-8 h-1 bg-blue-500 rounded-full"></span>
-              {language === 'mr' ? 'प्रमुख कार्ये' : 'Key Functions'}
+              {data.labels?.keyFunctions ? getTranslation(data.labels.keyFunctions) : (language === 'mr' ? 'प्रमुख कार्ये' : 'Key Functions')}
             </h3>
             <div className="space-y-6">
-              {data.keyFunctions.map((func, idx) => {
+              {(data.keyFunctions || []).map((func, idx) => {
                 const Icon = iconMap[func.icon] || FileText;
                 return (
                   <motion.div 
@@ -123,10 +124,10 @@ const HeroFeaturesTimelineLayout = ({ dataId }) => {
           </div>
 
           {/* Contact & Info Sidebar */}
-          <div>
+          <div data-block-type="template_contactInfo">
             <div className="bg-blue-600 rounded-xl p-8 text-white shadow-xl sticky top-32">
               <h3 className="text-xl font-bold mb-6 border-b border-blue-500/50 pb-4">
-                {language === 'mr' ? 'संपर्क माहिती' : 'Contact Information'}
+                {data.labels?.contactInfo ? getTranslation(data.labels.contactInfo) : (language === 'mr' ? 'संपर्क माहिती' : 'Contact Information')}
               </h3>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">

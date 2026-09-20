@@ -11,7 +11,8 @@ export const yerawadaOpenJailData = {
     description: {
       en: "Spread across a sprawling campus in Pune, the Yerawada Open Jail represents a paradigm shift from punitive incarceration to rehabilitative correction. Operating on minimum security and high trust, it prepares inmates for a productive and self-reliant life after release.",
       mr: "पुण्यातील विस्तीर्ण परिसरात पसरलेले येरवडा खुले कारागृह केवळ शिक्षेवर भर न देता पुनर्वसनावर आधारित आहे. कमीतकमी सुरक्षा आणि उच्च विश्वासावर चालणारी ही संस्था कैद्यांना सुटकेनंतर उत्पादक आणि स्वावलंबी जीवनासाठी तयार करते."
-    }
+    },
+    bgImage: "http://localhost:5000/uploads/rehab_hero.png"
   },
   overview: {
     title: {
@@ -23,9 +24,9 @@ export const yerawadaOpenJailData = {
       mr: "दीर्घ मुदतीच्या कैद्यांचे समाजात हळूहळू पुनर्वसन व्हावे यासाठी या खुल्या कारागृहाची स्थापना करण्यात आली आहे. येथे उंच भिंती किंवा कडक निर्बंध नाहीत. बंदिस्त कारागृहात चांगली वर्तणूक दाखवणाऱ्या कैद्यांनाच येथे हलवले जाते."
     },
     stats: [
-      { label: { en: "Location", mr: "ठिकाण" }, value: { en: "Pune, Maharashtra", mr: "पुणे, महाराष्ट्र" } },
-      { label: { en: "Security Level", mr: "सुरक्षा स्तर" }, value: { en: "Minimum (Open)", mr: "किमान (खुले)" } },
-      { label: { en: "Campus Area", mr: "परिसर" }, value: { en: "500+ Acres", mr: "५००+ एकर" } }
+      { label: { en: "Location", mr: "ठिकाण" }, value: { en: "Pune, Maharashtra", mr: "पुणे, महाराष्ट्र" }, icon: "MapPin" },
+      { label: { en: "Security Level", mr: "सुरक्षा स्तर" }, value: { en: "Minimum (Open)", mr: "किमान (खुले)" }, icon: "CheckCircle2" },
+      { label: { en: "Campus Area", mr: "परिसर" }, value: { en: "500+ Acres", mr: "५००+ एकर" }, icon: "Award" }
     ]
   },
   timeline: {
@@ -116,6 +117,10 @@ export const yerawadaOpenJailData = {
     title: {
       en: "Rehabilitation & Facilities",
       mr: "पुनर्वसन आणि सुविधा"
+    },
+    description: {
+      en: "Established to facilitate the gradual reintegration of long-term convicts into society, the Open Jail operates without high walls or strict confinements. Inmates who demonstrate impeccable conduct during their initial sentences in closed prisons are transferred here.",
+      mr: "दीर्घ मुदतीच्या कैद्यांचे समाजात हळूहळू पुनर्वसन व्हावे यासाठी या खुल्या कारागृहाची स्थापना करण्यात आली आहे. येथे उंच भिंती किंवा कडक निर्बंध नाहीत. बंदिस्त कारागृहात चांगली वर्तणूक दाखवणाऱ्या कैद्यांनाच येथे हलवले जाते."
     },
     list: [
       {

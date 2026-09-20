@@ -57,21 +57,10 @@ const HolidayBlock = ({
       {isExpanded && (
         <div className="flex flex-col gap-2 p-2 bg-white border border-slate-200 rounded-lg shadow-sm mt-2 border-l-4 border-l-rose-500">
           <div className="flex flex-col gap-2">
-            <PhoneticInput 
-              label="Title (Marathi)" 
-              value={currentHoliday.title_mr || ''} 
-              onChange={(val) => handleLocalUpdate('title_mr', val)} 
-              onTranslate={(text) => onTranslate(text, index, false)} 
-            />
-            <PhoneticInput 
-              label="Title (English)" 
-              transliterate={false}
-              value={currentHoliday.title_en || ''} 
-              onChange={(val) => handleLocalUpdate('title_en', val)} 
-            />
+            <PhoneticInput label="Title " value={currentHoliday.title_mr || ''} onChange={(val) => handleLocalUpdate('title_mr', val)} englishValue={currentHoliday.title_en || ''} onEnglishChange={(val) => handleLocalUpdate('title_en', val)} />
           </div>
           
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col gap-2">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-slate-600">Date</label>
               <input type="date" className="w-full text-sm border border-slate-300 rounded p-1.5 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" value={currentHoliday.date} onChange={(e) => handleLocalUpdate('date', e.target.value)} />

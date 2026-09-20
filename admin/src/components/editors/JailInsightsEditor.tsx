@@ -48,12 +48,10 @@ const GeneralSettingsBlock = ({ settingsData, onUpdateFull, onTranslate, isExpan
       {isExpanded && (
         <div className="flex flex-col gap-2 p-2 bg-white border border-slate-200 rounded-lg shadow-sm border-l-4 border-l-red-500">
           <div className="space-y-1">
-            <PhoneticInput label="Subheading (Marathi)" value={currentData.subheading?.mr} onChange={(val) => handleLocalUpdate('subheading.mr', val)} onTranslate={(text) => onTranslate(text, 'subheading.en')} />
-            <PhoneticInput label="Subheading (English)" transliterate={false} value={currentData.subheading?.en} onChange={(val) => handleLocalUpdate('subheading.en', val)} />
+            <PhoneticInput label="Subheading " value={currentData.subheading?.mr} onChange={(val) => handleLocalUpdate('subheading.mr', val)} englishValue={currentData.subheading?.en} onEnglishChange={(val) => handleLocalUpdate('subheading.en', val)} />
           </div>
           <div className="space-y-1">
-            <PhoneticInput label="Heading (Marathi)" value={currentData.heading?.mr} onChange={(val) => handleLocalUpdate('heading.mr', val)} onTranslate={(text) => onTranslate(text, 'heading.en')} />
-            <PhoneticInput label="Heading (English)" transliterate={false} value={currentData.heading?.en} onChange={(val) => handleLocalUpdate('heading.en', val)} />
+            <PhoneticInput label="Heading " value={currentData.heading?.mr} onChange={(val) => handleLocalUpdate('heading.mr', val)} englishValue={currentData.heading?.en} onEnglishChange={(val) => handleLocalUpdate('heading.en', val)} />
           </div>
           <div className="space-y-1 pt-2 border-t border-slate-100">
             <PhoneticInput label="YouTube Channel URL" transliterate={false} value={currentData.youtubeUrl} onChange={(val) => handleLocalUpdate('youtubeUrl', val)} placeholder="https://youtube.com/..." />
@@ -135,13 +133,11 @@ const InsightCardBlock = ({
           />
 
           <div className="space-y-1">
-            <PhoneticInput label="Title (Marathi)" value={currentCard.title?.mr} onChange={(val) => handleLocalUpdate('title.mr', val)} onTranslate={(text) => onTranslate(text, index, 'title.en')} />
-            <PhoneticInput label="Title (English)" transliterate={false} value={currentCard.title?.en} onChange={(val) => handleLocalUpdate('title.en', val)} />
+            <PhoneticInput label="Title " value={currentCard.title?.mr} onChange={(val) => handleLocalUpdate('title.mr', val)} englishValue={currentCard.title?.en} onEnglishChange={(val) => handleLocalUpdate('title.en', val)} />
           </div>
           <hr className="border-t border-slate-100 my-1" />
           <div className="space-y-1">
-            <PhoneticInput multiline label="Description (Marathi)" value={currentCard.desc?.mr} onChange={(val) => handleLocalUpdate('desc.mr', val)} onTranslate={(text) => onTranslate(text, index, 'desc.en')} />
-            <PhoneticInput multiline label="Description (English)" transliterate={false} value={currentCard.desc?.en} onChange={(val) => handleLocalUpdate('desc.en', val)} />
+            <PhoneticInput multiline label="Description " value={currentCard.desc?.mr} onChange={(val) => handleLocalUpdate('desc.mr', val)} englishValue={currentCard.desc?.en} onEnglishChange={(val) => handleLocalUpdate('desc.en', val)} />
           </div>
         </div>
       )}

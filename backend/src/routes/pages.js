@@ -73,5 +73,49 @@ router.put('/blocks/:id', authMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+// PUT /api/v1/pages/:id/layout
+router.put('/:id/layout', authMiddleware, async (req, res) => {
+  try {
+    const { layoutType } = req.body;
+    const pageId = req.params.id;
+    
+    if (!layoutType) {
+      return res.status(400).json({ error: 'layoutType is required' });
+    }
+
+    const page = await prisma.pageNode.findUnique({
+      where: { id: pageId }
+    });
+    
+    if (!page) {
+      return res.status(404).json({ error: 'Page not found' });
+    }
+
+    // Direct update for SUPER_ADMIN for now.
+    // MAKER flows would create a revision on PageNode, but for layout change we just update directly for simplicity right now unless we want revision on PageNode.
+    if (req.user && req.user.role === 'MAKER') {
+      await prisma.revision.create({
+        data: {
+          modelName: 'PageNode',
+          recordId: pageId,
+          proposedData: { layoutType },
+          status: 'PENDING_REVIEW',
+          createdById: req.user.id
+        }
+      });
+      return res.json({ success: true, pendingReview: true, message: 'Layout change submitted for review' });
+    }
+
+    await prisma.pageNode.update({
+      where: { id: pageId },
+      data: { layoutType }
+    });
+
+    res.json({ success: true, message: 'Page layout updated successfully' });
+  } catch (error) {
+    console.error('Page layout update error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 module.exports = router;

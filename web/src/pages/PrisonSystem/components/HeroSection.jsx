@@ -5,17 +5,17 @@ import { useAccessibility } from '../../../hooks/useAccessibility';
 import { yerawadaOpenJailData } from '../../../data/yerawadaOpenJailData';
 import { Activity } from 'lucide-react';
 
-export const HeroSection = () => {
+export const HeroSection = ({ data: propData }) => {
   const { language } = useAccessibility();
-  const data = yerawadaOpenJailData;
-  const getTranslation = (obj) => obj[language] || obj.en;
+  const data = propData || yerawadaOpenJailData.hero;
+  const getTranslation = (obj) => obj?.[language] || obj?.en || "";
 
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
   const opacityHero = useTransform(scrollY, [0, 600], [1, 0]);
 
   return (
-    <section className="relative h-[75vh] overflow-hidden flex items-center justify-center bg-[#0F3D66] dark-mode:bg-gray-950">
+    <section data-block-type="prison_hero" className="relative h-[75vh] overflow-hidden flex items-center justify-center bg-[#0F3D66] dark-mode:bg-gray-950">
       <motion.div
         style={{ y: yHero, opacity: opacityHero }}
         className="absolute inset-0 z-0 bg-cover bg-center"
@@ -24,7 +24,11 @@ export const HeroSection = () => {
         transition={{ duration: 2, ease: "easeOut" }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[#F8FAFC] via-[#0F3D66]/60 to-[#0F3D66]/80 dark-mode:from-[#080B11] dark-mode:via-gray-900/80 dark-mode:to-gray-900/90 z-10" />
-        <img src="http://localhost:5000/uploads/rehab_hero.png" alt="Rehabilitation" className="w-full h-full object-cover opacity-60 dark-mode:opacity-40" />
+        <img 
+          src={data.bgImage || yerawadaOpenJailData.hero.bgImage || "http://localhost:5000/uploads/rehab_hero.png"} 
+          alt="Rehabilitation" 
+          className="w-full h-full object-cover opacity-60 dark-mode:opacity-40" 
+        />
       </motion.div>
       <div className="container mx-auto px-4 md:px-8 relative z-20 text-center max-w-5xl text-white mt-4 pb-8">
         <motion.div
@@ -45,7 +49,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-6 leading-tight drop-shadow-2xl"
         >
-          {getTranslation(data.hero.title)}
+          {getTranslation(data.title)}
         </motion.h1>
 
         <motion.h2
@@ -54,7 +58,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-xl md:text-2xl font-medium text-amber-400 mb-8 drop-shadow-md"
         >
-          {getTranslation(data.hero.subtitle)}
+          {getTranslation(data.subtitle)}
         </motion.h2>
 
         <motion.p
@@ -63,7 +67,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-base md:text-lg text-blue-50/90 max-w-4xl mx-auto leading-relaxed font-light"
         >
-          {getTranslation(data.hero.description)}
+          {getTranslation(data.description)}
         </motion.p>
       </div>
     </section>

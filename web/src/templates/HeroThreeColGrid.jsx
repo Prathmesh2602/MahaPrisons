@@ -6,7 +6,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { administrativeData } from '../data/administrativeData';
 import { Activity, Zap, Factory } from 'lucide-react';
 
-const HeroThreeColGrid = ({ dataId }) => {
+const HeroThreeColGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
@@ -19,7 +19,7 @@ const HeroThreeColGrid = ({ dataId }) => {
     document.documentElement.style.scrollBehavior = originalStyle;
   }, []);
 
-  const data = administrativeData[dataId];
+  const data = dynamicData || administrativeData[dataId];
 
   if (!data) redirect("/");
 
@@ -31,7 +31,7 @@ const HeroThreeColGrid = ({ dataId }) => {
   return (
     <div className="w-full bg-[#080B11] pb-24 font-poppins overflow-hidden min-h-screen text-slate-200">
       {/* Full Width Parallax Hero */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
+      <section data-block-type="template_general" className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <motion.div
           style={{ y: yHero, opacity: opacityHero }}
           className="absolute inset-0 z-0 bg-cover bg-center"
@@ -49,7 +49,7 @@ const HeroThreeColGrid = ({ dataId }) => {
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-medium uppercase tracking-widest text-sm mb-6"
           >
             <Zap className="w-4 h-4" />
-            {language === 'mr' ? 'उत्पादन व उपक्रम' : 'Production & Activities'}
+            {data.labels?.production ? getTranslation(data.labels.production) : (language === 'mr' ? 'उत्पादन व उपक्रम' : 'Production & Activities')}
           </motion.div>
           
           <motion.h1
@@ -70,8 +70,8 @@ const HeroThreeColGrid = ({ dataId }) => {
 
       <div className="container mx-auto px-6 relative z-30 -mt-10">
         {/* Production Impact Stats (Floating) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 max-w-5xl mx-auto">
-          {data.productionStats.map((stat, idx) => (
+        <div data-block-type="template_productionStats" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 max-w-5xl mx-auto">
+          {(data.productionStats || []).map((stat, idx) => (
             <motion.div 
               initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 + (idx * 0.1) }}
               key={idx} className="bg-slate-800/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 text-center shadow-2xl hover:-translate-y-2 transition-transform duration-300"
@@ -88,8 +88,8 @@ const HeroThreeColGrid = ({ dataId }) => {
         </div>
 
         {/* Active Projects (Alternating Layout) */}
-        <div className="max-w-6xl mx-auto space-y-24 mb-24">
-          {data.activeProjects.map((project, idx) => {
+        <div data-block-type="template_activeProjects" className="max-w-6xl mx-auto space-y-24 mb-24">
+          {(data.activeProjects || []).map((project, idx) => {
             const isEven = idx % 2 === 0;
             return (
               <div key={idx} className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 lg:gap-20`}>
@@ -122,13 +122,14 @@ const HeroThreeColGrid = ({ dataId }) => {
 
         {/* Impact Statement Box */}
         <motion.div 
+          data-block-type="template_impactStatement"
           initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
           className="max-w-4xl mx-auto bg-gradient-to-br from-emerald-900/40 to-slate-800/80 border border-emerald-500/20 rounded-3xl p-10 text-center relative overflow-hidden"
         >
           <Factory className="absolute -top-10 -right-10 w-40 h-40 text-emerald-500/5 rotate-12" />
           <h3 className="text-2xl text-emerald-300 font-semibold mb-6 flex items-center justify-center gap-3">
             <Activity className="w-6 h-6" />
-            {language === 'mr' ? 'सामाजिक प्रभाव' : 'Social Impact'}
+            {data.labels?.impact ? getTranslation(data.labels.impact) : (language === 'mr' ? 'सामाजिक प्रभाव' : 'Social Impact')}
           </h3>
           <p className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed italic">
             "{getTranslation(data.impactStatement)}"

@@ -2,10 +2,12 @@ import React, { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
 
 interface PhoneticInputProps {
-  label: string;
+  label?: string;
   placeholder?: string;
   value?: string;
   onChange?: (value: string) => void;
+  englishValue?: string;
+  onEnglishChange?: (value: string) => void;
   onTranslate?: (text: string) => void;
   className?: string;
   multiline?: boolean;
@@ -17,6 +19,8 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
   placeholder,
   value = '',
   onChange,
+  englishValue,
+  onEnglishChange,
   onTranslate,
   className = '',
   multiline = false,
@@ -27,7 +31,7 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
   const [isFetching, setIsFetching] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [isTranslating, setIsTranslating] = useState(false);
-  
+
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -58,10 +62,10 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
       setIsFetching(false);
       return;
     }
-    
+
     setIsFetching(true);
     setFetchError(null);
-    
+
     try {
       const res = await axios.get(`http://localhost:5000/api/v1/transliterate?text=${encodeURIComponent(word)}`);
       if (res.data[0] === 'SUCCESS') {
@@ -90,25 +94,25 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
   const commitSuggestion = (suggestion: string) => {
     if (!inputRef.current) return;
     const currentCursor = inputRef.current.selectionStart || 0;
-    
+
     // Find the word bounds
     const textBeforeCursor = value.substring(0, currentCursor);
     const textAfterCursor = value.substring(currentCursor);
-    
+
     const lastSpaceIndex = textBeforeCursor.lastIndexOf(' ');
     const wordStart = lastSpaceIndex === -1 ? 0 : lastSpaceIndex + 1;
-    
+
     const newTextBefore = textBeforeCursor.substring(0, wordStart);
-    
+
     // The new value: text before the word + the suggestion + space + text after cursor
     const newValue = newTextBefore + suggestion + ' ' + textAfterCursor;
-    
+
     if (onChange) {
       onChange(newValue);
     }
-    
+
     setSuggestions([]);
-    
+
     // We want to preserve cursor position after the new word and space
     // Need to do it slightly async so React can render the new value first
     setTimeout(() => {
@@ -121,11 +125,11 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
 
   const checkActiveWord = (text: string, cursorPosition: number) => {
     if (!transliterate) return;
-    
+
     const activeWord = getActiveWord(text, cursorPosition);
-    
+
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    
+
     // If there is an active word, fetch suggestions
     if (activeWord) {
       timeoutRef.current = setTimeout(() => {
@@ -140,7 +144,7 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawVal = e.target.value;
     const currentCursor = e.target.selectionStart || 0;
-    
+
     // Immediately tell parent about raw value (fully controlled)
     if (onChange) {
       onChange(rawVal);
@@ -181,74 +185,118 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
     }
   };
 
-  const handleTranslateClick = () => {
+  const handleTranslateClick = async () => {
     if (onTranslate && value.trim()) {
       onTranslate(value);
+    } else if (onEnglishChange && value.trim()) {
+      setIsTranslating(true);
+      try {
+        const res = await axios.get('http://localhost:5000/api/v1/translate', {
+          params: { text: value, source: 'mr', target: 'en' }
+        });
+        const translatedText = res.data?.responseData?.translatedText;
+        if (translatedText) {
+          onEnglishChange(translatedText);
+        }
+      } catch (err) {
+        console.error('Translation failed', err);
+      } finally {
+        setIsTranslating(false);
+      }
     }
   };
 
-  return (
-    <div className={`relative flex flex-col justify-end h-full ${className}`} ref={wrapperRef}>
-      <div className="flex flex-wrap justify-between items-end mb-1 gap-x-2">
-        <label className="block text-sm font-medium text-gray-700 leading-tight">{label}</label>
-        {onTranslate && (
-          <span 
-            onClick={handleTranslateClick}
-            className="text-xs text-blue-600 cursor-pointer hover:underline whitespace-nowrap shrink-0"
-          >
-            Auto Translate
-          </span>
-        )}
-      </div>
-      {multiline ? (
+  const renderInput = (
+    val: string,
+    changeHandler: any,
+    isTranslatingInput: boolean,
+    inputPlaceholder: string | undefined
+  ) => {
+    if (multiline) {
+      return (
         <textarea
-          ref={inputRef as any}
-          value={value}
-          onChange={handleInput as any}
-          onKeyDown={handleKeyDown as any}
-          onKeyUp={handleCursorChange as any}
-          onMouseUp={handleCursorChange as any}
-          onFocus={handleCursorChange as any}
+          ref={isTranslatingInput ? (inputRef as any) : null}
+          value={val}
+          onChange={changeHandler}
+          onKeyDown={isTranslatingInput ? (handleKeyDown as any) : undefined}
+          onKeyUp={isTranslatingInput ? (handleCursorChange as any) : undefined}
+          onMouseUp={isTranslatingInput ? (handleCursorChange as any) : undefined}
+          onFocus={isTranslatingInput ? (handleCursorChange as any) : undefined}
           className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors min-h-[80px] resize-y"
-          placeholder={placeholder}
+          placeholder={inputPlaceholder}
           rows={3}
         />
-      ) : (
-        <input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={handleInput}
-          onKeyDown={handleKeyDown}
-          onKeyUp={handleCursorChange}
-          onMouseUp={handleCursorChange}
-          onFocus={handleCursorChange}
-          className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors"
-          placeholder={placeholder}
-        />
-      )}
-      
-      {/* Dropdown Suggestions or States */}
-      {(suggestions.length > 0 || isFetching || fetchError) && (
-        <div className="absolute top-[100%] left-0 z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden">
-          {isFetching && suggestions.length === 0 && (
-            <div className="px-4 py-2 text-sm text-gray-500 italic">Translating...</div>
-          )}
-          {fetchError && (
-            <div className="px-4 py-2 text-sm text-red-500">{fetchError}</div>
-          )}
-          {suggestions.length > 0 && suggestions.map((suggestion, index) => (
-            <div
-              key={index}
-              onClick={() => commitSuggestion(suggestion)}
-              onMouseEnter={() => setActiveIndex(index)}
-              className={`cursor-pointer px-4 py-2 text-sm ${
-                index === activeIndex ? 'bg-[#5bc0de] text-white' : 'text-gray-700 hover:bg-gray-100'
+      );
+    }
+    return (
+      <input
+        ref={isTranslatingInput ? inputRef : null}
+        type="text"
+        value={val}
+        onChange={changeHandler}
+        onKeyDown={isTranslatingInput ? handleKeyDown : undefined}
+        onKeyUp={isTranslatingInput ? handleCursorChange : undefined}
+        onMouseUp={isTranslatingInput ? handleCursorChange : undefined}
+        onFocus={isTranslatingInput ? handleCursorChange : undefined}
+        className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors"
+        placeholder={inputPlaceholder}
+      />
+    );
+  };
+
+  const renderSuggestions = () => {
+    if (!(suggestions.length > 0 || isFetching || fetchError)) return null;
+    return (
+      <div className="absolute top-[100%] left-0 z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden">
+        {isFetching && suggestions.length === 0 && (
+          <div className="px-4 py-2 text-sm text-gray-500 italic">Translating...</div>
+        )}
+        {fetchError && (
+          <div className="px-4 py-2 text-sm text-red-500">{fetchError}</div>
+        )}
+        {suggestions.length > 0 && suggestions.map((suggestion, index) => (
+          <div
+            key={index}
+            onClick={() => commitSuggestion(suggestion)}
+            onMouseEnter={() => setActiveIndex(index)}
+            className={`cursor-pointer px-4 py-2 text-sm ${index === activeIndex ? 'bg-[#5bc0de] text-white' : 'text-gray-700 hover:bg-gray-100'
               }`}
+          >
+            {suggestion}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className={`relative flex flex-col justify-end ${className}`} ref={wrapperRef}>
+      {(label || onTranslate || onEnglishChange) && (
+        <div className="flex flex-wrap justify-between items-end mb-1 gap-x-2">
+          {label ? <label className="block text-sm font-medium text-gray-700 leading-tight">{label}</label> : <div></div>}
+          {(onTranslate || onEnglishChange) && (
+            <span
+              onClick={handleTranslateClick}
+              className="text-xs text-blue-600 cursor-pointer hover:underline whitespace-nowrap shrink-0"
             >
-              {suggestion}
-            </div>
-          ))}
+              {isTranslating ? 'Translating...' : 'Auto Translate'}
+            </span>
+          )}
+        </div>
+      )}
+
+      {onEnglishChange ? (
+        <div className="flex flex-col gap-2">
+          <div className="relative">
+            {renderInput(value, handleInput, true, placeholder ? `${placeholder} (Marathi)` : 'Marathi')}
+            {renderSuggestions()}
+          </div>
+          {renderInput(englishValue || '', (e: any) => onEnglishChange(e.target.value), false, placeholder ? `${placeholder} (English)` : 'English')}
+        </div>
+      ) : (
+        <div className="relative">
+          {renderInput(value, handleInput, true, placeholder)}
+          {renderSuggestions()}
         </div>
       )}
     </div>

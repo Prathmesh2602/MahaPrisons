@@ -5,20 +5,20 @@ import { useAccessibility } from '../../../hooks/useAccessibility';
 import { yerawadaOpenJailData } from '../../../data/yerawadaOpenJailData';
 import { ChevronRight } from 'lucide-react';
 
-export const ActivitiesRehab = () => {
+export const ActivitiesRehab = ({ data: propData }) => {
   const { language } = useAccessibility();
-  const data = yerawadaOpenJailData;
-  const getTranslation = (obj) => obj[language] || obj.en;
+  const data = propData || yerawadaOpenJailData.activities;
+  const getTranslation = (obj) => obj?.[language] || obj?.en || "";
 
   return (
-    <section className="mb-20">
+    <section data-block-type="prison_activities" className="mb-20">
       <div className="text-center mb-16">
-        <h3 className="text-2xl md:text-3xl font-semibold text-[#0F3D66] dark-mode:text-white mb-6">{getTranslation(data.activities.title)}</h3>
-        <p className="text-base text-gray-600 dark-mode:text-gray-400 max-w-2xl mx-auto">{getTranslation(data.overview.description)}</p>
+        <h3 className="text-2xl md:text-3xl font-semibold text-[#0F3D66] dark-mode:text-white mb-6">{getTranslation(data.title)}</h3>
+        <p className="text-base text-gray-600 dark-mode:text-gray-400 max-w-2xl mx-auto">{getTranslation(data.description || yerawadaOpenJailData.activities.description)}</p>
       </div>
 
       <div className="space-y-12 max-w-6xl mx-auto px-4 md:px-12 lg:px-24">
-        {data.activities.list.map((activity, idx) => (
+        {data.list?.map((activity, idx) => (
           <motion.div
             key={idx}
             initial={{ opacity: 0, y: 60 }}

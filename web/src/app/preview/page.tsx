@@ -5,8 +5,8 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import LiveWallpaperBg from '../../components/LiveWallpaperBg';
 import { AccessibilityProvider } from '../../hooks/useAccessibility';
-import HomePage from '../../pages/HomePage';
 import Layout from '../../components/Layout';
+import { PageRenderer } from '../../components/PageRenderer';
 
 export default function PreviewPage() {
   const [componentType, setComponentType] = useState<string | null>(null);
@@ -99,7 +99,11 @@ export default function PreviewPage() {
           }
         `}} />
         <Layout menuData={menuData} settingsData={globalSettings}>
-          <HomePage pageData={{ contentBlocks: settingsData?.blocks || [] }} />
+          <PageRenderer 
+            slug={settingsData?.slug} 
+            layoutType={settingsData?.layoutType} 
+            pageData={{ contentBlocks: settingsData?.blocks || [] }} 
+          />
         </Layout>
       </AccessibilityProvider>
     );

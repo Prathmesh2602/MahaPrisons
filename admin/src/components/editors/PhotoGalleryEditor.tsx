@@ -66,8 +66,7 @@ const GalleryItemBlock = ({
             </div>
             <div className="flex-1 space-y-2">
               <div className="space-y-1">
-                <PhoneticInput label="Title (Marathi)" value={currentItem.title?.mr} onChange={(val) => handleLocalUpdate('title.mr', val)} onTranslate={(text) => onTranslate(text, index, 'title.en')} />
-                <PhoneticInput label="Title (English)" transliterate={false} value={currentItem.title?.en} onChange={(val) => handleLocalUpdate('title.en', val)} />
+                <PhoneticInput label="Title " value={currentItem.title?.mr} onChange={(val) => handleLocalUpdate('title.mr', val)} englishValue={currentItem.title?.en} onEnglishChange={(val) => handleLocalUpdate('title.en', val)} />
               </div>
             </div>
           </div>

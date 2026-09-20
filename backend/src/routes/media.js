@@ -108,4 +108,56 @@ router.delete('/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// POST /api/v1/media/import-url - Import an external URL to DB
+router.post('/import-url', authMiddleware, async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url || !url.startsWith('http')) {
+      return res.status(400).json({ error: 'Invalid URL provided' });
+    }
+
+    const axios = require('axios');
+    const response = await axios({
+      method: 'GET',
+      url: url,
+      responseType: 'stream',
+    });
+
+    const contentType = response.headers['content-type'];
+    if (!contentType || (!contentType.startsWith('image/') && contentType !== 'application/pdf')) {
+      return res.status(400).json({ error: 'Invalid file type from URL. Only images and PDFs are allowed.' });
+    }
+
+    const ext = contentType === 'application/pdf' ? '.pdf' : '.' + contentType.split('/')[1].replace('jpeg', 'jpg');
+    const filename = Date.now() + '-' + Math.round(Math.random() * 1E9) + ext;
+    const filepath = path.join(uploadDir, filename);
+
+    const writer = fs.createWriteStream(filepath);
+    response.data.pipe(writer);
+
+    await new Promise((resolve, reject) => {
+      writer.on('finish', resolve);
+      writer.on('error', reject);
+    });
+
+    const stats = fs.statSync(filepath);
+    const localUrl = `/uploads/${filename}`;
+
+    const media = await prisma.media.create({
+      data: {
+        filename,
+        filepath,
+        mimetype: contentType,
+        size: stats.size,
+        url: localUrl
+      }
+    });
+
+    res.status(201).json(media);
+  } catch (error) {
+    console.error('Error importing media from URL:', error);
+    res.status(500).json({ error: 'Failed to import media from URL' });
+  }
+});
+
 module.exports = router;

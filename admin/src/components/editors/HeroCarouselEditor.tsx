@@ -87,13 +87,11 @@ const HeroCarouselSlide = ({
           <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">2. Headings</label>
           <div className="flex flex-col gap-2 p-2 bg-white border border-slate-200 rounded-md shadow-sm border-l-4 border-l-blue-400">
             <div className="space-y-1">
-              <PhoneticInput label="Category (Marathi)" value={currentSlide.category?.mr} onChange={(val) => handleLocalUpdate('category.mr', val)} onTranslate={(text) => onTranslate(text, index, 'category.en')} />
-              <PhoneticInput label="Category (English)" transliterate={false} value={currentSlide.category?.en} onChange={(val) => handleLocalUpdate('category.en', val)} />
+              <PhoneticInput label="Category " value={currentSlide.category?.mr} onChange={(val) => handleLocalUpdate('category.mr', val)} englishValue={currentSlide.category?.en} onEnglishChange={(val) => handleLocalUpdate('category.en', val)} />
             </div>
             <div className="w-full h-px bg-slate-100"></div>
             <div className="space-y-1">
-              <PhoneticInput label="Title (Marathi)" value={currentSlide.title?.mr} onChange={(val) => handleLocalUpdate('title.mr', val)} onTranslate={(text) => onTranslate(text, index, 'title.en')} />
-              <PhoneticInput label="Title (English)" transliterate={false} value={currentSlide.title?.en} onChange={(val) => handleLocalUpdate('title.en', val)} />
+              <PhoneticInput label="Title " value={currentSlide.title?.mr} onChange={(val) => handleLocalUpdate('title.mr', val)} englishValue={currentSlide.title?.en} onEnglishChange={(val) => handleLocalUpdate('title.en', val)} />
             </div>
           </div>
         </div>
@@ -102,13 +100,11 @@ const HeroCarouselSlide = ({
           <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">3. Content Body</label>
           <div className="flex flex-col gap-2 p-2 bg-white border border-slate-200 rounded-md shadow-sm border-l-4 border-l-emerald-400">
             <div className="space-y-1">
-              <PhoneticInput label="Statement (Marathi)" value={currentSlide.statement?.mr} onChange={(val) => handleLocalUpdate('statement.mr', val)} onTranslate={(text) => onTranslate(text, index, 'statement.en')} />
-              <PhoneticInput label="Statement (English)" transliterate={false} value={currentSlide.statement?.en} onChange={(val) => handleLocalUpdate('statement.en', val)} />
+              <PhoneticInput label="Statement " value={currentSlide.statement?.mr} onChange={(val) => handleLocalUpdate('statement.mr', val)} englishValue={currentSlide.statement?.en} onEnglishChange={(val) => handleLocalUpdate('statement.en', val)} />
             </div>
             <div className="w-full h-px bg-slate-100"></div>
             <div className="space-y-1">
-              <PhoneticInput multiline label="Description (Marathi)" value={currentSlide.description?.mr} onChange={(val) => handleLocalUpdate('description.mr', val)} onTranslate={(text) => onTranslate(text, index, 'description.en')} />
-              <PhoneticInput multiline label="Description (English)" transliterate={false} value={currentSlide.description?.en} onChange={(val) => handleLocalUpdate('description.en', val)} />
+              <PhoneticInput multiline label="Description " value={currentSlide.description?.mr} onChange={(val) => handleLocalUpdate('description.mr', val)} englishValue={currentSlide.description?.en} onEnglishChange={(val) => handleLocalUpdate('description.en', val)} />
             </div>
           </div>
         </div>
@@ -117,8 +113,7 @@ const HeroCarouselSlide = ({
           <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">4. Actions</label>
           <div className="flex flex-col gap-2 p-2 bg-white border border-slate-200 rounded-md shadow-sm border-l-4 border-l-amber-400">
             <div className="space-y-1">
-              <PhoneticInput label="Primary CTA (Marathi)" value={currentSlide.cta1?.mr} onChange={(val) => handleLocalUpdate('cta1.mr', val)} onTranslate={(text) => onTranslate(text, index, 'cta1.en')} />
-              <PhoneticInput label="Primary CTA (English)" transliterate={false} value={currentSlide.cta1?.en} onChange={(val) => handleLocalUpdate('cta1.en', val)} />
+              <PhoneticInput label="Primary CTA " value={currentSlide.cta1?.mr} onChange={(val) => handleLocalUpdate('cta1.mr', val)} englishValue={currentSlide.cta1?.en} onEnglishChange={(val) => handleLocalUpdate('cta1.en', val)} />
               <PhoneticInput label="Primary CTA Link" transliterate={false} value={currentSlide.cta1?.href} onChange={(val) => handleLocalUpdate('cta1.href', val)} placeholder="https://" />
             </div>
             <div className="w-full h-px bg-slate-100"></div>
@@ -128,8 +123,7 @@ const HeroCarouselSlide = ({
             </div>
             {currentSlide.cta2 && (
               <div className="space-y-1 pl-4 border-l-2 border-slate-200">
-                <PhoneticInput label="Secondary CTA (Marathi)" value={currentSlide.cta2.mr} onChange={(val) => handleLocalUpdate('cta2.mr', val)} onTranslate={(text) => onTranslate(text, index, 'cta2.en')} />
-                <PhoneticInput label="Secondary CTA (English)" transliterate={false} value={currentSlide.cta2.en} onChange={(val) => handleLocalUpdate('cta2.en', val)} />
+                <PhoneticInput label="Secondary CTA " value={currentSlide.cta2.mr} onChange={(val) => handleLocalUpdate('cta2.mr', val)} englishValue={currentSlide.cta2.en} onEnglishChange={(val) => handleLocalUpdate('cta2.en', val)} />
                 <PhoneticInput label="Secondary CTA Link" transliterate={false} value={currentSlide.cta2.href} onChange={(val) => handleLocalUpdate('cta2.href', val)} placeholder="https://" />
               </div>
             )}
@@ -200,20 +194,17 @@ const DirectorMessageBlock = ({ messageData, onUpdateFull, onMediaSelect, onTran
           </div>
           <div className="flex-1 space-y-2">
             <div className="space-y-1">
-              <PhoneticInput label="Name (Marathi)" value={data.name?.mr} onChange={(val) => handleLocalUpdate('name.mr', val)} onTranslate={(text) => onTranslate(text, 'name.en')} />
-              <PhoneticInput label="Name (English)" transliterate={false} value={data.name?.en} onChange={(val) => handleLocalUpdate('name.en', val)} />
+              <PhoneticInput label="Name " value={data.name?.mr} onChange={(val) => handleLocalUpdate('name.mr', val)} englishValue={data.name?.en} onEnglishChange={(val) => handleLocalUpdate('name.en', val)} />
             </div>
           </div>
         </div>
 
         <div className="space-y-1">
-          <PhoneticInput label="Designation (Marathi)" value={data.designation?.mr} onChange={(val) => handleLocalUpdate('designation.mr', val)} onTranslate={(text) => onTranslate(text, 'designation.en')} />
-          <PhoneticInput label="Designation (English)" transliterate={false} value={data.designation?.en} onChange={(val) => handleLocalUpdate('designation.en', val)} />
+          <PhoneticInput label="Designation " value={data.designation?.mr} onChange={(val) => handleLocalUpdate('designation.mr', val)} englishValue={data.designation?.en} onEnglishChange={(val) => handleLocalUpdate('designation.en', val)} />
         </div>
 
         <div className="space-y-1">
-          <PhoneticInput multiline label="Quote (Marathi)" value={data.quote?.mr} onChange={(val) => handleLocalUpdate('quote.mr', val)} onTranslate={(text) => onTranslate(text, 'quote.en')} />
-          <PhoneticInput multiline label="Quote (English)" transliterate={false} value={data.quote?.en} onChange={(val) => handleLocalUpdate('quote.en', val)} />
+          <PhoneticInput multiline label="Quote " value={data.quote?.mr} onChange={(val) => handleLocalUpdate('quote.mr', val)} englishValue={data.quote?.en} onEnglishChange={(val) => handleLocalUpdate('quote.en', val)} />
         </div>
 
         <div className="space-y-1">
