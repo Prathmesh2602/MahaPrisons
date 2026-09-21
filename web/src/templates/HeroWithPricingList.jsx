@@ -9,9 +9,9 @@ const iconMap = {
   Scissors, Sparkles, ShieldCheck, Razor: Scissors // fallback
 };
 
-const HeroWithPricingList = ({ dataId }) => {
+const HeroWithPricingList = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = socialActivitiesData[dataId];
+  const data = dynamicData || socialActivitiesData[dataId];
 
   useLayoutEffect(() => {
     const originalStyle = window.getComputedStyle(document.documentElement).scrollBehavior;
@@ -26,7 +26,7 @@ const HeroWithPricingList = ({ dataId }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark-mode:bg-gray-950 text-gray-900 dark-mode:text-gray-100">
+    <div data-block-type="template" className="min-h-screen bg-gray-50 dark-mode:bg-gray-950 text-gray-900 dark-mode:text-gray-100">
       
       {/* Full Width Hero with Overlay */}
       <div className="relative h-[60vh] min-h-[500px] flex items-center justify-center">
@@ -79,7 +79,7 @@ const HeroWithPricingList = ({ dataId }) => {
               {getTranslation(data.description)}
             </p>
 
-            <div className="bg-gray-50 dark-mode:bg-gray-950 p-6 rounded-xl border border-gray-100 dark-mode:border-gray-800">
+            <div data-block-type="template_impact" className="bg-gray-50 dark-mode:bg-gray-950 p-6 rounded-xl border border-gray-100 dark-mode:border-gray-800">
               <div className="flex items-center gap-4 mb-2">
                 <Users className="w-8 h-8 text-blue-600 dark-mode:text-blue-400" />
                 <span className="text-3xl font-black text-gray-900 dark-mode:text-white">{data.impact.value}</span>
@@ -95,7 +95,7 @@ const HeroWithPricingList = ({ dataId }) => {
               {language === 'mr' ? 'प्रशिक्षण व सेवा' : 'Training & Services'}
             </h3>
             
-            <div className="flex flex-col gap-4">
+            <div data-block-type="template_services" className="flex flex-col gap-4">
               {data.services.map((service, idx) => {
                 const Icon = iconMap[service.icon] || Check;
                 return (

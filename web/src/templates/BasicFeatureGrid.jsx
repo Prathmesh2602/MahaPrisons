@@ -6,9 +6,9 @@ import { Users, Calendar, Scale, BookOpen, MapPin, Phone, Mail, Shield } from 'l
 
 const iconMap = { Users, Calendar, Scale, BookOpen };
 
-const BasicFeatureGrid = ({ dataId }) => {
+const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -17,7 +17,7 @@ const BasicFeatureGrid = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200 py-12">
+    <div data-block-type="template" className="min-h-screen bg-[#F8FAFC] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200 py-12">
       <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
         
         {/* Header Title */}
@@ -51,7 +51,7 @@ const BasicFeatureGrid = ({ dataId }) => {
               {language === 'mr' ? 'प्रमुख वैशिष्ट्ये' : 'Key Features'}
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {data.keyFunctions.map((func, idx) => {
                 const Icon = iconMap[func.icon] || Scale;
                 return (
@@ -73,7 +73,7 @@ const BasicFeatureGrid = ({ dataId }) => {
               <h3 className="text-lg font-bold uppercase tracking-wider text-gray-400 mb-6 border-b border-gray-100 dark-mode:border-gray-700 pb-3">
                 {language === 'mr' ? 'दृष्टिक्षेपात' : 'At a Glance'}
               </h3>
-              <div className="space-y-6">
+              <div data-block-type="template_stats" className="space-y-6">
                 {data.stats.map((stat, idx) => {
                   const Icon = iconMap[stat.icon] || Users;
                   return (

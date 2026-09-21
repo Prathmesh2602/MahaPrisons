@@ -7,9 +7,9 @@ import { Clock, Award, Heart, Briefcase, Flag, MapPin, Phone, Mail } from 'lucid
 
 const iconMap = { Clock, Award, Heart, Briefcase, Flag };
 
-const HeroBannerWithBadges = ({ dataId }) => {
+const HeroBannerWithBadges = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 1000], [0, 300]);
 
@@ -20,7 +20,7 @@ const HeroBannerWithBadges = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-white dark-mode:bg-black text-gray-900 dark-mode:text-white font-poppins overflow-hidden">
+    <div data-block-type="template" className="min-h-screen bg-white dark-mode:bg-black text-gray-900 dark-mode:text-white font-poppins overflow-hidden">
       
       {/* Parallax Hero */}
       <div className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
@@ -51,7 +51,7 @@ const HeroBannerWithBadges = ({ dataId }) => {
         </div>
 
         {/* Big Numbers Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32">
+        <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32">
           {data.stats.map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Award;
             return (
@@ -69,7 +69,7 @@ const HeroBannerWithBadges = ({ dataId }) => {
         </div>
 
         {/* Diagonal Cards for Key Functions */}
-        <div className="space-y-32">
+        <div data-block-type="template_keyFunctions" className="space-y-32">
           {data.keyFunctions.map((func, idx) => {
             const Icon = iconMap[func.icon] || Briefcase;
             const isEven = idx % 2 === 0;

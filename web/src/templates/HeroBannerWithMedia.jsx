@@ -7,9 +7,9 @@ import { Phone, Clock, ShieldCheck, PhoneCall, Video, MapPin, Mail, Cpu } from '
 
 const iconMap = { Phone, Clock, ShieldCheck, PhoneCall, Video };
 
-const HeroBannerWithMedia = ({ dataId }) => {
+const HeroBannerWithMedia = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -18,7 +18,7 @@ const HeroBannerWithMedia = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#050B14] text-gray-200 font-poppins relative overflow-hidden">
+    <div data-block-type="template" className="min-h-screen bg-[#050B14] text-gray-200 font-poppins relative overflow-hidden">
       
       {/* Tech Background Elements */}
       <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
@@ -68,7 +68,7 @@ const HeroBannerWithMedia = ({ dataId }) => {
             <p className="text-lg leading-relaxed text-gray-300 mb-8">
               {getTranslation(data.description)}
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div data-block-type="template_stats" className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {data.stats.map((stat, idx) => {
                 const Icon = iconMap[stat.icon] || Cpu;
                 return (
@@ -84,7 +84,7 @@ const HeroBannerWithMedia = ({ dataId }) => {
         </div>
 
         {/* Glassmorphic Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+        <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {data.keyFunctions.map((func, idx) => {
             const Icon = iconMap[func.icon] || PhoneCall;
             return (

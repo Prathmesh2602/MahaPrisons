@@ -5,9 +5,9 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { socialActivitiesData } from '../data/socialActivitiesData';
 import { Settings, Zap, CheckCircle2, Factory, TrendingUp } from 'lucide-react';
 
-const HeroWithProcessGrid = ({ dataId }) => {
+const HeroWithProcessGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = socialActivitiesData[dataId];
+  const data = dynamicData || socialActivitiesData[dataId];
 
   useLayoutEffect(() => {
     const originalStyle = window.getComputedStyle(document.documentElement).scrollBehavior;
@@ -22,7 +22,7 @@ const HeroWithProcessGrid = ({ dataId }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark-mode:bg-slate-950 text-slate-800 dark-mode:text-slate-200">
+    <div data-block-type="template" className="min-h-screen bg-slate-50 dark-mode:bg-slate-950 text-slate-800 dark-mode:text-slate-200">
       
       {/* Corporate Hero Banner */}
       <div className="relative bg-white dark-mode:bg-slate-900 border-b border-slate-200 dark-mode:border-slate-800">
@@ -92,7 +92,7 @@ const HeroWithProcessGrid = ({ dataId }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           
           {/* Key Metrics / Stats */}
-          <div className="lg:col-span-1 space-y-6">
+          <div data-block-type="template_stats" className="lg:col-span-1 space-y-6">
             <h3 className="text-2xl font-bold text-slate-800 dark-mode:text-white mb-6 border-b border-slate-200 dark-mode:border-slate-800 pb-4">
               {language === 'mr' ? 'प्रकल्पाची ठळक वैशिष्ट्ये' : 'Project Highlights'}
             </h3>
@@ -114,7 +114,7 @@ const HeroWithProcessGrid = ({ dataId }) => {
               {language === 'mr' ? 'तांत्रिक प्रशिक्षण क्षेत्रे' : 'Technical Training Areas'}
             </h3>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div data-block-type="template_technicalFocus" className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {data.technicalFocus.map((item, idx) => (
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: idx * 0.1 }}

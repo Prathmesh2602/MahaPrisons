@@ -7,9 +7,9 @@ import { Users, Video, Clock, Monitor, MapPin, Mail, Phone } from 'lucide-react'
 
 const iconMap = { Users, Video, Clock, Monitor };
 
-const SideBySideListCards = ({ dataId }) => {
+const SideBySideListCards = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -18,7 +18,7 @@ const SideBySideListCards = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-gray-50 dark-mode:bg-gray-900 font-poppins flex flex-col md:flex-row">
+    <div data-block-type="template" className="min-h-screen bg-gray-50 dark-mode:bg-gray-900 font-poppins flex flex-col md:flex-row">
       
       {/* Left: Sticky Image Half */}
       <div className="w-full md:w-1/2 md:h-screen md:sticky top-0 relative overflow-hidden">
@@ -64,7 +64,7 @@ const SideBySideListCards = ({ dataId }) => {
         </motion.div>
 
         {/* Stats Flex */}
-        <div className="flex flex-wrap gap-4 mb-16">
+        <div data-block-type="template_stats" className="flex flex-wrap gap-4 mb-16">
           {data.stats.map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Users;
             return (
@@ -87,7 +87,7 @@ const SideBySideListCards = ({ dataId }) => {
           {language === 'mr' ? 'सुविधेचे प्रकार' : 'Types of Facilities'}
         </h3>
         
-        <div className="space-y-8 mb-16">
+        <div data-block-type="template_keyFunctions" className="space-y-8 mb-16">
           {data.keyFunctions.map((func, idx) => {
             const Icon = iconMap[func.icon] || Users;
             return (

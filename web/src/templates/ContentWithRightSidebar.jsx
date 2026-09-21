@@ -7,9 +7,9 @@ import { Scale, Handshake, Users, Gavel, HeartHandshake, MapPin, Phone, Mail, Ch
 
 const iconMap = { Scale, Handshake, Users, Gavel, HeartHandshake };
 
-const ContentWithRightSidebar = ({ dataId }) => {
+const ContentWithRightSidebar = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -18,7 +18,7 @@ const ContentWithRightSidebar = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] dark-mode:bg-gray-950 font-poppins py-12 md:py-20">
+    <div data-block-type="template" className="min-h-screen bg-[#F3F4F6] dark-mode:bg-gray-950 font-poppins py-12 md:py-20">
       <div className="container mx-auto px-4 max-w-7xl">
         
         {/* Header section outside grid */}
@@ -49,6 +49,7 @@ const ContentWithRightSidebar = ({ dataId }) => {
           </motion.div>
 
           {/* Stats Blocks */}
+          <div data-block-type="template_stats" className="contents">
           {data.stats.map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Scale;
             return (
@@ -63,6 +64,7 @@ const ContentWithRightSidebar = ({ dataId }) => {
               </motion.div>
             );
           })}
+          </div>
 
           {/* Contact Block (takes up 2 columns in some layouts) */}
           <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.7 }} className="md:col-span-3 lg:col-span-1 rounded-[2rem] bg-emerald-600 p-8 text-white flex flex-col justify-between shadow-lg relative overflow-hidden">
@@ -81,6 +83,7 @@ const ContentWithRightSidebar = ({ dataId }) => {
           </motion.div>
 
           {/* Key Functions Blocks (wide) */}
+          <div data-block-type="template_keyFunctions" className="contents">
           {data.keyFunctions.map((func, idx) => {
             const Icon = iconMap[func.icon] || Gavel;
             return (
@@ -98,6 +101,7 @@ const ContentWithRightSidebar = ({ dataId }) => {
               </motion.div>
             );
           })}
+          </div>
 
         </div>
       </div>

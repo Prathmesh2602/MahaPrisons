@@ -5,9 +5,9 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { socialActivitiesData } from '../data/socialActivitiesData';
 import { Coffee, UtensilsCrossed, Utensils, HeartHandshake } from 'lucide-react';
 
-const HeroWithMenuGrid = ({ dataId }) => {
+const HeroWithMenuGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = socialActivitiesData[dataId];
+  const data = dynamicData || socialActivitiesData[dataId];
 
   useLayoutEffect(() => {
     const originalStyle = window.getComputedStyle(document.documentElement).scrollBehavior;
@@ -22,7 +22,7 @@ const HeroWithMenuGrid = ({ dataId }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFBF5] dark-mode:bg-[#2C1810] text-amber-950 dark-mode:text-amber-50">
+    <div data-block-type="template" className="min-h-screen bg-[#FFFBF5] dark-mode:bg-[#2C1810] text-amber-950 dark-mode:text-amber-50">
       
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[500px] overflow-hidden">
@@ -80,7 +80,7 @@ const HeroWithMenuGrid = ({ dataId }) => {
               </h2>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div data-block-type="template_menuHighlights" className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {data.menuHighlights.map((item, idx) => (
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: idx * 0.1 }}
@@ -94,7 +94,7 @@ const HeroWithMenuGrid = ({ dataId }) => {
               ))}
             </div>
             
-            <div className="mt-12 p-6 rounded-2xl bg-orange-500 text-white text-center italic text-xl font-medium shadow-lg shadow-orange-500/30">
+            <div data-block-type="template_motto" className="mt-12 p-6 rounded-2xl bg-orange-500 text-white text-center italic text-xl font-medium shadow-lg shadow-orange-500/30">
               "{getTranslation(data.motto)}"
             </div>
           </div>

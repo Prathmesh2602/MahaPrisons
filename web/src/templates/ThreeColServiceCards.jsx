@@ -5,9 +5,9 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { socialActivitiesData } from '../data/socialActivitiesData';
 import { Droplets, Wind, ShieldCheck } from 'lucide-react';
 
-const ThreeColServiceCards = ({ dataId }) => {
+const ThreeColServiceCards = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = socialActivitiesData[dataId];
+  const data = dynamicData || socialActivitiesData[dataId];
 
   useLayoutEffect(() => {
     const originalStyle = window.getComputedStyle(document.documentElement).scrollBehavior;

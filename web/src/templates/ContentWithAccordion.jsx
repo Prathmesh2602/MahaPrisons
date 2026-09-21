@@ -7,9 +7,9 @@ import { Coffee, TrendingUp, ShieldCheck, CreditCard, MapPin, Phone, Mail, Chevr
 
 const iconMap = { Coffee, TrendingUp, ShieldCheck, CreditCard };
 
-const ContentWithAccordion = ({ dataId }) => {
+const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
   const [activeCard, setActiveCard] = useState(null);
 
   useLayoutEffect(() => {
@@ -19,7 +19,7 @@ const ContentWithAccordion = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#FFFBF0] dark-mode:bg-[#1C1A17] font-poppins text-gray-800 dark-mode:text-gray-200">
+    <div data-block-type="template" className="min-h-screen bg-[#FFFBF0] dark-mode:bg-[#1C1A17] font-poppins text-gray-800 dark-mode:text-gray-200">
       
       {/* Cafe Header */}
       <div className="relative h-[50vh] min-h-[400px] flex items-center justify-center text-center">
@@ -51,7 +51,7 @@ const ContentWithAccordion = ({ dataId }) => {
         </fmotion.div>
 
         {/* Menu/Feature Cards (Interactive) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 max-w-5xl mx-auto">
+        <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 max-w-5xl mx-auto">
           {data.keyFunctions.map((func, idx) => {
             const Icon = iconMap[func.icon] || Coffee;
             const isActive = activeCard === idx;
@@ -88,7 +88,7 @@ const ContentWithAccordion = ({ dataId }) => {
         </div>
 
         {/* Cafe Stats (Coffee beans style) */}
-        <div className="flex flex-wrap justify-center gap-8 mb-24">
+        <div data-block-type="template_stats" className="flex flex-wrap justify-center gap-8 mb-24">
           {data.stats.map((stat, idx) => {
             const Icon = iconMap[stat.icon] || TrendingUp;
             return (

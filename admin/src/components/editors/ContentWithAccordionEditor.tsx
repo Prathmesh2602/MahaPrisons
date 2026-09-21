@@ -5,16 +5,15 @@ import { IconPickerInput } from './shared/IconPickerInput';
 import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
-import { MediaLibraryPopup } from '../MediaLibraryPopup';
 
-interface HeroFeatureListEditorProps {
+interface ContentWithAccordionEditorProps {
   data: any;
   updateData: (data: any) => void;
   blockId: string;
   expandedSection?: string | null;
 }
 
-const HighlightsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
+const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' };
   const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
@@ -58,11 +57,11 @@ const HighlightsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveU
   );
 };
 
-const ContentSectionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
-  const defaultItem = { image: '', imagePosition: '', title: { mr: '', en: '' }, description: { mr: '', en: '' } };
+const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
+  const defaultItem = { value: '', label: { mr: '', en: '' }, icon: '' };
   const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
-  const [mediaOpen_image, setMediaOpen_image] = useState(false);
+
 
   const handleLocalUpdate = (key: string, value: any) => {
     const newItem = JSON.parse(JSON.stringify(itemHist.value));
@@ -87,68 +86,22 @@ const ContentSectionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, on
       />
       {isExpanded && (
         <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
-          <div className="space-y-2">
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Image</label>
-            <div
-              className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
-              onClick={() => setMediaOpen_image(true)}
-            >
-              {currentItem.image ? (
-                <img
-                  src={currentItem.image.startsWith('http') ? currentItem.image : `http://localhost:5000${currentItem.image.startsWith('/') ? '' : '/'}${currentItem.image}`}
-                  className="w-full h-full object-cover"
-                  alt="Preview"
-                />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                  <span className="text-2xl mb-1">🖼</span>
-                  <span className="text-xs">Click to select image</span>
-                </div>
-              )}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white text-xs font-medium">Change Image</span>
-              </div>
-            </div>
-            <MediaLibraryPopup
-              isOpen={mediaOpen_image}
-              onClose={() => setMediaOpen_image(false)}
-              onSelect={(url: string) => { handleLocalUpdate('image', url); setMediaOpen_image(false); }}
-            />
-          </div>
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Image Position</label>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => handleLocalUpdate('imagePosition', 'left')}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium border transition-colors ${currentItem.imagePosition === 'left' || !currentItem.imagePosition ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-600 border-slate-300 hover:border-emerald-300'}`}
-              >
-                ◀ Left
-              </button>
-              <button
-                type="button"
-                onClick={() => handleLocalUpdate('imagePosition', 'right')}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium border transition-colors ${currentItem.imagePosition === 'right' ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-600 border-slate-300 hover:border-emerald-300'}`}
-              >
-                Right ▶
-              </button>
-            </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Value</label>
+            <input type="text" value={currentItem.value || ''} onChange={(e) => handleLocalUpdate('value', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
-            <PhoneticInput value={currentItem.title?.mr || ''} onChange={(val) => handleLocalUpdate('title', { ...currentItem.title, mr: val })} onEnglishChange={(val) => handleLocalUpdate('title', { ...currentItem.title, en: val })} englishValue={currentItem.title?.en || ''} />
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Label</label>
+            <PhoneticInput value={currentItem.label?.mr || ''} onChange={(val) => handleLocalUpdate('label', { ...currentItem.label, mr: val })} onEnglishChange={(val) => handleLocalUpdate('label', { ...currentItem.label, en: val })} englishValue={currentItem.label?.en || ''} />
           </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
-            <PhoneticInput value={currentItem.description?.mr || ''} onChange={(val) => handleLocalUpdate('description', { ...currentItem.description, mr: val })} onEnglishChange={(val) => handleLocalUpdate('description', { ...currentItem.description, en: val })} englishValue={currentItem.description?.en || ''} multiline />
-          </div>
+          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
         </div>
       )}
     </div>
   );
 };
 
-export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
+export const ContentWithAccordionEditor: React.FC<ContentWithAccordionEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
   const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
   const activeSection = (expandedSection || 'general').replace('template_', '');
 
@@ -212,56 +165,56 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
     );
   }
 
-  if (activeSection === 'highlights') {
+  if (activeSection === 'keyFunctions') {
     return (
       <div className="pb-10 space-y-4">
         <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Highlights</h3>
-          <p className="text-xs text-slate-500 mt-0.5">{(safeData.highlights || []).length} item(s)</p>
+          <h3 className="text-sm font-bold text-slate-700">Key Functions</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{(safeData.keyFunctions || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
-          {(safeData.highlights || []).map((item: any, index: number) => (
-            <HighlightsEditorItem
+          {(safeData.keyFunctions || []).map((item: any, index: number) => (
+            <KeyFunctionsEditorItem
               key={`item-${index}`} index={index} itemData={item}
-              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('highlights', i, newD)}
-              onRemove={() => removeArrayItem('highlights', index)}
-              onMoveUp={() => moveArrayItem('highlights', index, -1)}
-              onMoveDown={() => moveArrayItem('highlights', index, 1)}
-              isFirst={index === 0} isLast={index === (safeData.highlights || []).length - 1}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('keyFunctions', i, newD)}
+              onRemove={() => removeArrayItem('keyFunctions', index)}
+              onMoveUp={() => moveArrayItem('keyFunctions', index, -1)}
+              onMoveDown={() => moveArrayItem('keyFunctions', index, 1)}
+              isFirst={index === 0} isLast={index === (safeData.keyFunctions || []).length - 1}
               isExpanded={expandedItemIndex === index}
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('highlights', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Highlights Item
+          <button onClick={() => addArrayItem('keyFunctions', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
+            <Plus size={16} /> Add Key Functions Item
           </button>
         </div>
       </div>
     );
   }
 
-  if (activeSection === 'contentSections') {
+  if (activeSection === 'stats') {
     return (
       <div className="pb-10 space-y-4">
         <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Content Sections</h3>
-          <p className="text-xs text-slate-500 mt-0.5">{(safeData.contentSections || []).length} item(s)</p>
+          <h3 className="text-sm font-bold text-slate-700">Stats</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{(safeData.stats || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
-          {(safeData.contentSections || []).map((item: any, index: number) => (
-            <ContentSectionsEditorItem
+          {(safeData.stats || []).map((item: any, index: number) => (
+            <StatsEditorItem
               key={`item-${index}`} index={index} itemData={item}
-              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('contentSections', i, newD)}
-              onRemove={() => removeArrayItem('contentSections', index)}
-              onMoveUp={() => moveArrayItem('contentSections', index, -1)}
-              onMoveDown={() => moveArrayItem('contentSections', index, 1)}
-              isFirst={index === 0} isLast={index === (safeData.contentSections || []).length - 1}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('stats', i, newD)}
+              onRemove={() => removeArrayItem('stats', index)}
+              onMoveUp={() => moveArrayItem('stats', index, -1)}
+              onMoveDown={() => moveArrayItem('stats', index, 1)}
+              isFirst={index === 0} isLast={index === (safeData.stats || []).length - 1}
               isExpanded={expandedItemIndex === index}
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('contentSections', { image: '', imagePosition: '', title: { mr: '', en: '' }, description: { mr: '', en: '' } })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Content Sections Item
+          <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
+            <Plus size={16} /> Add Stats Item
           </button>
         </div>
       </div>

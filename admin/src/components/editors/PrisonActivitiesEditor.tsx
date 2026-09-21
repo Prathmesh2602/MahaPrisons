@@ -59,7 +59,7 @@ const GeneralSettingsBlock = ({ settingsData, onUpdateFull, onTranslate, isExpan
 };
 
 const ActivityBlock = ({ index, activityData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, onMediaSelect, onTranslate, isExpanded, onToggle }: any) => {
-  const defaultActivity = { id: "", image: "", title: { mr: "", en: "" }, desc: { mr: "", en: "" } };
+  const defaultActivity = { id: "", image: "", imagePosition: "left", title: { mr: "", en: "" }, desc: { mr: "", en: "" } };
 
   const activityHist = useBlockHistory(
     defaultActivity,
@@ -117,6 +117,26 @@ const ActivityBlock = ({ index, activityData, onUpdateFull, onRemove, onMoveUp, 
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <span className="text-white text-xs font-medium">Change Image</span>
               </div>
+            </div>
+          </div>
+          
+          <div className="space-y-1 mt-2 mb-2">
+            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Image Position</label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleLocalUpdate('imagePosition', 'left')}
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium border transition-colors ${currentActivity.imagePosition === 'left' || !currentActivity.imagePosition ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-600 border-slate-300 hover:border-emerald-300'}`}
+              >
+                ◀ Left
+              </button>
+              <button
+                type="button"
+                onClick={() => handleLocalUpdate('imagePosition', 'right')}
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium border transition-colors ${currentActivity.imagePosition === 'right' ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-600 border-slate-300 hover:border-emerald-300'}`}
+              >
+                Right ▶
+              </button>
             </div>
           </div>
           
@@ -226,7 +246,7 @@ export const PrisonActivitiesEditor = ({ blockId, initialData, onPreviewUpdate }
   const addActivity = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.list) newData.list = [];
-    newData.list.push({ id: "", image: "", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
+    newData.list.push({ id: "", image: "", imagePosition: "left", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
     setData(newData);
     updateHistoryState(newData);
   };

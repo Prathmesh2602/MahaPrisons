@@ -7,9 +7,9 @@ import { BookOpen, GraduationCap, School, Pencil, MapPin, Phone, Mail } from 'lu
 
 const iconMap = { BookOpen, GraduationCap, School, Pencil };
 
-const ContentWithTabs = ({ dataId }) => {
+const ContentWithTabs = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
   const [activeTab, setActiveTab] = useState(0);
 
   useLayoutEffect(() => {
@@ -19,7 +19,7 @@ const ContentWithTabs = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#F0F4F8] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200">
+    <div data-block-type="template" className="min-h-screen bg-[#F0F4F8] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200">
       
       {/* Academic Header */}
       <div className="bg-indigo-900 dark-mode:bg-indigo-950 pt-24 pb-32 px-6 text-center relative overflow-hidden">
@@ -49,7 +49,7 @@ const ContentWithTabs = ({ dataId }) => {
         </div>
 
         {/* Tabbed Interface for Key Functions */}
-        <div className="mb-24">
+        <div data-block-type="template_keyFunctions" className="mb-24">
           <div className="flex flex-wrap justify-center gap-2 mb-8">
             {data.keyFunctions.map((func, idx) => (
               <button
@@ -101,7 +101,7 @@ const ContentWithTabs = ({ dataId }) => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+        <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
           {data.stats.map((stat, idx) => {
             const Icon = iconMap[stat.icon] || School;
             return (

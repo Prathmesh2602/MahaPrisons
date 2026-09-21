@@ -1,8 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useBlockEditorState } from '../../hooks/useBlockEditorState';
 import { useAuth } from '../../context/AuthContext';
 import { EditorFormHeader } from '../EditorLayout';
 import { Save, Send } from 'lucide-react';
+import { BasicFeatureGridEditor } from './BasicFeatureGridEditor';
+import { CardsAndVerticalTimelineEditor } from './CardsAndVerticalTimelineEditor';
+import { ContactInfoGridEditor } from './ContactInfoGridEditor';
+import { ContentWithAccordionEditor } from './ContentWithAccordionEditor';
+import { ContentWithRightSidebarEditor } from './ContentWithRightSidebarEditor';
+import { ContentWithTabsEditor } from './ContentWithTabsEditor';
+import { HeroBannerWithArticlesEditor } from './HeroBannerWithArticlesEditor';
+import { HeroBannerWithBadgesEditor } from './HeroBannerWithBadgesEditor';
+import { HeroBannerWithMediaEditor } from './HeroBannerWithMediaEditor';
+import { HeroWithMenuGridEditor } from './HeroWithMenuGridEditor';
+import { HeroWithPricingListEditor } from './HeroWithPricingListEditor';
+import { HeroWithProcessGridEditor } from './HeroWithProcessGridEditor';
+import { IconsListWithTimelineEditor } from './IconsListWithTimelineEditor';
+import { MinimalIconGridEditor } from './MinimalIconGridEditor';
+import { SideBySideListCardsEditor } from './SideBySideListCardsEditor';
+import { ThreeColServiceCardsEditor } from './ThreeColServiceCardsEditor';
+import { TwoColEventCardsEditor } from './TwoColEventCardsEditor';
 import { HeroFeaturesTimelineLayoutEditor } from './HeroFeaturesTimelineLayoutEditor';
 import { HeroStatsGridEditor } from './HeroStatsGridEditor';
 import { HeroThreeColGridEditor } from './HeroThreeColGridEditor';
@@ -45,6 +62,40 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
 
   const renderEditor = () => {
     switch (layoutType) {
+      case 'BasicFeatureGrid':
+        return <BasicFeatureGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'CardsAndVerticalTimeline':
+        return <CardsAndVerticalTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'ContactInfoGrid':
+        return <ContactInfoGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'ContentWithAccordion':
+        return <ContentWithAccordionEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'ContentWithRightSidebar':
+        return <ContentWithRightSidebarEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'ContentWithTabs':
+        return <ContentWithTabsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'HeroBannerWithArticles':
+        return <HeroBannerWithArticlesEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'HeroBannerWithBadges':
+        return <HeroBannerWithBadgesEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'HeroBannerWithMedia':
+        return <HeroBannerWithMediaEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'HeroWithMenuGrid':
+        return <HeroWithMenuGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'HeroWithPricingList':
+        return <HeroWithPricingListEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'HeroWithProcessGrid':
+        return <HeroWithProcessGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'IconsListWithTimeline':
+        return <IconsListWithTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'MinimalIconGrid':
+        return <MinimalIconGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'SideBySideListCards':
+        return <SideBySideListCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'ThreeColServiceCards':
+        return <ThreeColServiceCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'TwoColEventCards':
+        return <TwoColEventCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
       case 'HeroFeaturesTimelineLayout':
         return <HeroFeaturesTimelineLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
       case 'HeroStatsGrid':

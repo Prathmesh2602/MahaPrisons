@@ -7,9 +7,9 @@ import { Leaf, Palette, Flower2, CalendarDays, MapPin } from 'lucide-react';
 
 const iconMap = { Leaf, Palette, Flower2, CalendarDays };
 
-const TwoColEventCards = ({ dataId }) => {
+const TwoColEventCards = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = socialActivitiesData[dataId];
+  const data = dynamicData || socialActivitiesData[dataId];
 
   useLayoutEffect(() => {
     const originalStyle = window.getComputedStyle(document.documentElement).scrollBehavior;
@@ -24,7 +24,7 @@ const TwoColEventCards = ({ dataId }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] dark-mode:bg-gray-950 text-gray-800 dark-mode:text-gray-200">
+    <div data-block-type="template" className="min-h-screen bg-[#FDFDFD] dark-mode:bg-gray-950 text-gray-800 dark-mode:text-gray-200">
       
       {/* Botanical Header */}
       <div className="container mx-auto px-6 lg:px-12 pt-24 pb-12 flex flex-col items-center text-center">
@@ -93,7 +93,7 @@ const TwoColEventCards = ({ dataId }) => {
             </div>
 
             <div className="w-full lg:w-1/2">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div data-block-type="template_venueFeatures" className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {data.venueFeatures.map((feature, idx) => {
                   const Icon = iconMap[feature.icon] || Leaf;
                   return (

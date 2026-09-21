@@ -7,9 +7,9 @@ import { Mail, IndianRupee, Search, MailOpen, CreditCard, MapPin, Phone, Send } 
 
 const iconMap = { Mail, IndianRupee, Search, MailOpen, CreditCard };
 
-const ContactInfoGrid = ({ dataId }) => {
+const ContactInfoGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -18,7 +18,7 @@ const ContactInfoGrid = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#FDFCF8] dark-mode:bg-[#1A1A1A] font-poppins text-gray-800 dark-mode:text-gray-200">
+    <div data-block-type="template" className="min-h-screen bg-[#FDFCF8] dark-mode:bg-[#1A1A1A] font-poppins text-gray-800 dark-mode:text-gray-200">
       
       {/* Top Banner Theme */}
       <div className="relative h-[45vh] min-h-[350px] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
@@ -55,7 +55,7 @@ const ContactInfoGrid = ({ dataId }) => {
             {getTranslation(data.description)}
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 border-t border-b border-gray-100 dark-mode:border-gray-800 py-8">
+          <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 border-t border-b border-gray-100 dark-mode:border-gray-800 py-8">
             {data.stats.map((stat, idx) => {
               const Icon = iconMap[stat.icon] || Mail;
               return (
@@ -72,7 +72,7 @@ const ContactInfoGrid = ({ dataId }) => {
             })}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {data.keyFunctions.map((func, idx) => {
               const Icon = iconMap[func.icon] || Mail;
               return (

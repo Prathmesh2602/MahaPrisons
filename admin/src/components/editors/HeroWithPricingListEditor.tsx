@@ -5,16 +5,55 @@ import { IconPickerInput } from './shared/IconPickerInput';
 import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
-import { MediaLibraryPopup } from '../MediaLibraryPopup';
 
-interface HeroFeatureListEditorProps {
+interface HeroWithPricingListEditorProps {
   data: any;
   updateData: (data: any) => void;
   blockId: string;
   expandedSection?: string | null;
 }
 
-const HighlightsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
+const ServicesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
+  const defaultItem = { name: { mr: '', en: '' }, icon: '' };
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const currentItem = itemHist.value;
+
+
+  const handleLocalUpdate = (key: string, value: any) => {
+    const newItem = JSON.parse(JSON.stringify(itemHist.value));
+    newItem[key] = value;
+    itemHist.update(newItem);
+  };
+
+  return (
+    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
+      <EditorBlockHeader
+        title={currentItem.title?.mr || currentItem.label?.mr || currentItem.name?.mr || currentItem.mr || `Item ${index + 1}`}
+        isExpanded={isExpanded}
+        onToggle={onToggle}
+        history={itemHist}
+        rightAction={
+          <div className="flex items-center gap-1 border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm">
+            <button onClick={onMoveUp} disabled={isFirst} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowUp size={14} /></button>
+            <button onClick={onMoveDown} disabled={isLast} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowDown size={14} /></button>
+            <button onClick={onRemove} className="p-1.5 text-red-500 hover:bg-red-50 transition-colors"><Trash2 size={14} /></button>
+          </div>
+        }
+      />
+      {isExpanded && (
+        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Name</label>
+            <PhoneticInput value={currentItem.name?.mr || ''} onChange={(val) => handleLocalUpdate('name', { ...currentItem.name, mr: val })} onEnglishChange={(val) => handleLocalUpdate('name', { ...currentItem.name, en: val })} englishValue={currentItem.name?.en || ''} />
+          </div>
+          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ImpactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' };
   const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
@@ -58,97 +97,7 @@ const HighlightsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveU
   );
 };
 
-const ContentSectionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
-  const defaultItem = { image: '', imagePosition: '', title: { mr: '', en: '' }, description: { mr: '', en: '' } };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
-  const currentItem = itemHist.value;
-  const [mediaOpen_image, setMediaOpen_image] = useState(false);
-
-  const handleLocalUpdate = (key: string, value: any) => {
-    const newItem = JSON.parse(JSON.stringify(itemHist.value));
-    newItem[key] = value;
-    itemHist.update(newItem);
-  };
-
-  return (
-    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
-      <EditorBlockHeader
-        title={currentItem.title?.mr || currentItem.label?.mr || currentItem.name?.mr || currentItem.mr || `Item ${index + 1}`}
-        isExpanded={isExpanded}
-        onToggle={onToggle}
-        history={itemHist}
-        rightAction={
-          <div className="flex items-center gap-1 border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm">
-            <button onClick={onMoveUp} disabled={isFirst} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowUp size={14} /></button>
-            <button onClick={onMoveDown} disabled={isLast} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowDown size={14} /></button>
-            <button onClick={onRemove} className="p-1.5 text-red-500 hover:bg-red-50 transition-colors"><Trash2 size={14} /></button>
-          </div>
-        }
-      />
-      {isExpanded && (
-        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
-          <div className="space-y-2">
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Image</label>
-            <div
-              className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
-              onClick={() => setMediaOpen_image(true)}
-            >
-              {currentItem.image ? (
-                <img
-                  src={currentItem.image.startsWith('http') ? currentItem.image : `http://localhost:5000${currentItem.image.startsWith('/') ? '' : '/'}${currentItem.image}`}
-                  className="w-full h-full object-cover"
-                  alt="Preview"
-                />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                  <span className="text-2xl mb-1">🖼</span>
-                  <span className="text-xs">Click to select image</span>
-                </div>
-              )}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white text-xs font-medium">Change Image</span>
-              </div>
-            </div>
-            <MediaLibraryPopup
-              isOpen={mediaOpen_image}
-              onClose={() => setMediaOpen_image(false)}
-              onSelect={(url: string) => { handleLocalUpdate('image', url); setMediaOpen_image(false); }}
-            />
-          </div>
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Image Position</label>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => handleLocalUpdate('imagePosition', 'left')}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium border transition-colors ${currentItem.imagePosition === 'left' || !currentItem.imagePosition ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-600 border-slate-300 hover:border-emerald-300'}`}
-              >
-                ◀ Left
-              </button>
-              <button
-                type="button"
-                onClick={() => handleLocalUpdate('imagePosition', 'right')}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium border transition-colors ${currentItem.imagePosition === 'right' ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-600 border-slate-300 hover:border-emerald-300'}`}
-              >
-                Right ▶
-              </button>
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
-            <PhoneticInput value={currentItem.title?.mr || ''} onChange={(val) => handleLocalUpdate('title', { ...currentItem.title, mr: val })} onEnglishChange={(val) => handleLocalUpdate('title', { ...currentItem.title, en: val })} englishValue={currentItem.title?.en || ''} />
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
-            <PhoneticInput value={currentItem.description?.mr || ''} onChange={(val) => handleLocalUpdate('description', { ...currentItem.description, mr: val })} onEnglishChange={(val) => handleLocalUpdate('description', { ...currentItem.description, en: val })} englishValue={currentItem.description?.en || ''} multiline />
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
+export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
   const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
   const activeSection = (expandedSection || 'general').replace('template_', '');
 
@@ -212,56 +161,56 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
     );
   }
 
-  if (activeSection === 'highlights') {
+  if (activeSection === 'services') {
     return (
       <div className="pb-10 space-y-4">
         <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Highlights</h3>
-          <p className="text-xs text-slate-500 mt-0.5">{(safeData.highlights || []).length} item(s)</p>
+          <h3 className="text-sm font-bold text-slate-700">Services</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{(safeData.services || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
-          {(safeData.highlights || []).map((item: any, index: number) => (
-            <HighlightsEditorItem
+          {(safeData.services || []).map((item: any, index: number) => (
+            <ServicesEditorItem
               key={`item-${index}`} index={index} itemData={item}
-              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('highlights', i, newD)}
-              onRemove={() => removeArrayItem('highlights', index)}
-              onMoveUp={() => moveArrayItem('highlights', index, -1)}
-              onMoveDown={() => moveArrayItem('highlights', index, 1)}
-              isFirst={index === 0} isLast={index === (safeData.highlights || []).length - 1}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('services', i, newD)}
+              onRemove={() => removeArrayItem('services', index)}
+              onMoveUp={() => moveArrayItem('services', index, -1)}
+              onMoveDown={() => moveArrayItem('services', index, 1)}
+              isFirst={index === 0} isLast={index === (safeData.services || []).length - 1}
               isExpanded={expandedItemIndex === index}
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('highlights', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Highlights Item
+          <button onClick={() => addArrayItem('services', { name: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
+            <Plus size={16} /> Add Services Item
           </button>
         </div>
       </div>
     );
   }
 
-  if (activeSection === 'contentSections') {
+  if (activeSection === 'impact') {
     return (
       <div className="pb-10 space-y-4">
         <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Content Sections</h3>
-          <p className="text-xs text-slate-500 mt-0.5">{(safeData.contentSections || []).length} item(s)</p>
+          <h3 className="text-sm font-bold text-slate-700">Impact</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{(safeData.impact || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
-          {(safeData.contentSections || []).map((item: any, index: number) => (
-            <ContentSectionsEditorItem
+          {(safeData.impact || []).map((item: any, index: number) => (
+            <ImpactEditorItem
               key={`item-${index}`} index={index} itemData={item}
-              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('contentSections', i, newD)}
-              onRemove={() => removeArrayItem('contentSections', index)}
-              onMoveUp={() => moveArrayItem('contentSections', index, -1)}
-              onMoveDown={() => moveArrayItem('contentSections', index, 1)}
-              isFirst={index === 0} isLast={index === (safeData.contentSections || []).length - 1}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('impact', i, newD)}
+              onRemove={() => removeArrayItem('impact', index)}
+              onMoveUp={() => moveArrayItem('impact', index, -1)}
+              onMoveDown={() => moveArrayItem('impact', index, 1)}
+              isFirst={index === 0} isLast={index === (safeData.impact || []).length - 1}
               isExpanded={expandedItemIndex === index}
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('contentSections', { image: '', imagePosition: '', title: { mr: '', en: '' }, description: { mr: '', en: '' } })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Content Sections Item
+          <button onClick={() => addArrayItem('impact', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
+            <Plus size={16} /> Add Impact Item
           </button>
         </div>
       </div>

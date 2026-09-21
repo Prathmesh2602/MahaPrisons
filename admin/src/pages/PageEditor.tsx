@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { TemplateSelectorModal } from '../components/TemplateSelectorModal';
 import { HeroCarouselEditor } from '../components/editors/HeroCarouselEditor';
 import { MinisterProfilesEditor } from '../components/editors/MinisterProfilesEditor';
@@ -20,10 +20,12 @@ import { TemplateEditorRenderer } from '../components/editors/TemplateEditorRend
 
 export const PageEditor = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const rawSlug = searchParams.get('slug') || '/';
   const slug = (rawSlug.startsWith('/') && rawSlug.length > 1) ? rawSlug.slice(1) : rawSlug;
 
   const [pageData, setPageData] = useState<any>(null);
+  const [pageNotFound, setPageNotFound] = useState(false);
   const [selectedBlockType, setSelectedBlockType] = useState<string>('');
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
@@ -49,6 +51,7 @@ export const PageEditor = () => {
   }, [isIframeReady, pageData]);
 
   useEffect(() => {
+    setPageNotFound(false);
     fetchPageData();
 
     const handleMessage = (event: MessageEvent) => {
@@ -77,8 +80,11 @@ export const PageEditor = () => {
           setSelectedBlockType(res.data.contentBlocks[0].blockType);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to fetch page data:', error);
+      if (error.response?.status === 404) {
+        setPageNotFound(true);
+      }
     }
   };
 
@@ -183,6 +189,15 @@ export const PageEditor = () => {
   };
 
   const renderEditor = () => {
+    if (pageNotFound) return (
+      <div className="p-10 text-center flex flex-col items-center justify-center">
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Page Not Found</h2>
+        <p className="text-slate-500 mb-6">The page "{slug}" does not exist in the database.</p>
+        <button onClick={() => navigate('/pages')} className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors shadow-sm">
+          Return to Pages
+        </button>
+      </div>
+    );
     if (!pageData || !pageData.contentBlocks) return <div className="p-4 text-center text-slate-500">Loading...</div>;
 
     const block = pageData.contentBlocks.find((b: any) => b.blockType === selectedBlockType);

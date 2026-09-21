@@ -7,9 +7,9 @@ import { Heart, Smile, Stethoscope, Coffee, Puzzle, MapPin, Phone, Mail } from '
 
 const iconMap = { Heart, Smile, Stethoscope, Coffee, Puzzle };
 
-const MinimalIconGrid = ({ dataId }) => {
+const MinimalIconGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -18,7 +18,7 @@ const MinimalIconGrid = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="relative min-h-screen bg-[#FFF5F7] dark-mode:bg-[#2A1B1F] font-poppins text-gray-800 dark-mode:text-gray-200 overflow-hidden">
+    <div data-block-type="template" className="relative min-h-screen bg-[#FFF5F7] dark-mode:bg-[#2A1B1F] font-poppins text-gray-800 dark-mode:text-gray-200 overflow-hidden">
       
       {/* Soft Organic Header Background */}
       <div className="absolute top-0 left-0 w-full h-[60vh] bg-[#FFE4E8] dark-mode:bg-[#3D262B] rounded-b-[50%] md:rounded-b-[100%] transform scale-x-150 origin-top -z-10" />
@@ -54,7 +54,7 @@ const MinimalIconGrid = ({ dataId }) => {
         </div>
 
         {/* Stats Circles */}
-        <div className="flex flex-wrap justify-center gap-8 mb-24">
+        <div data-block-type="template_stats" className="flex flex-wrap justify-center gap-8 mb-24">
           {data.stats.map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Heart;
             return (
@@ -68,7 +68,7 @@ const MinimalIconGrid = ({ dataId }) => {
         </div>
 
         {/* Key Features (Soft Cards) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+        <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {data.keyFunctions.map((func, idx) => {
             const Icon = iconMap[func.icon] || Heart;
             return (

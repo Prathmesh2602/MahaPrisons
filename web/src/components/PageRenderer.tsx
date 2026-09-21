@@ -1,3 +1,20 @@
+import ContactInfoGrid from '../templates/ContactInfoGrid';
+import ContentWithRightSidebar from '../templates/ContentWithRightSidebar';
+import ContentWithTabs from '../templates/ContentWithTabs';
+import BasicFeatureGrid from '../templates/BasicFeatureGrid';
+import CardsAndVerticalTimeline from '../templates/CardsAndVerticalTimeline';
+import IconsListWithTimeline from '../templates/IconsListWithTimeline';
+import MinimalIconGrid from '../templates/MinimalIconGrid';
+import HeroBannerWithArticles from '../templates/HeroBannerWithArticles';
+import SideBySideListCards from '../templates/SideBySideListCards';
+import HeroBannerWithBadges from '../templates/HeroBannerWithBadges';
+import HeroBannerWithMedia from '../templates/HeroBannerWithMedia';
+import ContentWithAccordion from '../templates/ContentWithAccordion';
+import ThreeColServiceCards from '../templates/ThreeColServiceCards';
+import TwoColEventCards from '../templates/TwoColEventCards';
+import HeroWithProcessGrid from '../templates/HeroWithProcessGrid';
+import HeroWithPricingList from '../templates/HeroWithPricingList';
+import HeroWithMenuGrid from '../templates/HeroWithMenuGrid';
 import React from 'react';
 import HeroFeaturesTimelineLayout from '../templates/HeroFeaturesTimelineLayout';
 import HeroStatsGrid from '../templates/HeroStatsGrid';
@@ -74,7 +91,7 @@ interface PageRendererProps {
 }
 
 export const PageRenderer: React.FC<PageRendererProps> = ({ slug, layoutType, pageData }) => {
-  const templateLayouts = ['HeroFeaturesTimelineLayout', 'HeroStatsGrid', 'HeroThreeColGrid', 'HeroSplitTimeline', 'HeroFeatureList'];
+  const templateLayouts = ['HeroFeaturesTimelineLayout', 'HeroStatsGrid', 'HeroThreeColGrid', 'HeroSplitTimeline', 'HeroFeatureList', 'ContactInfoGrid', 'ContentWithRightSidebar', 'ContentWithTabs', 'BasicFeatureGrid', 'CardsAndVerticalTimeline', 'IconsListWithTimeline', 'MinimalIconGrid', 'HeroBannerWithArticles', 'SideBySideListCards', 'HeroBannerWithBadges', 'HeroBannerWithMedia', 'ContentWithAccordion', 'ThreeColServiceCards', 'TwoColEventCards', 'HeroWithProcessGrid', 'HeroWithPricingList', 'HeroWithMenuGrid'];
   if (layoutType && templateLayouts.includes(layoutType)) {
     const templateData = pageData?.contentBlocks?.find((b: any) => b.blockType === 'page_template_data')?.content;
     
@@ -88,6 +105,40 @@ export const PageRenderer: React.FC<PageRendererProps> = ({ slug, layoutType, pa
       return <HeroSplitTimeline dataId={slug} data={templateData} />;
     } else if (layoutType === 'HeroFeatureList') {
       return <HeroFeatureList dataId={slug} data={templateData} />;
+    } else if (layoutType === 'ContactInfoGrid') {
+      return <ContactInfoGrid dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'ContentWithRightSidebar') {
+      return <ContentWithRightSidebar dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'ContentWithTabs') {
+      return <ContentWithTabs dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'BasicFeatureGrid') {
+      return <BasicFeatureGrid dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'CardsAndVerticalTimeline') {
+      return <CardsAndVerticalTimeline dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'IconsListWithTimeline') {
+      return <IconsListWithTimeline dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'MinimalIconGrid') {
+      return <MinimalIconGrid dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'HeroBannerWithArticles') {
+      return <HeroBannerWithArticles dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'SideBySideListCards') {
+      return <SideBySideListCards dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'HeroBannerWithBadges') {
+      return <HeroBannerWithBadges dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'HeroBannerWithMedia') {
+      return <HeroBannerWithMedia dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'ContentWithAccordion') {
+      return <ContentWithAccordion dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'ThreeColServiceCards') {
+      return <ThreeColServiceCards dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'TwoColEventCards') {
+      return <TwoColEventCards dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'HeroWithProcessGrid') {
+      return <HeroWithProcessGrid dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'HeroWithPricingList') {
+      return <HeroWithPricingList dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'HeroWithMenuGrid') {
+      return <HeroWithMenuGrid dataId={slug.split('/').pop()} data={templateData} />;
     }
   }
 

@@ -6,7 +6,7 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 
-interface HeroFeaturesTimelineLayoutEditorProps {
+interface HeroWithProcessGridEditorProps {
   data: any;
   updateData: (data: any) => void;
   blockId: string;
@@ -14,7 +14,7 @@ interface HeroFeaturesTimelineLayoutEditorProps {
 }
 
 const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
-  const defaultItem = { value: '', label: { mr: '', en: '' }, icon: '' };
+  const defaultItem = { value: '', label: { mr: '', en: '' }, isText: false };
   const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
 
@@ -50,15 +50,18 @@ const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, on
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Label</label>
             <PhoneticInput value={currentItem.label?.mr || ''} onChange={(val) => handleLocalUpdate('label', { ...currentItem.label, mr: val })} onEnglishChange={(val) => handleLocalUpdate('label', { ...currentItem.label, en: val })} englishValue={currentItem.label?.en || ''} />
           </div>
-          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
+          <div className="flex items-center gap-2 mt-1">
+            <input type="checkbox" checked={!!currentItem.isText} onChange={(e) => handleLocalUpdate('isText', e.target.checked)} className="w-4 h-4 accent-emerald-600" />
+            <label className="text-xs font-semibold text-slate-500 uppercase">Is Text?</label>
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
-  const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' };
+const TechnicalFocusEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
+  const defaultItem = { mr: '', en: '' };
   const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
 
@@ -87,21 +90,20 @@ const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMov
       {isExpanded && (
         <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
-            <PhoneticInput value={currentItem.title?.mr || ''} onChange={(val) => handleLocalUpdate('title', { ...currentItem.title, mr: val })} onEnglishChange={(val) => handleLocalUpdate('title', { ...currentItem.title, en: val })} englishValue={currentItem.title?.en || ''} />
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Marathi</label>
+            <input type="text" value={currentItem.mr || ''} onChange={(e) => handleLocalUpdate('mr', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
-            <PhoneticInput value={currentItem.desc?.mr || ''} onChange={(val) => handleLocalUpdate('desc', { ...currentItem.desc, mr: val })} onEnglishChange={(val) => handleLocalUpdate('desc', { ...currentItem.desc, en: val })} englishValue={currentItem.desc?.en || ''} multiline />
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">English</label>
+            <input type="text" value={currentItem.en || ''} onChange={(e) => handleLocalUpdate('en', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm" />
           </div>
-          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
         </div>
       )}
     </div>
   );
 };
 
-export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayoutEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
+export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
   const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
   const activeSection = (expandedSection || 'general').replace('template_', '');
 
@@ -185,7 +187,7 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
+          <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, isText: false })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
             <Plus size={16} /> Add Stats Item
           </button>
         </div>
@@ -193,53 +195,29 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
     );
   }
 
-  if (activeSection === 'keyFunctions') {
+  if (activeSection === 'technicalFocus') {
     return (
       <div className="pb-10 space-y-4">
         <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Key Functions</h3>
-          <p className="text-xs text-slate-500 mt-0.5">{(safeData.keyFunctions || []).length} item(s)</p>
+          <h3 className="text-sm font-bold text-slate-700">Technical Focus</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{(safeData.technicalFocus || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
-          {(safeData.keyFunctions || []).map((item: any, index: number) => (
-            <KeyFunctionsEditorItem
+          {(safeData.technicalFocus || []).map((item: any, index: number) => (
+            <TechnicalFocusEditorItem
               key={`item-${index}`} index={index} itemData={item}
-              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('keyFunctions', i, newD)}
-              onRemove={() => removeArrayItem('keyFunctions', index)}
-              onMoveUp={() => moveArrayItem('keyFunctions', index, -1)}
-              onMoveDown={() => moveArrayItem('keyFunctions', index, 1)}
-              isFirst={index === 0} isLast={index === (safeData.keyFunctions || []).length - 1}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('technicalFocus', i, newD)}
+              onRemove={() => removeArrayItem('technicalFocus', index)}
+              onMoveUp={() => moveArrayItem('technicalFocus', index, -1)}
+              onMoveDown={() => moveArrayItem('technicalFocus', index, 1)}
+              isFirst={index === 0} isLast={index === (safeData.technicalFocus || []).length - 1}
               isExpanded={expandedItemIndex === index}
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('keyFunctions', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Key Functions Item
+          <button onClick={() => addArrayItem('technicalFocus', { mr: '', en: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
+            <Plus size={16} /> Add Technical Focus Item
           </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (activeSection === 'contactInfo') {
-    return (
-      <div className="pb-10 space-y-4">
-        <div className="p-5 bg-white border border-slate-200 rounded-lg space-y-4">
-          <h3 className="text-sm font-bold text-slate-700 border-b border-slate-200 pb-2">Contact Information</h3>
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Address</label>
-            <PhoneticInput value={safeData.contactInfo?.address?.mr || ''} onChange={(val) => handleChange('contactInfo', { ...safeData.contactInfo, address: { ...safeData.contactInfo?.address, mr: val } })} onEnglishChange={(val) => handleChange('contactInfo', { ...safeData.contactInfo, address: { ...safeData.contactInfo?.address, en: val } })} englishValue={safeData.contactInfo?.address?.en || ''} multiline />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Phone</label>
-              <input type="text" value={safeData.contactInfo?.phone || ''} onChange={(e) => handleChange('contactInfo', { ...safeData.contactInfo, phone: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Email</label>
-              <input type="text" value={safeData.contactInfo?.email || ''} onChange={(e) => handleChange('contactInfo', { ...safeData.contactInfo, email: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
-            </div>
-          </div>
         </div>
       </div>
     );

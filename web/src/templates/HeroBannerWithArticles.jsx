@@ -7,9 +7,9 @@ import { Book, Newspaper, Users, BookOpen, Library, MapPin, Phone, Mail } from '
 
 const iconMap = { Book, Newspaper, Users, BookOpen, Library };
 
-const HeroBannerWithArticles = ({ dataId }) => {
+const HeroBannerWithArticles = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -18,7 +18,7 @@ const HeroBannerWithArticles = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] dark-mode:bg-[#1A1814] font-poppins text-[#3A332C] dark-mode:text-[#E6DFD5]">
+    <div data-block-type="template" className="min-h-screen bg-[#FDFBF7] dark-mode:bg-[#1A1814] font-poppins text-[#3A332C] dark-mode:text-[#E6DFD5]">
       
       {/* Classic Elegant Header */}
       <div className="border-b border-[#E6DFD5] dark-mode:border-[#3A332C]">
@@ -55,7 +55,7 @@ const HeroBannerWithArticles = ({ dataId }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24 items-center">
           
           {/* Left Column (Features) */}
-          <div className="lg:col-span-5 space-y-12">
+          <div data-block-type="template_keyFunctions" className="lg:col-span-5 space-y-12">
             {data.keyFunctions.map((func, idx) => {
               const Icon = iconMap[func.icon] || Book;
               return (
@@ -84,7 +84,7 @@ const HeroBannerWithArticles = ({ dataId }) => {
 
         {/* Stats Strip */}
         <div className="border-t border-b border-[#E6DFD5] dark-mode:border-[#3A332C] py-16 mb-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-[#E6DFD5] dark-mode:divide-[#3A332C]">
+          <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-[#E6DFD5] dark-mode:divide-[#3A332C]">
             {data.stats.map((stat, idx) => {
               const Icon = iconMap[stat.icon] || Book;
               return (

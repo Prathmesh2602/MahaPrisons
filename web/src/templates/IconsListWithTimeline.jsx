@@ -7,9 +7,9 @@ import { Dumbbell, Clock, UserCheck, Trophy, MapPin, Phone, Mail } from 'lucide-
 
 const iconMap = { Dumbbell, Clock, UserCheck, Trophy };
 
-const IconsListWithTimeline = ({ dataId }) => {
+const IconsListWithTimeline = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
-  const data = facilitiesData[dataId];
+  const data = dynamicData || facilitiesData[dataId];
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -18,7 +18,7 @@ const IconsListWithTimeline = ({ dataId }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white font-poppins uppercase">
+    <div data-block-type="template" className="min-h-screen bg-[#0A0A0A] text-white font-poppins uppercase">
       
       {/* Aggressive Header */}
       <div className="relative h-[70vh] min-h-[500px] overflow-hidden flex items-center">
@@ -50,7 +50,7 @@ const IconsListWithTimeline = ({ dataId }) => {
         </motion.div>
 
         {/* Heavy Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+        <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
           {data.stats.map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Dumbbell;
             return (
@@ -64,7 +64,7 @@ const IconsListWithTimeline = ({ dataId }) => {
         </div>
 
         {/* Feature Sections */}
-        <div className="space-y-4">
+        <div data-block-type="template_keyFunctions" className="space-y-4">
           {data.keyFunctions.map((func, idx) => {
             const Icon = iconMap[func.icon] || Dumbbell;
             return (
