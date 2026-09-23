@@ -51,13 +51,48 @@ const DEFAULT_FOOTER_CONFIG = {
     { text_en: 'Website Policies', text_mr: 'वेबसाइट धोरणे', href: '#' },
     { text_en: 'Contact Us', text_mr: 'संपर्क साधा', href: '#' },
     { text_en: 'Feedback', text_mr: 'अभिप्राय', href: '#' }
-  ]
+  ],
+  footer_banners: []
 };
 
 export const SettingsEditor = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<TabType>('DASHBOARD');
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const [scale, setScale] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width } = entry.contentRect;
+        const baseWidth = 1280;
+        setScale(width < baseWidth ? width / baseWidth : 1);
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    header_logo: true,
+    header_right_logos: true,
+    header_title: true,
+    header_subtitle: true,
+    footer_links: true,
+    footer_contact: true,
+    footer_banners: true,
+    wallpaper_anim: true,
+    wallpaper_images: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   // States for Header
   const [headerConfig, setHeaderConfig] = useState<any>(DEFAULT_HEADER_CONFIG);
@@ -139,6 +174,16 @@ export const SettingsEditor = () => {
     footerConfig.contact || {},
     (val) => {
       const newConfig = { ...footerConfig, contact: val };
+      setFooterConfig(newConfig);
+      updateHistoryState(headerConfig, newConfig, wallpaperConfig);
+    }
+  );
+
+  const footerBannersHist = useBlockHistory(
+    savedFooterConfig.footer_banners || [],
+    footerConfig.footer_banners || [],
+    (val) => {
+      const newConfig = { ...footerConfig, footer_banners: val };
       setFooterConfig(newConfig);
       updateHistoryState(headerConfig, newConfig, wallpaperConfig);
     }
@@ -312,6 +357,57 @@ export const SettingsEditor = () => {
     const newLinks = [...(footerConfig.links || [])];
     newLinks.splice(index, 1);
     const newConfig = { ...footerConfig, links: newLinks };
+    setFooterConfig(newConfig);
+    updateHistoryState(headerConfig, newConfig, wallpaperConfig);
+  };
+
+  const moveFooterLink = (index: number, direction: 'up' | 'down') => {
+    const newLinks = [...(footerConfig.links || [])];
+    if (direction === 'up' && index > 0) {
+      [newLinks[index - 1], newLinks[index]] = [newLinks[index], newLinks[index - 1]];
+    } else if (direction === 'down' && index < newLinks.length - 1) {
+      [newLinks[index + 1], newLinks[index]] = [newLinks[index], newLinks[index + 1]];
+    } else {
+      return;
+    }
+    const newConfig = { ...footerConfig, links: newLinks };
+    setFooterConfig(newConfig);
+    updateHistoryState(headerConfig, newConfig, wallpaperConfig);
+  };
+
+  const updateFooterBanner = (index: number, key: string, val: string) => {
+    const newBanners = [...(footerConfig.footer_banners || [])];
+    newBanners[index] = { ...newBanners[index], [key]: val };
+    const newConfig = { ...footerConfig, footer_banners: newBanners };
+    setFooterConfig(newConfig);
+    updateHistoryState(headerConfig, newConfig, wallpaperConfig);
+  };
+
+  const addFooterBanner = () => {
+    const newBanners = [...(footerConfig.footer_banners || []), { img_src: '', img_alt: '', href: '' }];
+    const newConfig = { ...footerConfig, footer_banners: newBanners };
+    setFooterConfig(newConfig);
+    updateHistoryState(headerConfig, newConfig, wallpaperConfig);
+  };
+
+  const removeFooterBanner = (index: number) => {
+    const newBanners = [...(footerConfig.footer_banners || [])];
+    newBanners.splice(index, 1);
+    const newConfig = { ...footerConfig, footer_banners: newBanners };
+    setFooterConfig(newConfig);
+    updateHistoryState(headerConfig, newConfig, wallpaperConfig);
+  };
+
+  const moveFooterBanner = (index: number, direction: 'up' | 'down') => {
+    const newBanners = [...(footerConfig.footer_banners || [])];
+    if (direction === 'up' && index > 0) {
+      [newBanners[index - 1], newBanners[index]] = [newBanners[index], newBanners[index - 1]];
+    } else if (direction === 'down' && index < newBanners.length - 1) {
+      [newBanners[index + 1], newBanners[index]] = [newBanners[index], newBanners[index + 1]];
+    } else {
+      return;
+    }
+    const newConfig = { ...footerConfig, footer_banners: newBanners };
     setFooterConfig(newConfig);
     updateHistoryState(headerConfig, newConfig, wallpaperConfig);
   };
@@ -515,13 +611,20 @@ export const SettingsEditor = () => {
     <div className="flex flex-col md:flex-row h-[calc(100vh-73px)] md:h-[calc(100vh)] min-h-full bg-slate-50">
 
       {/* LEFT PANE: LIVE PREVIEW */}
-      <div className="w-full md:w-[70%] h-[40vh] md:h-auto flex flex-col border-b md:border-b-0 md:border-r border-slate-200 bg-white shrink-0">
-        <div className="p-2 border-b border-slate-200 bg-slate-100 font-semibold text-sm text-slate-700 flex justify-between items-center">
+      <div className="w-full md:w-[70%] border-b md:border-b-0 md:border-r border-slate-200 flex flex-col bg-slate-100 overflow-hidden">
+        <div className="p-2 border-b border-slate-200 bg-white font-semibold text-sm text-slate-700 flex justify-between items-center shrink-0">
           Live Preview
           <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full animate-pulse">Syncing...</span>
         </div>
-        <div className="flex-1 overflow-hidden relative bg-slate-200 p-4">
-          <div className="w-full h-full bg-white shadow-xl rounded-lg overflow-hidden border border-slate-300">
+        <div className="flex-1 p-2 overflow-hidden relative" ref={containerRef}>
+          <div 
+            className="bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden relative origin-top-left"
+            style={{ 
+              width: '1280px', 
+              height: scale > 0 ? `${100 / scale}%` : '100%', 
+              transform: `scale(${scale})` 
+            }}
+          >
             <iframe
               ref={iframeRef}
               src="http://localhost:3000/preview"
@@ -533,7 +636,7 @@ export const SettingsEditor = () => {
       </div>
 
       {/* RIGHT PANE: EDITOR CONTROLS */}
-      <div className="w-full md:w-[30%] flex flex-col bg-white overflow-y-auto flex-1 relative">
+      <div className="w-full md:w-[30%] flex flex-col bg-white overflow-y-auto shrink-0 relative">
 
         {/* STICKY TOP BAR */}
         <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-200 shadow-[0_4px_6px_-6px_rgba(0,0,0,0.1)]">
@@ -770,15 +873,26 @@ export const SettingsEditor = () => {
                   title="Footer Links"
                   history={footerLinksHist}
                   rightAction={<Button onClick={addFooterLink} variant="secondary" size="sm" className="whitespace-nowrap shrink-0">+ Add Link</Button>}
+                  isExpanded={!!expandedFixedBlocks['footer_links']}
+                  onToggle={() => toggleFixedBlock('footer_links')}
                 />
 
-                <div className="space-y-2">
+                {!!expandedFixedBlocks['footer_links'] && (
+                <div className="space-y-2 mt-2">
                   {(footerConfig.links || []).map((link: any, idx: number) => (
                     <div key={idx} className="bg-white p-4 border border-slate-200 rounded-lg relative">
-                      <button onClick={() => removeFooterLink(idx)} className="absolute top-2 right-2 text-slate-400 hover:text-red-500 p-1">
-                        <Trash2 size={16} />
-                      </button>
-                      <div className="flex flex-col gap-2 pr-6">
+                      <div className="absolute top-2 right-2 flex items-center gap-1">
+                        <button onClick={() => moveFooterLink(idx, 'up')} disabled={idx === 0} className="text-slate-400 hover:text-blue-500 disabled:opacity-30 p-1">
+                          <span className="text-sm font-bold leading-none">↑</span>
+                        </button>
+                        <button onClick={() => moveFooterLink(idx, 'down')} disabled={idx === (footerConfig.links?.length || 0) - 1} className="text-slate-400 hover:text-blue-500 disabled:opacity-30 p-1">
+                          <span className="text-sm font-bold leading-none">↓</span>
+                        </button>
+                        <button onClick={() => removeFooterLink(idx)} className="text-slate-400 hover:text-red-500 p-1">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                      <div className="flex flex-col gap-2 pr-16 mt-2">
                         <PhoneticInput
                           label="Link Text (Marathi)"
                           value={link.text_mr || ''}
@@ -808,6 +922,7 @@ export const SettingsEditor = () => {
                     <div className="text-center text-slate-500 py-2 text-sm">No links added.</div>
                   )}
                 </div>
+                )}
               </EditorBlock>
 
               {/* Contact Info Section */}
@@ -815,48 +930,118 @@ export const SettingsEditor = () => {
                 <EditorBlockHeader
                   title="Contact Information"
                   history={contactInfoHist}
+                  isExpanded={!!expandedFixedBlocks['footer_contact']}
+                  onToggle={() => toggleFixedBlock('footer_contact')}
                 />
 
-                <PhoneticInput
-                  label="Address (Marathi)"
-                  value={footerConfig.contact?.address_mr || ''}
-                  onChange={(val) => updateFooterContact('address_mr', val)}
-                  onTranslate={(text) => handleCustomTranslate(text, (res) => updateFooterContact('address_en', res))}
-                />
-                <PhoneticInput
-                  label="Address (English)"
-                  transliterate={false}
-                  value={footerConfig.contact?.address_en || ''}
-                  onChange={(val) => updateFooterContact('address_en', val)}
-                />
-
-                <div className="flex flex-col gap-2 mt-2">
+                {!!expandedFixedBlocks['footer_contact'] && (
+                <div className="space-y-2 mt-2">
                   <PhoneticInput
-                    label="Phone Number (Marathi digits)"
-                    value={footerConfig.contact?.phone_mr || ''}
-                    onChange={(val) => updateFooterContact('phone_mr', val)}
-                    onTranslate={(text) => {
-                      const translated = marathiToEnglishDigits(text);
-                      updateFooterContact('phone_en', translated);
-                    }}
+                    label="Address (Marathi)"
+                    value={footerConfig.contact?.address_mr || ''}
+                    onChange={(val) => updateFooterContact('address_mr', val)}
+                    onTranslate={(text) => handleCustomTranslate(text, (res) => updateFooterContact('address_en', res))}
                   />
                   <PhoneticInput
-                    label="Phone Number (English)"
+                    label="Address (English)"
                     transliterate={false}
-                    value={footerConfig.contact?.phone_en || ''}
-                    onChange={(val) => updateFooterContact('phone_en', val)}
+                    value={footerConfig.contact?.address_en || ''}
+                    onChange={(val) => updateFooterContact('address_en', val)}
                   />
-                </div>
 
-                <div className="mt-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                  <input
-                    type="email"
-                    value={footerConfig.contact?.email || ''}
-                    onChange={(e) => updateFooterContact('email', e.target.value)}
-                    className="w-full border border-slate-300 rounded-md p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
-                  />
+                  <div className="flex flex-col gap-2 mt-2">
+                    <PhoneticInput
+                      label="Phone Number (Marathi digits)"
+                      value={footerConfig.contact?.phone_mr || ''}
+                      onChange={(val) => updateFooterContact('phone_mr', val)}
+                      onTranslate={(text) => {
+                        const translated = marathiToEnglishDigits(text);
+                        updateFooterContact('phone_en', translated);
+                      }}
+                    />
+                    <PhoneticInput
+                      label="Phone Number (English)"
+                      transliterate={false}
+                      value={footerConfig.contact?.phone_en || ''}
+                      onChange={(val) => updateFooterContact('phone_en', val)}
+                    />
+                  </div>
+
+                  <div className="mt-2">
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      value={footerConfig.contact?.email || ''}
+                      onChange={(e) => updateFooterContact('email', e.target.value)}
+                      className="w-full border border-slate-300 rounded-md p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
                 </div>
+                )}
+              </EditorBlock>
+
+              {/* Footer Banners Section */}
+              <EditorBlock className="space-y-2">
+                <EditorBlockHeader
+                  title="Footer Logos (Banners)"
+                  history={footerBannersHist}
+                  rightAction={<Button onClick={addFooterBanner} variant="secondary" size="sm" className="whitespace-nowrap shrink-0">+ Add Logo</Button>}
+                  isExpanded={!!expandedFixedBlocks['footer_banners']}
+                  onToggle={() => toggleFixedBlock('footer_banners')}
+                />
+                {!!expandedFixedBlocks['footer_banners'] && (
+                  <div className="space-y-2 mt-2">
+                    {(footerConfig.footer_banners || []).map((banner: any, idx: number) => (
+                      <div key={idx} className="flex items-center gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm relative pr-10">
+                        <div className="absolute right-2 top-2 bottom-2 flex flex-col justify-between items-center">
+                          <button onClick={() => removeFooterBanner(idx)} className="text-slate-400 hover:text-red-500 p-1" title="Remove">
+                            <Trash2 size={14} />
+                          </button>
+                          <div className="flex flex-col gap-1">
+                            <button onClick={() => moveFooterBanner(idx, 'up')} disabled={idx === 0} className="text-slate-400 hover:text-blue-500 disabled:opacity-30 p-0.5">
+                              <span className="text-xs font-bold leading-none">↑</span>
+                            </button>
+                            <button onClick={() => moveFooterBanner(idx, 'down')} disabled={idx === (footerConfig.footer_banners?.length || 0) - 1} className="text-slate-400 hover:text-blue-500 disabled:opacity-30 p-0.5">
+                              <span className="text-xs font-bold leading-none">↓</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div 
+                          className="w-20 h-20 bg-slate-50 border border-slate-200 rounded-md overflow-hidden flex items-center justify-center relative group cursor-pointer shrink-0"
+                          onClick={() => { setMediaTarget(`footer_banner_${idx}`); setIsMediaPopupOpen(true); }}
+                        >
+                          {banner.img_src ? (
+                            <img src={banner.img_src} alt={`Banner ${idx + 1}`} className="w-full h-full object-contain" />
+                          ) : (
+                            <div className="flex flex-col items-center text-slate-400">
+                              <ImageIcon size={16} className="mb-1" />
+                              <span className="text-[10px]">No Image</span>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span className="text-white text-xs font-medium">Change</span>
+                          </div>
+                        </div>
+                        <div className="flex-1 flex flex-col justify-center gap-2 min-w-0">
+                          <div className="flex flex-col gap-1">
+                            <label className="text-xs font-semibold text-slate-600">Link URL</label>
+                            <input
+                              type="text"
+                              value={banner.href || ''}
+                              onChange={(e) => updateFooterBanner(idx, 'href', e.target.value)}
+                              placeholder="https://..."
+                              className="w-full border border-slate-300 rounded-md px-2 py-1 text-xs focus:border-blue-500 outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {(!footerConfig.footer_banners || footerConfig.footer_banners.length === 0) && (
+                      <div className="text-center text-slate-500 py-2 text-xs border border-dashed border-slate-300 rounded-lg">No logos added.</div>
+                    )}
+                  </div>
+                )}
               </EditorBlock>
 
             </div>
@@ -940,6 +1125,9 @@ export const SettingsEditor = () => {
             if (mediaTarget.startsWith('right_logo_')) {
               const idx = parseInt(mediaTarget.split('_')[2], 10);
               updateRightLogo(idx, 'src', url);
+            } else if (mediaTarget.startsWith('footer_banner_')) {
+              const idx = parseInt(mediaTarget.split('_')[2], 10);
+              updateFooterBanner(idx, 'img_src', url);
             } else if (mediaTarget.startsWith('wallpaper_')) {
               const idx = parseInt(mediaTarget.split('_')[1], 10);
               updateWallpaperImage(idx, url);

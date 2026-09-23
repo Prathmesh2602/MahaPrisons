@@ -9,7 +9,7 @@ import { Trash2, ArrowUp, ArrowDown, Send, Save, Image as ImageIcon } from 'luci
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
 
-const GeneralSettingsBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
+const ActivitiesIntroBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
   const defaultSettings = { 
     title: { mr: "", en: "" },
     description: { mr: "", en: "" }
@@ -303,7 +303,7 @@ export const PrisonActivitiesEditor = ({ blockId, initialData, onPreviewUpdate }
         saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
       />
 
-      <GeneralSettingsBlock 
+      <ActivitiesIntroBlock 
         settingsData={{ 
           title: data.title || { mr: "", en: "" },
           description: data.description || { mr: "", en: "" }

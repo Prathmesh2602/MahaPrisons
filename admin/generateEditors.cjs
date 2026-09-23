@@ -88,38 +88,38 @@ const BLOCK_FIELDS = {
   venueFeatures: [
     { key: 'title', type: 'phonetic', label: 'Title' },
     { key: 'icon',  type: 'icon',     label: 'Icon' }
+  ],
+  hero: [
+    { key: 'title',       type: 'phonetic',           label: 'Title' },
+    { key: 'subtitle',    type: 'phonetic',           label: 'Subtitle' },
+    { key: 'description', type: 'phonetic_multiline', label: 'Description' },
+    { key: 'heroImage',   type: 'image_preview',      label: 'Hero Image' }
   ]
 };
 
-const DEFAULT_FIELDS = [
-  { key: 'title', type: 'phonetic',           label: 'Title' },
-  { key: 'desc',  type: 'phonetic_multiline', label: 'Description' },
-  { key: 'icon',  type: 'icon',               label: 'Icon' }
-];
-
 // Templates - blocks with { object: true } are single objects not arrays
 const templates = [
-  { name: 'BasicFeatureGrid',           blocks: ['keyFunctions', 'stats'] },
-  { name: 'CardsAndVerticalTimeline',   blocks: ['keyFunctions', 'stats'] },
-  { name: 'ContactInfoGrid',            blocks: ['stats', 'keyFunctions', { name: 'contactInfo', object: true }] },
-  { name: 'ContentWithAccordion',       blocks: ['keyFunctions', 'stats'] },
-  { name: 'ContentWithRightSidebar',    blocks: ['stats', 'keyFunctions'] },
-  { name: 'ContentWithTabs',            blocks: ['keyFunctions', 'stats'] },
-  { name: 'HeroBannerWithArticles',     blocks: ['keyFunctions', 'stats'] },
-  { name: 'HeroBannerWithBadges',       blocks: ['stats', 'keyFunctions'] },
-  { name: 'HeroBannerWithMedia',        blocks: ['stats', 'keyFunctions'] },
-  { name: 'HeroFeatureList',            blocks: ['highlights', 'contentSections'] },
-  { name: 'HeroFeaturesTimelineLayout', blocks: ['stats', 'keyFunctions', { name: 'contactInfo', object: true }] },
-  { name: 'HeroSplitTimeline',          blocks: ['coreProtocols', 'infrastructure'] },
-  { name: 'HeroStatsGrid',              blocks: ['features', 'gallery', 'timings'] },
-  { name: 'HeroThreeColGrid',           blocks: ['productionStats', 'activeProjects', 'impactStatement'] },
-  { name: 'HeroWithMenuGrid',           blocks: ['menuHighlights', { name: 'motto', object: true }] },
-  { name: 'HeroWithPricingList',        blocks: ['services', 'impact'] },
-  { name: 'HeroWithProcessGrid',        blocks: [{ name: 'stats', fieldOverride: 'processStats' }, 'technicalFocus'] },
-  { name: 'IconsListWithTimeline',      blocks: ['stats', 'keyFunctions'] },
-  { name: 'MinimalIconGrid',            blocks: ['stats', 'keyFunctions'] },
-  { name: 'SideBySideListCards',        blocks: ['stats', 'keyFunctions'] },
-  { name: 'TwoColEventCards',           blocks: ['venueFeatures'] }
+  { name: 'BasicFeatureGrid',           blocks: [{ name: 'hero', object: true }, 'keyFunctions', 'stats'] },
+  { name: 'CardsAndVerticalTimeline',   blocks: [{ name: 'hero', object: true }, 'keyFunctions', 'stats'] },
+  { name: 'ContactInfoGrid',            blocks: [{ name: 'hero', object: true }, 'stats', 'keyFunctions', { name: 'contactInfo', object: true }] },
+  { name: 'ContentWithAccordion',       blocks: [{ name: 'hero', object: true }, 'keyFunctions', 'stats'] },
+  { name: 'ContentWithRightSidebar',    blocks: [{ name: 'hero', object: true }, 'stats', 'keyFunctions'] },
+  { name: 'ContentWithTabs',            blocks: [{ name: 'hero', object: true }, 'keyFunctions', 'stats'] },
+  { name: 'HeroBannerWithArticles',     blocks: [{ name: 'hero', object: true }, 'keyFunctions', 'stats'] },
+  { name: 'HeroBannerWithBadges',       blocks: [{ name: 'hero', object: true }, 'stats', 'keyFunctions'] },
+  { name: 'HeroBannerWithMedia',        blocks: [{ name: 'hero', object: true }, 'stats', 'keyFunctions'] },
+  { name: 'HeroFeatureList',            blocks: [{ name: 'hero', object: true }, 'highlights', 'contentSections'] },
+  { name: 'HeroFeaturesTimelineLayout', blocks: [{ name: 'hero', object: true }, 'stats', 'keyFunctions', { name: 'contactInfo', object: true }] },
+  { name: 'HeroSplitTimeline',          blocks: [{ name: 'hero', object: true }, 'coreProtocols', 'infrastructure'] },
+  { name: 'HeroStatsGrid',              blocks: [{ name: 'hero', object: true }, 'features', 'gallery', 'timings'] },
+  { name: 'HeroThreeColGrid',           blocks: [{ name: 'hero', object: true }, 'productionStats', 'activeProjects', 'impactStatement'] },
+  { name: 'HeroWithMenuGrid',           blocks: [{ name: 'hero', object: true }, 'menuHighlights', { name: 'motto', object: true }] },
+  { name: 'HeroWithPricingList',        blocks: [{ name: 'hero', object: true }, 'services', 'impact'] },
+  { name: 'HeroWithProcessGrid',        blocks: [{ name: 'hero', object: true }, { name: 'stats', fieldOverride: 'processStats' }, 'technicalFocus'] },
+  { name: 'IconsListWithTimeline',      blocks: [{ name: 'hero', object: true }, 'stats', 'keyFunctions'] },
+  { name: 'MinimalIconGrid',            blocks: [{ name: 'hero', object: true }, 'stats', 'keyFunctions'] },
+  { name: 'SideBySideListCards',        blocks: [{ name: 'hero', object: true }, 'stats', 'keyFunctions'] },
+  { name: 'TwoColEventCards',           blocks: [{ name: 'hero', object: true }, 'venueFeatures'] }
 ];
 
 const toTitle = (s) => s.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase()).trim();
@@ -257,46 +257,149 @@ ${mediaStateDeclarations}
 `;
 };
 
-const CONTACT_INFO_SECTION = `
+const getHeroSection = (badgeName) => `
+  if (activeSection === 'hero') {
+    return (
+      <div className="pb-10 space-y-4">
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
+          <EditorBlockHeader 
+            title="Hero Content" 
+            isExpanded={!!expandedFixedBlocks['hero_content']} 
+            onToggle={() => toggleFixedBlock('hero_content')} 
+          />
+          {!!expandedFixedBlocks['hero_content'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Image</label>
+                <div
+                  className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
+                  onClick={() => setMediaOpen_heroImage(true)}
+                >
+                  {safeData.hero?.heroImage ? (
+                    <img
+                      src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : \`http://localhost:5000\${safeData.hero.heroImage.startsWith('/') ? '' : '/'}\${safeData.hero.heroImage}\`}
+                      className="w-full h-full object-cover"
+                      alt="Preview"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                      <span className="text-2xl mb-1">🖼</span>
+                      <span className="text-xs">Click to select image</span>
+                    </div>
+                  )}
+                </div>
+                <MediaLibraryPopup
+                  isOpen={mediaOpen_heroImage}
+                  onClose={() => setMediaOpen_heroImage(false)}
+                  onSelect={(url: string) => { handleChange('hero', { ...safeData.hero, heroImage: url }); setMediaOpen_heroImage(false); }}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
+                <PhoneticInput value={safeData.hero?.title?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, en: val } })} englishValue={safeData.hero?.title?.en || ''} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Subtitle</label>
+                <PhoneticInput value={safeData.hero?.subtitle?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, en: val } })} englishValue={safeData.hero?.subtitle?.en || ''} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
+                <PhoneticInput value={safeData.hero?.description?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, en: val } })} englishValue={safeData.hero?.description?.en || ''} multiline />
+              </div>
+            </div>
+          )}
+        </div>
+        ${badgeName ? getSectionHeaderTemplate(badgeName, 'Hero Badge Configuration') : ''}
+      </div>
+    );
+  }
+`;
+
+const getSectionHeaderTemplate = (blockName, overrideTitle = null) => `
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
+          <EditorBlockHeader 
+            title="${overrideTitle || 'Section Header Configuration (Optional)'}" 
+            isExpanded={!!expandedFixedBlocks['${blockName}_header']} 
+            onToggle={() => toggleFixedBlock('${blockName}_header')} 
+          />
+          {!!expandedFixedBlocks['${blockName}_header'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
+                <PhoneticInput 
+                  value={safeData.sectionHeaders?.${blockName}?.title?.mr || ''} 
+                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, ${blockName}: { ...(safeData.sectionHeaders?.${blockName} || {}), title: { ...(safeData.sectionHeaders?.${blockName}?.title || {}), mr: val } } })} 
+                  onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, ${blockName}: { ...(safeData.sectionHeaders?.${blockName} || {}), title: { ...(safeData.sectionHeaders?.${blockName}?.title || {}), en: val } } })} 
+                  englishValue={safeData.sectionHeaders?.${blockName}?.title?.en || ''} 
+                />
+              </div>
+              <IconPickerInput 
+                label="Section Icon" 
+                value={safeData.sectionHeaders?.${blockName}?.icon || ''} 
+                onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, ${blockName}: { ...(safeData.sectionHeaders?.${blockName} || {}), icon: val } })} 
+              />
+            </div>
+          )}
+        </div>`;
+
+const getContactInfoSection = () => `
   if (activeSection === 'contactInfo') {
     return (
       <div className="pb-10 space-y-4">
-        <div className="p-5 bg-white border border-slate-200 rounded-lg space-y-4">
-          <h3 className="text-sm font-bold text-slate-700 border-b border-slate-200 pb-2">Contact Information</h3>
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Address</label>
-            <PhoneticInput value={safeData.contactInfo?.address?.mr || ''} onChange={(val) => handleChange('contactInfo', { ...safeData.contactInfo, address: { ...safeData.contactInfo?.address, mr: val } })} onEnglishChange={(val) => handleChange('contactInfo', { ...safeData.contactInfo, address: { ...safeData.contactInfo?.address, en: val } })} englishValue={safeData.contactInfo?.address?.en || ''} multiline />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Phone</label>
-              <input type="text" value={safeData.contactInfo?.phone || ''} onChange={(e) => handleChange('contactInfo', { ...safeData.contactInfo, phone: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
+${getSectionHeaderTemplate('contactInfo')}
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
+          <EditorBlockHeader 
+            title="Contact Information" 
+            isExpanded={!!expandedFixedBlocks['contactInfo_content']} 
+            onToggle={() => toggleFixedBlock('contactInfo_content')} 
+          />
+          {!!expandedFixedBlocks['contactInfo_content'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Address</label>
+                <PhoneticInput value={safeData.contactInfo?.address?.mr || ''} onChange={(val) => handleChange('contactInfo', { ...safeData.contactInfo, address: { ...safeData.contactInfo?.address, mr: val } })} onEnglishChange={(val) => handleChange('contactInfo', { ...safeData.contactInfo, address: { ...safeData.contactInfo?.address, en: val } })} englishValue={safeData.contactInfo?.address?.en || ''} multiline />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Phone</label>
+                  <input type="text" value={safeData.contactInfo?.phone || ''} onChange={(e) => handleChange('contactInfo', { ...safeData.contactInfo, phone: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Email</label>
+                  <input type="text" value={safeData.contactInfo?.email || ''} onChange={(e) => handleChange('contactInfo', { ...safeData.contactInfo, email: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
+                </div>
+              </div>
             </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Email</label>
-              <input type="text" value={safeData.contactInfo?.email || ''} onChange={(e) => handleChange('contactInfo', { ...safeData.contactInfo, email: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
-            </div>
-          </div>
+          )}
         </div>
       </div>
     );
   }
 `;
 
-const MOTTO_SECTION = `
+const getMottoSection = () => `
   if (activeSection === 'motto') {
     return (
       <div className="pb-10 space-y-4">
-        <div className="p-5 bg-white border border-slate-200 rounded-lg space-y-4">
-          <h3 className="text-sm font-bold text-slate-700 border-b border-slate-200 pb-2">Motto / Tagline</h3>
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Marathi</label>
-            <input type="text" value={safeData.motto?.mr || ''} onChange={(e) => handleChange('motto', { ...safeData.motto, mr: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">English</label>
-            <input type="text" value={safeData.motto?.en || ''} onChange={(e) => handleChange('motto', { ...safeData.motto, en: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
-          </div>
+${getSectionHeaderTemplate('motto')}
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
+          <EditorBlockHeader 
+            title="Motto / Tagline" 
+            isExpanded={!!expandedFixedBlocks['motto_content']} 
+            onToggle={() => toggleFixedBlock('motto_content')} 
+          />
+          {!!expandedFixedBlocks['motto_content'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Marathi</label>
+                <input type="text" value={safeData.motto?.mr || ''} onChange={(e) => handleChange('motto', { ...safeData.motto, mr: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">English</label>
+                <input type="text" value={safeData.motto?.en || ''} onChange={(e) => handleChange('motto', { ...safeData.motto, en: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded text-sm" />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -308,13 +411,12 @@ for (const t of templates) {
   const arrayBlocks = normalizedBlocks.filter(b => !b.object);
 
   // Detect if any block needs MediaLibraryPopup
-  const needsMediaPopup = arrayBlocks.some(block => {
+  const needsMediaPopup = normalizedBlocks.some(block => {
     const fieldDef = BLOCK_FIELDS[block.fieldOverride || block.name] || DEFAULT_FIELDS;
     return fieldDef.some(f => f.type === 'image_preview');
   });
 
   let fileContent = `import React, { useState, useEffect } from 'react';
-import { GeneralSettingsBlock } from './shared/GeneralSettingsBlock';
 import { EditorBlockHeader } from '../EditorLayout';
 import { IconPickerInput } from './shared/IconPickerInput';
 import { PhoneticInput } from '../PhoneticInput';
@@ -337,17 +439,32 @@ interface ${t.name}EditorProps {
   fileContent += `
 export const ${t.name}Editor: React.FC<${t.name}EditorProps> = ({ data, updateData, blockId, expandedSection }) => {
   const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
-  const activeSection = (expandedSection || 'general').replace('template_', '');
+  const activeSection = (expandedSection || 'hero').replace('template_', '');
+
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_content: true,
+    motto_content: true,
+    contactInfo_content: true,
+    category_header: true,
+    general_header: true,
+    production_header: true,
+    partnership_header: true,
+    training_header: true,
+    organization_header: true,
+    [\`\${activeSection}_header\`]: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   useEffect(() => {
     setExpandedItemIndex(0);
   }, [activeSection]);
 
+  const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
+
   const safeData = {
-    title: { mr: '', en: '' },
-    subtitle: { mr: '', en: '' },
-    description: { mr: '', en: '' },
-    heroImage: '',
     ...data
   };
 
@@ -384,27 +501,28 @@ export const ${t.name}Editor: React.FC<${t.name}EditorProps> = ({ data, updateDa
     handleChange(field, [...arr, defaultItem]);
     setExpandedItemIndex(arr.length);
   };
-
-  if (activeSection === 'general' || activeSection === 'template') {
-    return (
-      <div className="pb-10">
-        <GeneralSettingsBlock
-          title="General Settings"
-          isExpanded={true}
-          onToggle={() => {}}
-          data={{ title: safeData.title, subtitle: safeData.subtitle, description: safeData.description, image: safeData.heroImage }}
-          onChange={(gData: any) => updateData({ ...safeData, title: gData.title, subtitle: gData.subtitle, description: gData.description, heroImage: gData.image })}
-        />
-      </div>
-    );
-  }
 `;
 
+  const getBadgeForTemplate = (templateName) => {
+    const mapping = {
+      'HeroStatsGrid': 'category',
+      'HeroFeatureList': 'general',
+      'HeroThreeColGrid': 'production',
+      'HeroWithProcessGrid': 'partnership',
+      'HeroWithPricingList': 'training',
+      'ContentWithRightSidebar': 'organization'
+    };
+    return mapping[templateName] || null;
+  };
+
   for (const block of normalizedBlocks) {
-    if (block.object && block.name === 'contactInfo') {
-      fileContent += CONTACT_INFO_SECTION;
+    if (block.object && block.name === 'hero') {
+      const badgeName = getBadgeForTemplate(t.name);
+      fileContent += getHeroSection(badgeName);
+    } else if (block.object && block.name === 'contactInfo') {
+      fileContent += getContactInfoSection();
     } else if (block.object && block.name === 'motto') {
-      fileContent += MOTTO_SECTION;
+      fileContent += getMottoSection();
     } else if (!block.object) {
       const compName = block.name.charAt(0).toUpperCase() + block.name.slice(1) + 'EditorItem';
       const title = toTitle(block.name);
@@ -419,6 +537,7 @@ export const ${t.name}Editor: React.FC<${t.name}EditorProps> = ({ data, updateDa
   if (activeSection === '${block.name}') {
     return (
       <div className="pb-10 space-y-4">
+${getSectionHeaderTemplate(block.name)}
         <div className="px-1 mb-2">
           <h3 className="text-sm font-bold text-slate-700">${title}</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.${block.name} || []).length} item(s)</p>

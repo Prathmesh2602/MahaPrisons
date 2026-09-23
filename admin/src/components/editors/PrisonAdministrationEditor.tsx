@@ -9,7 +9,7 @@ import { Trash2, ArrowUp, ArrowDown, Send, Save, User } from 'lucide-react';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
 
-const GeneralSettingsBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
+const AdministrationIntroBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
   const defaultSettings = { 
     title: { mr: "", en: "" },
     description: { mr: "", en: "" }
@@ -253,7 +253,7 @@ export const PrisonAdministrationEditor = ({ blockId, initialData, onPreviewUpda
         saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
       />
 
-      <GeneralSettingsBlock 
+      <AdministrationIntroBlock 
         settingsData={{ 
           title: data.title || { mr: "", en: "" },
           description: data.description || { mr: "", en: "" }

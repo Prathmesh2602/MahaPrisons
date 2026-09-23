@@ -32,6 +32,7 @@ interface TemplateEditorRendererProps {
   layoutType: string;
   expandedSection?: string | null;
   onPreviewUpdate: (content: any) => void;
+  menuItemData?: any;
 }
 
 export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
@@ -39,7 +40,8 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
   initialData,
   layoutType,
   expandedSection,
-  onPreviewUpdate
+  onPreviewUpdate,
+  menuItemData
 }) => {
   const { user } = useAuth();
   const { 
@@ -119,7 +121,7 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
     <div className="w-full flex flex-col gap-2">
       <EditorFormHeader
         className="sticky top-[-1px] z-20 bg-white/95 backdrop-blur pb-4 pt-3 -mx-3 px-2 -mt-3 border-b border-slate-200 shadow-[0_4px_6px_-6px_rgba(0,0,0,0.1)]"
-        title="Edit Page Template"
+        title={menuItemData ? `Edit ${menuItemData.label_en}` : "Edit Page Template"}
         onUndo={handleUndo}
         canUndo={historyIndex > 0}
         onRedo={handleRedo}

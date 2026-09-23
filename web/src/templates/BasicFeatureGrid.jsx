@@ -23,30 +23,30 @@ const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
         {/* Header Title */}
         <div className="mb-10 border-b border-gray-200 dark-mode:border-gray-800 pb-8 flex items-center gap-6">
           <div className="p-4 bg-indigo-100 dark-mode:bg-indigo-900/30 rounded-2xl">
-            <Scale className="w-10 h-10 text-indigo-700 dark-mode:text-indigo-400" />
+            <Scale className="w-6 h-6 text-indigo-700 dark-mode:text-indigo-400" />
           </div>
           <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark-mode:text-white tracking-tight mb-2">
-              {getTranslation(data.title)}
+            <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark-mode:text-white tracking-tight mb-2">
+              {getTranslation(data.hero?.title)}
             </h1>
-            <p className="text-xl text-indigo-600 dark-mode:text-indigo-400 font-medium">
-              {getTranslation(data.subtitle)}
+            <p className="text-base text-indigo-600 dark-mode:text-indigo-400 font-medium">
+              {getTranslation(data.hero?.subtitle)}
             </p>
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Main Content Column */}
           <div className="w-full lg:w-2/3">
-            <div className="rounded-3xl overflow-hidden shadow-lg mb-10">
-              <img src={data.heroImage} alt="Legal Aid" className="w-full h-[400px] object-cover" />
+            <div className="rounded-2xl overflow-hidden shadow-lg mb-10">
+              <img src={data.hero?.heroImage} alt="Legal Aid" className="w-full h-[400px] object-cover" />
             </div>
 
             <div className="prose prose-lg dark-mode:prose-invert max-w-none mb-12 text-gray-700 dark-mode:text-gray-300">
-              <p className="text-xl leading-relaxed">{getTranslation(data.description)}</p>
+              <p className="text-base leading-relaxed">{getTranslation(data.hero?.description)}</p>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 dark-mode:text-white mb-6 flex items-center gap-3">
+            <h2 className="text-lg font-bold text-gray-900 dark-mode:text-white mb-6 flex items-center gap-3">
               <Shield className="w-6 h-6 text-indigo-500" />
               {language === 'mr' ? 'प्रमुख वैशिष्ट्ये' : 'Key Features'}
             </h2>
@@ -57,7 +57,7 @@ const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
                 return (
                   <div key={idx} className="bg-white dark-mode:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark-mode:border-gray-700 hover:shadow-md transition-shadow">
                     <Icon className="w-8 h-8 text-indigo-600 dark-mode:text-indigo-400 mb-4" />
-                    <h3 className="text-xl font-bold text-gray-900 dark-mode:text-gray-100 mb-3">{getTranslation(func.title)}</h3>
+                    <h3 className="text-base font-bold text-gray-900 dark-mode:text-gray-100 mb-3">{getTranslation(func.title)}</h3>
                     <p className="text-gray-600 dark-mode:text-gray-400">{getTranslation(func.desc)}</p>
                   </div>
                 );
@@ -69,20 +69,20 @@ const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
           <div className="w-full lg:w-1/3 space-y-8">
             
             {/* Stats Widget */}
-            <div className="bg-white dark-mode:bg-gray-800 rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark-mode:border-gray-700">
+            <div className="bg-white dark-mode:bg-gray-800 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark-mode:border-gray-700">
               <h3 className="text-lg font-bold uppercase tracking-wider text-gray-400 mb-6 border-b border-gray-100 dark-mode:border-gray-700 pb-3">
-                {language === 'mr' ? 'दृष्टिक्षेपात' : 'At a Glance'}
+                {data.sectionHeaders?.keyFunctions?.title ? getTranslation(data.sectionHeaders.keyFunctions.title) : (language === 'mr' ? 'दृष्टिक्षेपात' : 'At a Glance')}
               </h3>
               <div data-block-type="template_stats" className="space-y-6">
                 {data.stats.map((stat, idx) => {
                   const Icon = iconMap[stat.icon] || Users;
                   return (
                     <div key={idx} className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-full bg-indigo-50 dark-mode:bg-indigo-900/20 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-indigo-50 dark-mode:bg-indigo-900/20 flex items-center justify-center">
                         <Icon className="w-5 h-5 text-indigo-600 dark-mode:text-indigo-400" />
                       </div>
                       <div>
-                        <div className="text-2xl font-bold text-gray-900 dark-mode:text-white">{stat.value}</div>
+                        <div className="text-lg font-bold text-gray-900 dark-mode:text-white">{stat.value}</div>
                         <div className="text-sm text-gray-500 font-medium">{getTranslation(stat.label)}</div>
                       </div>
                     </div>
@@ -92,9 +92,9 @@ const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
             </div>
 
             {/* Contact Widget */}
-            <div className="bg-indigo-600 rounded-3xl p-8 shadow-xl text-white sticky top-24">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                {language === 'mr' ? 'संपर्क साधा' : 'Contact Us'}
+            <div className="bg-indigo-600 rounded-2xl p-6 shadow-xl text-white sticky top-24">
+              <h3 className="text-base font-bold mb-6 flex items-center gap-2">
+                {data.sectionHeaders?.stats?.title ? getTranslation(data.sectionHeaders.stats.title) : (language === 'mr' ? 'संपर्क साधा' : 'Contact Us')}
               </h3>
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
@@ -111,7 +111,7 @@ const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
                 </div>
               </div>
               <button className="w-full mt-8 py-3 bg-white text-indigo-700 rounded-xl font-bold shadow-md hover:bg-indigo-50 transition-colors">
-                {language === 'mr' ? 'मदतीसाठी अर्ज करा' : 'Apply for Aid'}
+                {data.sectionHeaders?.stats?.title ? getTranslation(data.sectionHeaders.stats.title) : (language === 'mr' ? 'मदतीसाठी अर्ज करा' : 'Apply for Aid')}
               </button>
             </div>
 

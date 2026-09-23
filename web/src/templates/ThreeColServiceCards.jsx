@@ -37,48 +37,48 @@ const ThreeColServiceCards = ({ dataId, data: dynamicData }) => {
         <div className="container mx-auto max-w-5xl relative z-10 text-center">
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}
-            className="w-20 h-20 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-blue-500/30 rotate-3"
+            className="w-8 h-8 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-blue-500/30 rotate-3"
           >
-            <Wind className="w-10 h-10 text-white" />
+            <Wind className="w-6 h-6 text-white" />
           </motion.div>
           
           <motion.h1 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-bold text-[#0F3D66] dark-mode:text-blue-300 mb-6 tracking-tight"
+            className="text-2xl md:text-4xl font-bold text-[#0F3D66] dark-mode:text-blue-300 mb-6 tracking-tight"
           >
-            {getTranslation(data.title)}
+            {getTranslation(data.hero?.title)}
           </motion.h1>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-2xl text-blue-600 dark-mode:text-blue-400 font-medium mb-8"
+            className="text-base md:text-lg text-blue-600 dark-mode:text-blue-400 font-medium mb-8"
           >
-            {getTranslation(data.subtitle)}
+            {getTranslation(data.hero?.subtitle)}
           </motion.p>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
             className="text-lg text-slate-600 dark-mode:text-slate-300 max-w-3xl mx-auto leading-relaxed"
           >
-            {getTranslation(data.description)}
+            {getTranslation(data.hero?.description)}
           </motion.p>
         </div>
       </div>
 
-      <div className="container mx-auto max-w-6xl px-6 py-20">
+      <div className="container mx-auto max-w-6xl px-6 py-10">
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
           {data.features.map((feature, idx) => {
             const Icon = icons[idx] || Droplets;
             return (
               <motion.div 
                 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.1 }}
-                key={idx} className="bg-white dark-mode:bg-slate-800 p-8 rounded-[2rem] shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-blue-50 dark-mode:border-slate-700 group"
+                key={idx} className="bg-white dark-mode:bg-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-blue-50 dark-mode:border-slate-700 group"
               >
-                <div className="w-16 h-16 bg-blue-50 dark-mode:bg-blue-900/40 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-6 h-6 bg-blue-50 dark-mode:bg-blue-900/40 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Icon className="w-8 h-8 text-blue-500 dark-mode:text-blue-400" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-800 dark-mode:text-slate-100 mb-3">
+                <h3 className="text-base font-bold text-slate-800 dark-mode:text-slate-100 mb-3">
                   {getTranslation(feature.title)}
                 </h3>
                 <p className="text-slate-600 dark-mode:text-slate-400 leading-relaxed">
@@ -90,18 +90,18 @@ const ThreeColServiceCards = ({ dataId, data: dynamicData }) => {
         </div>
 
         {/* Dual Image Showcase */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-6 items-center">
           <motion.div 
             initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-            className="rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-900/10 border-8 border-white dark-mode:border-slate-800"
+            className="rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 border-8 border-white dark-mode:border-slate-800"
           >
-            <img src={data.heroImage1} alt="Laundry Facilities" className="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700" />
+            <img src={data.hero?.heroImage1} alt="Laundry Facilities" className="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700" />
           </motion.div>
           <motion.div 
             initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.2 }}
-            className="rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-900/10 border-8 border-white dark-mode:border-slate-800 mt-10 md:mt-20"
+            className="rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 border-8 border-white dark-mode:border-slate-800 mt-10 md:mt-10"
           >
-            <img src={data.heroImage2} alt="Pressing Section" className="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700" />
+            <img src={data.hero?.heroImage2} alt="Pressing Section" className="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700" />
           </motion.div>
         </div>
       </div>

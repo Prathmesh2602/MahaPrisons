@@ -26,16 +26,18 @@ router.get('/:key', async (req, res) => {
 // Fetches combined site settings
 router.get('/', async (req, res) => {
   try {
-    const [header, footer, wallpaper] = await Promise.all([
+    const [header, footer, wallpaper, globalConf] = await Promise.all([
       prisma.siteSetting.findUnique({ where: { key: 'header_config' } }),
       prisma.siteSetting.findUnique({ where: { key: 'footer_config' } }),
-      prisma.siteSetting.findUnique({ where: { key: 'wallpaper_config' } })
+      prisma.siteSetting.findUnique({ where: { key: 'wallpaper_config' } }),
+      prisma.siteSetting.findUnique({ where: { key: 'global_config' } })
     ]);
 
     res.json({
       header_config: header ? header.value : null,
       footer_config: footer ? footer.value : null,
-      wallpaper_config: wallpaper ? wallpaper.value : null
+      wallpaper_config: wallpaper ? wallpaper.value : null,
+      global_config: globalConf ? globalConf.value : null
     });
   } catch (error) {
     console.error('Settings fetch error:', error);

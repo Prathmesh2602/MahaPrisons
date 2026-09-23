@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { GeneralSettingsBlock } from './shared/GeneralSettingsBlock';
 import { EditorBlockHeader } from '../EditorLayout';
 import { IconPickerInput } from './shared/IconPickerInput';
 import { PhoneticInput } from '../PhoneticInput';
@@ -43,6 +42,7 @@ const FeaturesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp,
       />
       {isExpanded && (
         <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
             <PhoneticInput value={currentItem.title?.mr || ''} onChange={(val) => handleLocalUpdate('title', { ...currentItem.title, mr: val })} onEnglishChange={(val) => handleLocalUpdate('title', { ...currentItem.title, en: val })} englishValue={currentItem.title?.en || ''} />
@@ -51,7 +51,6 @@ const FeaturesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp,
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
             <PhoneticInput value={currentItem.desc?.mr || ''} onChange={(val) => handleLocalUpdate('desc', { ...currentItem.desc, mr: val })} onEnglishChange={(val) => handleLocalUpdate('desc', { ...currentItem.desc, en: val })} englishValue={currentItem.desc?.en || ''} multiline />
           </div>
-          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
         </div>
       )}
     </div>
@@ -160,7 +159,12 @@ const TimingsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, 
           </div>
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hours</label>
-            <PhoneticInput value={currentItem.hours?.mr || ''} onChange={(val) => handleLocalUpdate('hours', { ...currentItem.hours, mr: val })} onEnglishChange={(val) => handleLocalUpdate('hours', { ...currentItem.hours, en: val })} englishValue={currentItem.hours?.en || ''} />
+            <PhoneticInput 
+              value={typeof currentItem.hours === 'string' ? currentItem.hours : currentItem.hours?.mr || ''} 
+              onChange={(val) => handleLocalUpdate('hours', { ...currentItem.hours, mr: val })} 
+              onEnglishChange={(val) => handleLocalUpdate('hours', { ...currentItem.hours, en: val })} 
+              englishValue={typeof currentItem.hours === 'string' ? currentItem.hours : currentItem.hours?.en || ''} 
+            />
           </div>
         </div>
       )}
@@ -170,23 +174,74 @@ const TimingsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, 
 
 export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
   const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
-  const activeSection = (expandedSection || 'general').replace('template_', '');
+  const activeSection = (expandedSection || 'hero').replace('template_', '');
+
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_content: true,
+    motto_content: true,
+    contactInfo_content: true,
+    category_header: true,
+    general_header: true,
+    production_header: true,
+    partnership_header: true,
+    training_header: true,
+    organization_header: true,
+    [`${activeSection}_header`]: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   useEffect(() => {
     setExpandedItemIndex(0);
   }, [activeSection]);
 
+  const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
+
   const safeData = {
-    title: { mr: '', en: '' },
-    subtitle: { mr: '', en: '' },
-    description: { mr: '', en: '' },
-    heroImage: '',
     ...data
   };
 
   const handleChange = (field: string, value: any) => {
     updateData({ ...safeData, [field]: value });
   };
+
+  const heroContentHist = useBlockHistory(
+    { title: { mr: '', en: '' }, subtitle: { mr: '', en: '' }, description: { mr: '', en: '' }, heroImage: '' },
+    safeData.hero || {},
+    (newVal: any) => handleChange('hero', newVal)
+  );
+
+  const heroBadgeHist = useBlockHistory(
+    { title: { mr: '', en: '' }, icon: '' },
+    safeData.sectionHeaders?.category || {},
+    (newVal: any) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, category: newVal })
+  );
+
+  const featuresHeaderHist = useBlockHistory(
+    { title: { mr: '', en: '' }, icon: '' },
+    safeData.sectionHeaders?.features || {},
+    (newVal: any) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, features: newVal })
+  );
+
+  const galleryHeaderHist = useBlockHistory(
+    { title: { mr: '', en: '' }, icon: '' },
+    safeData.sectionHeaders?.gallery || {},
+    (newVal: any) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, gallery: newVal })
+  );
+
+  const timingsHeaderHist = useBlockHistory(
+    { title: { mr: '', en: '' }, icon: '' },
+    safeData.sectionHeaders?.timings || {},
+    (newVal: any) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, timings: newVal })
+  );
+
+  const timingsNoteHist = useBlockHistory(
+    { mr: '', en: '' },
+    safeData.timingsNote || {},
+    (newVal: any) => handleChange('timingsNote', newVal)
+  );
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
     const newArray = [...(safeData[field] || [])];
@@ -218,16 +273,77 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
     setExpandedItemIndex(arr.length);
   };
 
-  if (activeSection === 'general' || activeSection === 'template') {
+  if (activeSection === 'hero') {
     return (
-      <div className="pb-10">
-        <GeneralSettingsBlock
-          title="General Settings"
-          isExpanded={true}
-          onToggle={() => {}}
-          data={{ title: safeData.title, subtitle: safeData.subtitle, description: safeData.description, image: safeData.heroImage }}
-          onChange={(gData: any) => updateData({ ...safeData, title: gData.title, subtitle: gData.subtitle, description: gData.description, heroImage: gData.image })}
-        />
+      <div className="pb-10 space-y-4">
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
+          <EditorBlockHeader 
+            title="Hero Content" 
+            isExpanded={!!expandedFixedBlocks['hero_content']} 
+            onToggle={() => toggleFixedBlock('hero_content')} 
+            history={heroContentHist}
+          />
+          {!!expandedFixedBlocks['hero_content'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div className="p-3 bg-amber-50/50 border border-amber-100 rounded-lg space-y-4 mb-4">
+                <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wide">Section Badge (Left)</h4>
+                <IconPickerInput 
+                  label="Badge Icon" 
+                  value={heroBadgeHist.value.icon || ''} 
+                  onChange={(val) => heroBadgeHist.update({ ...heroBadgeHist.value, icon: val })} 
+                />
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Badge Title</label>
+                  <PhoneticInput 
+                    value={heroBadgeHist.value.title?.mr || ''} 
+                    onChange={(val) => heroBadgeHist.update({ ...heroBadgeHist.value, title: { ...heroBadgeHist.value.title, mr: val } })} 
+                    onEnglishChange={(val) => heroBadgeHist.update({ ...heroBadgeHist.value, title: { ...heroBadgeHist.value.title, en: val } })} 
+                    englishValue={heroBadgeHist.value.title?.en || ''} 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
+                <PhoneticInput value={heroContentHist.value.title?.mr || ''} onChange={(val) => heroContentHist.update({ ...heroContentHist.value, title: { ...heroContentHist.value.title, mr: val } })} onEnglishChange={(val) => heroContentHist.update({ ...heroContentHist.value, title: { ...heroContentHist.value.title, en: val } })} englishValue={heroContentHist.value.title?.en || ''} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Subtitle</label>
+                <PhoneticInput value={heroContentHist.value.subtitle?.mr || ''} onChange={(val) => heroContentHist.update({ ...heroContentHist.value, subtitle: { ...heroContentHist.value.subtitle, mr: val } })} onEnglishChange={(val) => heroContentHist.update({ ...heroContentHist.value, subtitle: { ...heroContentHist.value.subtitle, en: val } })} englishValue={heroContentHist.value.subtitle?.en || ''} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
+                <PhoneticInput value={heroContentHist.value.description?.mr || ''} onChange={(val) => heroContentHist.update({ ...heroContentHist.value, description: { ...heroContentHist.value.description, mr: val } })} onEnglishChange={(val) => heroContentHist.update({ ...heroContentHist.value, description: { ...heroContentHist.value.description, en: val } })} englishValue={heroContentHist.value.description?.en || ''} multiline />
+              </div>
+              
+              <div className="pt-2 border-t border-slate-100">
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Image (Right)</label>
+                <div
+                  className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
+                  onClick={() => setMediaOpen_heroImage(true)}
+                >
+                  {heroContentHist.value.heroImage ? (
+                    <img
+                      src={heroContentHist.value.heroImage.startsWith('http') ? heroContentHist.value.heroImage : `http://localhost:5000${heroContentHist.value.heroImage.startsWith('/') ? '' : '/'}${heroContentHist.value.heroImage}`}
+                      className="w-full h-full object-cover"
+                      alt="Preview"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                      <span className="text-2xl mb-1">🖼</span>
+                      <span className="text-xs">Click to select image</span>
+                    </div>
+                  )}
+                </div>
+                <MediaLibraryPopup
+                  isOpen={mediaOpen_heroImage}
+                  onClose={() => setMediaOpen_heroImage(false)}
+                  onSelect={(url: string) => { heroContentHist.update({ ...heroContentHist.value, heroImage: url }); setMediaOpen_heroImage(false); }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -235,6 +351,33 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
   if (activeSection === 'features') {
     return (
       <div className="pb-10 space-y-4">
+
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
+          <EditorBlockHeader 
+            title="Section Header Configuration (Optional)" 
+            isExpanded={!!expandedFixedBlocks['features_header']} 
+            onToggle={() => toggleFixedBlock('features_header')} 
+            history={featuresHeaderHist}
+          />
+          {!!expandedFixedBlocks['features_header'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
+                <PhoneticInput 
+                  value={featuresHeaderHist.value.title?.mr || ''} 
+                  onChange={(val) => featuresHeaderHist.update({ ...featuresHeaderHist.value, title: { ...featuresHeaderHist.value.title, mr: val } })} 
+                  onEnglishChange={(val) => featuresHeaderHist.update({ ...featuresHeaderHist.value, title: { ...featuresHeaderHist.value.title, en: val } })} 
+                  englishValue={featuresHeaderHist.value.title?.en || ''} 
+                />
+              </div>
+              <IconPickerInput 
+                label="Section Icon" 
+                value={featuresHeaderHist.value.icon || ''} 
+                onChange={(val) => featuresHeaderHist.update({ ...featuresHeaderHist.value, icon: val })} 
+              />
+            </div>
+          )}
+        </div>
         <div className="px-1 mb-2">
           <h3 className="text-sm font-bold text-slate-700">Features</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.features || []).length} item(s)</p>
@@ -263,6 +406,33 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
   if (activeSection === 'gallery') {
     return (
       <div className="pb-10 space-y-4">
+
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
+          <EditorBlockHeader 
+            title="Section Header Configuration (Optional)" 
+            isExpanded={!!expandedFixedBlocks['gallery_header']} 
+            onToggle={() => toggleFixedBlock('gallery_header')} 
+            history={galleryHeaderHist}
+          />
+          {!!expandedFixedBlocks['gallery_header'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
+                <PhoneticInput 
+                  value={galleryHeaderHist.value.title?.mr || ''} 
+                  onChange={(val) => galleryHeaderHist.update({ ...galleryHeaderHist.value, title: { ...galleryHeaderHist.value.title, mr: val } })} 
+                  onEnglishChange={(val) => galleryHeaderHist.update({ ...galleryHeaderHist.value, title: { ...galleryHeaderHist.value.title, en: val } })} 
+                  englishValue={galleryHeaderHist.value.title?.en || ''} 
+                />
+              </div>
+              <IconPickerInput 
+                label="Section Icon" 
+                value={galleryHeaderHist.value.icon || ''} 
+                onChange={(val) => galleryHeaderHist.update({ ...galleryHeaderHist.value, icon: val })} 
+              />
+            </div>
+          )}
+        </div>
         <div className="px-1 mb-2">
           <h3 className="text-sm font-bold text-slate-700">Gallery</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.gallery || []).length} item(s)</p>
@@ -291,6 +461,33 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
   if (activeSection === 'timings') {
     return (
       <div className="pb-10 space-y-4">
+
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
+          <EditorBlockHeader 
+            title="Section Header Configuration (Optional)" 
+            isExpanded={!!expandedFixedBlocks['timings_header']} 
+            onToggle={() => toggleFixedBlock('timings_header')} 
+            history={timingsHeaderHist}
+          />
+          {!!expandedFixedBlocks['timings_header'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
+                <PhoneticInput 
+                  value={timingsHeaderHist.value.title?.mr || ''} 
+                  onChange={(val) => timingsHeaderHist.update({ ...timingsHeaderHist.value, title: { ...timingsHeaderHist.value.title, mr: val } })} 
+                  onEnglishChange={(val) => timingsHeaderHist.update({ ...timingsHeaderHist.value, title: { ...timingsHeaderHist.value.title, en: val } })} 
+                  englishValue={timingsHeaderHist.value.title?.en || ''} 
+                />
+              </div>
+              <IconPickerInput 
+                label="Section Icon" 
+                value={timingsHeaderHist.value.icon || ''} 
+                onChange={(val) => timingsHeaderHist.update({ ...timingsHeaderHist.value, icon: val })} 
+              />
+            </div>
+          )}
+        </div>
         <div className="px-1 mb-2">
           <h3 className="text-sm font-bold text-slate-700">Timings</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.timings || []).length} item(s)</p>
@@ -311,6 +508,29 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
           <button onClick={() => addArrayItem('timings', { day: { mr: '', en: '' }, hours: { mr: '', en: '' } })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
             <Plus size={16} /> Add Timings Item
           </button>
+        </div>
+        
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
+          <EditorBlockHeader 
+            title="Timings Note" 
+            isExpanded={!!expandedFixedBlocks['timings_note']} 
+            onToggle={() => toggleFixedBlock('timings_note')} 
+            history={timingsNoteHist}
+          />
+          {!!expandedFixedBlocks['timings_note'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Footer Note Text</label>
+                <PhoneticInput 
+                  value={timingsNoteHist.value.mr || ''} 
+                  onChange={(val) => timingsNoteHist.update({ ...timingsNoteHist.value, mr: val })} 
+                  onEnglishChange={(val) => timingsNoteHist.update({ ...timingsNoteHist.value, en: val })} 
+                  englishValue={timingsNoteHist.value.en || ''} 
+                  multiline
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );

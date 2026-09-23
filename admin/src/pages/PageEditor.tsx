@@ -25,6 +25,7 @@ export const PageEditor = () => {
   const slug = (rawSlug.startsWith('/') && rawSlug.length > 1) ? rawSlug.slice(1) : rawSlug;
 
   const [pageData, setPageData] = useState<any>(null);
+  const [menuItemData, setMenuItemData] = useState<any>(null);
   const [pageNotFound, setPageNotFound] = useState(false);
   const [selectedBlockType, setSelectedBlockType] = useState<string>('');
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
@@ -79,6 +80,29 @@ export const PageEditor = () => {
         if (!selectedBlockType && res.data.contentBlocks?.length > 0) {
           setSelectedBlockType(res.data.contentBlocks[0].blockType);
         }
+      }
+      
+      try {
+        const menuRes = await axios.get('http://localhost:5000/api/v1/menu');
+        if (menuRes.data) {
+          let foundMenu = null;
+          const findMenu = (items: any[]) => {
+            for (const item of items) {
+              if (item.href === `/${slug}` || item.href === slug) {
+                foundMenu = item;
+                return;
+              }
+              if (item.children && item.children.length > 0) findMenu(item.children);
+              if (item.groups && item.groups.length > 0) {
+                item.groups.forEach((g: any) => g.children && findMenu(g.children));
+              }
+            }
+          };
+          findMenu(menuRes.data);
+          if (foundMenu) setMenuItemData(foundMenu);
+        }
+      } catch (menuError) {
+        console.error('Failed to fetch menu data for editor title:', menuError);
       }
     } catch (error: any) {
       console.error('Failed to fetch page data:', error);
@@ -237,7 +261,7 @@ export const PageEditor = () => {
       case 'prison_activities':
         return <PrisonActivitiesEditor blockId={block.id} initialData={block.content} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} />;
       case 'page_template_data':
-        return <TemplateEditorRenderer blockId={block.id} initialData={block.content} layoutType={pageData.layoutType} expandedSection={expandedSection} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} />;
+        return <TemplateEditorRenderer blockId={block.id} initialData={block.content} layoutType={pageData.layoutType} expandedSection={expandedSection} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} menuItemData={menuItemData} />;
       default:
         return (
           <div className="text-center text-slate-500 py-10 bg-slate-50 border border-slate-200 rounded-lg m-3">
@@ -247,15 +271,41 @@ export const PageEditor = () => {
     }
   };
 
+  const [scale, setScale] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width } = entry.contentRect;
+        // Force preview to perfectly fit the pane width
+        const baseWidth = 1280;
+        setScale(width / baseWidth);
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
     <div className="flex h-full w-full bg-slate-50 overflow-hidden">
       {/* LEFT PANE: Live Preview */}
       <div className="w-[70%] border-r border-slate-200 flex flex-col bg-slate-100 overflow-hidden">
         <div className="h-12 bg-white border-b border-slate-200 flex items-center justify-center text-sm font-medium text-slate-500 shadow-sm shrink-0">
-          Live Preview ({slug})
+          Live Preview {menuItemData ? `(${menuItemData.label_mr} / ${menuItemData.label_en})` : `(${slug})`}
         </div>
-        <div className="flex-1 p-2 overflow-hidden relative">
-          <div className="w-full h-full bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden flex flex-col">
+        <div className="flex-1 p-2 overflow-hidden relative" ref={containerRef}>
+          <div 
+            className="bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden relative origin-top-left"
+            style={{ 
+              width: '1280px', 
+              height: scale > 0 ? `${100 / scale}%` : '100%', 
+              transform: `scale(${scale})` 
+            }}
+          >
             <iframe
               ref={iframeRef}
               src="http://localhost:3000/preview"

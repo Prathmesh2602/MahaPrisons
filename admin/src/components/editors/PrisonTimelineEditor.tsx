@@ -8,7 +8,7 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Send, Save } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
-const GeneralSettingsBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
+const TimelineIntroBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
   const defaultSettings = { 
     title: { mr: "", en: "" }
   };
@@ -234,7 +234,7 @@ export const PrisonTimelineEditor = ({ blockId, initialData, onPreviewUpdate }: 
         saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
       />
 
-      <GeneralSettingsBlock 
+      <TimelineIntroBlock 
         settingsData={{ 
           title: data.title || { mr: "", en: "" }
         }}

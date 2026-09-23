@@ -4,7 +4,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 export const Footer = ({ settingsData }) => {
   const { language } = useAccessibility();
 
-  const footerBanners = settingsData?.value?.footer_banners || [];
+  const footerBanners = settingsData?.footer_config?.footer_banners || [];
 
 
   const defaultLinks = [

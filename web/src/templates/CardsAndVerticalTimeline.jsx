@@ -22,19 +22,19 @@ const CardsAndVerticalTimeline = ({ dataId, data: dynamicData }) => {
       
       {/* Centered Minimal Header */}
       <div className="bg-white dark-mode:bg-slate-950 py-16 px-4 text-center shadow-sm">
-        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-4xl md:text-5xl font-black text-slate-800 dark-mode:text-slate-100 mb-4 tracking-tight">
-          {getTranslation(data.title)}
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-2xl md:text-3xl font-black text-slate-800 dark-mode:text-slate-100 mb-4 tracking-tight">
+          {getTranslation(data.hero?.title)}
         </motion.h1>
-        <motion.p initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-xl text-slate-500 font-medium">
-          {getTranslation(data.subtitle)}
+        <motion.p initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-base text-slate-500 font-medium">
+          {getTranslation(data.hero?.subtitle)}
         </motion.p>
       </div>
 
       <div className="container mx-auto px-4 max-w-4xl mt-12">
         
-        <div className="bg-white dark-mode:bg-slate-800 p-8 rounded-xl shadow-md border border-slate-200 dark-mode:border-slate-700 mb-16 text-center">
-          <p className="text-xl text-slate-700 dark-mode:text-slate-300 leading-relaxed font-poppins">
-            {getTranslation(data.description)}
+        <div className="bg-white dark-mode:bg-slate-800 p-6 rounded-xl shadow-md border border-slate-200 dark-mode:border-slate-700 mb-16 text-center">
+          <p className="text-base text-slate-700 dark-mode:text-slate-300 leading-relaxed font-poppins">
+            {getTranslation(data.hero?.description)}
           </p>
         </div>
 
@@ -47,11 +47,11 @@ const CardsAndVerticalTimeline = ({ dataId, data: dynamicData }) => {
             const Icon = iconMap[func.icon] || CalendarDays;
             return (
               <motion.div key={idx} initial={{ x: -40, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true, margin: "-100px" }} className="relative pl-10 md:pl-16">
-                <div className="absolute -left-[26px] top-0 w-12 h-12 bg-white dark-mode:bg-slate-800 border-4 border-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+                <div className="absolute -left-[26px] top-0 w-8 h-8 bg-white dark-mode:bg-slate-800 border-4 border-indigo-500 rounded-full flex items-center justify-center shadow-lg">
                   <Icon className="w-5 h-5 text-indigo-500" />
                 </div>
-                <div className="bg-white dark-mode:bg-slate-800 p-8 rounded-2xl shadow-lg border border-slate-200 dark-mode:border-slate-700">
-                  <h3 className="text-2xl font-bold text-slate-800 dark-mode:text-slate-100 mb-4 font-poppins">{getTranslation(func.title)}</h3>
+                <div className="bg-white dark-mode:bg-slate-800 p-6 rounded-2xl shadow-lg border border-slate-200 dark-mode:border-slate-700">
+                  <h3 className="text-lg font-bold text-slate-800 dark-mode:text-slate-100 mb-4 font-poppins">{getTranslation(func.title)}</h3>
                   <p className="text-slate-600 dark-mode:text-slate-400 text-lg font-poppins">{getTranslation(func.desc)}</p>
                 </div>
               </motion.div>
@@ -68,7 +68,7 @@ const CardsAndVerticalTimeline = ({ dataId, data: dynamicData }) => {
                 return (
                   <div key={idx} className="bg-white dark-mode:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark-mode:border-slate-700 flex flex-col items-center text-center font-poppins">
                     <Icon className="w-8 h-8 text-indigo-500 mb-3" />
-                    <div className="text-3xl font-black text-slate-800 dark-mode:text-white mb-1">{stat.value}</div>
+                    <div className="text-xl font-black text-slate-800 dark-mode:text-white mb-1">{stat.value}</div>
                     <div className="text-sm font-bold text-slate-500 uppercase">{getTranslation(stat.label)}</div>
                   </div>
                 );

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { GeneralSettingsBlock } from './shared/GeneralSettingsBlock';
 import { EditorBlockHeader } from '../EditorLayout';
 import { IconPickerInput } from './shared/IconPickerInput';
 import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
+import { MediaLibraryPopup } from '../MediaLibraryPopup';
 
 interface TwoColEventCardsEditorProps {
   data: any;
@@ -55,17 +55,32 @@ const VenueFeaturesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMo
 
 export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
   const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
-  const activeSection = (expandedSection || 'general').replace('template_', '');
+  const activeSection = (expandedSection || 'hero').replace('template_', '');
+
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_content: true,
+    motto_content: true,
+    contactInfo_content: true,
+    category_header: true,
+    general_header: true,
+    production_header: true,
+    partnership_header: true,
+    training_header: true,
+    organization_header: true,
+    [`${activeSection}_header`]: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   useEffect(() => {
     setExpandedItemIndex(0);
   }, [activeSection]);
 
+  const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
+
   const safeData = {
-    title: { mr: '', en: '' },
-    subtitle: { mr: '', en: '' },
-    description: { mr: '', en: '' },
-    heroImage: '',
     ...data
   };
 
@@ -103,16 +118,58 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
     setExpandedItemIndex(arr.length);
   };
 
-  if (activeSection === 'general' || activeSection === 'template') {
+  if (activeSection === 'hero') {
     return (
-      <div className="pb-10">
-        <GeneralSettingsBlock
-          title="General Settings"
-          isExpanded={true}
-          onToggle={() => {}}
-          data={{ title: safeData.title, subtitle: safeData.subtitle, description: safeData.description, image: safeData.heroImage }}
-          onChange={(gData: any) => updateData({ ...safeData, title: gData.title, subtitle: gData.subtitle, description: gData.description, heroImage: gData.image })}
-        />
+      <div className="pb-10 space-y-4">
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
+          <EditorBlockHeader 
+            title="Hero Content" 
+            isExpanded={!!expandedFixedBlocks['hero_content']} 
+            onToggle={() => toggleFixedBlock('hero_content')} 
+          />
+          {!!expandedFixedBlocks['hero_content'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Image</label>
+                <div
+                  className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
+                  onClick={() => setMediaOpen_heroImage(true)}
+                >
+                  {safeData.hero?.heroImage ? (
+                    <img
+                      src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `http://localhost:5000${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`}
+                      className="w-full h-full object-cover"
+                      alt="Preview"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                      <span className="text-2xl mb-1">🖼</span>
+                      <span className="text-xs">Click to select image</span>
+                    </div>
+                  )}
+                </div>
+                <MediaLibraryPopup
+                  isOpen={mediaOpen_heroImage}
+                  onClose={() => setMediaOpen_heroImage(false)}
+                  onSelect={(url: string) => { handleChange('hero', { ...safeData.hero, heroImage: url }); setMediaOpen_heroImage(false); }}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
+                <PhoneticInput value={safeData.hero?.title?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, en: val } })} englishValue={safeData.hero?.title?.en || ''} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Subtitle</label>
+                <PhoneticInput value={safeData.hero?.subtitle?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, en: val } })} englishValue={safeData.hero?.subtitle?.en || ''} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
+                <PhoneticInput value={safeData.hero?.description?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, en: val } })} englishValue={safeData.hero?.description?.en || ''} multiline />
+              </div>
+            </div>
+          )}
+        </div>
+        
       </div>
     );
   }
@@ -120,6 +177,32 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
   if (activeSection === 'venueFeatures') {
     return (
       <div className="pb-10 space-y-4">
+
+        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
+          <EditorBlockHeader 
+            title="Section Header Configuration (Optional)" 
+            isExpanded={!!expandedFixedBlocks['venueFeatures_header']} 
+            onToggle={() => toggleFixedBlock('venueFeatures_header')} 
+          />
+          {!!expandedFixedBlocks['venueFeatures_header'] && (
+            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
+                <PhoneticInput 
+                  value={safeData.sectionHeaders?.venueFeatures?.title?.mr || ''} 
+                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, venueFeatures: { ...(safeData.sectionHeaders?.venueFeatures || {}), title: { ...(safeData.sectionHeaders?.venueFeatures?.title || {}), mr: val } } })} 
+                  onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, venueFeatures: { ...(safeData.sectionHeaders?.venueFeatures || {}), title: { ...(safeData.sectionHeaders?.venueFeatures?.title || {}), en: val } } })} 
+                  englishValue={safeData.sectionHeaders?.venueFeatures?.title?.en || ''} 
+                />
+              </div>
+              <IconPickerInput 
+                label="Section Icon" 
+                value={safeData.sectionHeaders?.venueFeatures?.icon || ''} 
+                onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, venueFeatures: { ...(safeData.sectionHeaders?.venueFeatures || {}), icon: val } })} 
+              />
+            </div>
+          )}
+        </div>
         <div className="px-1 mb-2">
           <h3 className="text-sm font-bold text-slate-700">Venue Features</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.venueFeatures || []).length} item(s)</p>

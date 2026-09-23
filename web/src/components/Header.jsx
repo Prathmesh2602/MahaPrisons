@@ -48,9 +48,9 @@ export const Header = ({ settingsData }) => {
         {/* Title Texts */}
         <div className="flex flex-col">
           <span className="text-xs md:text-[14px] font-medium font-poppins text-[#0F3D66] dark-mode:text-blue-300 leading-tight mb-1">
-            {language === 'mr' ? subtitleMr : subtitleEn}
+            {language === 'mr' ? titleEn : titleMr}
           </span>
-          <h1 className="text-base md:text-lg lg:text-xl font-semibold text-[#111827] dark-mode:text-white leading-tight">
+          <h1 className="text-base md:text-[22px] lg:text-[26px] font-semibold text-[#111827] dark-mode:text-white leading-tight">
             {language === 'mr' ? titleMr : titleEn}
           </h1>
         </div>

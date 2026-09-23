@@ -9,7 +9,7 @@ import { Send, Save, Image as ImageIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 
-const GeneralSettingsBlock = ({ settingsData, onUpdateFull, onTranslate, onMediaOpen, isExpanded, onToggle }: any) => {
+const HeroContentBlock = ({ settingsData, onUpdateFull, onTranslate, onMediaOpen, isExpanded, onToggle }: any) => {
   const defaultSettings = { 
     title: { mr: "", en: "" },
     subtitle: { mr: "", en: "" },
@@ -160,7 +160,7 @@ export const PrisonHeroEditor = ({ blockId, initialData, onPreviewUpdate }: any)
         saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
       />
 
-      <GeneralSettingsBlock 
+      <HeroContentBlock 
         settingsData={data}
         onUpdateFull={updateRootFull}
         onTranslate={handleTranslateGeneral}

@@ -13,10 +13,10 @@
   --color-text-primary: #111827;
   --color-text-secondary: #374151;
 
-  --font-poppins: "Poppins", sans-serif;
-  --font-devanagari: "Poppins", sans-serif;
-  --font-mukta: "Poppins", sans-serif;
-  --font-classy: "Poppins", sans-serif;
+  --font-sans: var(--font-poppins-var), sans-serif;
+  --font-serif: var(--font-poppins-var), sans-serif;
+  --font-mono: var(--font-poppins-var), sans-serif;
+  --font-poppins: var(--font-poppins-var), sans-serif;
 }
 
 html {
@@ -27,7 +27,7 @@ html {
 body {
   background-color: var(--color-app-bg);
   color: var(--color-text-primary);
-  font-family: var(--font-poppins);
+  font-family: var(--font-poppins-var), sans-serif;
   margin: 0;
   padding: 0;
   /* overflow-x: hidden; removed to allow sticky navbar */
@@ -202,7 +202,7 @@ body {
 
 /* --- English Language Typography Overrides --- */
 .lang-en {
-  font-family: var(--font-poppins);
+  font-family: var(--font-poppins), sans-serif;
 }
 
 .lang-en h1,
@@ -282,7 +282,7 @@ body {
 
 /* Force Marathi styling (Devanagari) for specific components (Header, Toolbar) even in English mode */
 .devanagari-force {
-  font-family: var(--font-devanagari) !important;
+  font-family: var(--font-poppins) !important;
 }
 
 .devanagari-force h1,
