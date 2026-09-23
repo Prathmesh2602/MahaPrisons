@@ -60,23 +60,7 @@ export const SettingsEditor = () => {
   const [activeTab, setActiveTab] = useState<TabType>('DASHBOARD');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const [scale, setScale] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        const { width } = entry.contentRect;
-        const baseWidth = 1280;
-        setScale(width < baseWidth ? width / baseWidth : 1);
-      }
-    });
-
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
-  }, []);
 
   const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
     header_logo: true,
@@ -608,23 +592,16 @@ export const SettingsEditor = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-[calc(100vh-73px)] md:h-[calc(100vh)] min-h-full bg-slate-50">
+    <div className="flex h-full w-full bg-slate-50 overflow-hidden">
 
       {/* LEFT PANE: LIVE PREVIEW */}
-      <div className="w-full md:w-[70%] border-b md:border-b-0 md:border-r border-slate-200 flex flex-col bg-slate-100 overflow-hidden">
-        <div className="p-2 border-b border-slate-200 bg-white font-semibold text-sm text-slate-700 flex justify-between items-center shrink-0">
-          Live Preview
+      <div className="w-[70%] border-r border-slate-200 flex flex-col bg-slate-100 overflow-hidden">
+        <div className="h-12 bg-white border-b border-slate-200 flex items-center justify-between px-4 text-sm font-medium text-slate-500 shadow-sm shrink-0">
+          <span>Live Preview</span>
           <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full animate-pulse">Syncing...</span>
         </div>
         <div className="flex-1 p-2 overflow-hidden relative" ref={containerRef}>
-          <div 
-            className="bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden relative origin-top-left"
-            style={{ 
-              width: '1280px', 
-              height: scale > 0 ? `${100 / scale}%` : '100%', 
-              transform: `scale(${scale})` 
-            }}
-          >
+          <div className="w-full h-full bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden">
             <iframe
               ref={iframeRef}
               src="http://localhost:3000/preview"
@@ -636,7 +613,7 @@ export const SettingsEditor = () => {
       </div>
 
       {/* RIGHT PANE: EDITOR CONTROLS */}
-      <div className="w-full md:w-[30%] flex flex-col bg-white overflow-y-auto shrink-0 relative">
+      <div className="w-[30%] flex flex-col bg-white shrink-0 overflow-y-auto relative">
 
         {/* STICKY TOP BAR */}
         <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-200 shadow-[0_4px_6px_-6px_rgba(0,0,0,0.1)]">

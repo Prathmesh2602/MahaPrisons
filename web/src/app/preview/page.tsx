@@ -112,19 +112,19 @@ export default function PreviewPage() {
   // Legacy isolated preview logic for individual components
   return (
     <AccessibilityProvider>
-      <div className="min-h-screen bg-slate-50 flex flex-col relative">
+      <div className="bg-slate-100 flex flex-col relative items-center justify-start pt-4 px-2 pb-8 overflow-y-auto min-h-screen">
         {componentType === 'Header' && (
-          <div className="w-full">
+          <div className="w-full shadow-2xl rounded-xl overflow-hidden border border-slate-200">
             <Header settingsData={settingsData} />
           </div>
         )}
         {componentType === 'Footer' && (
-          <div className="w-full mt-auto">
+          <div className="w-full shadow-2xl rounded-xl overflow-hidden border border-slate-200 mt-8">
             <Footer settingsData={settingsData} />
           </div>
         )}
         {componentType === 'Wallpaper' && (
-          <div className="absolute inset-0">
+          <div className="w-full h-[600px] shadow-2xl rounded-xl overflow-hidden border border-slate-200 relative mt-8">
             <LiveWallpaperBg settingsData={settingsData} />
           </div>
         )}
