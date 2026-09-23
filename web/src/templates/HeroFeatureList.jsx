@@ -4,10 +4,13 @@ import { redirect } from 'next/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { agricultureData } from '../data/agricultureData';
-import { Sprout, Award, LayoutGrid, HeartHandshake, CheckCircle2, Activity, MapPin } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+import { Sprout, CheckCircle2 } from 'lucide-react';
 
-const iconMap = {
-  Sprout, Award, LayoutGrid, HeartHandshake, CheckCircle2, Activity, MapPin
+const getIcon = (iconName, FallbackIcon) => {
+  if (!iconName) return FallbackIcon;
+  const IconComponent = LucideIcons[iconName];
+  return IconComponent ? IconComponent : FallbackIcon;
 };
 
 const HeroFeatureList = ({ dataId, data: dynamicData }) => {
@@ -73,9 +76,8 @@ const HeroFeatureList = ({ dataId, data: dynamicData }) => {
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-xl shadow-black/20 mb-6"
           >
             {(() => {
-              const IconName = data.sectionHeaders?.general?.icon;
-              const CustomIcon = IconName ? iconMap[IconName] : null;
-              return CustomIcon ? <CustomIcon className="w-4 h-4 text-green-400" /> : <Sprout className="w-4 h-4 text-green-400" />;
+              const IconComp = getIcon(data.sectionHeaders?.general?.icon, Sprout);
+              return <IconComp className="w-4 h-4 text-green-400" />;
             })()}
             <span className="text-sm font-semibold uppercase tracking-widest text-green-50">
               {data.sectionHeaders?.general?.title ? getTranslation(data.sectionHeaders.general.title) : (language === 'mr' ? 'शेती व पूरक व्यवसाय' : 'Agriculture & Allied Activities')}
@@ -105,20 +107,19 @@ const HeroFeatureList = ({ dataId, data: dynamicData }) => {
       <div className="container mx-auto px-4 md:px-8 -mt-16 relative z-30">
         {/* Highlights Cards */}
         <section className="mb-20">
-          <motion.div
+          <div
             data-block-type="template_highlights"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-6 max-w-6xl mx-auto"
           >
             {(data.highlights || []).map((highlight, idx) => {
-              const IconComponent = highlight.icon && iconMap[highlight.icon] ? iconMap[highlight.icon] : CheckCircle2;
+              const IconComponent = getIcon(highlight.icon, CheckCircle2);
               return (
                 <motion.div
-                  key={idx}
-                  variants={fadeUpVariant}
+                  key={`highlight-${idx}`}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: idx * 0.1, ease: "easeOut" }}
                   className="bg-white/90 dark-mode:bg-gray-800/90 backdrop-blur-xl rounded-2xl p-6 shadow-2xl shadow-blue-900/5 dark-mode:shadow-black/30 border border-white/50 dark-mode:border-gray-700/50 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500"
                 >
                   <div className="w-8 h-8 rounded-2xl bg-green-50 dark-mode:bg-green-900/20 flex items-center justify-center text-green-600 dark-mode:text-green-400 mb-6 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-amber-50 group-hover:text-amber-500 transition-all duration-500 shadow-inner">
@@ -128,12 +129,12 @@ const HeroFeatureList = ({ dataId, data: dynamicData }) => {
                     {getTranslation(highlight.title)}
                   </h3>
                   <p className="text-gray-600 dark-mode:text-gray-400 leading-relaxed">
-                    {getTranslation(highlight.desc)}
+                    {getTranslation(highlight.description || highlight.desc)}
                   </p>
                 </motion.div>
               );
             })}
-          </motion.div>
+          </div>
         </section>
 
         {/* Dynamic Content Sections */}
@@ -150,9 +151,15 @@ const HeroFeatureList = ({ dataId, data: dynamicData }) => {
                   transition={{ duration: 0.8, ease: "easeOut" }}
                   className="w-full lg:w-1/2"
                 >
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 group">
+                  <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 group bg-gray-100 dark-mode:bg-gray-800">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <img src={section.image} alt={getTranslation(section.title)} className="w-full h-[350px] object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    {section.image ? (
+                      <img src={section.image} alt={getTranslation(section.title)} className="w-full h-[350px] object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    ) : (
+                      <div className="w-full h-[350px] flex items-center justify-center text-gray-400 dark-mode:text-gray-600">
+                        <LucideIcons.Image className="w-12 h-12 opacity-50" />
+                      </div>
+                    )}
                   </div>
                 </motion.div>
                 
