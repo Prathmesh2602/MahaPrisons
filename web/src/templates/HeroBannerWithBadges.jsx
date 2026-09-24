@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Clock, Award, Heart, Briefcase, Flag, MapPin, Phone, Mail } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Clock, Award, Heart, Briefcase, Flag };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const HeroBannerWithBadges = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -20,7 +25,7 @@ const HeroBannerWithBadges = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-white dark-mode:bg-black text-gray-900 dark-mode:text-white font-poppins overflow-hidden">
+    <div className="min-h-screen bg-white dark-mode:bg-black text-gray-900 dark-mode:text-white font-poppins overflow-hidden">
       
       {/* Parallax Hero */}
       <div className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
@@ -52,7 +57,7 @@ const HeroBannerWithBadges = ({ dataId, data: dynamicData }) => {
 
         {/* Big Numbers Stats */}
         <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {data.stats.map((stat, idx) => {
+          {(data.stats || []).map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Award;
             return (
               <motion.div key={idx} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.2, duration: 0.7 }} className="text-center">
@@ -70,7 +75,7 @@ const HeroBannerWithBadges = ({ dataId, data: dynamicData }) => {
 
         {/* Diagonal Cards for Key Functions */}
         <div data-block-type="template_keyFunctions" className="space-y-32">
-          {data.keyFunctions.map((func, idx) => {
+          {(data.keyFunctions || []).map((func, idx) => {
             const Icon = iconMap[func.icon] || Briefcase;
             const isEven = idx % 2 === 0;
             return (

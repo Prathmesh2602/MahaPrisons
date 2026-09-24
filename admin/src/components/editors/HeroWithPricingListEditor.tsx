@@ -14,8 +14,8 @@ interface HeroWithPricingListEditorProps {
 }
 
 const ServicesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
-  const defaultItem = { name: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const defaultItem = { name: { mr: '', en: '' }, icon: 'Check' };
+  const itemHist = useBlockHistory(defaultItem, { ...itemData, icon: itemData?.icon || 'Check' }, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
 
 
@@ -42,11 +42,11 @@ const ServicesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp,
       />
       {isExpanded && (
         <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Name</label>
             <PhoneticInput value={currentItem.name?.mr || ''} onChange={(val) => handleLocalUpdate('name', { ...currentItem.name, mr: val })} onEnglishChange={(val) => handleLocalUpdate('name', { ...currentItem.name, en: val })} englishValue={currentItem.name?.en || ''} />
           </div>
-          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
         </div>
       )}
     </div>
@@ -54,10 +54,9 @@ const ServicesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp,
 };
 
 const ImpactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
-  const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const defaultItem = { value: '', label: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: 'Users' };
+  const itemHist = useBlockHistory(defaultItem, { ...itemData, icon: itemData?.icon || 'Users' }, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
-
 
   const handleLocalUpdate = (key: string, value: any) => {
     const newItem = JSON.parse(JSON.stringify(itemHist.value));
@@ -68,7 +67,7 @@ const ImpactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, o
   return (
     <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
       <EditorBlockHeader
-        title={currentItem.title?.mr || currentItem.label?.mr || currentItem.name?.mr || currentItem.mr || `Item ${index + 1}`}
+        title={currentItem.label?.mr || `Item ${index + 1}`}
         isExpanded={isExpanded}
         onToggle={onToggle}
         history={itemHist}
@@ -82,20 +81,26 @@ const ImpactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, o
       />
       {isExpanded && (
         <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
-            <PhoneticInput value={currentItem.title?.mr || ''} onChange={(val) => handleLocalUpdate('title', { ...currentItem.title, mr: val })} onEnglishChange={(val) => handleLocalUpdate('title', { ...currentItem.title, en: val })} englishValue={currentItem.title?.en || ''} />
+            <input type="text" value={currentItem.value || ''} onChange={(e) => handleLocalUpdate('value', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" placeholder="100+" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Label</label>
+            <PhoneticInput value={currentItem.label?.mr || ''} onChange={(val) => handleLocalUpdate('label', { ...currentItem.label, mr: val })} onEnglishChange={(val) => handleLocalUpdate('label', { ...currentItem.label, en: val })} englishValue={currentItem.label?.en || ''} />
           </div>
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
             <PhoneticInput value={currentItem.desc?.mr || ''} onChange={(val) => handleLocalUpdate('desc', { ...currentItem.desc, mr: val })} onEnglishChange={(val) => handleLocalUpdate('desc', { ...currentItem.desc, en: val })} englishValue={currentItem.desc?.en || ''} multiline />
           </div>
-          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
         </div>
       )}
     </div>
   );
 };
+
+
 
 export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
   const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
@@ -103,15 +108,8 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
 
   const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
     hero_content: true,
-    motto_content: true,
-    contactInfo_content: true,
-    category_header: true,
-    general_header: true,
-    production_header: true,
-    partnership_header: true,
-    training_header: true,
-    organization_header: true,
-    [`${activeSection}_header`]: true
+    services_header: true,
+    about_content: true,
   });
 
   const toggleFixedBlock = (key: string) => {
@@ -133,19 +131,23 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
-    const newArray = [...(safeData[field] || [])];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
+    const newArray = [...arr];
     newArray[index] = newItemData;
     handleChange(field, newArray);
   };
 
   const removeArrayItem = (field: string, index: number) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, arr.filter((_: any, i: number) => i !== index));
     if (expandedItemIndex === index) setExpandedItemIndex(0);
   };
 
   const moveArrayItem = (field: string, index: number, direction: number) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     if (index + direction < 0 || index + direction >= arr.length) return;
     const newArray = [...arr];
     const temp = newArray[index];
@@ -157,34 +159,156 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
   };
 
   const addArrayItem = (field: string, defaultItem: any) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, [...arr, defaultItem]);
     setExpandedItemIndex(arr.length);
   };
+
+  const heroHist = useBlockHistory(
+    {
+      badgeTitle: { mr: 'व्यावसायिक प्रशिक्षण', en: 'Vocational Training' },
+      badgeIcon: '',
+      title: { mr: '', en: '' },
+      subtitle: { mr: '', en: '' },
+      heroImage: ''
+    },
+    {
+      badgeTitle: safeData.sectionHeaders?.training?.title?.mr ? safeData.sectionHeaders.training.title : { mr: 'व्यावसायिक प्रशिक्षण', en: 'Vocational Training' },
+      badgeIcon: safeData.sectionHeaders?.training?.icon || 'Scissors',
+      title: safeData.hero?.title || { mr: '', en: '' },
+      subtitle: safeData.hero?.subtitle || { mr: '', en: '' },
+      heroImage: safeData.hero?.heroImage || ''
+    },
+    (newCombined: any) => {
+      handleChange('hero', {
+        ...safeData.hero,
+        title: newCombined.title,
+        subtitle: newCombined.subtitle,
+        heroImage: newCombined.heroImage
+      });
+      handleChange('sectionHeaders', {
+        ...safeData.sectionHeaders,
+        training: {
+          ...(safeData.sectionHeaders?.training || {}),
+          title: newCombined.badgeTitle,
+          icon: newCombined.badgeIcon
+        }
+      });
+    }
+  );
+  const currentHero = heroHist.value;
+  const updateHero = (key: string, value: any) => {
+    heroHist.update({ ...currentHero, [key]: value });
+  };
+
+  const aboutHist = useBlockHistory(
+    {
+      aboutTitle: { mr: 'उपक्रमाविषयी', en: 'About the Initiative' },
+      aboutIcon: '',
+      description: { mr: '', en: '' }
+    },
+    {
+      aboutTitle: safeData.sectionHeaders?.about?.title?.mr ? safeData.sectionHeaders.about.title : { mr: 'उपक्रमाविषयी', en: 'About the Initiative' },
+      aboutIcon: safeData.sectionHeaders?.about?.icon || 'Star',
+      description: safeData.hero?.description || { mr: '', en: '' }
+    },
+    (newAbout: any) => {
+      handleChange('hero', {
+        ...safeData.hero,
+        description: newAbout.description
+      });
+      handleChange('sectionHeaders', {
+        ...safeData.sectionHeaders,
+        about: {
+          ...(safeData.sectionHeaders?.about || {}),
+          title: newAbout.aboutTitle,
+          icon: newAbout.aboutIcon
+        }
+      });
+    }
+  );
+  const currentAbout = aboutHist.value;
+  const updateAbout = (key: string, value: any) => {
+    aboutHist.update({ ...currentAbout, [key]: value });
+  };
+
+  const servicesHeaderHist = useBlockHistory(
+    { title: { mr: 'प्रशिक्षण व सेवा', en: 'Training & Services' } },
+    { title: safeData.sectionHeaders?.services?.title?.mr ? safeData.sectionHeaders.services.title : (safeData.sectionHeaders?.impact?.title?.mr ? safeData.sectionHeaders.impact.title : { mr: 'प्रशिक्षण व सेवा', en: 'Training & Services' }) },
+    (newHeader: any) => {
+      handleChange('sectionHeaders', {
+        ...safeData.sectionHeaders,
+        services: {
+          ...(safeData.sectionHeaders?.services || {}),
+          title: newHeader.title
+        }
+      });
+    }
+  );
+  const currentServicesHeader = servicesHeaderHist.value;
 
   if (activeSection === 'hero') {
     return (
       <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
-            title="Hero Content" 
+            title="Hero Section Configuration" 
             isExpanded={!!expandedFixedBlocks['hero_content']} 
             onToggle={() => toggleFixedBlock('hero_content')} 
+            history={heroHist}
           />
           {!!expandedFixedBlocks['hero_content'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <IconPickerInput 
+                label="Badge Icon" 
+                value={currentHero.badgeIcon || ''} 
+                onChange={(val) => updateHero('badgeIcon', val)} 
+              />
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Badge Title</label>
+                <PhoneticInput 
+                  value={currentHero.badgeTitle?.mr || ''} 
+                  onChange={(val) => updateHero('badgeTitle', { ...currentHero.badgeTitle, mr: val })} 
+                  onEnglishChange={(val) => updateHero('badgeTitle', { ...currentHero.badgeTitle, en: val })} 
+                  englishValue={currentHero.badgeTitle?.en || ''} 
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
+                <PhoneticInput 
+                  value={currentHero.title?.mr || ''} 
+                  onChange={(val) => updateHero('title', { ...currentHero.title, mr: val })} 
+                  onEnglishChange={(val) => updateHero('title', { ...currentHero.title, en: val })} 
+                  englishValue={currentHero.title?.en || ''} 
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Subtitle</label>
+                <PhoneticInput 
+                  value={currentHero.subtitle?.mr || ''} 
+                  onChange={(val) => updateHero('subtitle', { ...currentHero.subtitle, mr: val })} 
+                  onEnglishChange={(val) => updateHero('subtitle', { ...currentHero.subtitle, en: val })} 
+                  englishValue={currentHero.subtitle?.en || ''} 
+                />
+              </div>
               <div className="space-y-2">
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Image</label>
                 <div
                   className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
                   onClick={() => setMediaOpen_heroImage(true)}
                 >
-                  {safeData.hero?.heroImage ? (
-                    <img
-                      src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `http://localhost:5000${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`}
-                      className="w-full h-full object-cover"
-                      alt="Preview"
-                    />
+                  {currentHero.heroImage ? (
+                    <>
+                      <img
+                        src={currentHero.heroImage.startsWith('http') ? currentHero.heroImage : `http://localhost:5000${currentHero.heroImage.startsWith('/') ? '' : '/'}${currentHero.heroImage}`}
+                        className="w-full h-full object-cover"
+                        alt="Preview"
+                      />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-white text-sm font-medium">Click to change</span>
+                      </div>
+                    </>
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
                       <span className="text-2xl mb-1">🖼</span>
@@ -195,49 +319,76 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
                 <MediaLibraryPopup
                   isOpen={mediaOpen_heroImage}
                   onClose={() => setMediaOpen_heroImage(false)}
-                  onSelect={(url: string) => { handleChange('hero', { ...safeData.hero, heroImage: url }); setMediaOpen_heroImage(false); }}
+                  onSelect={(url: string) => { updateHero('heroImage', url); setMediaOpen_heroImage(false); }}
                 />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
-                <PhoneticInput value={safeData.hero?.title?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, en: val } })} englishValue={safeData.hero?.title?.en || ''} />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Subtitle</label>
-                <PhoneticInput value={safeData.hero?.subtitle?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, en: val } })} englishValue={safeData.hero?.subtitle?.en || ''} />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
-                <PhoneticInput value={safeData.hero?.description?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, en: val } })} englishValue={safeData.hero?.description?.en || ''} multiline />
               </div>
             </div>
           )}
         </div>
-        
+      </div>
+    );
+  }
+
+  if (activeSection === 'about') {
+    return (
+      <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
           <EditorBlockHeader 
-            title="Hero Badge Configuration" 
-            isExpanded={!!expandedFixedBlocks['training_header']} 
-            onToggle={() => toggleFixedBlock('training_header')} 
+            title="About the Initiative" 
+            isExpanded={!!expandedFixedBlocks['about_content']} 
+            onToggle={() => toggleFixedBlock('about_content')} 
+            history={aboutHist}
           />
-          {!!expandedFixedBlocks['training_header'] && (
+          {!!expandedFixedBlocks['about_content'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
+              <IconPickerInput 
+                label="Section Icon" 
+                value={currentAbout.aboutIcon || ''} 
+                onChange={(val) => updateAbout('aboutIcon', val)} 
+              />
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
                 <PhoneticInput 
-                  value={safeData.sectionHeaders?.training?.title?.mr || ''} 
-                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, training: { ...(safeData.sectionHeaders?.training || {}), title: { ...(safeData.sectionHeaders?.training?.title || {}), mr: val } } })} 
-                  onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, training: { ...(safeData.sectionHeaders?.training || {}), title: { ...(safeData.sectionHeaders?.training?.title || {}), en: val } } })} 
-                  englishValue={safeData.sectionHeaders?.training?.title?.en || ''} 
+                  value={currentAbout.aboutTitle?.mr || ''} 
+                  onChange={(val) => updateAbout('aboutTitle', { ...currentAbout.aboutTitle, mr: val })} 
+                  onEnglishChange={(val) => updateAbout('aboutTitle', { ...currentAbout.aboutTitle, en: val })} 
+                  englishValue={currentAbout.aboutTitle?.en || ''} 
                 />
               </div>
-              <IconPickerInput 
-                label="Section Icon" 
-                value={safeData.sectionHeaders?.training?.icon || ''} 
-                onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, training: { ...(safeData.sectionHeaders?.training || {}), icon: val } })} 
-              />
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">About Description</label>
+                <PhoneticInput 
+                  value={currentAbout.description?.mr || ''} 
+                  onChange={(val) => updateAbout('description', { ...currentAbout.description, mr: val })} 
+                  onEnglishChange={(val) => updateAbout('description', { ...currentAbout.description, en: val })} 
+                  englishValue={currentAbout.description?.en || ''} 
+                  multiline 
+                />
+              </div>
             </div>
           )}
+        </div>
+
+        <div className="px-1 mb-2">
+          <h3 className="text-sm font-bold text-slate-700">Impact Stats</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{(Array.isArray(safeData.impact) ? safeData.impact : (safeData.impact ? [safeData.impact] : [])).length} item(s)</p>
+        </div>
+        <div className="space-y-2">
+          {(Array.isArray(safeData.impact) ? safeData.impact : (safeData.impact ? [safeData.impact] : [])).map((item: any, index: number) => (
+            <ImpactEditorItem
+              key={`item-${index}`} index={index} itemData={item}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('impact', i, newD)}
+              onRemove={() => removeArrayItem('impact', index)}
+              onMoveUp={() => moveArrayItem('impact', index, -1)}
+              onMoveDown={() => moveArrayItem('impact', index, 1)}
+              isFirst={index === 0} isLast={index === (Array.isArray(safeData.impact) ? safeData.impact : (safeData.impact ? [safeData.impact] : [])).length - 1}
+              isExpanded={expandedItemIndex === index}
+              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
+            />
+          ))}
+          <button onClick={() => addArrayItem('impact', { value: '', label: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
+            <Plus size={16} /> Add Impact Stat
+          </button>
         </div>
       </div>
     );
@@ -246,34 +397,30 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
   if (activeSection === 'services') {
     return (
       <div className="pb-10 space-y-4">
-
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
           <EditorBlockHeader 
-            title="Section Header Configuration (Optional)" 
+            title="Services Section Header" 
             isExpanded={!!expandedFixedBlocks['services_header']} 
             onToggle={() => toggleFixedBlock('services_header')} 
+            history={servicesHeaderHist}
           />
           {!!expandedFixedBlocks['services_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
                 <PhoneticInput 
-                  value={safeData.sectionHeaders?.services?.title?.mr || ''} 
-                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, services: { ...(safeData.sectionHeaders?.services || {}), title: { ...(safeData.sectionHeaders?.services?.title || {}), mr: val } } })} 
-                  onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, services: { ...(safeData.sectionHeaders?.services || {}), title: { ...(safeData.sectionHeaders?.services?.title || {}), en: val } } })} 
-                  englishValue={safeData.sectionHeaders?.services?.title?.en || ''} 
+                  value={currentServicesHeader.title?.mr || ''} 
+                  onChange={(val) => servicesHeaderHist.update({ ...currentServicesHeader, title: { ...currentServicesHeader.title, mr: val } })} 
+                  onEnglishChange={(val) => servicesHeaderHist.update({ ...currentServicesHeader, title: { ...currentServicesHeader.title, en: val } })} 
+                  englishValue={currentServicesHeader.title?.en || ''} 
                 />
               </div>
-              <IconPickerInput 
-                label="Section Icon" 
-                value={safeData.sectionHeaders?.services?.icon || ''} 
-                onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, services: { ...(safeData.sectionHeaders?.services || {}), icon: val } })} 
-              />
             </div>
           )}
         </div>
+
         <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Services</h3>
+          <h3 className="text-sm font-bold text-slate-700">Services List</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.services || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
@@ -297,59 +444,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
     );
   }
 
-  if (activeSection === 'impact') {
-    return (
-      <div className="pb-10 space-y-4">
 
-        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
-          <EditorBlockHeader 
-            title="Section Header Configuration (Optional)" 
-            isExpanded={!!expandedFixedBlocks['impact_header']} 
-            onToggle={() => toggleFixedBlock('impact_header')} 
-          />
-          {!!expandedFixedBlocks['impact_header'] && (
-            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
-                <PhoneticInput 
-                  value={safeData.sectionHeaders?.impact?.title?.mr || ''} 
-                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, impact: { ...(safeData.sectionHeaders?.impact || {}), title: { ...(safeData.sectionHeaders?.impact?.title || {}), mr: val } } })} 
-                  onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, impact: { ...(safeData.sectionHeaders?.impact || {}), title: { ...(safeData.sectionHeaders?.impact?.title || {}), en: val } } })} 
-                  englishValue={safeData.sectionHeaders?.impact?.title?.en || ''} 
-                />
-              </div>
-              <IconPickerInput 
-                label="Section Icon" 
-                value={safeData.sectionHeaders?.impact?.icon || ''} 
-                onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, impact: { ...(safeData.sectionHeaders?.impact || {}), icon: val } })} 
-              />
-            </div>
-          )}
-        </div>
-        <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Impact</h3>
-          <p className="text-xs text-slate-500 mt-0.5">{(safeData.impact || []).length} item(s)</p>
-        </div>
-        <div className="space-y-2">
-          {(safeData.impact || []).map((item: any, index: number) => (
-            <ImpactEditorItem
-              key={`item-${index}`} index={index} itemData={item}
-              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('impact', i, newD)}
-              onRemove={() => removeArrayItem('impact', index)}
-              onMoveUp={() => moveArrayItem('impact', index, -1)}
-              onMoveDown={() => moveArrayItem('impact', index, 1)}
-              isFirst={index === 0} isLast={index === (safeData.impact || []).length - 1}
-              isExpanded={expandedItemIndex === index}
-              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
-            />
-          ))}
-          <button onClick={() => addArrayItem('impact', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Impact Item
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return <div className="p-4 text-center text-slate-500">Select a section to edit</div>;
 };

@@ -143,13 +143,15 @@ export const MinimalIconGridEditor: React.FC<MinimalIconGridEditorProps> = ({ da
   };
 
   const removeArrayItem = (field: string, index: number) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, arr.filter((_: any, i: number) => i !== index));
     if (expandedItemIndex === index) setExpandedItemIndex(0);
   };
 
   const moveArrayItem = (field: string, index: number, direction: number) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     if (index + direction < 0 || index + direction >= arr.length) return;
     const newArray = [...arr];
     const temp = newArray[index];
@@ -161,7 +163,8 @@ export const MinimalIconGridEditor: React.FC<MinimalIconGridEditorProps> = ({ da
   };
 
   const addArrayItem = (field: string, defaultItem: any) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, [...arr, defaultItem]);
     setExpandedItemIndex(arr.length);
   };

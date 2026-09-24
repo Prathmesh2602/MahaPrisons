@@ -3,10 +3,13 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { socialActivitiesData } from '../data/socialActivitiesData';
-import { Scissors, Sparkles, ShieldCheck, Check, Star, Users } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = {
-  Scissors, Sparkles, ShieldCheck, Razor: Scissors // fallback
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
 };
 
 const HeroWithPricingList = ({ dataId, data: dynamicData }) => {
@@ -26,7 +29,7 @@ const HeroWithPricingList = ({ dataId, data: dynamicData }) => {
   };
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-gray-50 dark-mode:bg-gray-950 text-gray-900 dark-mode:text-gray-100">
+    <div className="min-h-screen bg-gray-50 dark-mode:bg-gray-950 text-gray-900 dark-mode:text-gray-100">
       
       {/* Full Width Hero with Overlay */}
       <div data-block-type="template_hero" className="relative h-[60vh] min-h-[400px] flex items-center justify-center">
@@ -42,9 +45,8 @@ const HeroWithPricingList = ({ dataId, data: dynamicData }) => {
               className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-xs uppercase tracking-widest font-semibold mb-6"
             >
               {(() => {
-                const IconName = data.sectionHeaders?.training?.icon;
-                const CustomIcon = IconName ? iconMap[IconName] : null;
-                return CustomIcon ? <CustomIcon className="w-3 h-3" /> : <Scissors className="w-3 h-3" />;
+                const CustomIcon = getIcon(data.sectionHeaders?.training?.icon, 'Scissors');
+                return <CustomIcon className="w-3 h-3" />;
               })()}
               {data.sectionHeaders?.training?.title ? getTranslation(data.sectionHeaders.training.title) : (language === 'mr' ? 'व्यावसायिक प्रशिक्षण' : 'Vocational Training')}
             </motion.div>
@@ -67,41 +69,60 @@ const HeroWithPricingList = ({ dataId, data: dynamicData }) => {
       </div>
 
       {/* Main Content Area */}
-      <div className="container mx-auto px-6 lg:px-12 py-10 -mt-16 relative z-20">
+      <div className="container mx-auto px-6 lg:px-12 py-12 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Description Card */}
           <motion.div 
+            data-block-type="template_about"
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
             className="lg:col-span-8 bg-white dark-mode:bg-gray-900 rounded-2xl p-6 md:p-6 shadow-xl border border-gray-100 dark-mode:border-gray-800"
           >
             <h2 className="text-lg font-bold mb-6 flex items-center gap-3 border-b border-gray-100 dark-mode:border-gray-800 pb-4">
-              <Star className="w-6 h-6 text-yellow-500" />
-              {language === 'mr' ? 'उपक्रमाविषयी' : 'About the Initiative'}
+              {(() => {
+                const HeaderIcon = getIcon(data.sectionHeaders?.about?.icon, 'Star');
+                return <HeaderIcon className="w-6 h-6 text-yellow-500" />;
+              })()}
+              {data.sectionHeaders?.about?.title ? getTranslation(data.sectionHeaders.about.title) : (language === 'mr' ? 'उपक्रमाविषयी' : 'About the Initiative')}
             </h2>
             <p className="text-lg leading-relaxed text-gray-600 dark-mode:text-gray-400 mb-8">
               {getTranslation(data.hero?.description)}
             </p>
 
-            <div data-block-type="template_impact" className="bg-gray-50 dark-mode:bg-gray-950 p-6 rounded-xl border border-gray-100 dark-mode:border-gray-800">
-              <div className="flex items-center gap-4 mb-2">
-                <Users className="w-8 h-8 text-blue-600 dark-mode:text-blue-400" />
-                <span className="text-xl font-black text-gray-900 dark-mode:text-white">{data.impact.value}</span>
-              </div>
-              <div className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-2">{getTranslation(data.impact.label)}</div>
-              <p className="text-sm text-gray-600 dark-mode:text-gray-400">{getTranslation(data.impact.desc)}</p>
-            </div>
+            {(() => {
+              const impactArray = (Array.isArray(data.impact) ? data.impact : [data.impact]).filter(Boolean);
+              if (impactArray.length === 0) return null;
+              return (
+                <div className={`grid gap-4 ${impactArray.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
+                  {impactArray.map((item, idx) => {
+                    const ImpactIcon = getIcon(item.icon, 'Users');
+                    return (
+                      <div key={idx} className="bg-gray-50 dark-mode:bg-gray-950 p-6 rounded-xl border border-gray-100 dark-mode:border-gray-800">
+                        <div className="flex items-center gap-4 mb-2">
+                          <ImpactIcon className="w-8 h-8 text-blue-600 dark-mode:text-blue-400" />
+                          <span className="text-xl font-black text-gray-900 dark-mode:text-white">{item.value}</span>
+                        </div>
+                        <div className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-2">{getTranslation(item.label)}</div>
+                        <p className="text-sm text-gray-600 dark-mode:text-gray-400">{getTranslation(item.desc)}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </motion.div>
 
           {/* Services Grid */}
-          <div className="lg:col-span-4 space-y-6">
+          <div data-block-type="template_services" className="lg:col-span-4 space-y-6">
             <h3 className="text-lg font-bold mb-6 px-2">
-              {data.sectionHeaders?.impact?.title ? getTranslation(data.sectionHeaders.impact.title) : (language === 'mr' ? 'प्रशिक्षण व सेवा' : 'Training & Services')}
+              {(data.sectionHeaders?.services?.title || data.sectionHeaders?.impact?.title) 
+                ? getTranslation(data.sectionHeaders?.services?.title || data.sectionHeaders?.impact?.title) 
+                : (language === 'mr' ? 'प्रशिक्षण व सेवा' : 'Training & Services')}
             </h3>
             
-            <div data-block-type="template_services" className="flex flex-col gap-4">
-              {data.services.map((service, idx) => {
-                const Icon = iconMap[service.icon] || Check;
+            <div className="flex flex-col gap-4">
+              {(data.services || []).map((service, idx) => {
+                const Icon = getIcon(service.icon, 'Check');
                 return (
                   <motion.div 
                     initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: idx * 0.1 }}

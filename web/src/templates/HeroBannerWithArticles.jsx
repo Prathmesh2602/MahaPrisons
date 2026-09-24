@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Book, Newspaper, Users, BookOpen, Library, MapPin, Phone, Mail } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Book, Newspaper, Users, BookOpen, Library };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const HeroBannerWithArticles = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -18,7 +23,7 @@ const HeroBannerWithArticles = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#FDFBF7] dark-mode:bg-[#1A1814] font-poppins text-[#3A332C] dark-mode:text-[#E6DFD5]">
+    <div className="min-h-screen bg-[#FDFBF7] dark-mode:bg-[#1A1814] font-poppins text-[#3A332C] dark-mode:text-[#E6DFD5]">
       
       {/* Classic Elegant Header */}
       <div className="border-b border-[#E6DFD5] dark-mode:border-[#3A332C]">
@@ -56,7 +61,7 @@ const HeroBannerWithArticles = ({ dataId, data: dynamicData }) => {
           
           {/* Left Column (Features) */}
           <div data-block-type="template_keyFunctions" className="lg:col-span-5 space-y-12">
-            {data.keyFunctions.map((func, idx) => {
+            {(data.keyFunctions || []).map((func, idx) => {
               const Icon = iconMap[func.icon] || Book;
               return (
                 <motion.div key={idx} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.2 }} className="group">
@@ -85,7 +90,7 @@ const HeroBannerWithArticles = ({ dataId, data: dynamicData }) => {
         {/* Stats Strip */}
         <div className="border-t border-b border-[#E6DFD5] dark-mode:border-[#3A332C] py-16 mb-10">
           <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-[#E6DFD5] dark-mode:divide-[#3A332C]">
-            {data.stats.map((stat, idx) => {
+            {(data.stats || []).map((stat, idx) => {
               const Icon = iconMap[stat.icon] || Book;
               return (
                 <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="flex flex-col items-center pt-8 md:pt-0">

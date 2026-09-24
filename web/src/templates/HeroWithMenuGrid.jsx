@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { socialActivitiesData } from '../data/socialActivitiesData';
-import { Coffee, UtensilsCrossed, Utensils, HeartHandshake } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const HeroWithMenuGrid = ({ dataId, data: dynamicData }) => {
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};const HeroWithMenuGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
   const data = dynamicData || socialActivitiesData[dataId];
 
@@ -22,14 +27,14 @@ const HeroWithMenuGrid = ({ dataId, data: dynamicData }) => {
   };
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#FFFBF5] dark-mode:bg-[#2C1810] text-amber-950 dark-mode:text-amber-50">
+    <div className="min-h-screen bg-[#FFFBF5] dark-mode:bg-[#2C1810] text-amber-950 dark-mode:text-amber-50">
       
       {/* Hero Section */}
-      <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
+      <div data-block-type="template_hero" className="relative h-[60vh] min-h-[400px] overflow-hidden">
         <div className="absolute inset-0 bg-orange-950/40 z-10"></div>
         <motion.img 
           initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5 }}
-          src={data.hero?.heroImage} alt="Shrinkhala Canteen" className="absolute inset-0 w-full h-full object-cover z-0" 
+          src={data.heroImage || data.hero?.heroImage} alt="Shrinkhala Canteen" className="absolute inset-0 w-full h-full object-cover z-0" 
         />
         
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
@@ -37,7 +42,10 @@ const HeroWithMenuGrid = ({ dataId, data: dynamicData }) => {
             initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
             className="w-8 h-8 bg-orange-500/20 backdrop-blur-md rounded-full flex items-center justify-center mb-6 border border-orange-300/30"
           >
-            <UtensilsCrossed className="w-6 h-6 text-orange-200" />
+            {(() => {
+              const HeroIcon = getIcon(data.sectionHeaders?.hero?.icon, 'UtensilsCrossed');
+              return <HeroIcon className="w-6 h-6 text-orange-200" />;
+            })()}
           </motion.div>
           
           <motion.h1 
@@ -59,39 +67,50 @@ const HeroWithMenuGrid = ({ dataId, data: dynamicData }) => {
       <div className="container mx-auto max-w-6xl px-6 py-10 -mt-10 relative z-30">
         
         {/* Intro Card */}
+        {data.about?.isVisible !== false && (
         <motion.div 
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
+          data-block-type="template_about"
           className="bg-white dark-mode:bg-[#3E2316] rounded-2xl p-10 md:p-6 shadow-2xl border border-orange-100 dark-mode:border-[#523020] text-center max-w-4xl mx-auto mb-20"
         >
-          <HeartHandshake className="w-8 h-8 text-orange-500 mx-auto mb-6" />
+          {(() => {
+            const AboutIcon = getIcon(data.sectionHeaders?.about?.icon, 'HeartHandshake');
+            return <AboutIcon className="w-8 h-8 text-orange-500 mx-auto mb-6" />;
+          })()}
           <p className="text-base md:text-lg leading-relaxed text-amber-900/80 dark-mode:text-amber-100/90">
-            "{getTranslation(data.hero?.description)}"
+            "{getTranslation(data.about?.description || data.hero?.description || data.description)}"
           </p>
         </motion.div>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-6 items-center">
           
           {/* Menu Section */}
           <div className="w-full lg:w-1/2">
-            <div className="flex items-center gap-4 mb-10">
+            <div data-block-type="template_menuHighlights" className="relative group">
+              <div className="flex items-center gap-4 mb-10">
               <div className="w-12 h-1 bg-orange-500 rounded-full"></div>
               <h2 className="text-xl md:text-2xl font-bold">
-                {language === 'mr' ? 'खास आकर्षणे' : 'Menu Highlights'}
+                {data.sectionHeaders?.menuHighlights?.title ? getTranslation(data.sectionHeaders.menuHighlights.title) : (language === 'mr' ? 'खास आकर्षणे' : 'Menu Highlights')}
               </h2>
             </div>
             
-            <div data-block-type="template_menuHighlights" className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {data.menuHighlights.map((item, idx) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {(data.menuHighlights || []).map((item, idx) => (
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: idx * 0.1 }}
                   key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-orange-50 dark-mode:bg-[#3E2316] hover:bg-orange-100 dark-mode:hover:bg-[#523020] transition-colors group"
                 >
                   <div className="w-8 h-8 rounded-full bg-white dark-mode:bg-[#2C1810] shadow-sm flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
-                    {idx % 2 === 0 ? <Utensils className="w-6 h-6" /> : <Coffee className="w-6 h-6" />}
+                    {(() => {
+                      const ItemIcon = getIcon(item.icon, idx % 2 === 0 ? 'Utensils' : 'Coffee');
+                      return <ItemIcon className="w-6 h-6" />;
+                    })()}
                   </div>
-                  <span className="text-lg font-semibold">{getTranslation(item)}</span>
+                  <span className="text-lg font-semibold">{getTranslation(item.name || item)}</span>
                 </motion.div>
               ))}
+              </div>
             </div>
             
             <div data-block-type="template_motto" className="mt-12 p-6 rounded-2xl bg-orange-500 text-white text-center italic text-base font-medium shadow-lg shadow-orange-500/30">
@@ -100,7 +119,7 @@ const HeroWithMenuGrid = ({ dataId, data: dynamicData }) => {
           </div>
 
           {/* Secondary Image */}
-          <div className="w-full lg:w-1/2 relative">
+          <div data-block-type="template_secondaryImage" className="w-full lg:w-1/2 relative">
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, rotate: 2 }} whileInView={{ opacity: 1, scale: 1, rotate: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
               className="relative rounded-2xl overflow-hidden shadow-2xl border-[10px] border-white dark-mode:border-[#3E2316]"

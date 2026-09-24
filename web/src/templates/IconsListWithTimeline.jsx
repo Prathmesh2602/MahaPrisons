@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Dumbbell, Clock, UserCheck, Trophy, MapPin, Phone, Mail } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Dumbbell, Clock, UserCheck, Trophy };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const IconsListWithTimeline = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -18,7 +23,7 @@ const IconsListWithTimeline = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#0A0A0A] text-white font-poppins uppercase">
+    <div className="min-h-screen bg-[#0A0A0A] text-white font-poppins uppercase">
       
       {/* Aggressive Header */}
       <div className="relative h-[50vh] min-h-[400px] overflow-hidden flex items-center">
@@ -51,7 +56,7 @@ const IconsListWithTimeline = ({ dataId, data: dynamicData }) => {
 
         {/* Heavy Stats */}
         <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {data.stats.map((stat, idx) => {
+          {(data.stats || []).map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Dumbbell;
             return (
               <motion.div key={idx} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="bg-[#141414] border border-gray-800 p-6 hover:border-red-600 transition-colors group">
@@ -65,7 +70,7 @@ const IconsListWithTimeline = ({ dataId, data: dynamicData }) => {
 
         {/* Feature Sections */}
         <div data-block-type="template_keyFunctions" className="space-y-4">
-          {data.keyFunctions.map((func, idx) => {
+          {(data.keyFunctions || []).map((func, idx) => {
             const Icon = iconMap[func.icon] || Dumbbell;
             return (
               <motion.div key={idx} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="bg-[#1A1A1A] flex flex-col md:flex-row items-center hover:bg-[#222] transition-colors border-l-4 border-transparent hover:border-red-600">

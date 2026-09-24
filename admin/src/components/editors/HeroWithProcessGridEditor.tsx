@@ -50,10 +50,6 @@ const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, on
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Label</label>
             <PhoneticInput value={currentItem.label?.mr || ''} onChange={(val) => handleLocalUpdate('label', { ...currentItem.label, mr: val })} onEnglishChange={(val) => handleLocalUpdate('label', { ...currentItem.label, en: val })} englishValue={currentItem.label?.en || ''} />
           </div>
-          <div className="flex items-center gap-2 mt-1">
-            <input type="checkbox" checked={!!currentItem.isText} onChange={(e) => handleLocalUpdate('isText', e.target.checked)} className="w-4 h-4 accent-emerald-600" />
-            <label className="text-xs font-semibold text-slate-500 uppercase">Is Text?</label>
-          </div>
         </div>
       )}
     </div>
@@ -61,7 +57,7 @@ const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, on
 };
 
 const TechnicalFocusEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
-  const defaultItem = { mr: '', en: '' };
+  const defaultItem = { title: { mr: '', en: '' }, description: { mr: '', en: '' }, icon: 'CheckCircle2' };
   const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
 
@@ -89,13 +85,14 @@ const TechnicalFocusEditorItem = ({ index, itemData, onUpdateFull, onRemove, onM
       />
       {isExpanded && (
         <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+          <IconPickerInput label="Icon" value={currentItem.icon || 'CheckCircle2'} onChange={(val) => handleLocalUpdate('icon', val)} />
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Marathi</label>
-            <input type="text" value={currentItem.mr || ''} onChange={(e) => handleLocalUpdate('mr', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm" />
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
+            <PhoneticInput value={currentItem.title?.mr || ''} onChange={(val) => handleLocalUpdate('title', { ...currentItem.title, mr: val })} onEnglishChange={(val) => handleLocalUpdate('title', { ...currentItem.title, en: val })} englishValue={currentItem.title?.en || ''} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">English</label>
-            <input type="text" value={currentItem.en || ''} onChange={(e) => handleLocalUpdate('en', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm" />
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
+            <PhoneticInput value={currentItem.description?.mr || ''} onChange={(val) => handleLocalUpdate('description', { ...currentItem.description, mr: val })} onEnglishChange={(val) => handleLocalUpdate('description', { ...currentItem.description, en: val })} englishValue={currentItem.description?.en || ''} multiline />
           </div>
         </div>
       )}
@@ -134,6 +131,32 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
     ...data
   };
 
+  // Migrations
+  if (!safeData.hero) safeData.hero = {};
+  if (!safeData.hero.title && safeData.title) safeData.hero.title = safeData.title;
+  if (!safeData.hero.subtitle && safeData.subtitle) safeData.hero.subtitle = safeData.subtitle;
+  if (!safeData.hero.description && safeData.description) safeData.hero.description = safeData.description;
+  if (!safeData.hero.heroImage && safeData.heroImage) safeData.hero.heroImage = safeData.heroImage;
+
+  if (!safeData.hero.floatingBadge) safeData.hero.floatingBadge = { icon: 'TrendingUp', title: { mr: 'कौशल्य विकास', en: 'Skill Development' }, value: { mr: '100% Practical', en: '100% Practical' } };
+
+  if (!safeData.sectionHeaders) safeData.sectionHeaders = {};
+  if (!safeData.sectionHeaders.partnership) safeData.sectionHeaders.partnership = { title: { mr: 'औद्योगिक भागीदारी', en: 'Industrial Partnership' }, icon: 'Factory' };
+  else if (!safeData.sectionHeaders.partnership.icon) safeData.sectionHeaders.partnership.icon = 'Factory';
+  if (!safeData.sectionHeaders.stats) safeData.sectionHeaders.stats = { title: { mr: 'प्रकल्पाची ठळक वैशिष्ट्ये', en: 'Project Highlights' } };
+  if (!safeData.sectionHeaders.technicalFocus) safeData.sectionHeaders.technicalFocus = { title: { mr: 'तांत्रिक प्रशिक्षण क्षेत्रे', en: 'Technical Training Areas' }, icon: 'Settings' };
+  else if (!safeData.sectionHeaders.technicalFocus.icon) safeData.sectionHeaders.technicalFocus.icon = 'Settings';
+
+  if (safeData.technicalFocus && safeData.technicalFocus.length > 0) {
+    if (safeData.technicalFocus[0].mr !== undefined && safeData.technicalFocus[0].title === undefined) {
+      safeData.technicalFocus = safeData.technicalFocus.map((item: any) => ({
+        title: { mr: item.mr || '', en: item.en || '' },
+        description: { mr: 'उद्योग मानकांनुसार व्यावसायिक प्रशिक्षण.', en: 'Professional training as per industry standards.' },
+        icon: 'CheckCircle2'
+      }));
+    }
+  }
+
   const handleChange = (field: string, value: any) => {
     updateData({ ...safeData, [field]: value });
   };
@@ -145,13 +168,15 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
   };
 
   const removeArrayItem = (field: string, index: number) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, arr.filter((_: any, i: number) => i !== index));
     if (expandedItemIndex === index) setExpandedItemIndex(0);
   };
 
   const moveArrayItem = (field: string, index: number, direction: number) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     if (index + direction < 0 || index + direction >= arr.length) return;
     const newArray = [...arr];
     const temp = newArray[index];
@@ -163,7 +188,8 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
   };
 
   const addArrayItem = (field: string, defaultItem: any) => {
-    const arr = safeData[field] || [];
+    let arr = safeData[field] || [];
+    if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, [...arr, defaultItem]);
     setExpandedItemIndex(arr.length);
   };
@@ -179,31 +205,27 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
           />
           {!!expandedFixedBlocks['hero_content'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <div className="space-y-2">
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Image</label>
-                <div
-                  className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
-                  onClick={() => setMediaOpen_heroImage(true)}
-                >
-                  {safeData.hero?.heroImage ? (
-                    <img
-                      src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `http://localhost:5000${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`}
-                      className="w-full h-full object-cover"
-                      alt="Preview"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                      <span className="text-2xl mb-1">🖼</span>
-                      <span className="text-xs">Click to select image</span>
-                    </div>
-                  )}
-                </div>
-                <MediaLibraryPopup
-                  isOpen={mediaOpen_heroImage}
-                  onClose={() => setMediaOpen_heroImage(false)}
-                  onSelect={(url: string) => { handleChange('hero', { ...safeData.hero, heroImage: url }); setMediaOpen_heroImage(false); }}
+              
+              {/* Partnership Badge */}
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-4">
+                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Industrial Partnership Badge</h4>
+                <IconPickerInput 
+                  label="Badge Icon" 
+                  value={safeData.sectionHeaders?.partnership?.icon || 'Factory'} 
+                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, partnership: { ...(safeData.sectionHeaders?.partnership || {}), icon: val } })} 
                 />
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Badge Title</label>
+                  <PhoneticInput 
+                    value={safeData.sectionHeaders?.partnership?.title?.mr || ''} 
+                    onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, partnership: { ...(safeData.sectionHeaders?.partnership || {}), title: { ...(safeData.sectionHeaders?.partnership?.title || {}), mr: val } } })} 
+                    onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, partnership: { ...(safeData.sectionHeaders?.partnership || {}), title: { ...(safeData.sectionHeaders?.partnership?.title || {}), en: val } } })} 
+                    englishValue={safeData.sectionHeaders?.partnership?.title?.en || ''} 
+                  />
+                </div>
               </div>
+
+              {/* Main Content */}
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
                 <PhoneticInput value={safeData.hero?.title?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, en: val } })} englishValue={safeData.hero?.title?.en || ''} />
@@ -216,32 +238,62 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
                 <PhoneticInput value={safeData.hero?.description?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, en: val } })} englishValue={safeData.hero?.description?.en || ''} multiline />
               </div>
-            </div>
-          )}
-        </div>
-        
-        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
-          <EditorBlockHeader 
-            title="Hero Badge Configuration" 
-            isExpanded={!!expandedFixedBlocks['partnership_header']} 
-            onToggle={() => toggleFixedBlock('partnership_header')} 
-          />
-          {!!expandedFixedBlocks['partnership_header'] && (
-            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
-                <PhoneticInput 
-                  value={safeData.sectionHeaders?.partnership?.title?.mr || ''} 
-                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, partnership: { ...(safeData.sectionHeaders?.partnership || {}), title: { ...(safeData.sectionHeaders?.partnership?.title || {}), mr: val } } })} 
-                  onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, partnership: { ...(safeData.sectionHeaders?.partnership || {}), title: { ...(safeData.sectionHeaders?.partnership?.title || {}), en: val } } })} 
-                  englishValue={safeData.sectionHeaders?.partnership?.title?.en || ''} 
-                />
+
+              {/* Image & Floating Badge */}
+              <div className="space-y-4 pt-4 border-t border-slate-200">
+                <div className="space-y-2">
+                  <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Image</label>
+                  <div
+                    className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
+                    onClick={() => setMediaOpen_heroImage(true)}
+                  >
+                    {safeData.hero?.heroImage ? (
+                      <img
+                        src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `http://localhost:5000${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`}
+                        className="w-full h-full object-cover"
+                        alt="Preview"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                        <span className="text-2xl mb-1">🖼</span>
+                        <span className="text-xs">Click to select image</span>
+                      </div>
+                    )}
+                  </div>
+                  <MediaLibraryPopup
+                    isOpen={mediaOpen_heroImage}
+                    onClose={() => setMediaOpen_heroImage(false)}
+                    onSelect={(url: string) => { handleChange('hero', { ...safeData.hero, heroImage: url }); setMediaOpen_heroImage(false); }}
+                  />
+                </div>
+
+                <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-4">
+                  <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Floating Image Badge</h4>
+                  <IconPickerInput 
+                    label="Badge Icon" 
+                    value={safeData.hero?.floatingBadge?.icon || 'TrendingUp'} 
+                    onChange={(val) => handleChange('hero', { ...safeData.hero, floatingBadge: { ...(safeData.hero?.floatingBadge || {}), icon: val } })} 
+                  />
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Badge Title</label>
+                    <PhoneticInput 
+                      value={safeData.hero?.floatingBadge?.title?.mr || ''} 
+                      onChange={(val) => handleChange('hero', { ...safeData.hero, floatingBadge: { ...(safeData.hero?.floatingBadge || {}), title: { ...(safeData.hero?.floatingBadge?.title || {}), mr: val } } })} 
+                      onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, floatingBadge: { ...(safeData.hero?.floatingBadge || {}), title: { ...(safeData.hero?.floatingBadge?.title || {}), en: val } } })} 
+                      englishValue={safeData.hero?.floatingBadge?.title?.en || ''} 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Badge Value</label>
+                    <PhoneticInput 
+                      value={safeData.hero?.floatingBadge?.value?.mr || ''} 
+                      onChange={(val) => handleChange('hero', { ...safeData.hero, floatingBadge: { ...(safeData.hero?.floatingBadge || {}), value: { ...(safeData.hero?.floatingBadge?.value || {}), mr: val } } })} 
+                      onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, floatingBadge: { ...(safeData.hero?.floatingBadge || {}), value: { ...(safeData.hero?.floatingBadge?.value || {}), en: val } } })} 
+                      englishValue={safeData.hero?.floatingBadge?.value?.en || ''} 
+                    />
+                  </div>
+                </div>
               </div>
-              <IconPickerInput 
-                label="Section Icon" 
-                value={safeData.sectionHeaders?.partnership?.icon || ''} 
-                onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, partnership: { ...(safeData.sectionHeaders?.partnership || {}), icon: val } })} 
-              />
             </div>
           )}
         </div>

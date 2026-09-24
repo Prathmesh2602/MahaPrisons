@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Scale, Handshake, Users, Gavel, HeartHandshake, MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Scale, Handshake, Users, Gavel, HeartHandshake };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const ContentWithRightSidebar = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -18,7 +23,7 @@ const ContentWithRightSidebar = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#F3F4F6] dark-mode:bg-gray-950 font-poppins py-12 md:py-10">
+    <div className="min-h-screen bg-[#F3F4F6] dark-mode:bg-gray-950 font-poppins py-12 md:py-10">
       <div className="container mx-auto px-4 max-w-7xl">
         
         {/* Header section outside grid */}
@@ -55,7 +60,7 @@ const ContentWithRightSidebar = ({ dataId, data: dynamicData }) => {
 
           {/* Stats Blocks */}
           <div data-block-type="template_stats" className="contents">
-          {data.stats.map((stat, idx) => {
+          {(data.stats || []).map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Scale;
             return (
               <motion.div key={idx} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 + (idx * 0.1) }} className="bg-white dark-mode:bg-gray-800 rounded-2xl p-6 flex flex-col justify-between shadow-lg border border-gray-100 dark-mode:border-gray-700 hover:bg-emerald-50 dark-mode:hover:bg-emerald-900/20 transition-colors">
@@ -89,7 +94,7 @@ const ContentWithRightSidebar = ({ dataId, data: dynamicData }) => {
 
           {/* Key Functions Blocks (wide) */}
           <div data-block-type="template_keyFunctions" className="contents">
-          {data.keyFunctions.map((func, idx) => {
+          {(data.keyFunctions || []).map((func, idx) => {
             const Icon = iconMap[func.icon] || Gavel;
             return (
               <motion.div key={idx} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.8 + (idx * 0.1) }} className="md:col-span-3 lg:col-span-2 bg-white dark-mode:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark-mode:border-gray-700 flex flex-col justify-center group cursor-pointer">

@@ -3,9 +3,14 @@ import React, { useLayoutEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { BookOpen, GraduationCap, School, Pencil, MapPin, Phone, Mail } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { BookOpen, GraduationCap, School, Pencil };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const ContentWithTabs = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -19,7 +24,7 @@ const ContentWithTabs = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#F0F4F8] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200">
+    <div className="min-h-screen bg-[#F0F4F8] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200">
       
       {/* Academic Header */}
       <div className="bg-indigo-900 dark-mode:bg-indigo-950 pt-24 pb-32 px-6 text-center relative overflow-hidden">
@@ -51,7 +56,7 @@ const ContentWithTabs = ({ dataId, data: dynamicData }) => {
         {/* Tabbed Interface for Key Functions */}
         <div data-block-type="template_keyFunctions" className="mb-10">
           <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {data.keyFunctions.map((func, idx) => (
+            {(data.keyFunctions || []).map((func, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveTab(idx)}
@@ -102,7 +107,7 @@ const ContentWithTabs = ({ dataId, data: dynamicData }) => {
 
         {/* Stats Grid */}
         <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {data.stats.map((stat, idx) => {
+          {(data.stats || []).map((stat, idx) => {
             const Icon = iconMap[stat.icon] || School;
             return (
               <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="bg-indigo-600 text-white p-6 rounded-2xl flex flex-col items-center justify-center text-center shadow-xl hover:bg-indigo-700 transition-colors">

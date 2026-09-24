@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Heart, Smile, Stethoscope, Coffee, Puzzle, MapPin, Phone, Mail } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Heart, Smile, Stethoscope, Coffee, Puzzle };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const MinimalIconGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -18,7 +23,7 @@ const MinimalIconGrid = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="relative min-h-screen bg-[#FFF5F7] dark-mode:bg-[#2A1B1F] font-poppins text-gray-800 dark-mode:text-gray-200 overflow-hidden">
+    <div className="relative min-h-screen bg-[#FFF5F7] dark-mode:bg-[#2A1B1F] font-poppins text-gray-800 dark-mode:text-gray-200 overflow-hidden">
       
       {/* Soft Organic Header Background */}
       <div className="absolute top-0 left-0 w-full h-[60vh] bg-[#FFE4E8] dark-mode:bg-[#3D262B] rounded-b-[50%] md:rounded-b-[100%] transform scale-x-150 origin-top -z-10" />
@@ -55,7 +60,7 @@ const MinimalIconGrid = ({ dataId, data: dynamicData }) => {
 
         {/* Stats Circles */}
         <div data-block-type="template_stats" className="flex flex-wrap justify-center gap-6 mb-10">
-          {data.stats.map((stat, idx) => {
+          {(data.stats || []).map((stat, idx) => {
             const Icon = iconMap[stat.icon] || Heart;
             return (
               <motion.div key={idx} initial={{ scale: 0.8, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }} transition={{ delay: idx * 0.1, type: "spring" }} className="w-48 h-48 bg-white dark-mode:bg-[#1E1416] rounded-full flex flex-col items-center justify-center text-center shadow-lg border-8 border-[#FFF5F7] dark-mode:border-[#2A1B1F]">
@@ -69,7 +74,7 @@ const MinimalIconGrid = ({ dataId, data: dynamicData }) => {
 
         {/* Key Features (Soft Cards) */}
         <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          {data.keyFunctions.map((func, idx) => {
+          {(data.keyFunctions || []).map((func, idx) => {
             const Icon = iconMap[func.icon] || Heart;
             return (
               <motion.div key={idx} initial={{ y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="bg-white dark-mode:bg-[#1E1416] rounded-2xl p-10 shadow-sm border border-rose-50 dark-mode:border-rose-900/20 hover:shadow-xl transition-shadow flex items-start gap-6">

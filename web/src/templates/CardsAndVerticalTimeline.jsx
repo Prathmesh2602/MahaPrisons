@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { CalendarDays, FileText, TrendingUp, Home, AlertCircle, MapPin, Phone, Mail } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { CalendarDays, FileText, TrendingUp, Home, AlertCircle };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const CardsAndVerticalTimeline = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -18,7 +23,7 @@ const CardsAndVerticalTimeline = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-slate-100 dark-mode:bg-slate-900 font-poppins pb-20">
+    <div className="min-h-screen bg-slate-100 dark-mode:bg-slate-900 font-poppins pb-20">
       
       {/* Centered Minimal Header */}
       <div className="bg-white dark-mode:bg-slate-950 py-16 px-4 text-center shadow-sm">
@@ -43,7 +48,7 @@ const CardsAndVerticalTimeline = ({ dataId, data: dynamicData }) => {
           
           {/* Key Functions (Timeline Items) */}
           <div data-block-type="template_keyFunctions" className="contents">
-          {data.keyFunctions.map((func, idx) => {
+          {(data.keyFunctions || []).map((func, idx) => {
             const Icon = iconMap[func.icon] || CalendarDays;
             return (
               <motion.div key={idx} initial={{ x: -40, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true, margin: "-100px" }} className="relative pl-10 md:pl-16">
@@ -63,7 +68,7 @@ const CardsAndVerticalTimeline = ({ dataId, data: dynamicData }) => {
           <div className="relative pl-10 md:pl-16">
             <div className="absolute -left-[14px] top-6 w-6 h-6 bg-slate-300 dark-mode:bg-slate-700 border-4 border-slate-100 dark-mode:border-slate-900 rounded-full" />
             <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {data.stats.map((stat, idx) => {
+              {(data.stats || []).map((stat, idx) => {
                 const Icon = iconMap[stat.icon] || TrendingUp;
                 return (
                   <div key={idx} className="bg-white dark-mode:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark-mode:border-slate-700 flex flex-col items-center text-center font-poppins">

@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Phone, Clock, ShieldCheck, PhoneCall, Video, MapPin, Mail, Cpu } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Phone, Clock, ShieldCheck, PhoneCall, Video };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const HeroBannerWithMedia = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -18,7 +23,7 @@ const HeroBannerWithMedia = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#050B14] text-gray-200 font-poppins relative overflow-hidden">
+    <div className="min-h-screen bg-[#050B14] text-gray-200 font-poppins relative overflow-hidden">
       
       {/* Tech Background Elements */}
       <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
@@ -69,7 +74,7 @@ const HeroBannerWithMedia = ({ dataId, data: dynamicData }) => {
               {getTranslation(data.hero?.description)}
             </p>
             <div data-block-type="template_stats" className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {data.stats.map((stat, idx) => {
+              {(data.stats || []).map((stat, idx) => {
                 const Icon = iconMap[stat.icon] || Cpu;
                 return (
                   <div key={idx} className="flex flex-col gap-2">
@@ -85,7 +90,7 @@ const HeroBannerWithMedia = ({ dataId, data: dynamicData }) => {
 
         {/* Glassmorphic Features */}
         <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          {data.keyFunctions.map((func, idx) => {
+          {(data.keyFunctions || []).map((func, idx) => {
             const Icon = iconMap[func.icon] || PhoneCall;
             return (
               <motion.div 

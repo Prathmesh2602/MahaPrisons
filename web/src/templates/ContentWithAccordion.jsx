@@ -3,9 +3,14 @@ import React, { useLayoutEffect, useState } from 'react';
 import { motion as fmotion, AnimatePresence } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Coffee, TrendingUp, ShieldCheck, CreditCard, MapPin, Phone, Mail, ChevronDown } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Coffee, TrendingUp, ShieldCheck, CreditCard };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -19,7 +24,7 @@ const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#FFFBF0] dark-mode:bg-[#1C1A17] font-poppins text-gray-800 dark-mode:text-gray-200">
+    <div className="min-h-screen bg-[#FFFBF0] dark-mode:bg-[#1C1A17] font-poppins text-gray-800 dark-mode:text-gray-200">
       
       {/* Cafe Header */}
       <div className="relative h-[50vh] min-h-[400px] flex items-center justify-center text-center">
@@ -52,7 +57,7 @@ const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
 
         {/* Menu/Feature Cards (Interactive) */}
         <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 max-w-5xl mx-auto">
-          {data.keyFunctions.map((func, idx) => {
+          {(data.keyFunctions || []).map((func, idx) => {
             const Icon = iconMap[func.icon] || Coffee;
             const isActive = activeCard === idx;
             
@@ -89,7 +94,7 @@ const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
 
         {/* Cafe Stats (Coffee beans style) */}
         <div data-block-type="template_stats" className="flex flex-wrap justify-center gap-6 mb-10">
-          {data.stats.map((stat, idx) => {
+          {(data.stats || []).map((stat, idx) => {
             const Icon = iconMap[stat.icon] || TrendingUp;
             return (
               <fmotion.div key={idx} initial={{ scale: 0.9, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }} className="bg-[#4A3219] text-[#FFFBF0] p-6 rounded-2xl w-64 text-center shadow-2xl relative overflow-hidden group hover:bg-[#5E4A35] transition-colors">

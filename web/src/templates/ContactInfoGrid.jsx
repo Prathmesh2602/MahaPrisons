@@ -3,9 +3,14 @@ import React, { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Mail, IndianRupee, Search, MailOpen, CreditCard, MapPin, Phone, Send } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Mail, IndianRupee, Search, MailOpen, CreditCard };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const ContactInfoGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -18,7 +23,7 @@ const ContactInfoGrid = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#FDFCF8] dark-mode:bg-[#1A1A1A] font-poppins text-gray-800 dark-mode:text-gray-200">
+    <div className="min-h-screen bg-[#FDFCF8] dark-mode:bg-[#1A1A1A] font-poppins text-gray-800 dark-mode:text-gray-200">
       
       {/* Top Banner Theme */}
       <div className="relative h-[45vh] min-h-[350px] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
@@ -56,7 +61,7 @@ const ContactInfoGrid = ({ dataId, data: dynamicData }) => {
           </p>
 
           <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 border-t border-b border-gray-100 dark-mode:border-gray-800 py-8">
-            {data.stats.map((stat, idx) => {
+            {(data.stats || []).map((stat, idx) => {
               const Icon = iconMap[stat.icon] || Mail;
               return (
                 <div key={idx} className="flex items-center gap-4">
@@ -73,7 +78,7 @@ const ContactInfoGrid = ({ dataId, data: dynamicData }) => {
           </div>
 
           <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {data.keyFunctions.map((func, idx) => {
+            {(data.keyFunctions || []).map((func, idx) => {
               const Icon = iconMap[func.icon] || Mail;
               return (
                 <div key={idx} className="bg-[#FAF9F6] dark-mode:bg-[#1E1E1E] p-6 rounded-sm shadow-inner border border-gray-100 dark-mode:border-gray-800">

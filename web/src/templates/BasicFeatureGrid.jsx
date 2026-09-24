@@ -2,9 +2,14 @@
 import React, { useLayoutEffect } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
-import { Users, Calendar, Scale, BookOpen, MapPin, Phone, Mail, Shield } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const iconMap = { Users, Calendar, Scale, BookOpen };
+const getIcon = (iconName, fallbackName) => {
+  if (iconName && LucideIcons[iconName]) {
+    return LucideIcons[iconName];
+  }
+  return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
+};
 
 const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
   const { language } = useAccessibility();
@@ -17,7 +22,7 @@ const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
   return (
-    <div data-block-type="template" className="min-h-screen bg-[#F8FAFC] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200 py-12">
+    <div className="min-h-screen bg-[#F8FAFC] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200 py-12">
       <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
         
         {/* Header Title */}
@@ -52,7 +57,7 @@ const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
             </h2>
             
             <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {data.keyFunctions.map((func, idx) => {
+              {(data.keyFunctions || []).map((func, idx) => {
                 const Icon = iconMap[func.icon] || Scale;
                 return (
                   <div key={idx} className="bg-white dark-mode:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark-mode:border-gray-700 hover:shadow-md transition-shadow">
@@ -74,7 +79,7 @@ const BasicFeatureGrid = ({ dataId, data: dynamicData }) => {
                 {data.sectionHeaders?.keyFunctions?.title ? getTranslation(data.sectionHeaders.keyFunctions.title) : (language === 'mr' ? 'दृष्टिक्षेपात' : 'At a Glance')}
               </h3>
               <div data-block-type="template_stats" className="space-y-6">
-                {data.stats.map((stat, idx) => {
+                {(data.stats || []).map((stat, idx) => {
                   const Icon = iconMap[stat.icon] || Users;
                   return (
                     <div key={idx} className="flex items-center gap-5">
