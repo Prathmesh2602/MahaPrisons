@@ -18,7 +18,6 @@ const ServicesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp,
   const itemHist = useBlockHistory(defaultItem, { ...itemData, icon: itemData?.icon || 'Check' }, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
 
-
   const handleLocalUpdate = (key: string, value: any) => {
     const newItem = JSON.parse(JSON.stringify(itemHist.value));
     newItem[key] = value;
@@ -26,9 +25,9 @@ const ServicesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp,
   };
 
   return (
-    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
+    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
       <EditorBlockHeader
-        title={currentItem.title?.mr || currentItem.label?.mr || currentItem.name?.mr || currentItem.mr || `Item ${index + 1}`}
+        title={currentItem.name?.mr || currentItem.label?.mr || currentItem.title?.mr || currentItem.mr || `Item ${index + 1}`}
         isExpanded={isExpanded}
         onToggle={onToggle}
         history={itemHist}
@@ -41,7 +40,7 @@ const ServicesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp,
         }
       />
       {isExpanded && (
-        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg mt-2">
           <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Name</label>
@@ -65,7 +64,7 @@ const ImpactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, o
   };
 
   return (
-    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
+    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
       <EditorBlockHeader
         title={currentItem.label?.mr || `Item ${index + 1}`}
         isExpanded={isExpanded}
@@ -80,7 +79,7 @@ const ImpactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, o
         }
       />
       {isExpanded && (
-        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg mt-2">
           <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
@@ -100,24 +99,12 @@ const ImpactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, o
   );
 };
 
-
-
 export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
-  const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
+  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>('hero');
   const activeSection = (expandedSection || 'hero').replace('template_', '');
 
-  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
-    hero_content: true,
-    services_header: true,
-    about_content: true,
-  });
-
-  const toggleFixedBlock = (key: string) => {
-    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
   useEffect(() => {
-    setExpandedItemIndex(0);
+    setExpandedItemIndex(activeSection === 'hero' ? 'hero' : (activeSection === 'services' ? 0 : 0));
   }, [activeSection]);
 
   const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
@@ -142,7 +129,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, arr.filter((_: any, i: number) => i !== index));
-    if (expandedItemIndex === index) setExpandedItemIndex(0);
+    if (expandedItemIndex === index) setExpandedItemIndex(null);
   };
 
   const moveArrayItem = (field: string, index: number, direction: number) => {
@@ -154,15 +141,12 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
     newArray[index] = newArray[index + direction];
     newArray[index + direction] = temp;
     handleChange(field, newArray);
-    if (expandedItemIndex === index) setExpandedItemIndex(index + direction);
-    else if (expandedItemIndex === index + direction) setExpandedItemIndex(index);
   };
 
   const addArrayItem = (field: string, defaultItem: any) => {
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
-    handleChange(field, [...arr, defaultItem]);
-    setExpandedItemIndex(arr.length);
+    handleChange(field, [defaultItem, ...arr]);
   };
 
   const heroHist = useBlockHistory(
@@ -171,6 +155,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
       badgeIcon: '',
       title: { mr: '', en: '' },
       subtitle: { mr: '', en: '' },
+      description: { mr: '', en: '' },
       heroImage: ''
     },
     {
@@ -178,6 +163,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
       badgeIcon: safeData.sectionHeaders?.training?.icon || 'Scissors',
       title: safeData.hero?.title || { mr: '', en: '' },
       subtitle: safeData.hero?.subtitle || { mr: '', en: '' },
+      description: safeData.hero?.description || safeData.description || { mr: '', en: '' },
       heroImage: safeData.hero?.heroImage || ''
     },
     (newCombined: any) => {
@@ -185,6 +171,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
         ...safeData.hero,
         title: newCombined.title,
         subtitle: newCombined.subtitle,
+        description: newCombined.description,
         heroImage: newCombined.heroImage
       });
       handleChange('sectionHeaders', {
@@ -199,72 +186,23 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
   );
   const currentHero = heroHist.value;
   const updateHero = (key: string, value: any) => {
-    heroHist.update({ ...currentHero, [key]: value });
+    const newD = JSON.parse(JSON.stringify(currentHero));
+    newD[key] = value;
+    heroHist.update(newD);
   };
-
-  const aboutHist = useBlockHistory(
-    {
-      aboutTitle: { mr: 'उपक्रमाविषयी', en: 'About the Initiative' },
-      aboutIcon: '',
-      description: { mr: '', en: '' }
-    },
-    {
-      aboutTitle: safeData.sectionHeaders?.about?.title?.mr ? safeData.sectionHeaders.about.title : { mr: 'उपक्रमाविषयी', en: 'About the Initiative' },
-      aboutIcon: safeData.sectionHeaders?.about?.icon || 'Star',
-      description: safeData.hero?.description || { mr: '', en: '' }
-    },
-    (newAbout: any) => {
-      handleChange('hero', {
-        ...safeData.hero,
-        description: newAbout.description
-      });
-      handleChange('sectionHeaders', {
-        ...safeData.sectionHeaders,
-        about: {
-          ...(safeData.sectionHeaders?.about || {}),
-          title: newAbout.aboutTitle,
-          icon: newAbout.aboutIcon
-        }
-      });
-    }
-  );
-  const currentAbout = aboutHist.value;
-  const updateAbout = (key: string, value: any) => {
-    aboutHist.update({ ...currentAbout, [key]: value });
-  };
-
-  const servicesHeaderHist = useBlockHistory(
-    { title: { mr: 'प्रशिक्षण व सेवा', en: 'Training & Services' } },
-    { title: safeData.sectionHeaders?.services?.title?.mr ? safeData.sectionHeaders.services.title : (safeData.sectionHeaders?.impact?.title?.mr ? safeData.sectionHeaders.impact.title : { mr: 'प्रशिक्षण व सेवा', en: 'Training & Services' }) },
-    (newHeader: any) => {
-      handleChange('sectionHeaders', {
-        ...safeData.sectionHeaders,
-        services: {
-          ...(safeData.sectionHeaders?.services || {}),
-          title: newHeader.title
-        }
-      });
-    }
-  );
-  const currentServicesHeader = servicesHeaderHist.value;
 
   if (activeSection === 'hero') {
     return (
       <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
-            title="Hero Section Configuration" 
-            isExpanded={!!expandedFixedBlocks['hero_content']} 
-            onToggle={() => toggleFixedBlock('hero_content')} 
+            title="Hero Content" 
+            isExpanded={expandedItemIndex === 'hero'} 
+            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} 
             history={heroHist}
           />
-          {!!expandedFixedBlocks['hero_content'] && (
+          {expandedItemIndex === 'hero' && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <IconPickerInput 
-                label="Badge Icon" 
-                value={currentHero.badgeIcon || ''} 
-                onChange={(val) => updateHero('badgeIcon', val)} 
-              />
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Badge Title</label>
                 <PhoneticInput 
@@ -274,8 +212,13 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
                   englishValue={currentHero.badgeTitle?.en || ''} 
                 />
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
+              <IconPickerInput 
+                label="Badge Icon" 
+                value={currentHero.badgeIcon || ''} 
+                onChange={(val) => updateHero('badgeIcon', val)} 
+              />
+              <div className="pt-4 border-t border-slate-100">
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Title</label>
                 <PhoneticInput 
                   value={currentHero.title?.mr || ''} 
                   onChange={(val) => updateHero('title', { ...currentHero.title, mr: val })} 
@@ -284,7 +227,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Subtitle</label>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Subtitle</label>
                 <PhoneticInput 
                   value={currentHero.subtitle?.mr || ''} 
                   onChange={(val) => updateHero('subtitle', { ...currentHero.subtitle, mr: val })} 
@@ -292,7 +235,17 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
                   englishValue={currentHero.subtitle?.en || ''} 
                 />
               </div>
-              <div className="space-y-2">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Description</label>
+                <PhoneticInput 
+                  value={currentHero.description?.mr || ''} 
+                  onChange={(val) => updateHero('description', { ...currentHero.description, mr: val })} 
+                  onEnglishChange={(val) => updateHero('description', { ...currentHero.description, en: val })} 
+                  englishValue={currentHero.description?.en || ''} 
+                  multiline
+                />
+              </div>
+              <div className="space-y-2 pt-4 border-t border-slate-100">
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Image</label>
                 <div
                   className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
@@ -300,11 +253,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
                 >
                   {currentHero.heroImage ? (
                     <>
-                      <img
-                        src={currentHero.heroImage.startsWith('http') ? currentHero.heroImage : `http://localhost:5000${currentHero.heroImage.startsWith('/') ? '' : '/'}${currentHero.heroImage}`}
-                        className="w-full h-full object-cover"
-                        alt="Preview"
-                      />
+                      <img src={currentHero.heroImage.startsWith('http') ? currentHero.heroImage : `http://localhost:5000${currentHero.heroImage.startsWith('/') ? '' : '/'}${currentHero.heroImage}`} className="w-full h-full object-cover" alt="Preview" />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <span className="text-white text-sm font-medium">Click to change</span>
                       </div>
@@ -329,101 +278,17 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
     );
   }
 
-  if (activeSection === 'about') {
-    return (
-      <div className="pb-10 space-y-4">
-        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
-          <EditorBlockHeader 
-            title="About the Initiative" 
-            isExpanded={!!expandedFixedBlocks['about_content']} 
-            onToggle={() => toggleFixedBlock('about_content')} 
-            history={aboutHist}
-          />
-          {!!expandedFixedBlocks['about_content'] && (
-            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <IconPickerInput 
-                label="Section Icon" 
-                value={currentAbout.aboutIcon || ''} 
-                onChange={(val) => updateAbout('aboutIcon', val)} 
-              />
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
-                <PhoneticInput 
-                  value={currentAbout.aboutTitle?.mr || ''} 
-                  onChange={(val) => updateAbout('aboutTitle', { ...currentAbout.aboutTitle, mr: val })} 
-                  onEnglishChange={(val) => updateAbout('aboutTitle', { ...currentAbout.aboutTitle, en: val })} 
-                  englishValue={currentAbout.aboutTitle?.en || ''} 
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">About Description</label>
-                <PhoneticInput 
-                  value={currentAbout.description?.mr || ''} 
-                  onChange={(val) => updateAbout('description', { ...currentAbout.description, mr: val })} 
-                  onEnglishChange={(val) => updateAbout('description', { ...currentAbout.description, en: val })} 
-                  englishValue={currentAbout.description?.en || ''} 
-                  multiline 
-                />
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Impact Stats</h3>
-          <p className="text-xs text-slate-500 mt-0.5">{(Array.isArray(safeData.impact) ? safeData.impact : (safeData.impact ? [safeData.impact] : [])).length} item(s)</p>
-        </div>
-        <div className="space-y-2">
-          {(Array.isArray(safeData.impact) ? safeData.impact : (safeData.impact ? [safeData.impact] : [])).map((item: any, index: number) => (
-            <ImpactEditorItem
-              key={`item-${index}`} index={index} itemData={item}
-              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('impact', i, newD)}
-              onRemove={() => removeArrayItem('impact', index)}
-              onMoveUp={() => moveArrayItem('impact', index, -1)}
-              onMoveDown={() => moveArrayItem('impact', index, 1)}
-              isFirst={index === 0} isLast={index === (Array.isArray(safeData.impact) ? safeData.impact : (safeData.impact ? [safeData.impact] : [])).length - 1}
-              isExpanded={expandedItemIndex === index}
-              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
-            />
-          ))}
-          <button onClick={() => addArrayItem('impact', { value: '', label: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Impact Stat
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   if (activeSection === 'services') {
     return (
       <div className="pb-10 space-y-4">
-        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
-          <EditorBlockHeader 
-            title="Services Section Header" 
-            isExpanded={!!expandedFixedBlocks['services_header']} 
-            onToggle={() => toggleFixedBlock('services_header')} 
-            history={servicesHeaderHist}
-          />
-          {!!expandedFixedBlocks['services_header'] && (
-            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
-                <PhoneticInput 
-                  value={currentServicesHeader.title?.mr || ''} 
-                  onChange={(val) => servicesHeaderHist.update({ ...currentServicesHeader, title: { ...currentServicesHeader.title, mr: val } })} 
-                  onEnglishChange={(val) => servicesHeaderHist.update({ ...currentServicesHeader, title: { ...currentServicesHeader.title, en: val } })} 
-                  englishValue={currentServicesHeader.title?.en || ''} 
-                />
-              </div>
-            </div>
-          )}
-        </div>
-
         <div className="px-1 mb-2">
           <h3 className="text-sm font-bold text-slate-700">Services List</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.services || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('services', { name: { mr: '', en: '' }, icon: 'Check' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Service
+          </button>
           {(safeData.services || []).map((item: any, index: number) => (
             <ServicesEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -433,18 +298,43 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
               onMoveDown={() => moveArrayItem('services', index, 1)}
               isFirst={index === 0} isLast={index === (safeData.services || []).length - 1}
               isExpanded={expandedItemIndex === index}
-              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
+              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? null : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('services', { name: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Services Item
-          </button>
+
         </div>
       </div>
     );
   }
 
+  if (activeSection === 'impact') {
+    return (
+      <div className="pb-10 space-y-4">
+        <div className="px-1 mb-2">
+          <h3 className="text-sm font-bold text-slate-700">Impact Stats List</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{(safeData.impact || []).length} item(s)</p>
+        </div>
+        <div className="space-y-2">
+          <button onClick={() => addArrayItem('impact', { value: '', label: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: 'Users' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Impact Stat
+          </button>
+          {(safeData.impact || []).map((item: any, index: number) => (
+            <ImpactEditorItem
+              key={`item-${index}`} index={index} itemData={item}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('impact', i, newD)}
+              onRemove={() => removeArrayItem('impact', index)}
+              onMoveUp={() => moveArrayItem('impact', index, -1)}
+              onMoveDown={() => moveArrayItem('impact', index, 1)}
+              isFirst={index === 0} isLast={index === (safeData.impact || []).length - 1}
+              isExpanded={expandedItemIndex === index}
+              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? null : index)}
+            />
+          ))}
 
+        </div>
+      </div>
+    );
+  }
 
   return <div className="p-4 text-center text-slate-500">Select a section to edit</div>;
 };

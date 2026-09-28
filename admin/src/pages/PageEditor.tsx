@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { LayoutDashboard } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { TemplateSelectorModal } from '../components/TemplateSelectorModal';
 import { HeroCarouselEditor } from '../components/editors/HeroCarouselEditor';
@@ -17,6 +18,7 @@ import { PrisonTimelineEditor } from '../components/editors/PrisonTimelineEditor
 import { PrisonAdministrationEditor } from '../components/editors/PrisonAdministrationEditor';
 import { PrisonActivitiesEditor } from '../components/editors/PrisonActivitiesEditor';
 import { TemplateEditorRenderer } from '../components/editors/TemplateEditorRenderer';
+import { getTemplateDummyData } from '../utils/templateDummyData';
 
 export const PageEditor = () => {
   const [searchParams] = useSearchParams();
@@ -30,6 +32,8 @@ export const PageEditor = () => {
   const [selectedBlockType, setSelectedBlockType] = useState<string>('');
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  
+  const isFixedTemplatePage = ['/', 'yerawada-open-jail', 'gallery', 'our-products'].includes(slug);
   
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeReady, setIsIframeReady] = useState(false);
@@ -76,9 +80,16 @@ export const PageEditor = () => {
     try {
       const res = await axios.get(`http://localhost:5000/api/v1/pages/by-slug?slug=${slug}`);
       if (res.data) {
-        setPageData(res.data);
-        if (!selectedBlockType && res.data.contentBlocks?.length > 0) {
-          setSelectedBlockType(res.data.contentBlocks[0].blockType);
+        const fetchedData = res.data;
+        const templateBlock = fetchedData.contentBlocks?.find((b: any) => b.blockType === 'page_template_data');
+        if (templateBlock?.content?._draft_layout_type) {
+          fetchedData.layoutType = templateBlock.content._draft_layout_type;
+          fetchedData._is_draft_layout = true;
+        }
+        
+        setPageData(fetchedData);
+        if (!selectedBlockType && fetchedData.contentBlocks?.length > 0) {
+          setSelectedBlockType(fetchedData.contentBlocks[0].blockType);
         }
       }
       
@@ -131,62 +142,140 @@ export const PageEditor = () => {
         const currentLayout = pageData.layoutType;
         const currentSpecifics: any = {};
         for (const key of Object.keys(oldContent)) {
-          if (!['title', 'subtitle', 'description', 'image', '_archived_data'].includes(key)) {
+          if (!['title', 'subtitle', 'description', 'image', '_archived_data', '_previous_layout'].includes(key)) {
             currentSpecifics[key] = oldContent[key];
           }
         }
         if (Object.keys(currentSpecifics).length > 0) {
           newContent._archived_data[currentLayout] = currentSpecifics;
         }
+        
+        // Track the previous layout so we can Revert
+        newContent._previous_layout = currentLayout;
 
         // Restore or initialize new layout specific data
         const archivedForNew = newContent._archived_data[templateId];
-        
-        // Simple heuristic mapping if no archived data exists
+        const dummyData: any = getTemplateDummyData(templateId);
+
         if (!archivedForNew) {
-          if (templateId === 'HeroFeaturesTimelineLayout') {
-            newContent.stats = currentSpecifics.features || currentSpecifics.productionStats || [];
-            newContent.keyFunctions = currentSpecifics.timings || currentSpecifics.activeProjects || [];
-            newContent.contactInfo = currentSpecifics.impactStatement || { email: '', phone: '', address: '' };
-          } else if (templateId === 'HeroStatsGrid') {
-            newContent.features = currentSpecifics.stats || currentSpecifics.productionStats || [];
-            newContent.gallery = [];
-            newContent.timings = currentSpecifics.keyFunctions || currentSpecifics.activeProjects || [];
-          } else if (templateId === 'HeroThreeColGrid') {
-            newContent.productionStats = currentSpecifics.stats || currentSpecifics.features || [];
-            newContent.activeProjects = currentSpecifics.keyFunctions || currentSpecifics.timings || [];
-            newContent.impactStatement = currentSpecifics.contactInfo || { title: { mr: '', en: '' }, desc: { mr: '', en: '' } };
-          } else if (templateId === 'HeroSplitTimeline') {
-            newContent.coreProtocols = currentSpecifics.keyFunctions || currentSpecifics.timings || [];
-            newContent.infrastructure = currentSpecifics.stats || currentSpecifics.features || [];
-            newContent.alertMessage = { mr: '', en: '' };
-          } else if (templateId === 'HeroFeatureList') {
-            newContent.features = currentSpecifics.features || currentSpecifics.stats || [];
-            newContent.listItems = currentSpecifics.listItems || [];
+          // Keep title/subtitle/description/image as empty or whatever it already is
+          
+          // Initialize arrays/objects with empty shapes matching dummy data length
+          for (const key of Object.keys(dummyData)) {
+            if (!['title', 'subtitle', 'description', 'image'].includes(key)) {
+              if (Array.isArray(dummyData[key])) {
+                newContent[key] = dummyData[key].map((item: any) => {
+                  if (typeof item === 'object' && item !== null) {
+                    const emptyItem: any = {};
+                    for (const k of Object.keys(item)) {
+                      if (typeof item[k] === 'object' && item[k] !== null) {
+                        if ('en' in item[k] || 'mr' in item[k]) {
+                          emptyItem[k] = { en: '', mr: '' };
+                        } else {
+                          emptyItem[k] = {};
+                        }
+                      } else {
+                        emptyItem[k] = '';
+                      }
+                    }
+                    return emptyItem;
+                  }
+                  return '';
+                });
+              } else if (typeof dummyData[key] === 'object' && dummyData[key] !== null) {
+                newContent[key] = {};
+              } else {
+                newContent[key] = '';
+              }
+            }
           }
         } else {
           // Restore archived
           Object.assign(newContent, archivedForNew);
         }
 
-        const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:5000/api/v1/pages/blocks/${templateBlock.id}`, {
-          content: newContent
-        }, { headers: { Authorization: `Bearer ${token}` }});
-      }
+        // Add draft layout type flag for local use
+        newContent._draft_layout_type = templateId;
 
-      const token = localStorage.getItem('token');
-      const res = await axios.put(`http://localhost:5000/api/v1/pages/${pageData.id}/layout`, {
-        layoutType: templateId
-      }, { headers: { Authorization: `Bearer ${token}` }});
-      
-      if (res.data.success) {
+        // Update locally without saving to DB yet!
+        setPageData((prev: any) => {
+          const newData = JSON.parse(JSON.stringify(prev));
+          const block = newData.contentBlocks?.find((b: any) => b.blockType === 'page_template_data');
+          if (block) {
+            block.content = newContent;
+          }
+          newData.layoutType = templateId;
+          newData._is_draft_layout = true;
+          return newData;
+        });
+        
         setIsTemplateModalOpen(false);
-        fetchPageData();
       }
     } catch (error) {
       console.error('Failed to change template:', error);
       alert('Failed to change template');
+    }
+  };
+
+  const handleRevertTemplate = async () => {
+    if (!pageData?.id) return;
+
+    if (pageData._is_draft_layout) {
+      if (confirm('Are you sure you want to cancel your layout changes and revert to the published version?\nतुम्हाला खात्री आहे की तुम्ही तुमचे लेआउट बदल रद्द करू इच्छिता आणि प्रकाशित आवृत्तीवर परत जाऊ इच्छिता?')) {
+        fetchPageData();
+      }
+      return;
+    }
+
+    const templateBlock = pageData.contentBlocks?.find((b: any) => b.blockType === 'page_template_data');
+    if (!templateBlock) return;
+    
+    const oldContent = templateBlock.content || {};
+    const previousLayout = oldContent._previous_layout;
+    
+    if (previousLayout === undefined || previousLayout === null) {
+      alert("No previous template data found to revert to.");
+      return;
+    }
+    
+    const layoutName = previousLayout === '' ? 'Blank Page' : previousLayout;
+    if (confirm(`Are you sure you want to revert back to the previous template (${layoutName})?\nतुम्हाला खात्री आहे की तुम्ही मागील टेम्पलेटवर (${layoutName}) परत जाऊ इच्छिता?`)) {
+      try {
+        let newContent: any = {
+          title: oldContent.title || { mr: '', en: '' },
+          subtitle: oldContent.subtitle || { mr: '', en: '' },
+          description: oldContent.description || { mr: '', en: '' },
+          image: oldContent.image || '',
+          _archived_data: { ...(oldContent._archived_data || {}) }
+        };
+        
+        // Restore from archived
+        const archivedForPrev = newContent._archived_data[previousLayout];
+        if (archivedForPrev) {
+          Object.assign(newContent, archivedForPrev);
+        }
+        
+        // Clear previous_layout so you can't revert twice indefinitely
+        newContent._previous_layout = null;
+
+        const token = localStorage.getItem('token');
+        await axios.put(`http://localhost:5000/api/v1/pages/blocks/${templateBlock.id}`, {
+          content: newContent,
+          changeSummary: `Reverted layout to ${previousLayout}`
+        }, { headers: { Authorization: `Bearer ${token}` }});
+
+        const res = await axios.put(`http://localhost:5000/api/v1/pages/${pageData.id}/layout`, {
+          layoutType: previousLayout,
+          changeSummary: `Reverted layout to ${previousLayout}`
+        }, { headers: { Authorization: `Bearer ${token}` }});
+        
+        if (res.data.success) {
+          fetchPageData();
+        }
+      } catch (error) {
+        console.error('Failed to revert template:', error);
+        alert('Failed to revert template');
+      }
     }
   };
 
@@ -261,7 +350,7 @@ export const PageEditor = () => {
       case 'prison_activities':
         return <PrisonActivitiesEditor blockId={block.id} initialData={block.content} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} />;
       case 'page_template_data':
-        return <TemplateEditorRenderer blockId={block.id} initialData={block.content} layoutType={pageData.layoutType} expandedSection={expandedSection} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} menuItemData={menuItemData} />;
+        return <TemplateEditorRenderer key={pageData.layoutType} blockId={block.id} initialData={block.content} layoutType={pageData.layoutType} isDraftLayout={pageData._is_draft_layout} expandedSection={expandedSection} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} menuItemData={menuItemData} />;
       default:
         return (
           <div className="text-center text-slate-500 py-10 bg-slate-50 border border-slate-200 rounded-lg m-3">
@@ -317,24 +406,44 @@ export const PageEditor = () => {
       </div>
 
       {/* RIGHT PANE: Forms */}
-      <div className="w-[30%] flex flex-col bg-white shrink-0 overflow-y-auto relative">
-        {pageData?.layoutType && ['HeroFeaturesTimelineLayout', 'HeroStatsGrid', 'HeroThreeColGrid', 'HeroSplitTimeline', 'HeroFeatureList'].includes(pageData.layoutType) && (
-          <div className="p-3 border-b border-slate-200 bg-slate-50 flex justify-between items-center shrink-0">
-            <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-0.5">Current Layout</p>
-              <p className="text-sm font-medium text-slate-800">
-                {pageData.layoutType === 'HeroFeaturesTimelineLayout' && 'Hero Features Timeline'}
-                {pageData.layoutType === 'HeroStatsGrid' && 'Hero Stats Grid'}
-                {pageData.layoutType === 'HeroThreeColGrid' && 'Hero Three Column Grid'}
-                {pageData.layoutType === 'HeroSplitTimeline' && 'Hero Split Timeline'}
-                {pageData.layoutType === 'HeroFeatureList' && 'Hero Feature List'}
-              </p>
+      <div className="w-[30%] flex flex-col bg-white shrink-0 overflow-y-auto relative border-l border-slate-200 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)]">
+        {!isFixedTemplatePage && pageData?.layoutType ? (
+          <div className="p-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0 shadow-sm z-10 sticky top-0">
+            <div className="flex flex-col max-w-[50%]">
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Template</span>
+              <span className="text-sm font-bold text-slate-800 truncate" title={pageData.layoutType}>
+                {pageData.layoutType}
+              </span>
             </div>
+            <div className="flex gap-2">
+              {(pageData._is_draft_layout || pageData.contentBlocks?.find((b: any) => b.blockType === 'page_template_data')?.content?._previous_layout !== undefined) && (
+                <button 
+                  onClick={handleRevertTemplate}
+                  className="px-3 py-1.5 text-xs font-semibold text-amber-700 bg-amber-100 hover:bg-amber-200 rounded-md transition-colors shadow-sm flex items-center gap-1"
+                >
+                  {pageData._is_draft_layout ? 'Cancel Draft' : 'Revert'}
+                </button>
+              )}
+              <button 
+                onClick={() => setIsTemplateModalOpen(true)}
+                className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors shadow-sm flex items-center gap-1"
+              >
+                Change
+              </button>
+            </div>
+          </div>
+        ) : !isFixedTemplatePage && (
+          <div className="p-6 flex flex-col items-center justify-center text-center border-b border-slate-200 bg-slate-50 shrink-0">
+            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-3">
+              <LayoutDashboard size={24} />
+            </div>
+            <h3 className="text-lg font-bold text-slate-800 mb-1">No Template Selected</h3>
+            <p className="text-sm text-slate-500 mb-4 max-w-xs">This page is currently blank. Select a template from the library to start building.</p>
             <button 
               onClick={() => setIsTemplateModalOpen(true)}
-              className="px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 rounded-md transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
             >
-              Change Template
+              Choose Template
             </button>
           </div>
         )}

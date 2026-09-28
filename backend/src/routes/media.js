@@ -60,12 +60,12 @@ router.post('/upload', authMiddleware, upload.single('file'), async (req, res) =
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const { filename, path: filepath, mimetype, size } = req.file;
+    const { filename, path: filepath, mimetype, size, originalname } = req.file;
     const url = `/uploads/${filename}`; // Public URL path
 
     const media = await prisma.media.create({
       data: {
-        filename,
+        filename: originalname || filename,
         filepath,
         mimetype,
         size,

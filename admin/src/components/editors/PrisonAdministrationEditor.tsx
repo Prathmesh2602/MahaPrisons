@@ -203,7 +203,7 @@ export const PrisonAdministrationEditor = ({ blockId, initialData, onPreviewUpda
   const addStaff = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.staff) newData.staff = [];
-    newData.staff.push({ name: { mr: "", en: "" }, role: { mr: "", en: "" }, img: "" });
+    newData.staff.unshift({ name: { mr: "", en: "" }, role: { mr: "", en: "" }, img: "" });
     setData(newData);
     updateHistoryState(newData);
   };

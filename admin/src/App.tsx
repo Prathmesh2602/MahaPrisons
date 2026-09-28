@@ -1,5 +1,6 @@
+import { ErrorBoundary } from './components/ErrorBoundary';
 import React from 'react';
-import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './pages/Login';
 import { MenuEditor } from './pages/MenuEditor';
@@ -7,6 +8,7 @@ import { SettingsEditor } from './pages/SettingsEditor';
 import { ReviewDashboard } from './pages/ReviewDashboard';
 import { UserManagement } from './pages/UserManagement';
 import { PageEditor } from './pages/PageEditor';
+import { AuditLogs } from './pages/AuditLogs';
 import { Button } from './components/Button';
 import { LayoutDashboard, Settings, Menu as MenuIcon, LogOut, CheckSquare, Shield, ShieldCheck, Image as ImageIcon, FileText, Users, X } from 'lucide-react';
 
@@ -90,9 +92,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               <><Settings size={18} strokeWidth={isActive ? 2 : 1.75} className="shrink-0" /> <span className={`whitespace-nowrap transition-opacity duration-200 ${isSidebarExpanded ? 'opacity-100' : 'opacity-0 hidden'}`}>Settings</span></>
             )}
           </NavLink>
-          <div className={`flex items-center ${isSidebarExpanded ? 'justify-start' : 'justify-center'} gap-3.5 px-3 py-2.5 text-[13px] font-medium rounded-md text-slate-400 hover:bg-[#1e293b]/60 hover:text-white transition-all duration-200 cursor-pointer`} title="Audit Logs">
+          <NavLink to="/audit-logs" className={({isActive}) => `flex items-center ${isSidebarExpanded ? 'justify-start' : 'justify-center'} gap-3.5 px-3 py-2.5 text-[13px] font-medium rounded-md transition-all duration-200 cursor-pointer ${isActive ? 'bg-indigo-600/10 text-indigo-400' : 'text-slate-400 hover:bg-[#1e293b]/60 hover:text-white'}`} title="Audit Logs">
             <Shield size={18} strokeWidth={1.75} className="shrink-0" /> <span className={`whitespace-nowrap transition-opacity duration-200 ${isSidebarExpanded ? 'opacity-100' : 'opacity-0 hidden'}`}>Audit Logs</span>
-          </div>
+          </NavLink>
         </nav>
         <div className="py-4 px-1 border-t border-slate-800/50">
           <div className={`flex items-center ${isSidebarExpanded ? 'justify-between px-2' : 'justify-center'}`}>
@@ -182,28 +184,38 @@ const DashboardHome = () => {
 };
 
 const AppRoutes = () => {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
+  const location = useLocation();
+  const isPreview = location.search.includes('preview=true');
+  const isForceLogin = location.search.includes('force=true');
+
+  React.useEffect(() => {
+    if (isForceLogin && token) {
+      logout();
+    }
+  }, [isForceLogin, token, logout]);
 
   return (
     <Routes>
-      <Route path="/login" element={token ? <Navigate to="/" /> : <Login />} />
+      <Route path="/login" element={token && !isPreview && !isForceLogin ? <Navigate to="/" /> : <Login />} />
       <Route path="/" element={<ProtectedRoute><DashboardLayout><DashboardHome /></DashboardLayout></ProtectedRoute>} />
       <Route path="/menu" element={<ProtectedRoute><DashboardLayout><MenuEditor /></DashboardLayout></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><DashboardLayout><SettingsEditor /></DashboardLayout></ProtectedRoute>} />
       <Route path="/review" element={<ProtectedRoute><DashboardLayout><ReviewDashboard /></DashboardLayout></ProtectedRoute>} />
       <Route path="/users" element={<ProtectedRoute><DashboardLayout><UserManagement /></DashboardLayout></ProtectedRoute>} />
       <Route path="/page-editor" element={<ProtectedRoute><DashboardLayout><PageEditor /></DashboardLayout></ProtectedRoute>} />
+      <Route path="/audit-logs" element={<ProtectedRoute><DashboardLayout><AuditLogs /></DashboardLayout></ProtectedRoute>} />
     </Routes>
   );
 };
 
 function App() {
   return (
-    <AuthProvider>
+    <ErrorBoundary><AuthProvider>
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
-    </AuthProvider>
+    </AuthProvider></ErrorBoundary>
   );
 }
 

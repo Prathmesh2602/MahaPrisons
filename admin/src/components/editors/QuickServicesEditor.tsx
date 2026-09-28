@@ -299,9 +299,9 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData[category]) newData[category] = [];
     if (category === 'important_links') {
-      newData[category].push({ title: { mr: "", en: "" }, href: "" });
+      newData[category].unshift({ title: { mr: "", en: "" }, href: "" });
     } else {
-      newData[category].push({ title: { mr: "", en: "" }, phone: "", icon: "Phone" });
+      newData[category].unshift({ title: { mr: "", en: "" }, phone: "", icon: "Phone" });
     }
     setData(newData);
     updateHistoryState(newData);
@@ -369,6 +369,7 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
       <div className="w-full">
         <h3 className="text-sm font-semibold text-slate-700 mb-2 border-b pb-2">Helpline Services</h3>
         <div className="space-y-2">
+          <Button onClick={() => addItem('helplines')} variant="secondary" className="mb-4 w-full text-xs h-8"><Plus size={12} className="mr-2" /> Add Helpline</Button>
           {helplinesList.map((help: any, index: number) => (
             <HelplineBlock
               key={index}
@@ -385,7 +386,7 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
               onToggle={() => setExpandedHelpline(expandedHelpline === index ? null : index)}
             />
           ))}
-          <Button onClick={() => addItem('helplines')} variant="secondary" className="w-full text-xs h-8"><Plus size={12} className="mr-2" /> Add Helpline</Button>
+
         </div>
       </div>
 
@@ -395,6 +396,7 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
       <div className="w-full">
         <h3 className="text-sm font-semibold text-slate-700 mb-2 border-b pb-2">Important Links</h3>
         <div className="space-y-2">
+          <Button onClick={() => addItem('important_links')} variant="secondary" className="mb-4 w-full text-xs h-8"><Plus size={12} className="mr-2" /> Add Link</Button>
           {linksList.map((link: any, index: number) => (
             <ImportantLinkBlock
               key={index}
@@ -411,7 +413,7 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
               onToggle={() => setExpandedLink(expandedLink === index ? null : index)}
             />
           ))}
-          <Button onClick={() => addItem('important_links')} variant="secondary" className="w-full text-xs h-8"><Plus size={12} className="mr-2" /> Add Link</Button>
+
         </div>
       </div>
 

@@ -231,7 +231,7 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
 
   const addArrayItem = (field: string, defaultItem: any) => {
     const arr = safeData[field] || [];
-    handleChange(field, [...arr, defaultItem]);
+    handleChange(field, [defaultItem, ...arr]);
     setExpandedItemIndex(arr.length);
   };
 
@@ -317,6 +317,9 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.highlights || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('highlights', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Highlights Item
+          </button>
           {(safeData.highlights || []).map((item: any, index: number) => (
             <HighlightsEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -329,9 +332,7 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('highlights', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Highlights Item
-          </button>
+
         </div>
       </div>
     );
@@ -346,6 +347,9 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.contentSections || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('contentSections', { image: '', imagePosition: '', title: { mr: '', en: '' }, description: { mr: '', en: '' } })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Content Sections Item
+          </button>
           {(safeData.contentSections || []).map((item: any, index: number) => (
             <ContentSectionsEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -358,9 +362,7 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('contentSections', { image: '', imagePosition: '', title: { mr: '', en: '' }, description: { mr: '', en: '' } })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Content Sections Item
-          </button>
+
         </div>
       </div>
     );

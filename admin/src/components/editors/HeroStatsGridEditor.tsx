@@ -269,7 +269,7 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
 
   const addArrayItem = (field: string, defaultItem: any) => {
     const arr = safeData[field] || [];
-    handleChange(field, [...arr, defaultItem]);
+    handleChange(field, [defaultItem, ...arr]);
     setExpandedItemIndex(arr.length);
   };
 
@@ -383,6 +383,9 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.features || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('features', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Features Item
+          </button>
           {(safeData.features || []).map((item: any, index: number) => (
             <FeaturesEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -395,9 +398,7 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('features', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Features Item
-          </button>
+
         </div>
       </div>
     );
@@ -438,6 +439,9 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.gallery || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('gallery', { image: '', caption: { mr: '', en: '' } })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Gallery Item
+          </button>
           {(safeData.gallery || []).map((item: any, index: number) => (
             <GalleryEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -450,9 +454,7 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('gallery', { image: '', caption: { mr: '', en: '' } })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Gallery Item
-          </button>
+
         </div>
       </div>
     );
@@ -493,6 +495,9 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.timings || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('timings', { day: { mr: '', en: '' }, hours: { mr: '', en: '' } })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Timings Item
+          </button>
           {(safeData.timings || []).map((item: any, index: number) => (
             <TimingsEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -505,9 +510,7 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('timings', { day: { mr: '', en: '' }, hours: { mr: '', en: '' } })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Timings Item
-          </button>
+
         </div>
         
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">

@@ -23,42 +23,54 @@ const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
 
   const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
 
+  const ChevronDown = LucideIcons.ChevronDown;
+
   return (
     <div className="min-h-screen bg-[#FFFBF0] dark-mode:bg-[#1C1A17] font-poppins text-gray-800 dark-mode:text-gray-200">
       
-      {/* Cafe Header */}
-      <div className="relative h-[50vh] min-h-[400px] flex items-center justify-center text-center">
-        <div className="absolute inset-0 bg-[#4A3219] dark-mode:bg-[#2A1D0E] overflow-hidden">
-           <img src={data.hero?.heroImage} alt="Canteen" className="w-full h-full object-cover opacity-40 mix-blend-overlay" />
-           <div className="absolute inset-0 bg-gradient-to-t from-[#FFFBF0] dark-mode:from-[#1C1A17] to-transparent" />
+      {/* Cafe Header & Description (Unified for selection outline) */}
+      <div data-block-type="template_hero">
+        <div className="relative h-[50vh] min-h-[400px] flex items-center justify-center text-center">
+          <div className="absolute inset-0 bg-[#4A3219] dark-mode:bg-[#2A1D0E] overflow-hidden">
+             <img src={data.hero?.heroImage} alt="Canteen" className="w-full h-full object-cover opacity-40 mix-blend-overlay" />
+             <div className="absolute inset-0 bg-gradient-to-t from-[#FFFBF0] dark-mode:from-[#1C1A17] to-transparent" />
+          </div>
+          <div className="relative z-10 px-4 max-w-3xl mx-auto -mt-8">
+            <fmotion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="flex justify-center mb-6">
+              <div className="p-4 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[#FFFBF0]">
+                {(() => {
+                  const HeroIcon = getIcon(data.sectionHeaders?.hero?.icon, 'Coffee');
+                  return <HeroIcon className="w-6 h-6" />;
+                })()}
+              </div>
+            </fmotion.div>
+            <fmotion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl font-black text-[#4A3219] dark-mode:text-[#D4A373] mb-4 drop-shadow-sm">
+              {getTranslation(data.hero?.title)}
+            </fmotion.h1>
+            <fmotion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-base text-[#8E6A45] dark-mode:text-[#A68A64] font-medium max-w-2xl mx-auto">
+              {getTranslation(data.hero?.subtitle)}
+            </fmotion.p>
+          </div>
         </div>
-        <div className="relative z-10 px-4 max-w-3xl mx-auto -mt-8">
-          <fmotion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="flex justify-center mb-6">
-            <div className="p-4 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[#FFFBF0]">
-              <Coffee className="w-6 h-6" />
-            </div>
+
+        <div className="container mx-auto px-6 relative z-20">
+          {/* Description mapped directly under Hero but part of the same conceptual form now, so no data-block-type here */}
+          <fmotion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="bg-white dark-mode:bg-[#2A2621] p-6 md:p-8 rounded-2xl shadow-xl border border-[#F2E8D5] dark-mode:border-[#3D372E] max-w-4xl mx-auto -mt-16 mb-20 text-center">
+            <p className="text-base md:text-lg leading-relaxed text-[#5E4A35] dark-mode:text-[#CBB59C] font-medium">
+              {getTranslation(data.hero?.description)}
+            </p>
           </fmotion.div>
-          <fmotion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl font-black text-[#4A3219] dark-mode:text-[#D4A373] mb-4 drop-shadow-sm">
-            {getTranslation(data.hero?.title)}
-          </fmotion.h1>
-          <fmotion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-base text-[#8E6A45] dark-mode:text-[#A68A64] font-medium max-w-2xl mx-auto">
-            {getTranslation(data.hero?.subtitle)}
-          </fmotion.p>
         </div>
       </div>
 
       <div className="container mx-auto px-6 relative z-20 pb-24">
         
-        <fmotion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="bg-white dark-mode:bg-[#2A2621] p-6 md:p-6 rounded-2xl shadow-xl border border-[#F2E8D5] dark-mode:border-[#3D372E] max-w-4xl mx-auto -mt-16 mb-20 text-center">
-          <p className="text-base leading-relaxed text-[#5E4A35] dark-mode:text-[#CBB59C] font-medium">
-            {getTranslation(data.hero?.description)}
-          </p>
-        </fmotion.div>
+
 
         {/* Menu/Feature Cards (Interactive) */}
-        <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 max-w-5xl mx-auto">
+        <div data-block-type="template_keyFunctions" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 max-w-5xl mx-auto">
           {(data.keyFunctions || []).map((func, idx) => {
-            const Icon = iconMap[func.icon] || Coffee;
+            const Icon = getIcon(func.icon, 'Coffee');
             const isActive = activeCard === idx;
             
             return (
@@ -78,24 +90,26 @@ const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
                   <ChevronDown className={`w-6 h-6 text-[#8E6A45] transition-transform duration-300 ${isActive ? 'rotate-180' : ''}`} />
                 </div>
                 
-                {isActive && (
-                  <fmotion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="px-8 pb-8">
-                    <div className="pt-6 border-t border-[#F2E8D5] dark-mode:border-[#3D372E]">
-                      <p className="text-lg text-[#5E4A35] dark-mode:text-[#CBB59C] leading-relaxed">
-                        {getTranslation(func.desc)}
-                      </p>
-                    </div>
-                  </fmotion.div>
-                )}
+                <AnimatePresence>
+                  {isActive && (
+                    <fmotion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="px-8 pb-8 overflow-hidden">
+                      <div className="pt-6 border-t border-[#F2E8D5] dark-mode:border-[#3D372E]">
+                        <p className="text-base text-[#5E4A35] dark-mode:text-[#CBB59C] leading-relaxed">
+                          {getTranslation(func.desc)}
+                        </p>
+                      </div>
+                    </fmotion.div>
+                  )}
+                </AnimatePresence>
               </fmotion.div>
             );
           })}
         </div>
 
         {/* Cafe Stats (Coffee beans style) */}
-        <div data-block-type="template_stats" className="flex flex-wrap justify-center gap-6 mb-10">
+        <div data-block-type="template_stats" className="flex flex-wrap justify-center gap-6 mb-16">
           {(data.stats || []).map((stat, idx) => {
-            const Icon = iconMap[stat.icon] || TrendingUp;
+            const Icon = getIcon(stat.icon, 'TrendingUp');
             return (
               <fmotion.div key={idx} initial={{ scale: 0.9, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }} className="bg-[#4A3219] text-[#FFFBF0] p-6 rounded-2xl w-64 text-center shadow-2xl relative overflow-hidden group hover:bg-[#5E4A35] transition-colors">
                 <div className="absolute -right-6 -top-6 text-[#FFFBF0]/5 group-hover:scale-110 transition-transform">
@@ -103,7 +117,7 @@ const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
                 </div>
                 <div className="relative z-10">
                   <Icon className="w-8 h-8 text-[#D4A373] mx-auto mb-4" />
-                  <div className="text-2xl font-black mb-2">{stat.value}</div>
+                  <div className="text-2xl font-black mb-2">{typeof stat.value === "object" ? getTranslation(stat.value) : stat.value}</div>
                   <div className="text-sm font-bold uppercase tracking-widest text-[#D4A373]">{getTranslation(stat.label)}</div>
                 </div>
               </fmotion.div>
@@ -112,15 +126,22 @@ const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
         </div>
 
         {/* Cafe Footer */}
-        <div className="max-w-3xl mx-auto bg-white dark-mode:bg-[#2A2621] p-6 rounded-2xl border border-[#F2E8D5] dark-mode:border-[#3D372E] flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
-          <div className="flex items-center gap-3 text-[#5E4A35] dark-mode:text-[#CBB59C]">
-            <MapPin className="w-5 h-5 text-[#D4A373]" />
-            <span className="font-medium">{getTranslation(data.contactInfo.address)}</span>
-          </div>
-          <div className="flex gap-6 text-[#5E4A35] dark-mode:text-[#CBB59C]">
-            <span className="flex items-center gap-2 font-medium"><Phone className="w-4 h-4 text-[#D4A373]"/> {data.contactInfo.phone}</span>
-            <span className="flex items-center gap-2 font-medium"><Mail className="w-4 h-4 text-[#D4A373]"/> {data.contactInfo.email}</span>
-          </div>
+        <div data-block-type="template_contactInfo" className="max-w-4xl mx-auto bg-white dark-mode:bg-[#2A2621] p-6 rounded-2xl border border-[#F2E8D5] dark-mode:border-[#3D372E] flex flex-col md:flex-row items-center justify-center gap-8 shadow-sm text-center md:text-left">
+          {(Array.isArray(data.contactInfo) ? data.contactInfo : (
+            [
+              data.contactInfo?.address && { icon: 'MapPin', value: data.contactInfo.address },
+              data.contactInfo?.phone && { icon: 'Phone', value: { en: data.contactInfo.phone, mr: data.contactInfo.phone } },
+              data.contactInfo?.email && { icon: 'Mail', value: { en: data.contactInfo.email, mr: data.contactInfo.email } }
+            ].filter(Boolean)
+          )).map((info, idx) => {
+            const Icon = getIcon(info.icon, 'Info');
+            return (
+              <div key={idx} className="flex items-center gap-3 text-[#5E4A35] dark-mode:text-[#CBB59C]">
+                <Icon className="w-5 h-5 text-[#D4A373] shrink-0" />
+                <span className="font-medium">{getTranslation(info.value)}</span>
+              </div>
+            );
+          })}
         </div>
 
       </div>
@@ -129,4 +150,3 @@ const ContentWithAccordion = ({ dataId, data: dynamicData }) => {
 };
 
 export default ContentWithAccordion;
-

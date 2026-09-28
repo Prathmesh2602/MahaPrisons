@@ -74,9 +74,9 @@ const HeroWithPricingList = ({ dataId, data: dynamicData }) => {
           
           {/* Description Card */}
           <motion.div 
-            data-block-type="template_about"
+            data-block-type="template_hero"
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-            className="lg:col-span-8 bg-white dark-mode:bg-gray-900 rounded-2xl p-6 md:p-6 shadow-xl border border-gray-100 dark-mode:border-gray-800"
+            className="lg:col-span-8 bg-white dark-mode:bg-gray-900 rounded-2xl p-6 md:p-6 shadow-xl border border-gray-100 dark-mode:border-gray-800 cursor-pointer hover:outline hover:outline-2 hover:outline-blue-500"
           >
             <h2 className="text-lg font-bold mb-6 flex items-center gap-3 border-b border-gray-100 dark-mode:border-gray-800 pb-4">
               {(() => {

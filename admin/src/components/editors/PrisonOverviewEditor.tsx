@@ -148,7 +148,7 @@ export const PrisonOverviewEditor = ({ blockId, initialData, onPreviewUpdate }: 
   const addStat = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.stats) newData.stats = [];
-    newData.stats.push({ label: { mr: "", en: "" }, value: { mr: "", en: "" } });
+    newData.stats.unshift({ label: { mr: "", en: "" }, value: { mr: "", en: "" } });
     setData(newData);
     updateHistoryState(newData);
   };

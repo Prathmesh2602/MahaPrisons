@@ -31,7 +31,7 @@ export const facilitiesData = {
     }
   },
   'smart-card-phone': {
-    heroImage: 'https://images.unsplash.com/photo-1520697830682-8f170eb82084?auto=format&fit=crop&q=80',
+    heroImage: '/uploads/smart_card_phone.jpg',
     title: { mr: 'ॲलेन स्मार्ट कार्ड फोन सुविधा', en: 'Allen Smart Card Phone Facility' },
     subtitle: { mr: 'आधुनिक आणि सुरक्षित संवाद', en: 'Modern and Secure Communication' },
     description: {

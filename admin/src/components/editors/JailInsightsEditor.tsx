@@ -274,7 +274,7 @@ export const JailInsightsEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const handleAddCard = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.cards) newData.cards = defaultCards;
-    newData.cards.push({ title: { mr: "", en: "" }, desc: { mr: "", en: "" }, icon: "" });
+    newData.cards.unshift({ title: { mr: "", en: "" }, desc: { mr: "", en: "" }, icon: "" });
     setData(newData);
     updateHistoryState(newData);
     setExpandedBlock(`card-${newData.cards.length - 1}`);
@@ -313,6 +313,9 @@ export const JailInsightsEditor = ({ blockId, initialData, onPreviewUpdate }: an
       <div className="w-full flex flex-col gap-2">
         <h3 className="text-sm font-semibold text-slate-700">Insight Cards</h3>
         <div className="w-full space-y-2">
+          <Button variant="outline" onClick={handleAddCard} className="mb-4 w-full justify-center border-dashed border-2 text-slate-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 py-2" icon={<Plus size={16} />}>
+            Add Insight Card
+          </Button>
           {(data.cards || defaultCards).map((card: any, index: number) => (
             <InsightCardBlock
               key={index}
@@ -329,9 +332,7 @@ export const JailInsightsEditor = ({ blockId, initialData, onPreviewUpdate }: an
               onRemove={() => handleRemoveCard(index)}
             />
           ))}
-          <Button variant="outline" onClick={handleAddCard} className="w-full justify-center border-dashed border-2 text-slate-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 py-2" icon={<Plus size={16} />}>
-            Add Insight Card
-          </Button>
+
         </div>
       </div>
     </div>

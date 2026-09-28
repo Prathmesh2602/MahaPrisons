@@ -119,7 +119,7 @@ export const HolidayCalendarEditor = ({ blockId, initialData, onPreviewUpdate }:
 
   const addHoliday = () => {
     const newData = JSON.parse(JSON.stringify(data));
-    newData.push({
+    newData.unshift({
       date: new Date().toISOString().split('T')[0],
       type: 'gazetted',
       title_en: '',

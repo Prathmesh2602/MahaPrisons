@@ -58,7 +58,7 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
   const renderSiteSettingDiff = () => {
     // oldData is array of {key, value}, newData is array of {key, value}
     const changes: any[] = [];
-    
+
     // Find what changed
     newData.forEach((newSetting: any) => {
       const oldSetting = oldData?.find((s: any) => s.key === newSetting.key);
@@ -83,7 +83,7 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
             <div className="p-4">
               {change.type === 'added' ? (
                 <div className="flex items-center gap-2 text-green-700 bg-green-50 p-2 rounded">
-                  <PlusCircle size={16} /> 
+                  <PlusCircle size={16} />
                   <span className="font-semibold">{formatValue(change.new)}</span>
                 </div>
               ) : (
@@ -106,7 +106,7 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
 
   const renderMenuDiff = () => {
     const changes: any[] = [];
-    
+
     const flattenTree = (tree: any[], parentPath = '') => {
       let flat: any[] = [];
       tree.forEach(item => {
@@ -131,7 +131,7 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
         const modifiedFields: any[] = [];
         ['label_mr', 'href', 'icon', 'isGroupHeader'].forEach(field => {
           if (newItem[field] !== oldItem[field]) {
-             modifiedFields.push({ field, old: oldItem[field], new: newItem[field] });
+            modifiedFields.push({ field, old: oldItem[field], new: newItem[field] });
           }
         });
         if (modifiedFields.length > 0) {
@@ -162,7 +162,7 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
               {change.type === 'removed' && <span className="bg-red-100 text-red-700 px-2 py-0.5 text-xs rounded border border-red-200 uppercase font-bold">Removed</span>}
               {change.type === 'modified' && <span className="bg-blue-100 text-blue-700 px-2 py-0.5 text-xs rounded border border-blue-200 uppercase font-bold">Modified</span>}
             </div>
-            
+
             <div className="p-4">
               {change.type === 'added' && (
                 <div className="text-sm text-gray-600">
@@ -171,14 +171,14 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
                   {change.new.isGroupHeader && <div className="text-blue-600 mt-1">Set as Group Header</div>}
                 </div>
               )}
-              
+
               {change.type === 'removed' && (
                 <div className="text-sm text-gray-400 line-through">
                   <div><strong>Marathi:</strong> {change.old.label_mr}</div>
                   {change.old.href && <div><strong>URL:</strong> {change.old.href}</div>}
                 </div>
               )}
-              
+
               {change.type === 'modified' && (
                 <div className="space-y-3">
                   {change.fields.map((f: any, fIdx: number) => (

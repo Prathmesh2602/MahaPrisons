@@ -234,7 +234,7 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
 
   const addArrayItem = (field: string, defaultItem: any) => {
     const arr = safeData[field] || [];
-    handleChange(field, [...arr, defaultItem]);
+    handleChange(field, [defaultItem, ...arr]);
     setExpandedItemIndex(arr.length);
   };
 
@@ -308,6 +308,9 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.stats || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Stats Item
+          </button>
           {(safeData.stats || []).map((item: any, index: number) => (
             <StatsEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -320,9 +323,7 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Stats Item
-          </button>
+
         </div>
       </div>
     );
@@ -362,6 +363,9 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.keyFunctions || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('keyFunctions', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Key Functions Item
+          </button>
           {(safeData.keyFunctions || []).map((item: any, index: number) => (
             <KeyFunctionsEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -374,9 +378,7 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('keyFunctions', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Key Functions Item
-          </button>
+
         </div>
       </div>
     );
@@ -419,6 +421,9 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.contactList || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('contactList', { text: { mr: '', en: '' }, icon: 'MapPin' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Contact Item
+          </button>
           {(safeData.contactList || []).map((item: any, index: number) => (
             <ContactEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -431,9 +436,7 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('contactList', { text: { mr: '', en: '' }, icon: 'MapPin' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Contact Item
-          </button>
+
         </div>
       </div>
     );

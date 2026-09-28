@@ -224,7 +224,7 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
 
   const addArrayItem = (field: string, defaultItem: any) => {
     const arr = safeData[field] || [];
-    handleChange(field, [...arr, defaultItem]);
+    handleChange(field, [defaultItem, ...arr]);
     setExpandedItemIndex(arr.length);
   };
 
@@ -345,6 +345,9 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.coreProtocols || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('coreProtocols', { title: { mr: '', en: '' }, desc: { mr: '', en: '' } })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Core Protocols Item
+          </button>
           {(safeData.coreProtocols || []).map((item: any, index: number) => (
             <CoreProtocolsEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -357,9 +360,7 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('coreProtocols', { title: { mr: '', en: '' }, desc: { mr: '', en: '' } })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Core Protocols Item
-          </button>
+
         </div>
       </div>
     );
@@ -400,6 +401,9 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.infrastructure || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('infrastructure', { image: '', name: { mr: '', en: '' }, details: { mr: '', en: '' } })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Infrastructure Item
+          </button>
           {(safeData.infrastructure || []).map((item: any, index: number) => (
             <InfrastructureEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -412,9 +416,7 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
               onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('infrastructure', { image: '', name: { mr: '', en: '' }, details: { mr: '', en: '' } })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Infrastructure Item
-          </button>
+
         </div>
       </div>
     );

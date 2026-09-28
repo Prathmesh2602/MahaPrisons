@@ -118,7 +118,7 @@ const TabBlock = ({
   const handleAddItem = () => {
     const newTab = JSON.parse(JSON.stringify(tabHist.value));
     if (!newTab.items) newTab.items = [];
-    newTab.items.push({
+    newTab.items.unshift({
       text: { mr: "", en: "" },
       date: new Date().toLocaleDateString('en-GB'),
       isNew: true,
@@ -280,7 +280,7 @@ export const AnnouncementsTabsEditor = ({ blockId, initialData, onPreviewUpdate 
 
   const addTab = () => {
     const newData = JSON.parse(JSON.stringify(data));
-    newData.push({ title: { mr: "नवीन टॅब", en: "New Tab" }, items: [] });
+    newData.unshift({ title: { mr: "नवीन टॅब", en: "New Tab" }, items: [] });
     setData(newData);
     updateHistoryState(newData);
   };

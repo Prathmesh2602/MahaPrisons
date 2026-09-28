@@ -324,7 +324,7 @@ export const HeroCarouselEditor = ({ blockId, initialData, onPreviewUpdate }: an
 
   const addSlide = () => {
     const newData = JSON.parse(JSON.stringify(data));
-    newData.slides.push({
+    newData.slides.unshift({
       img_src: "", img_alt: "",
       category: { mr: "", en: "" },
       title: { mr: "", en: "" },

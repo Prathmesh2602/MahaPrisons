@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EditorBlockHeader } from '../EditorLayout';
 import { PhoneticInput } from '../PhoneticInput';
 import { IconPickerInput } from './shared/IconPickerInput';
@@ -25,7 +25,7 @@ const FeatureEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, 
   };
 
   return (
-    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
+    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
       <EditorBlockHeader
         title={currentItem.title?.mr || currentItem.title?.en || `Feature ${index + 1}`}
         isExpanded={isExpanded}
@@ -40,7 +40,7 @@ const FeatureEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, 
         }
       />
       {isExpanded && (
-        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg mt-2">
           <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
@@ -57,13 +57,16 @@ const FeatureEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, 
 };
 
 export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
-  const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
-  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({ hero_content: true });
+  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>('hero');
   
   const [mediaOpen_heroImage1, setMediaOpen_heroImage1] = useState(false);
   const [mediaOpen_heroImage2, setMediaOpen_heroImage2] = useState(false);
 
   const activeSection = (expandedSection || 'hero').replace('template_', '');
+
+  useEffect(() => {
+    setExpandedItemIndex(activeSection === 'hero' ? 'hero' : 0);
+  }, [activeSection]);
 
   const safeData = {
     ...data
@@ -85,7 +88,7 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, arr.filter((_: any, i: number) => i !== index));
-    if (expandedItemIndex === index) setExpandedItemIndex(0);
+    if (expandedItemIndex === index) setExpandedItemIndex(null);
   };
 
   const moveArrayItem = (field: string, index: number, direction: number) => {
@@ -97,19 +100,12 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
     newArray[index] = newArray[index + direction];
     newArray[index + direction] = temp;
     handleChange(field, newArray);
-    if (expandedItemIndex === index) setExpandedItemIndex(index + direction);
-    else if (expandedItemIndex === index + direction) setExpandedItemIndex(index);
   };
 
   const addArrayItem = (field: string, defaultItem: any) => {
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
-    handleChange(field, [...arr, defaultItem]);
-    setExpandedItemIndex(arr.length);
-  };
-
-  const toggleFixedBlock = (blockName: string) => {
-    setExpandedFixedBlocks(prev => ({ ...prev, [blockName]: !prev[blockName] }));
+    handleChange(field, [defaultItem, ...arr]);
   };
 
   // Pre-seed gallery from legacy hero images if missing
@@ -125,7 +121,7 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
       description: { mr: '', en: '' }
     },
     {
-      icon: safeData.hero?.icon || 'Wind',
+      icon: safeData.hero?.icon || safeData.sectionHeaders?.hero?.icon || 'Wind',
       title: safeData.hero?.title || safeData.title || { mr: '', en: '' },
       subtitle: safeData.hero?.subtitle || safeData.subtitle || { mr: '', en: '' },
       description: safeData.hero?.description || safeData.description || { mr: '', en: '' }
@@ -138,11 +134,14 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
         subtitle: newHero.subtitle,
         description: newHero.description
       });
+      handleChange('sectionHeaders', { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newHero.icon } });
     }
   );
   const currentHero = heroHist.value;
   const updateHero = (key: string, value: any) => {
-    heroHist.update({ ...currentHero, [key]: value });
+    const newD = JSON.parse(JSON.stringify(currentHero));
+    newD[key] = value;
+    heroHist.update(newD);
   };
 
 
@@ -152,11 +151,11 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Hero Configuration" 
-            isExpanded={!!expandedFixedBlocks['hero_content']} 
-            onToggle={() => toggleFixedBlock('hero_content')} 
+            isExpanded={expandedItemIndex === 'hero'} 
+            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} 
             history={heroHist}
           />
-          {!!expandedFixedBlocks['hero_content'] && (
+          {expandedItemIndex === 'hero' && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <IconPickerInput 
                 label="Hero Icon" 
@@ -203,22 +202,24 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
     
     return (
       <div className="pb-10 space-y-4">
+        <button onClick={() => addArrayItem('gallery', '')} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+          <Plus size={16} /> Add Image
+        </button>
         <div className="space-y-4">
         {galleryArray.map((imgUrl: string, index: number) => (
-          <div key={`gallery-${index}`} className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3 relative">
+          <div key={`gallery-${index}`} className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3 relative shadow-sm">
             <div className="flex justify-between items-center">
               <span className="text-xs font-semibold text-slate-500 uppercase">Image {index + 1}</span>
-              <div className="flex gap-1">
-                <button onClick={() => moveArrayItem('gallery', index, -1)} disabled={index === 0} className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-30"><ArrowUp size={14} /></button>
-                <button onClick={() => moveArrayItem('gallery', index, 1)} disabled={index === galleryArray.length - 1} className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-30"><ArrowDown size={14} /></button>
-                <button onClick={() => removeArrayItem('gallery', index)} className="p-1 text-red-400 hover:text-red-600"><Trash2 size={14} /></button>
+              <div className="flex gap-1 border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm">
+                <button onClick={() => moveArrayItem('gallery', index, -1)} disabled={index === 0} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowUp size={14} /></button>
+                <button onClick={() => moveArrayItem('gallery', index, 1)} disabled={index === galleryArray.length - 1} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowDown size={14} /></button>
+                <button onClick={() => removeArrayItem('gallery', index)} className="p-1.5 text-red-500 hover:bg-red-50 transition-colors"><Trash2 size={14} /></button>
               </div>
             </div>
             
             <div
               className="w-full h-36 bg-white rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
               onClick={() => {
-                // We'll reuse mediaOpen_heroImage1 for generic array editing hack
                 setExpandedItemIndex(index);
                 setMediaOpen_heroImage1(true);
               }}
@@ -243,39 +244,39 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
           isOpen={mediaOpen_heroImage1}
           onClose={() => setMediaOpen_heroImage1(false)}
           onSelect={(url: string) => { 
-            updateArrayItemFull('gallery', expandedItemIndex, url); 
+            updateArrayItemFull('gallery', expandedItemIndex as number, url); 
             setMediaOpen_heroImage1(false); 
           }}
         />
-        <button onClick={() => addArrayItem('gallery', '')} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-colors w-full flex justify-center items-center gap-2">
-          <Plus size={16} /> Add Image
-        </button>
         </div>
       </div>
     );
   }
 
   if (activeSection === 'features') {
-    const featuresArray = Array.isArray(safeData.features) ? safeData.features : (safeData.serviceCards ? safeData.serviceCards : []);
-    
     return (
       <div className="pb-10 space-y-4">
+        <div className="px-1 mb-2">
+          <h3 className="text-sm font-bold text-slate-700">Features</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{(safeData.features || []).length} item(s)</p>
+        </div>
         <div className="space-y-2">
-        {featuresArray.map((item: any, index: number) => (
-          <FeatureEditorItem
-            key={`item-${index}`} index={index} itemData={item}
-            onUpdateFull={(i: number, newD: any) => updateArrayItemFull('features', i, newD)}
-            onRemove={() => removeArrayItem('features', index)}
-            onMoveUp={() => moveArrayItem('features', index, -1)}
-            onMoveDown={() => moveArrayItem('features', index, 1)}
-            isFirst={index === 0} isLast={index === featuresArray.length - 1}
-            isExpanded={expandedItemIndex === index}
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
-          />
-        ))}
-        <button onClick={() => addArrayItem('features', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: 'Droplets' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-          <Plus size={16} /> Add Feature
-        </button>
+          <button onClick={() => addArrayItem('features', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: 'Droplets' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Feature
+          </button>
+          {(safeData.features || []).map((item: any, index: number) => (
+            <FeatureEditorItem
+              key={`item-${index}`} index={index} itemData={item}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('features', i, newD)}
+              onRemove={() => removeArrayItem('features', index)}
+              onMoveUp={() => moveArrayItem('features', index, -1)}
+              onMoveDown={() => moveArrayItem('features', index, 1)}
+              isFirst={index === 0} isLast={index === (safeData.features || []).length - 1}
+              isExpanded={expandedItemIndex === index}
+              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? null : index)}
+            />
+          ))}
+
         </div>
       </div>
     );

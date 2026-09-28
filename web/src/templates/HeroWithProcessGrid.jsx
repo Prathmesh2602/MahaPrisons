@@ -115,7 +115,7 @@ const HeroWithProcessGrid = ({ dataId, data: dynamicData }) => {
                 key={idx} className="bg-white dark-mode:bg-slate-900 p-6 rounded-xl border border-slate-200 dark-mode:border-slate-800 shadow-sm flex items-center justify-between"
               >
                 <span className="text-slate-600 dark-mode:text-slate-400 font-medium">{getTranslation(stat.label)}</span>
-                <span className="text-lg font-bold text-blue-600 dark-mode:text-blue-400">{stat.value}</span>
+                <span className="text-lg font-bold text-blue-600 dark-mode:text-blue-400">{typeof stat.value === "object" ? getTranslation(stat.value) : stat.value}</span>
               </motion.div>
             ))}
           </div>

@@ -26,32 +26,39 @@ const ContentWithTabs = ({ dataId, data: dynamicData }) => {
   return (
     <div className="min-h-screen bg-[#F0F4F8] dark-mode:bg-gray-900 font-poppins text-gray-800 dark-mode:text-gray-200">
       
-      {/* Academic Header */}
-      <div className="bg-indigo-900 dark-mode:bg-indigo-950 pt-24 pb-32 px-6 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          {/* Subtle grid pattern */}
-          <div className="w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      {/* Academic Header & Description (Unified for selection outline) */}
+      <div data-block-type="template_hero">
+        <div className="bg-indigo-900 dark-mode:bg-indigo-950 pt-24 pb-32 px-6 text-center relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            {/* Subtle grid pattern */}
+            <div className="w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          </div>
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="inline-flex justify-center p-4 bg-indigo-800 rounded-2xl mb-6 shadow-lg border border-indigo-700">
+              {(() => {
+                const HeroIcon = getIcon(data.sectionHeaders?.hero?.icon, 'GraduationCap');
+                return <HeroIcon className="w-8 h-8 text-indigo-300" />;
+              })()}
+            </motion.div>
+            <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-6">
+              {getTranslation(data.hero?.title)}
+            </motion.h1>
+            <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-base md:text-lg text-indigo-200 font-medium max-w-2xl mx-auto leading-relaxed">
+              {getTranslation(data.hero?.subtitle)}
+            </motion.p>
+          </div>
         </div>
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="inline-flex justify-center p-4 bg-indigo-800 rounded-2xl mb-6 shadow-lg border border-indigo-700">
-            <GraduationCap className="w-8 h-8 text-indigo-300" />
-          </motion.div>
-          <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-6">
-            {getTranslation(data.hero?.title)}
-          </motion.h1>
-          <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-base md:text-lg text-indigo-200 font-medium max-w-2xl mx-auto leading-relaxed">
-            {getTranslation(data.hero?.subtitle)}
-          </motion.p>
+
+        <div className="container mx-auto px-6 relative z-20 -mt-10">
+          <div className="bg-white dark-mode:bg-gray-800 p-6 md:p-6 rounded-2xl shadow-xl mb-16 border border-gray-100 dark-mode:border-gray-700">
+            <p className="text-base text-gray-700 dark-mode:text-gray-300 leading-relaxed text-center font-medium max-w-4xl mx-auto">
+              {getTranslation(data.hero?.description)}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-20 -mt-10 pb-24">
-        
-        <div className="bg-white dark-mode:bg-gray-800 p-6 md:p-6 rounded-2xl shadow-xl mb-16 border border-gray-100 dark-mode:border-gray-700">
-          <p className="text-base text-gray-700 dark-mode:text-gray-300 leading-relaxed text-center font-medium max-w-4xl mx-auto">
-            {getTranslation(data.hero?.description)}
-          </p>
-        </div>
+      <div className="container mx-auto px-6 relative z-20 pb-24">
 
         {/* Tabbed Interface for Key Functions */}
         <div data-block-type="template_keyFunctions" className="mb-10">
@@ -83,7 +90,7 @@ const ContentWithTabs = ({ dataId, data: dynamicData }) => {
               >
                 {data.keyFunctions[activeTab] && (() => {
                   const func = data.keyFunctions[activeTab];
-                  const Icon = iconMap[func.icon] || BookOpen;
+                  const Icon = getIcon(func.icon, 'BookOpen');
                   return (
                     <>
                       <div className="w-full md:w-1/3 flex justify-center">
@@ -108,11 +115,11 @@ const ContentWithTabs = ({ dataId, data: dynamicData }) => {
         {/* Stats Grid */}
         <div data-block-type="template_stats" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {(data.stats || []).map((stat, idx) => {
-            const Icon = iconMap[stat.icon] || School;
+            const Icon = getIcon(stat.icon, 'School');
             return (
               <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="bg-indigo-600 text-white p-6 rounded-2xl flex flex-col items-center justify-center text-center shadow-xl hover:bg-indigo-700 transition-colors">
                 <Icon className="w-6 h-6 text-indigo-200 mb-4" />
-                <div className="text-2xl font-bold mb-2">{stat.value}</div>
+                <div className="text-2xl font-bold mb-2">{typeof stat.value === "object" ? getTranslation(stat.value) : stat.value}</div>
                 <div className="text-sm font-medium uppercase tracking-widest text-indigo-200">{getTranslation(stat.label)}</div>
               </motion.div>
             );
@@ -120,10 +127,26 @@ const ContentWithTabs = ({ dataId, data: dynamicData }) => {
         </div>
 
         {/* Contact Footer */}
-        <div className="bg-white dark-mode:bg-gray-800 py-6 px-10 rounded-2xl flex flex-col md:flex-row items-center justify-center gap-6 shadow-sm border border-gray-100 dark-mode:border-gray-700 text-gray-600 dark-mode:text-gray-400 font-medium">
-          <div className="flex items-center gap-3"><MapPin className="w-5 h-5 text-indigo-500"/> {getTranslation(data.contactInfo.address)}</div>
-          <div className="flex items-center gap-3"><Phone className="w-5 h-5 text-indigo-500"/> {data.contactInfo.phone}</div>
-          <div className="flex items-center gap-3"><Mail className="w-5 h-5 text-indigo-500"/> {data.contactInfo.email}</div>
+        <div data-block-type="template_contactInfo" className="bg-white dark-mode:bg-gray-800 py-6 px-10 rounded-2xl flex flex-wrap items-center justify-center gap-6 shadow-sm border border-gray-100 dark-mode:border-gray-700 text-gray-600 dark-mode:text-gray-400 font-medium">
+          {(() => {
+            let contactArr = data.contactInfo || [];
+            if (!Array.isArray(contactArr)) {
+              contactArr = [
+                contactArr.address && { icon: 'MapPin', value: contactArr.address },
+                contactArr.phone && { icon: 'Phone', value: { en: contactArr.phone, mr: contactArr.phone } },
+                contactArr.email && { icon: 'Mail', value: { en: contactArr.email, mr: contactArr.email } }
+              ].filter(Boolean);
+            }
+            return contactArr.map((info, idx) => {
+              const ContactIcon = getIcon(info.icon, 'Info');
+              return (
+                <div key={idx} className="flex items-center gap-3">
+                  <ContactIcon className="w-5 h-5 text-indigo-500" />
+                  <span>{getTranslation(info.value)}</span>
+                </div>
+              );
+            });
+          })()}
         </div>
 
       </div>
@@ -132,4 +155,3 @@ const ContentWithTabs = ({ dataId, data: dynamicData }) => {
 };
 
 export default ContentWithTabs;
-

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { Search, GitFork, Settings2, ChevronDown, Check, Sun, Moon, Volume2, VolumeX, Type, ExternalLink } from 'lucide-react';
+import { Search, GitFork, Settings2, ChevronDown, Check, Sun, Moon, Volume2, VolumeX, Type, ExternalLink, Lock } from 'lucide-react';
 
 export const AccessibilityToolbar = () => {
   const {
@@ -258,6 +258,17 @@ export const AccessibilityToolbar = () => {
           <span className="text-[11px]">A</span>
         </button>
 
+        {/* Admin Login Button */}
+        <a
+          href="http://localhost:5173/login?force=true"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-3 px-3 py-1 bg-[#0F3D66] hover:bg-[#1a4a75] text-white rounded-md text-[10.5px] font-semibold flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
+          title={language === 'mr' ? 'अॅडमिन लॉगिन' : 'Admin Login'}
+        >
+          <Lock size={12} />
+          {language === 'mr' ? 'लॉगिन' : 'Login'}
+        </a>
       </div>
     </div>
   );

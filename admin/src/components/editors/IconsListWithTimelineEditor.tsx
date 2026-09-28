@@ -18,7 +18,6 @@ const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, on
   const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
 
-
   const handleLocalUpdate = (key: string, value: any) => {
     const newItem = JSON.parse(JSON.stringify(itemHist.value));
     newItem[key] = value;
@@ -28,7 +27,7 @@ const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, on
   return (
     <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
       <EditorBlockHeader
-        title={currentItem.title?.mr || currentItem.label?.mr || currentItem.name?.mr || currentItem.mr || `Item ${index + 1}`}
+        title={typeof currentItem.label === 'string' ? currentItem.label : (currentItem.label?.mr || currentItem.title?.mr || currentItem.name?.mr || currentItem.mr || `Item ${index + 1}`)}
         isExpanded={isExpanded}
         onToggle={onToggle}
         history={itemHist}
@@ -62,7 +61,6 @@ const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMov
   const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
   const currentItem = itemHist.value;
 
-
   const handleLocalUpdate = (key: string, value: any) => {
     const newItem = JSON.parse(JSON.stringify(itemHist.value));
     newItem[key] = value;
@@ -72,7 +70,7 @@ const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMov
   return (
     <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
       <EditorBlockHeader
-        title={currentItem.title?.mr || currentItem.label?.mr || currentItem.name?.mr || currentItem.mr || `Item ${index + 1}`}
+        title={typeof currentItem.title === 'string' ? currentItem.title : (currentItem.title?.mr || currentItem.label?.mr || currentItem.name?.mr || currentItem.mr || `Item ${index + 1}`)}
         isExpanded={isExpanded}
         onToggle={onToggle}
         history={itemHist}
@@ -101,36 +99,60 @@ const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMov
   );
 };
 
-export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
-  const [expandedItemIndex, setExpandedItemIndex] = useState<number>(0);
-  const activeSection = (expandedSection || 'hero').replace('template_', '');
+const ContactInfoEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
+  const defaultItem = { value: { mr: '', en: '' }, icon: '' };
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const currentItem = itemHist.value;
 
-  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
-    hero_content: true,
-    motto_content: true,
-    contactInfo_content: true,
-    category_header: true,
-    general_header: true,
-    production_header: true,
-    partnership_header: true,
-    training_header: true,
-    organization_header: true,
-    [`${activeSection}_header`]: true
-  });
-
-  const toggleFixedBlock = (key: string) => {
-    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  const handleLocalUpdate = (key: string, value: any) => {
+    const newItem = JSON.parse(JSON.stringify(itemHist.value));
+    newItem[key] = value;
+    itemHist.update(newItem);
   };
+
+  return (
+    <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3">
+      <EditorBlockHeader
+        title={typeof currentItem.value === 'string' ? currentItem.value : (currentItem.value?.mr || currentItem.value?.en || `Item ${index + 1}`)}
+        isExpanded={isExpanded}
+        onToggle={onToggle}
+        history={itemHist}
+        rightAction={
+          <div className="flex items-center gap-1 border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm">
+            <button onClick={onMoveUp} disabled={isFirst} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowUp size={14} /></button>
+            <button onClick={onMoveDown} disabled={isLast} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowDown size={14} /></button>
+            <button onClick={onRemove} className="p-1.5 text-red-500 hover:bg-red-50 transition-colors"><Trash2 size={14} /></button>
+          </div>
+        }
+      />
+      {isExpanded && (
+        <div className="p-4 space-y-4 bg-white border border-t-0 border-slate-200 rounded-b-lg">
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Contact Detail</label>
+            <PhoneticInput 
+              value={typeof currentItem.value === 'string' ? currentItem.value : (currentItem.value?.mr || '')} 
+              onChange={(val) => handleLocalUpdate('value', { ...((typeof currentItem.value === 'object' ? currentItem.value : {}) || {}), mr: val })} 
+              onEnglishChange={(val) => handleLocalUpdate('value', { ...((typeof currentItem.value === 'object' ? currentItem.value : {}) || {}), en: val })} 
+              englishValue={typeof currentItem.value === 'string' ? currentItem.value : (currentItem.value?.en || '')} 
+            />
+          </div>
+          <IconPickerInput label="Icon" value={currentItem.icon || ''} onChange={(val) => handleLocalUpdate('icon', val)} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
+  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>(0);
+  const activeSection = (expandedSection || 'hero').replace('template_', '');
+  const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
 
   useEffect(() => {
     setExpandedItemIndex(0);
   }, [activeSection]);
 
-  const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
-
-  const safeData = {
-    ...data
-  };
+  const safeData = { ...data };
 
   const handleChange = (field: string, value: any) => {
     updateData({ ...safeData, [field]: value });
@@ -146,7 +168,7 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
     handleChange(field, arr.filter((_: any, i: number) => i !== index));
-    if (expandedItemIndex === index) setExpandedItemIndex(0);
+    if (expandedItemIndex === index) setExpandedItemIndex(null);
   };
 
   const moveArrayItem = (field: string, index: number, direction: number) => {
@@ -158,69 +180,80 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
     newArray[index] = newArray[index + direction];
     newArray[index + direction] = temp;
     handleChange(field, newArray);
-    if (expandedItemIndex === index) setExpandedItemIndex(index + direction);
-    else if (expandedItemIndex === index + direction) setExpandedItemIndex(index);
   };
 
   const addArrayItem = (field: string, defaultItem: any) => {
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
-    handleChange(field, [...arr, defaultItem]);
-    setExpandedItemIndex(arr.length);
+    handleChange(field, [defaultItem, ...arr]);
   };
+
+  const heroBannerHist = useBlockHistory(
+    { title: { mr: '', en: '' }, subtitle: { mr: '', en: '' }, heroImage: '', description: { mr: '', en: '' } },
+    { 
+      title: safeData.hero?.title || safeData.title || { mr: '', en: '' }, 
+      subtitle: safeData.hero?.subtitle || safeData.subtitle || { mr: '', en: '' },
+      heroImage: safeData.hero?.heroImage || safeData.heroImage || '', 
+      description: safeData.hero?.description || safeData.description || { mr: '', en: '' }
+    },
+    (newData: any) => {
+       handleChange('hero', { ...safeData.hero, title: newData.title, subtitle: newData.subtitle, heroImage: newData.heroImage, description: newData.description });
+    }
+  );
+
+  if (safeData.contactInfo && !Array.isArray(safeData.contactInfo)) {
+    safeData.contactInfo = [
+      safeData.contactInfo.address && { icon: 'MapPin', value: safeData.contactInfo.address },
+      safeData.contactInfo.phone && { icon: 'Phone', value: { en: safeData.contactInfo.phone, mr: safeData.contactInfo.phone } },
+      safeData.contactInfo.email && { icon: 'Mail', value: { en: safeData.contactInfo.email, mr: safeData.contactInfo.email } }
+    ].filter(Boolean);
+  }
+  let initialContactInfo = safeData.contactInfo || [];
 
   if (activeSection === 'hero') {
     return (
       <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
-          <EditorBlockHeader 
-            title="Hero Content" 
-            isExpanded={!!expandedFixedBlocks['hero_content']} 
-            onToggle={() => toggleFixedBlock('hero_content')} 
-          />
-          {!!expandedFixedBlocks['hero_content'] && (
+          <EditorBlockHeader title="Hero Banner Configuration" isExpanded={expandedItemIndex === 'hero'} onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} history={heroBannerHist} />
+          {expandedItemIndex === 'hero' && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <div className="space-y-2">
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Hero Image</label>
-                <div
-                  className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
-                  onClick={() => setMediaOpen_heroImage(true)}
-                >
-                  {safeData.hero?.heroImage ? (
-                    <img
-                      src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `http://localhost:5000${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`}
-                      className="w-full h-full object-cover"
-                      alt="Preview"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                      <span className="text-2xl mb-1">🖼</span>
-                      <span className="text-xs">Click to select image</span>
-                    </div>
-                  )}
-                </div>
-                <MediaLibraryPopup
-                  isOpen={mediaOpen_heroImage}
-                  onClose={() => setMediaOpen_heroImage(false)}
-                  onSelect={(url: string) => { handleChange('hero', { ...safeData.hero, heroImage: url }); setMediaOpen_heroImage(false); }}
-                />
-              </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
-                <PhoneticInput value={safeData.hero?.title?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, en: val } })} englishValue={safeData.hero?.title?.en || ''} />
+                <PhoneticInput value={heroBannerHist.value.title?.mr || ''} onChange={(val) => { const newD = JSON.parse(JSON.stringify(heroBannerHist.value)); newD.title.mr = val; heroBannerHist.update(newD); }} onEnglishChange={(val) => { const newD = JSON.parse(JSON.stringify(heroBannerHist.value)); newD.title.en = val; heroBannerHist.update(newD); }} englishValue={heroBannerHist.value.title?.en || ''} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Subtitle</label>
-                <PhoneticInput value={safeData.hero?.subtitle?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, en: val } })} englishValue={safeData.hero?.subtitle?.en || ''} />
+                <PhoneticInput value={heroBannerHist.value.subtitle?.mr || ''} onChange={(val) => { const newD = JSON.parse(JSON.stringify(heroBannerHist.value)); newD.subtitle.mr = val; heroBannerHist.update(newD); }} onEnglishChange={(val) => { const newD = JSON.parse(JSON.stringify(heroBannerHist.value)); newD.subtitle.en = val; heroBannerHist.update(newD); }} englishValue={heroBannerHist.value.subtitle?.en || ''} />
+              </div>
+              <div className="space-y-2 pt-2 border-t border-slate-100">
+                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1 hover:text-slate-800 transition-colors">Hero Image <span className="text-red-500">*</span></label>
+                <div
+                  className="w-full h-36 bg-slate-100 rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer hover:border-emerald-500 transition-colors shadow-sm"
+                  onClick={() => setMediaOpen_heroImage(true)}
+                >
+                  {heroBannerHist.value.heroImage ? (
+                    <>
+                      <img src={heroBannerHist.value.heroImage.startsWith('http') ? heroBannerHist.value.heroImage : `http://localhost:5000${heroBannerHist.value.heroImage.startsWith('/') ? '' : '/'}${heroBannerHist.value.heroImage}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Preview" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span className="text-white font-medium drop-shadow-md bg-black/30 px-3 py-1.5 rounded-full backdrop-blur-sm">Click to change</span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 group-hover:text-emerald-500 transition-colors">
+                      <span className="text-2xl mb-1 transform group-hover:scale-110 transition-transform">🖼</span>
+                      <span className="text-xs font-medium">Click to select image</span>
+                    </div>
+                  )}
+                </div>
+                <MediaLibraryPopup isOpen={mediaOpen_heroImage} onClose={() => setMediaOpen_heroImage(false)} onSelect={(url: string) => { const newD = JSON.parse(JSON.stringify(heroBannerHist.value)); newD.heroImage = url; heroBannerHist.update(newD); setMediaOpen_heroImage(false); }} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
-                <PhoneticInput value={safeData.hero?.description?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, description: { ...safeData.hero?.description, en: val } })} englishValue={safeData.hero?.description?.en || ''} multiline />
+                <PhoneticInput value={heroBannerHist.value.description?.mr || ''} onChange={(val) => { const newD = JSON.parse(JSON.stringify(heroBannerHist.value)); newD.description.mr = val; heroBannerHist.update(newD); }} onEnglishChange={(val) => { const newD = JSON.parse(JSON.stringify(heroBannerHist.value)); newD.description.en = val; heroBannerHist.update(newD); }} englishValue={heroBannerHist.value.description?.en || ''} multiline />
               </div>
             </div>
           )}
         </div>
-        
       </div>
     );
   }
@@ -228,37 +261,14 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
   if (activeSection === 'stats') {
     return (
       <div className="pb-10 space-y-4">
-
-        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
-          <EditorBlockHeader 
-            title="Section Header Configuration (Optional)" 
-            isExpanded={!!expandedFixedBlocks['stats_header']} 
-            onToggle={() => toggleFixedBlock('stats_header')} 
-          />
-          {!!expandedFixedBlocks['stats_header'] && (
-            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
-                <PhoneticInput 
-                  value={safeData.sectionHeaders?.stats?.title?.mr || ''} 
-                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, stats: { ...(safeData.sectionHeaders?.stats || {}), title: { ...(safeData.sectionHeaders?.stats?.title || {}), mr: val } } })} 
-                  onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, stats: { ...(safeData.sectionHeaders?.stats || {}), title: { ...(safeData.sectionHeaders?.stats?.title || {}), en: val } } })} 
-                  englishValue={safeData.sectionHeaders?.stats?.title?.en || ''} 
-                />
-              </div>
-              <IconPickerInput 
-                label="Section Icon" 
-                value={safeData.sectionHeaders?.stats?.icon || ''} 
-                onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, stats: { ...(safeData.sectionHeaders?.stats || {}), icon: val } })} 
-              />
-            </div>
-          )}
-        </div>
         <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Stats</h3>
+          <h3 className="text-sm font-bold text-slate-700">Stats List</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.stats || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Stats Item
+          </button>
           {(safeData.stats || []).map((item: any, index: number) => (
             <StatsEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -268,12 +278,10 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
               onMoveDown={() => moveArrayItem('stats', index, 1)}
               isFirst={index === 0} isLast={index === (safeData.stats || []).length - 1}
               isExpanded={expandedItemIndex === index}
-              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
+              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? null : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Stats Item
-          </button>
+
         </div>
       </div>
     );
@@ -282,37 +290,14 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
   if (activeSection === 'keyFunctions') {
     return (
       <div className="pb-10 space-y-4">
-
-        <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
-          <EditorBlockHeader 
-            title="Section Header Configuration (Optional)" 
-            isExpanded={!!expandedFixedBlocks['keyFunctions_header']} 
-            onToggle={() => toggleFixedBlock('keyFunctions_header')} 
-          />
-          {!!expandedFixedBlocks['keyFunctions_header'] && (
-            <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
-                <PhoneticInput 
-                  value={safeData.sectionHeaders?.keyFunctions?.title?.mr || ''} 
-                  onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, keyFunctions: { ...(safeData.sectionHeaders?.keyFunctions || {}), title: { ...(safeData.sectionHeaders?.keyFunctions?.title || {}), mr: val } } })} 
-                  onEnglishChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, keyFunctions: { ...(safeData.sectionHeaders?.keyFunctions || {}), title: { ...(safeData.sectionHeaders?.keyFunctions?.title || {}), en: val } } })} 
-                  englishValue={safeData.sectionHeaders?.keyFunctions?.title?.en || ''} 
-                />
-              </div>
-              <IconPickerInput 
-                label="Section Icon" 
-                value={safeData.sectionHeaders?.keyFunctions?.icon || ''} 
-                onChange={(val) => handleChange('sectionHeaders', { ...safeData.sectionHeaders, keyFunctions: { ...(safeData.sectionHeaders?.keyFunctions || {}), icon: val } })} 
-              />
-            </div>
-          )}
-        </div>
         <div className="px-1 mb-2">
-          <h3 className="text-sm font-bold text-slate-700">Key Functions</h3>
+          <h3 className="text-sm font-bold text-slate-700">Key Features List</h3>
           <p className="text-xs text-slate-500 mt-0.5">{(safeData.keyFunctions || []).length} item(s)</p>
         </div>
         <div className="space-y-2">
+          <button onClick={() => addArrayItem('keyFunctions', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Feature Item
+          </button>
           {(safeData.keyFunctions || []).map((item: any, index: number) => (
             <KeyFunctionsEditorItem
               key={`item-${index}`} index={index} itemData={item}
@@ -322,12 +307,39 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
               onMoveDown={() => moveArrayItem('keyFunctions', index, 1)}
               isFirst={index === 0} isLast={index === (safeData.keyFunctions || []).length - 1}
               isExpanded={expandedItemIndex === index}
-              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? -1 : index)}
+              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? null : index)}
             />
           ))}
-          <button onClick={() => addArrayItem('keyFunctions', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mt-4 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors w-full flex justify-center items-center gap-2">
-            <Plus size={16} /> Add Key Functions Item
+
+        </div>
+      </div>
+    );
+  }
+
+  if (activeSection === 'contactInfo') {
+    return (
+      <div className="pb-10 space-y-4">
+        <div className="px-1 mb-2 mt-4">
+          <h3 className="text-sm font-bold text-slate-700">Contact Details List</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{initialContactInfo.length} item(s)</p>
+        </div>
+        <div className="space-y-2">
+          <button onClick={() => addArrayItem('contactInfo', { value: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+            <Plus size={16} /> Add Contact Item
           </button>
+          {initialContactInfo.map((item: any, index: number) => (
+            <ContactInfoEditorItem
+              key={`item-${index}`} index={index} itemData={item}
+              onUpdateFull={(i: number, newD: any) => updateArrayItemFull('contactInfo', i, newD)}
+              onRemove={() => removeArrayItem('contactInfo', index)}
+              onMoveUp={() => moveArrayItem('contactInfo', index, -1)}
+              onMoveDown={() => moveArrayItem('contactInfo', index, 1)}
+              isFirst={index === 0} isLast={index === initialContactInfo.length - 1}
+              isExpanded={expandedItemIndex === index}
+              onToggle={() => setExpandedItemIndex(expandedItemIndex === index ? null : index)}
+            />
+          ))}
+
         </div>
       </div>
     );

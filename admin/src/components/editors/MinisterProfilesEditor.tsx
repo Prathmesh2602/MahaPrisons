@@ -142,7 +142,7 @@ export const MinisterProfilesEditor = ({ blockId, initialData, onPreviewUpdate }
   const addProfile = (section: string) => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData[section]) newData[section] = [];
-    newData[section].push({
+    newData[section].unshift({
       name: { mr: "", en: "" },
       desg: { mr: "", en: "" },
       img_src: ""

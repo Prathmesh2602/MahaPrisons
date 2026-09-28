@@ -81,7 +81,7 @@ const HeroFeaturesTimelineLayout = ({ dataId, data: dynamicData }) => {
                   <Icon className="w-8 h-8" />
                 </div>
                 <div>
-                  <div className="text-xl font-bold text-slate-800 dark-mode:text-slate-100">{stat.value}</div>
+                  <div className="text-xl font-bold text-slate-800 dark-mode:text-slate-100">{typeof stat.value === "object" ? getTranslation(stat.value) : stat.value}</div>
                   <div className="text-sm text-slate-500 dark-mode:text-slate-400 font-medium mt-1 uppercase tracking-wider">{getTranslation(stat.label)}</div>
                 </div>
               </motion.div>
@@ -114,7 +114,7 @@ const HeroFeaturesTimelineLayout = ({ dataId, data: dynamicData }) => {
                       </div>
                       <div>
                         <h4 className="text-base font-semibold text-slate-800 dark-mode:text-slate-100 mb-2">{getTranslation(func.title)}</h4>
-                        <p className="text-slate-600 dark-mode:text-slate-400 leading-relaxed">{getTranslation(func.desc)}</p>
+                        <p className="text-slate-600 dark-mode:text-slate-400 leading-relaxed">{getTranslation(func.description || func.desc)}</p>
                       </div>
                     </div>
                   </motion.div>

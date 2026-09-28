@@ -25,6 +25,8 @@ import { HeroStatsGridEditor } from './HeroStatsGridEditor';
 import { HeroThreeColGridEditor } from './HeroThreeColGridEditor';
 import { HeroSplitTimelineEditor } from './HeroSplitTimelineEditor';
 import { HeroFeatureListEditor } from './HeroFeatureListEditor';
+import { GalleryLayoutEditor } from './GalleryLayoutEditor';
+import { ProductsLayoutEditor } from './ProductsLayoutEditor';
 
 interface TemplateEditorRendererProps {
   blockId: string;
@@ -33,6 +35,7 @@ interface TemplateEditorRendererProps {
   expandedSection?: string | null;
   onPreviewUpdate: (content: any) => void;
   menuItemData?: any;
+  isDraftLayout?: boolean;
 }
 
 export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
@@ -41,7 +44,8 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
   layoutType,
   expandedSection,
   onPreviewUpdate,
-  menuItemData
+  menuItemData,
+  isDraftLayout
 }) => {
   const { user } = useAuth();
   const { 
@@ -108,6 +112,10 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
         return <HeroSplitTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
       case 'HeroFeatureList':
         return <HeroFeatureListEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'GalleryLayout':
+        return <GalleryLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'ProductsLayout':
+        return <ProductsLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
       default:
         return (
           <div className="p-4 bg-red-50 text-red-600 rounded-md">
@@ -115,6 +123,30 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
           </div>
         );
     }
+  };
+
+  const generateSummary = () => {
+    let summary = `Updated ${layoutType}`;
+    if (layoutType === 'GalleryLayout') {
+      const oldLen = initialData?.gallery?.length || 0;
+      const newLen = data?.gallery?.length || 0;
+      if (newLen > oldLen) summary = `Added new image to Gallery`;
+      else if (newLen < oldLen) summary = `Removed image from Gallery`;
+      else {
+        for (let i = 0; i < newLen; i++) {
+          if (JSON.stringify(data.gallery[i]) !== JSON.stringify(initialData?.gallery?.[i])) {
+             const title = data.gallery[i].title?.mr || data.gallery[i].title?.en || `Item ${i+1}`;
+             summary = `'${title}' img changed in Gallery page`;
+             break;
+          }
+        }
+      }
+    }
+    return summary;
+  };
+
+  const handleSaveWithSummary = () => {
+    handleSave(user?.role, generateSummary());
   };
 
   return (
@@ -127,8 +159,8 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
         onRedo={handleRedo}
         canRedo={historyIndex < historyLength - 1}
         onReset={handleReset}
-        onSave={handleSave}
-        isSaveDisabled={!hasChanges}
+        onSave={handleSaveWithSummary}
+        isSaveDisabled={!hasChanges && !isDraftLayout}
         saveText={user?.role === 'MAKER' ? 'Send for Review' : 'Save & Publish'}
         saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
       />

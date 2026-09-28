@@ -196,7 +196,7 @@ export const AboutSectionEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const addOfficer = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.openJailOfficers) newData.openJailOfficers = [];
-    newData.openJailOfficers.push({
+    newData.openJailOfficers.unshift({
       name: { mr: "", en: "" },
       desg: { mr: "", en: "" },
       img: ""

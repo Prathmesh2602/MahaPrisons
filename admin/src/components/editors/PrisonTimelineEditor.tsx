@@ -184,7 +184,7 @@ export const PrisonTimelineEditor = ({ blockId, initialData, onPreviewUpdate }: 
   const addEvent = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.events) newData.events = [];
-    newData.events.push({ year: "", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
+    newData.events.unshift({ year: "", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
     setData(newData);
     updateHistoryState(newData);
   };

@@ -3,9 +3,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import GalleryHeader from './components/GalleryHeader';
 import MasonryGrid from './components/MasonryGrid';
 import LightboxModal from './components/LightboxModal';
-import { galleryItems } from '../../data/galleryData';
 
-const GalleryPage = () => {
+const GalleryPage = ({ data }) => {
+  const items = data?.gallery || [];
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   // Close lightbox on Escape key
@@ -34,13 +34,13 @@ const GalleryPage = () => {
 
   const nextImage = useCallback((e) => {
     if (e) e.stopPropagation();
-    setSelectedImageIndex((prev) => (prev === galleryItems.length - 1 ? 0 : prev + 1));
-  }, []);
+    setSelectedImageIndex((prev) => (prev === items.length - 1 ? 0 : prev + 1));
+  }, [items.length]);
 
   const prevImage = useCallback((e) => {
     if (e) e.stopPropagation();
-    setSelectedImageIndex((prev) => (prev === 0 ? galleryItems.length - 1 : prev - 1));
-  }, []);
+    setSelectedImageIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
+  }, [items.length]);
 
   // Make sure we load the page from the top
   useEffect(() => {
@@ -50,8 +50,12 @@ const GalleryPage = () => {
   return (
     <div className="bg-white dark-mode:bg-[#080B11] min-h-screen py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto mt-2 md:mt-4">
-        <GalleryHeader />
-        <MasonryGrid setSelectedImageIndex={setSelectedImageIndex} />
+        <div data-block-type="template_header">
+          <GalleryHeader header={data?.header} />
+        </div>
+        <div data-block-type="template_gallery">
+          <MasonryGrid setSelectedImageIndex={setSelectedImageIndex} items={items} />
+        </div>
       </div>
 
       <LightboxModal 
@@ -59,6 +63,7 @@ const GalleryPage = () => {
         setSelectedImageIndex={setSelectedImageIndex}
         nextImage={nextImage}
         prevImage={prevImage}
+        items={items}
       />
     </div>
   );

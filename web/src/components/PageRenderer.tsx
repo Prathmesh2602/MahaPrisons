@@ -16,6 +16,7 @@ import HeroWithProcessGrid from '../templates/HeroWithProcessGrid';
 import HeroWithPricingList from '../templates/HeroWithPricingList';
 import HeroWithMenuGrid from '../templates/HeroWithMenuGrid';
 import React from 'react';
+import { normalizeTemplateData } from '../utils/templateDataNormalizer';
 import HeroFeaturesTimelineLayout from '../templates/HeroFeaturesTimelineLayout';
 import HeroStatsGrid from '../templates/HeroStatsGrid';
 import HeroThreeColGrid from '../templates/HeroThreeColGrid';
@@ -91,9 +92,10 @@ interface PageRendererProps {
 }
 
 export const PageRenderer: React.FC<PageRendererProps> = ({ slug, layoutType, pageData }) => {
-  const templateLayouts = ['HeroFeaturesTimelineLayout', 'HeroStatsGrid', 'HeroThreeColGrid', 'HeroSplitTimeline', 'HeroFeatureList', 'ContactInfoGrid', 'ContentWithRightSidebar', 'ContentWithTabs', 'BasicFeatureGrid', 'CardsAndVerticalTimeline', 'IconsListWithTimeline', 'MinimalIconGrid', 'HeroBannerWithArticles', 'SideBySideListCards', 'HeroBannerWithBadges', 'HeroBannerWithMedia', 'ContentWithAccordion', 'ThreeColServiceCards', 'TwoColEventCards', 'HeroWithProcessGrid', 'HeroWithPricingList', 'HeroWithMenuGrid'];
+  const templateLayouts = ['HeroFeaturesTimelineLayout', 'HeroStatsGrid', 'HeroThreeColGrid', 'HeroSplitTimeline', 'HeroFeatureList', 'ContactInfoGrid', 'ContentWithRightSidebar', 'ContentWithTabs', 'BasicFeatureGrid', 'CardsAndVerticalTimeline', 'IconsListWithTimeline', 'MinimalIconGrid', 'HeroBannerWithArticles', 'SideBySideListCards', 'HeroBannerWithBadges', 'HeroBannerWithMedia', 'ContentWithAccordion', 'ThreeColServiceCards', 'TwoColEventCards', 'HeroWithProcessGrid', 'HeroWithPricingList', 'HeroWithMenuGrid', 'GalleryLayout', 'ProductsLayout'];
   if (layoutType && templateLayouts.includes(layoutType)) {
-    const templateData = pageData?.contentBlocks?.find((b: any) => b.blockType === 'page_template_data')?.content;
+    const rawData = pageData?.contentBlocks?.find((b: any) => b.blockType === 'page_template_data')?.content;
+    const templateData = normalizeTemplateData(rawData, layoutType);
     
     if (layoutType === 'HeroFeaturesTimelineLayout') {
       return <HeroFeaturesTimelineLayout dataId={slug} data={templateData} />;
@@ -139,6 +141,10 @@ export const PageRenderer: React.FC<PageRendererProps> = ({ slug, layoutType, pa
       return <HeroWithPricingList dataId={slug.split('/').pop()} data={templateData} />;
     } else if (layoutType === 'HeroWithMenuGrid') {
       return <HeroWithMenuGrid dataId={slug.split('/').pop()} data={templateData} />;
+    } else if (layoutType === 'GalleryLayout') {
+      return <GalleryPage data={templateData} />;
+    } else if (layoutType === 'ProductsLayout') {
+      return <OurProductsPage data={templateData} />;
     }
   }
 
@@ -150,10 +156,6 @@ export const PageRenderer: React.FC<PageRendererProps> = ({ slug, layoutType, pa
   switch (slug) {
     case 'yerawada-open-jail':
       return <YerawadaOpenJailPage pageData={pageData} />;
-    case 'gallery':
-      return <GalleryPage />;
-    case 'our-products':
-      return <OurProductsPage />;
     case 'agriculture/nursery':
       return <NurseryPage />;
     case 'agriculture/poultry-farming':

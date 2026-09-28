@@ -48,7 +48,9 @@ router.get('/', async (req, res) => {
 // PUT /api/v1/settings/:key
 router.put('/:key', authMiddleware, async (req, res) => {
   try {
-    const updatedSettings = req.body;
+    const payload = req.body.payload !== undefined ? req.body.payload : req.body;
+    const changeSummary = req.body.changeSummary || null;
+    const updatedSettings = payload;
     const key = req.params.key;
     
     if (req.user && req.user.role === 'MAKER') {
@@ -58,6 +60,7 @@ router.put('/:key', authMiddleware, async (req, res) => {
           recordId: key,
           proposedData: updatedSettings,
           status: 'PENDING_REVIEW',
+          changeSummary: changeSummary,
           createdById: req.user.id
         }
       });

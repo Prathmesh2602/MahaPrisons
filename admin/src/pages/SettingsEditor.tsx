@@ -6,9 +6,11 @@ import { Button } from '../components/Button';
 import { PhoneticInput } from '../components/PhoneticInput';
 import { EditorFormHeader, EditorBlock, EditorBlockHeader } from '../components/EditorLayout';
 import { MediaLibraryPopup } from '../components/MediaLibraryPopup';
-import { Save, Send, Layout, Type, ShieldCheck, ArrowLeft, Image as ImageIcon, Eye, EyeOff, Trash2, X, Monitor } from 'lucide-react';
+import { Save, Send, Layout, Type, ShieldCheck, ArrowLeft, Image as ImageIcon, Eye, EyeOff, Trash2, X, Monitor, ImagePlus } from 'lucide-react';
 
-type TabType = 'DASHBOARD' | 'HEADER' | 'FOOTER' | 'WALLPAPER';
+type TabType = 'DASHBOARD' | 'HEADER' | 'FOOTER' | 'WALLPAPER' | 'LOGIN';
+
+const DEFAULT_LOGIN_CONFIG = { backgroundImage: '' };
 
 const DEFAULT_WALLPAPER_CONFIG = {
   images: [
@@ -60,8 +62,6 @@ export const SettingsEditor = () => {
   const [activeTab, setActiveTab] = useState<TabType>('DASHBOARD');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
     header_logo: true,
     header_right_logos: true,
@@ -87,6 +87,8 @@ export const SettingsEditor = () => {
 
   const [wallpaperConfig, setWallpaperConfig] = useState<any>(DEFAULT_WALLPAPER_CONFIG);
   const [savedWallpaperConfig, setSavedWallpaperConfig] = useState<any>(DEFAULT_WALLPAPER_CONFIG);
+  const [loginConfig, setLoginConfig] = useState<any>(DEFAULT_LOGIN_CONFIG);
+  const [savedLoginConfig, setSavedLoginConfig] = useState<any>(DEFAULT_LOGIN_CONFIG);
 
   // History for Undo/Redo
   const [history, setHistory] = useState<any[]>([{
@@ -198,6 +200,7 @@ export const SettingsEditor = () => {
     fetchConfig('header_config');
     fetchConfig('footer_config');
     fetchConfig('wallpaper_config');
+    fetchConfig('login_config');
 
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === 'PREVIEW_READY') {
@@ -233,6 +236,12 @@ export const SettingsEditor = () => {
             updateHistoryState(headerConfig, footerConfig, newConf);
             return newConf;
           });
+        } else if (key === 'login_config') {
+          setLoginConfig((prev: any) => {
+            const newConf = { ...prev, ...res.data };
+            setSavedLoginConfig(newConf);
+            return newConf;
+          });
         }
       } else {
         if (key === 'header_config') {
@@ -247,6 +256,9 @@ export const SettingsEditor = () => {
           setWallpaperConfig(DEFAULT_WALLPAPER_CONFIG);
           setSavedWallpaperConfig(DEFAULT_WALLPAPER_CONFIG);
           updateHistoryState(headerConfig, footerConfig, DEFAULT_WALLPAPER_CONFIG);
+        } else if (key === 'login_config') {
+          setLoginConfig(DEFAULT_LOGIN_CONFIG);
+          setSavedLoginConfig(DEFAULT_LOGIN_CONFIG);
         }
       }
     } catch (err) {
@@ -263,6 +275,9 @@ export const SettingsEditor = () => {
         setWallpaperConfig(DEFAULT_WALLPAPER_CONFIG);
         setSavedWallpaperConfig(DEFAULT_WALLPAPER_CONFIG);
         updateHistoryState(headerConfig, footerConfig, DEFAULT_WALLPAPER_CONFIG);
+      } else if (key === 'login_config') {
+        setLoginConfig(DEFAULT_LOGIN_CONFIG);
+        setSavedLoginConfig(DEFAULT_LOGIN_CONFIG);
       }
     }
   };
@@ -493,17 +508,28 @@ export const SettingsEditor = () => {
       iframeRef.current.contentWindow.postMessage(
         {
           type: 'PREVIEW_UPDATE',
-          component: activeTab === 'HEADER' ? 'Header' : activeTab === 'FOOTER' ? 'Footer' : activeTab === 'WALLPAPER' ? 'Wallpaper' : 'None',
-          payload: { header_config: headerConfig, footer_config: footerConfig, wallpaper_config: wallpaperConfig }
+          component: activeTab === 'HEADER' ? 'Header' : activeTab === 'FOOTER' ? 'Footer' : activeTab === 'WALLPAPER' ? 'Wallpaper' : activeTab === 'LOGIN' ? 'Login' : 'None',
+          payload: { header_config: headerConfig, footer_config: footerConfig, wallpaper_config: wallpaperConfig, login_config: loginConfig }
         },
         '*'
       );
     }
-  }, [headerConfig, footerConfig, wallpaperConfig, activeTab, isIframeReady]);
+  }, [headerConfig, footerConfig, wallpaperConfig, loginConfig, activeTab, isIframeReady]);
+
+  const generateSettingsSummary = (key: string) => {
+    switch (key) {
+      case 'header_config': return 'Updated Header Configuration';
+      case 'footer_config': return 'Updated Footer Configuration';
+      case 'wallpaper_config': return 'Updated Home Page Wallpapers';
+      case 'login_config': return 'Updated Login Page Background';
+      default: return 'Updated Settings';
+    }
+  };
 
   const handleSave = async (key: string, payload: any) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/v1/settings/${key}`, payload, {
+      const changeSummary = generateSettingsSummary(key);
+      const res = await axios.put(`http://localhost:5000/api/v1/settings/${key}`, { payload, changeSummary }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -513,6 +539,8 @@ export const SettingsEditor = () => {
         setSavedFooterConfig(payload);
       } else if (key === 'wallpaper_config') {
         setSavedWallpaperConfig(payload);
+      } else if (key === 'login_config') {
+        setSavedLoginConfig(payload);
       }
 
       if (res.data.pendingReview) {
@@ -540,7 +568,7 @@ export const SettingsEditor = () => {
         <div className="p-8">
           <p className="text-slate-500 mb-8">Select a component to modify its content and live preview the changes.</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             <div
               onClick={() => setActiveTab('HEADER')}
               className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-blue-300 cursor-pointer transition-all flex flex-col items-center text-center group"
@@ -575,6 +603,17 @@ export const SettingsEditor = () => {
             </div>
 
             <div
+              onClick={() => setActiveTab('LOGIN')}
+              className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-orange-300 cursor-pointer transition-all flex flex-col items-center text-center group"
+            >
+              <div className="w-16 h-16 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                <Monitor size={32} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-800 mb-2">Login Page</h3>
+              <p className="text-sm text-slate-500">Change the CMS login background.</p>
+            </div>
+
+            <div
               onClick={() => setIsProfilePopupOpen(true)}
               className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-emerald-300 cursor-pointer transition-all flex flex-col items-center text-center group"
             >
@@ -600,11 +639,11 @@ export const SettingsEditor = () => {
           <span>Live Preview</span>
           <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full animate-pulse">Syncing...</span>
         </div>
-        <div className="flex-1 p-2 overflow-hidden relative" ref={containerRef}>
-          <div className="w-full h-full bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden">
+        <div className="flex-1 p-2 overflow-hidden relative">
+          <div className="w-full h-full bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden relative">
             <iframe
               ref={iframeRef}
-              src="http://localhost:3000/preview"
+              src={activeTab === 'LOGIN' ? '/login?preview=true' : 'http://localhost:3000/preview'}
               className="w-full h-full border-0"
               title="Live Preview"
             />
@@ -639,6 +678,12 @@ export const SettingsEditor = () => {
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${activeTab === 'WALLPAPER' ? 'bg-white shadow-sm text-blue-600 border border-slate-200' : 'text-slate-500 hover:bg-slate-200/50'}`}
             >
               Wallpaper
+            </button>
+            <button
+              onClick={() => setActiveTab('LOGIN')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${activeTab === 'LOGIN' ? 'bg-white shadow-sm text-blue-600 border border-slate-200' : 'text-slate-500 hover:bg-slate-200/50'}`}
+            >
+              Login Page
             </button>
           </div>
 
@@ -685,6 +730,21 @@ export const SettingsEditor = () => {
                 onReset={handleReset}
                 onSave={() => handleSave('wallpaper_config', wallpaperConfig)}
                 isSaveDisabled={JSON.stringify(wallpaperConfig) === JSON.stringify(savedWallpaperConfig)}
+                saveText={user?.role === 'MAKER' ? 'Send for Review' : 'Save & Publish'}
+                saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
+              />
+            )}
+            {activeTab === 'LOGIN' && (
+              <EditorFormHeader
+                className="border-none pb-3"
+                title="Login Page Background"
+                onUndo={handleUndo}
+                canUndo={historyIndex > 0}
+                onRedo={handleRedo}
+                canRedo={historyIndex < history.length - 1}
+                onReset={handleReset}
+                onSave={() => handleSave('login_config', loginConfig)}
+                isSaveDisabled={JSON.stringify(loginConfig) === JSON.stringify(savedLoginConfig)}
                 saveText={user?.role === 'MAKER' ? 'Send for Review' : 'Save & Publish'}
                 saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
               />
@@ -1091,6 +1151,46 @@ export const SettingsEditor = () => {
 
             </div>
           )}
+
+          {activeTab === 'LOGIN' && (
+            <div className="space-y-2">
+              <EditorBlock>
+                <EditorBlockHeader
+                  title="Background Image"
+                />
+                
+                <div className="space-y-2">
+                  <div className="bg-white p-4 border border-slate-200 rounded-lg relative">
+                    <button onClick={() => setLoginConfig({...loginConfig, backgroundImage: ''})} className="absolute top-2 right-2 text-slate-400 hover:text-red-500 p-1">
+                      <Trash2 size={16} />
+                    </button>
+                    <div className="flex flex-col gap-2 w-full">
+                      <label className="block text-sm font-medium text-slate-700">Image</label>
+                      <div 
+                        className="w-full h-32 bg-slate-100 rounded-md overflow-hidden border border-slate-200 flex items-center justify-center relative group cursor-pointer"
+                        onClick={() => {
+                          setMediaTarget('login_bg');
+                          setIsMediaPopupOpen(true);
+                        }}
+                      >
+                        {loginConfig.backgroundImage ? (
+                          <img src={loginConfig.backgroundImage} alt="Login Background" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="flex flex-col items-center text-slate-400">
+                            <ImageIcon className="mb-1" size={24} />
+                            <span className="text-xs">No Image</span>
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <span className="text-white text-xs font-medium">Change Image</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </EditorBlock>
+            </div>
+          )}
         </div>
       </div>
 
@@ -1102,6 +1202,8 @@ export const SettingsEditor = () => {
             if (mediaTarget.startsWith('right_logo_')) {
               const idx = parseInt(mediaTarget.split('_')[2], 10);
               updateRightLogo(idx, 'src', url);
+            } else if (mediaTarget === 'login_bg') {
+              setLoginConfig({ ...loginConfig, backgroundImage: url });
             } else if (mediaTarget.startsWith('footer_banner_')) {
               const idx = parseInt(mediaTarget.split('_')[2], 10);
               updateFooterBanner(idx, 'img_src', url);

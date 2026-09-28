@@ -246,7 +246,7 @@ export const PrisonActivitiesEditor = ({ blockId, initialData, onPreviewUpdate }
   const addActivity = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.list) newData.list = [];
-    newData.list.push({ id: "", image: "", imagePosition: "left", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
+    newData.list.unshift({ id: "", image: "", imagePosition: "left", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
     setData(newData);
     updateHistoryState(newData);
   };

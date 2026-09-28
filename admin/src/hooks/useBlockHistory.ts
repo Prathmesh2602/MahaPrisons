@@ -10,7 +10,7 @@ export function useBlockHistory<T>(
   const internalChangeRef = useRef(false);
   const [trigger, setTrigger] = useState(0);
 
-  const propValueStr = JSON.stringify(propValue);
+  const propValueStr = propValue === undefined ? undefined : JSON.stringify(propValue);
   const defaultValueStr = JSON.stringify(defaultValue);
   
   const latestPropValue = useRef(propValueStr);
@@ -18,7 +18,8 @@ export function useBlockHistory<T>(
 
   useEffect(() => {
     // When the baseline/saved value changes from the parent, re-initialize the entire history
-    historyRef.current = [JSON.parse(latestPropValue.current)];
+    const parsedVal = latestPropValue.current === undefined ? defaultValue : JSON.parse(latestPropValue.current);
+    historyRef.current = [parsedVal];
     indexRef.current = 0;
     setTrigger(prev => prev + 1);
   }, [defaultValueStr]);
@@ -28,14 +29,16 @@ export function useBlockHistory<T>(
       internalChangeRef.current = false;
     } else {
       // External change detected (e.g., Parent updated via Translate, Media Select, or Global Undo)
-      const parsed = JSON.parse(propValueStr);
-      // Only push to history if the external change actually differs from our current local state
-      if (JSON.stringify(historyRef.current[indexRef.current]) !== propValueStr) {
-        const newHist = historyRef.current.slice(0, indexRef.current + 1);
-        newHist.push(parsed);
-        historyRef.current = newHist;
-        indexRef.current = newHist.length - 1;
-        setTrigger(prev => prev + 1);
+      if (propValueStr !== undefined) {
+        const parsed = JSON.parse(propValueStr);
+        // Only push to history if the external change actually differs from our current local state
+        if (JSON.stringify(historyRef.current[indexRef.current]) !== propValueStr) {
+          const newHist = historyRef.current.slice(0, indexRef.current + 1);
+          newHist.push(parsed);
+          historyRef.current = newHist;
+          indexRef.current = newHist.length - 1;
+          setTrigger(prev => prev + 1);
+        }
       }
     }
   }, [propValueStr]);

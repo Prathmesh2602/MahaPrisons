@@ -4,9 +4,8 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAccessibility } from '../../../hooks/useAccessibility';
-import { galleryItems } from '../../../data/galleryData';
 
-const LightboxModal = ({ selectedImageIndex, setSelectedImageIndex, nextImage, prevImage }) => {
+const LightboxModal = ({ selectedImageIndex, setSelectedImageIndex, nextImage, prevImage, items = [] }) => {
   const { language } = useAccessibility();
 
   if (typeof window === 'undefined') return null;
@@ -59,8 +58,8 @@ const LightboxModal = ({ selectedImageIndex, setSelectedImageIndex, nextImage, p
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              src={galleryItems[selectedImageIndex].img_src}
-              alt={galleryItems[selectedImageIndex].img_alt}
+              src={items[selectedImageIndex]?.image}
+              alt={items[selectedImageIndex]?.title?.en || 'Gallery Image'}
               className="max-w-full h-auto max-h-[60vh] md:max-h-[70vh] object-contain rounded-md shadow-2xl shrink-0"
             />
             
@@ -73,13 +72,13 @@ const LightboxModal = ({ selectedImageIndex, setSelectedImageIndex, nextImage, p
               className="mt-4 sm:mt-6 text-center max-w-3xl shrink-0 pb-4"
             >
               <h3 className="text-white font-medium text-base mb-1">
-                {language === 'mr' ? galleryItems[selectedImageIndex].title_mr : galleryItems[selectedImageIndex].title_en}
+                {language === 'mr' ? items[selectedImageIndex]?.title?.mr : items[selectedImageIndex]?.title?.en}
               </h3>
               <p className="text-gray-300 text-xs sm:text-sm">
-                {language === 'mr' ? galleryItems[selectedImageIndex].desc_mr : galleryItems[selectedImageIndex].desc_en}
+                {language === 'mr' ? items[selectedImageIndex]?.desc?.mr : items[selectedImageIndex]?.desc?.en}
               </p>
               <div className="mt-3 text-gray-500 text-xs">
-                {selectedImageIndex + 1} / {galleryItems.length}
+                {selectedImageIndex + 1} / {items.length}
               </div>
             </motion.div>
           </div>

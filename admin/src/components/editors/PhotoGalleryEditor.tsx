@@ -127,7 +127,7 @@ export const PhotoGalleryEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const addItem = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.items) newData.items = [];
-    newData.items.push({
+    newData.items.unshift({
       type: 'photo',
       title: { mr: "", en: "" },
       img_src: ""
@@ -181,6 +181,10 @@ export const PhotoGalleryEditor = ({ blockId, initialData, onPreviewUpdate }: an
         saveIcon={user?.role === 'MAKER' ? <Send size={14} /> : <Save size={14} />}
       />
 
+      <button onClick={addItem} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+        <Plus size={16} className="mr-2" /> Add Item
+      </button>
+
       <div className="w-full space-y-2">
         {itemsList.map((item: any, index: number) => (
           <GalleryItemBlock
@@ -204,9 +208,6 @@ export const PhotoGalleryEditor = ({ blockId, initialData, onPreviewUpdate }: an
         )}
       </div>
       
-      <Button onClick={addItem} variant="secondary" className="w-full">
-        <Plus size={14} className="mr-2" /> Add Item
-      </Button>
 
       <MediaLibraryPopup
         isOpen={isMediaPopupOpen}

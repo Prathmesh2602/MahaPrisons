@@ -39,7 +39,9 @@ router.get('/', async (req, res) => {
 // PUT /api/v1/menu
 // Updates the entire menu tree (replaces all existing items)
 router.put('/', authMiddleware, async (req, res) => {
-  const items = req.body; // Expects an array of root items with optional children/groups
+  const payload = req.body.payload !== undefined ? req.body.payload : req.body;
+  const changeSummary = req.body.changeSummary || null;
+  const items = payload; // Expects an array of root items with optional children/groups
   
   if (!Array.isArray(items)) {
     return res.status(400).json({ error: 'Expected an array of menu items' });
@@ -57,6 +59,7 @@ router.put('/', authMiddleware, async (req, res) => {
           recordId: menu.id,
           proposedData: items,
           status: 'PENDING_REVIEW',
+          changeSummary: changeSummary,
           createdById: req.user.id
         }
       });

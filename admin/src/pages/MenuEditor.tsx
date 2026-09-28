@@ -206,7 +206,10 @@ export const MenuEditor = () => {
   const handleSaveAll = async () => {
     setIsSaving(true);
     try {
-      await axios.put('http://localhost:5000/api/v1/menu', items);
+      const summary = `Updated navigation menu structure`;
+      await axios.put('http://localhost:5000/api/v1/menu', { payload: items, changeSummary: summary }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       if (user?.role === 'MAKER') {
         alert('Changes sent for review');
       } else {

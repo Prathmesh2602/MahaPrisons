@@ -61,7 +61,8 @@ const SideBySideListCards = ({ dataId, data: dynamicData }) => {
       <div className="w-full md:w-1/2 p-6 md:p-6 lg:p-6 xl:p-24 bg-white dark-mode:bg-gray-950 text-gray-800 dark-mode:text-gray-200">
         <motion.div 
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6 }}
-          className="prose prose-lg dark-mode:prose-invert max-w-none mb-16"
+          data-block-type="template_hero"
+          className="prose prose-lg dark-mode:prose-invert max-w-none mb-16 rounded-md hover:outline hover:outline-2 hover:outline-blue-500 cursor-pointer -m-2 p-2"
         >
           <p className="text-base leading-relaxed text-gray-600 dark-mode:text-gray-300">
             {getTranslation(data.hero?.description || data.description)}
@@ -78,7 +79,7 @@ const SideBySideListCards = ({ dataId, data: dynamicData }) => {
                 className="flex-1 min-w-[140px] p-5 rounded-2xl bg-blue-50 dark-mode:bg-blue-900/20 border border-blue-100 dark-mode:border-blue-800/50"
               >
                 <Icon className="w-6 h-6 text-blue-600 dark-mode:text-blue-400 mb-3" />
-                <div className="text-lg font-bold text-gray-900 dark-mode:text-white mb-1">{stat.value}</div>
+                <div className="text-lg font-bold text-gray-900 dark-mode:text-white mb-1">{typeof stat.value === "object" ? getTranslation(stat.value) : stat.value}</div>
                 <div className="text-xs font-semibold uppercase tracking-wider text-blue-600/70 dark-mode:text-blue-400/70">
                   {getTranslation(stat.label)}
                 </div>

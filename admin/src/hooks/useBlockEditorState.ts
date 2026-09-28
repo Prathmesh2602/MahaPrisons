@@ -61,12 +61,12 @@ export const useBlockEditorState = (blockId: string, initialData: any, onPreview
     }
   };
 
-  const handleSave = async (userRole?: string) => {
+  const handleSave = async (userRole?: string, changeSummary?: string) => {
     if (!blockId) return false;
     try {
       const res = await axios.put(
         `http://localhost:5000/api/v1/pages/blocks/${blockId}`,
-        { content: data },
+        { content: data, changeSummary },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         }
