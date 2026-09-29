@@ -1,6 +1,6 @@
 import { ErrorBoundary } from './components/ErrorBoundary';
 import React from 'react';
-import { BrowserRouter, Routes, Route, NavLink, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './pages/Login';
 import { MenuEditor } from './pages/MenuEditor';
@@ -199,12 +199,22 @@ const AppRoutes = () => {
   const location = useLocation();
   const isPreview = location.search.includes('preview=true');
   const isForceLogin = location.search.includes('force=true');
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (isForceLogin && token) {
-      logout();
+    if (isForceLogin) {
+      if (token) {
+        logout();
+      }
+      
+      // Remove force=true from URL immediately to prevent login loops
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.delete('force');
+      const newSearch = searchParams.toString() ? `?${searchParams.toString()}` : '';
+      navigate(`${location.pathname}${newSearch}`, { replace: true });
     }
-  }, [isForceLogin, token, logout]);
+  }, [isForceLogin, token, logout, location.search, location.pathname, navigate]);
+
 
   return (
     <Routes>
