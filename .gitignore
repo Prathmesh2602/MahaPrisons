@@ -25,6 +25,7 @@ out/
 .env.test.local
 .env.production.local
 *.env
+.env.production
 
 # Logs
 logs/
@@ -66,3 +67,8 @@ tmp/
 *.sqlite
 *.db
 *.dump
+
+cms_build_backup.sql
+
+# Local uploaded media
+**/uploads/

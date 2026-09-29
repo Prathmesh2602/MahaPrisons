@@ -7,71 +7,58 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  MAKER
-  CHECKER
-  SUPER_ADMIN
-}
-
-enum ReviewStatus {
-  DRAFT
-  PENDING_REVIEW
-  APPROVED
-  REJECTED
-}
-
 model PageNode {
-  id           String         @id @default(uuid())
-  slug         String         @unique
-  title        String
-  description  String?
-  seoTitle     String?
-  seoDesc      String?
-  layoutType   String         @default("standard")
-  isActive     Boolean        @default(true)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id            String         @id @default(uuid())
+  slug          String         @unique
+  title         String
+  description   String?
+  seoTitle      String?
+  seoDesc       String?
+  layoutType    String         @default("standard")
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   contentBlocks ContentBlock[]
 }
 
 model ContentBlock {
-  id          String    @id @default(uuid())
-  pageNodeId  String
-  pageNode    PageNode  @relation(fields: [pageNodeId], references: [id], onDelete: Cascade)
-  blockType   String    // e.g. "hero", "text", "gallery", "accordion"
-  order       Int       @default(0)
-  content     Json      // Stores the specific data schema for the block type
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id         String   @id @default(uuid())
+  pageNodeId String
+  blockType  String
+  order      Int      @default(0)
+  content    Json
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  pageNode   PageNode @relation(fields: [pageNodeId], references: [id], onDelete: Cascade)
 
   @@index([pageNodeId])
 }
 
 model Menu {
   id        String     @id @default(uuid())
-  name      String     @unique // e.g. "main_navigation"
-  items     MenuItem[]
+  name      String     @unique
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  items     MenuItem[]
 }
 
 model MenuItem {
   id        String     @id @default(uuid())
   menuId    String
-  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
   parentId  String?
-  parent    MenuItem?  @relation("MenuHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
-  children  MenuItem[] @relation("MenuHierarchy")
   label_mr  String
   label_en  String
   href      String?
   icon      String?
   order     Int        @default(0)
-  groups    Json?      // Stores mega menu sub-categories
+  groups    Json?
   isActive  Boolean    @default(true)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  parent    MenuItem?  @relation("MenuHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  MenuItem[] @relation("MenuHierarchy")
 
   @@index([menuId])
   @@index([parentId])
@@ -86,35 +73,32 @@ model SiteSetting {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String     @id @default(uuid())
+  email     String     @unique
   password  String
-  role      Role     @default(MAKER)
   name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  role      Role       @default(MAKER)
   revisions Revision[] @relation("CreatedRevisions")
   reviews   Revision[] @relation("ReviewedRevisions")
 }
 
 model Revision {
-  id           String       @id @default(uuid())
-  modelName    String       // e.g. "MenuItem", "SiteSetting", "PageNode"
-  recordId     String?      // ID of the target record, null if new creation
-  proposedData Json         // The complete JSON representation of the proposed state
-  status       ReviewStatus @default(PENDING_REVIEW)
-  rejectReason String?
+  id            String       @id @default(uuid())
+  modelName     String
+  recordId      String?
+  proposedData  Json
+  status        ReviewStatus @default(PENDING_REVIEW)
+  rejectReason  String?
+  createdById   String
+  reviewedById  String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   changeSummary String?
-  
-  createdById  String
-  createdBy    User         @relation("CreatedRevisions", fields: [createdById], references: [id])
-  
-  reviewedById String?
-  reviewedBy   User?        @relation("ReviewedRevisions", fields: [reviewedById], references: [id])
-  
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  
+  createdBy     User         @relation("CreatedRevisions", fields: [createdById], references: [id])
+  reviewedBy    User?        @relation("ReviewedRevisions", fields: [reviewedById], references: [id])
+
   @@index([modelName, recordId])
   @@index([status])
 }
@@ -128,4 +112,17 @@ model Media {
   url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  MAKER
+  CHECKER
+  SUPER_ADMIN
+}
+
+enum ReviewStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
 }

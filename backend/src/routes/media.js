@@ -6,6 +6,8 @@ const fs = require('fs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { authMiddleware } = require('../middleware/auth');
+const { uploadFile, deleteFile } = require('../lib/storage');
+const { supabase, bucketName } = require('../lib/supabase');
 
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, '../../uploads');
@@ -14,17 +16,9 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // Configure multer storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+const storage = multer.memoryStorage();
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
@@ -60,23 +54,62 @@ router.post('/upload', authMiddleware, upload.single('file'), async (req, res) =
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const { filename, path: filepath, mimetype, size, originalname } = req.file;
-    const url = `/uploads/${filename}`; // Public URL path
+    const uniqueFilename =
+      Date.now() +
+      '-' +
+      Math.round(Math.random() * 1E9) +
+      path.extname(req.file.originalname);
+
+    let filepath;
+    let url;
+
+    if (process.env.STORAGE_MODE === 'supabase') {
+      // Production: upload to Supabase Storage
+      const result = await uploadFile({
+        buffer: req.file.buffer,
+        filename: uniqueFilename,
+        mimetype: req.file.mimetype
+      });
+
+      filepath = result.filepath;
+
+      const { data: publicUrlData } = supabase.storage
+        .from(bucketName)
+        .getPublicUrl(filepath);
+
+      url = publicUrlData.publicUrl;
+
+    } else {
+      // Local development: save to backend/uploads
+      const localFilepath = path.join(uploadDir, uniqueFilename);
+
+      require('fs').writeFileSync(
+        localFilepath,
+        req.file.buffer
+      );
+
+      filepath = localFilepath;
+      url = `/uploads/${uniqueFilename}`;
+    }
 
     const media = await prisma.media.create({
       data: {
-        filename: originalname || filename,
+        filename: req.file.originalname,
         filepath,
-        mimetype,
-        size,
+        mimetype: req.file.mimetype,
+        size: req.file.size,
         url
       }
     });
 
     res.status(201).json(media);
+
   } catch (error) {
     console.error('Error uploading media:', error);
-    res.status(500).json({ error: 'Failed to upload media' });
+
+    res.status(500).json({
+      error: 'Failed to upload media'
+    });
   }
 });
 
@@ -84,27 +117,37 @@ router.post('/upload', authMiddleware, upload.single('file'), async (req, res) =
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const media = await prisma.media.findUnique({
-      where: { id: req.params.id }
+      where: {
+        id: req.params.id
+      }
     });
 
     if (!media) {
-      return res.status(404).json({ error: 'Media not found' });
+      return res.status(404).json({
+        error: 'Media not found'
+      });
     }
 
-    // Delete file from filesystem
-    if (fs.existsSync(media.filepath)) {
-      fs.unlinkSync(media.filepath);
-    }
+    // Delete from local storage or Supabase Storage
+    await deleteFile(media.filepath);
 
-    // Delete record from DB
+    // Delete database record
     await prisma.media.delete({
-      where: { id: req.params.id }
+      where: {
+        id: req.params.id
+      }
     });
 
-    res.json({ message: 'Media deleted successfully' });
+    res.json({
+      message: 'Media deleted successfully'
+    });
+
   } catch (error) {
     console.error('Error deleting media:', error);
-    res.status(500).json({ error: 'Failed to delete media' });
+
+    res.status(500).json({
+      error: 'Failed to delete media'
+    });
   }
 });
 

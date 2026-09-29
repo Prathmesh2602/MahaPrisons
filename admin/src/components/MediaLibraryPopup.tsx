@@ -15,6 +15,8 @@ interface MediaItem {
   url: string;
 }
 
+const getFullUrl = (url: string) => url.startsWith('http') ? url : `http://localhost:5000${url}`;
+
 export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, onClose, onSelect }) => {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [mediaList, setMediaList] = useState<MediaItem[]>([]);
@@ -91,7 +93,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
       });
       // Prepend to list
       setMediaList(prev => [res.data, ...prev]);
-      setSelectedImg(`http://localhost:5000${res.data.url}`);
+      setSelectedImg(getFullUrl(res.data.url));
     } catch (err: any) {
       alert(err.response?.data?.error || 'Upload failed');
     } finally {
@@ -191,7 +193,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
               const settingsFilenames = [...settingsString.matchAll(/[^/"'\\]+\.(png|jpe?g|svg|webp|gif)/gi)].map(m => m[0].toLowerCase());
               
               const filteredMedia = mediaList.filter(item => {
-                const fullUrl = `http://localhost:5000${item.url}`;
+                const fullUrl = getFullUrl(item.url);
                 if (searchQuery && !item.filename.toLowerCase().includes(searchQuery.toLowerCase())) return false;
                 
                 const isDoc = item.url.toLowerCase().endsWith('.pdf') || item.url.toLowerCase().endsWith('.doc') || item.url.toLowerCase().endsWith('.docx') || item.filename.toLowerCase().startsWith('doc_');
@@ -220,7 +222,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {filteredMedia.map((item) => {
-                    const fullUrl = `http://localhost:5000${item.url}`;
+                    const fullUrl = getFullUrl(item.url);
                 return (
                   <div 
                     key={item.id}
