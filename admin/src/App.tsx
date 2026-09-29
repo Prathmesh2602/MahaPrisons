@@ -10,6 +10,7 @@ import { UserManagement } from './pages/UserManagement';
 import { PageEditor } from './pages/PageEditor';
 import { AuditLogs } from './pages/AuditLogs';
 import { Button } from './components/Button';
+import { MediaLibraryPopup } from './components/MediaLibraryPopup';
 import { LayoutDashboard, Settings, Menu as MenuIcon, LogOut, CheckSquare, Shield, ShieldCheck, Image as ImageIcon, FileText, Users, X } from 'lucide-react';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -22,6 +23,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(true);
+  const [isMediaLibraryOpen, setIsMediaLibraryOpen] = React.useState(false);
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans overflow-hidden">
@@ -83,7 +85,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               )}
             </NavLink>
           )}
-          <div className={`flex items-center ${isSidebarExpanded ? 'justify-start' : 'justify-center'} gap-3.5 px-3 py-2.5 text-[13px] font-medium rounded-md text-slate-400 hover:bg-[#1e293b]/60 hover:text-white transition-all duration-200 cursor-pointer`} title="Media Library">
+          <div 
+            onClick={() => { setIsMediaLibraryOpen(true); setIsMobileMenuOpen(false); }}
+            className={`flex items-center ${isSidebarExpanded ? 'justify-start' : 'justify-center'} gap-3.5 px-3 py-2.5 text-[13px] font-medium rounded-md text-slate-400 hover:bg-[#1e293b]/60 hover:text-white transition-all duration-200 cursor-pointer`} 
+            title="Media Library"
+          >
             <ImageIcon size={18} strokeWidth={1.75} className="shrink-0" /> <span className={`whitespace-nowrap transition-opacity duration-200 ${isSidebarExpanded ? 'opacity-100' : 'opacity-0 hidden'}`}>Media Library</span>
           </div>
 
@@ -126,6 +132,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           {children}
         </main>
       </div>
+
+      <MediaLibraryPopup 
+        isOpen={isMediaLibraryOpen} 
+        onClose={() => setIsMediaLibraryOpen(false)} 
+      />
     </div>
   );
 };

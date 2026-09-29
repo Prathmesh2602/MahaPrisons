@@ -27,6 +27,7 @@ import { HeroSplitTimelineEditor } from './HeroSplitTimelineEditor';
 import { HeroFeatureListEditor } from './HeroFeatureListEditor';
 import { GalleryLayoutEditor } from './GalleryLayoutEditor';
 import { ProductsLayoutEditor } from './ProductsLayoutEditor';
+import ContactUsLayoutEditor from './ContactUsLayoutEditor';
 
 interface TemplateEditorRendererProps {
   blockId: string;
@@ -116,6 +117,8 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
         return <GalleryLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
       case 'ProductsLayout':
         return <ProductsLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+      case 'ContactUsLayout':
+        return <ContactUsLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
       default:
         return (
           <div className="p-4 bg-red-50 text-red-600 rounded-md">

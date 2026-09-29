@@ -78,7 +78,7 @@ export const MenuEditorForm: React.FC<MenuEditorFormProps> = ({ item, itemType =
 
   const isGroupHeader = itemType === 'groupHeader';
   const isGroupChild = itemType === 'groupChild';
-  const isGroup = isGroupHeader || formData.isGroupHeader;
+  const isGroup = isGroupHeader || formData.isGroupHeader || formData.isMegaGroup;
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col">
@@ -200,16 +200,47 @@ export const MenuEditorForm: React.FC<MenuEditorFormProps> = ({ item, itemType =
             </div>
           </div>
         )}
+        {(!isGroupHeader && !formData.isGroupHeader && !formData.isMegaGroup) && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Page URL Path</label>
+            <input
+              type="text"
+              value={formData.href || ''}
+              onChange={e => handleChange('href', e.target.value)}
+              className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none"
+              placeholder="e.g. /about-us"
+            />
+          </div>
+        )}
         <div className="pt-2 space-y-3">
-          {itemType !== 'root' && itemType !== 'groupChild' && (
+          {itemType !== 'groupChild' && (
             <div className="flex items-center gap-3">
               <input
                 type="checkbox"
-                checked={formData.isGroupHeader !== undefined ? !!formData.isGroupHeader : isGroupHeader}
-                onChange={e => handleChange('isGroupHeader', e.target.checked)}
+                checked={itemType === 'root' ? !!formData.isMegaGroup : (formData.isGroupHeader !== undefined ? !!formData.isGroupHeader : isGroupHeader)}
+                onChange={e => {
+                  if (itemType === 'root') {
+                    handleChange('isMegaGroup', e.target.checked);
+                    // Also clear href if it becomes a mega group
+                    if (e.target.checked) handleChange('href', '');
+                  } else {
+                    handleChange('isGroupHeader', e.target.checked);
+                    if (e.target.checked) handleChange('href', '');
+                  }
+                }}
                 className="w-4 h-4 text-slate-800 focus:ring-slate-500 border-gray-300 rounded cursor-pointer"
               />
-              <label className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => handleChange('isGroupHeader', formData.isGroupHeader !== undefined ? !formData.isGroupHeader : !isGroupHeader)}>
+              <label className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => {
+                if (itemType === 'root') {
+                  const val = !formData.isMegaGroup;
+                  handleChange('isMegaGroup', val);
+                  if (val) handleChange('href', '');
+                } else {
+                  const val = formData.isGroupHeader !== undefined ? !formData.isGroupHeader : !isGroupHeader;
+                  handleChange('isGroupHeader', val);
+                  if (val) handleChange('href', '');
+                }
+              }}>
                 Set Group Header
               </label>
             </div>

@@ -32,28 +32,26 @@ export const PageEditor = () => {
   const [selectedBlockType, setSelectedBlockType] = useState<string>('');
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
-  
-  const isFixedTemplatePage = ['/', 'yerawada-open-jail', 'gallery', 'our-products'].includes(slug);
-  
+  const isFixedTemplatePage = ['/', 'yerawada-open-jail', 'gallery', 'our-products', 'contact'].includes(slug);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeReady, setIsIframeReady] = useState(false);
 
   useEffect(() => {
-    if (isIframeReady && pageData && iframeRef.current?.contentWindow) {
+    if (isIframeReady && iframeRef.current?.contentWindow) {
       iframeRef.current.contentWindow.postMessage(
         {
           type: 'PREVIEW_UPDATE',
           component: 'Page',
           payload: { 
-            blocks: pageData.contentBlocks || [], 
+            blocks: pageData?.contentBlocks || [], 
             slug,
-            layoutType: pageData.layoutType 
+            layoutType: pageData?.layoutType 
           }
         },
         '*'
       );
     }
-  }, [isIframeReady, pageData]);
+  }, [isIframeReady, pageData, slug]);
 
   useEffect(() => {
     setPageNotFound(false);

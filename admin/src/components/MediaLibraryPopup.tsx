@@ -6,7 +6,7 @@ import { X, Upload, Image as ImageIcon, Search, Trash2, Loader2, FileText } from
 interface MediaLibraryPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelect: (url: string) => void;
+  onSelect?: (url: string) => void;
 }
 
 interface MediaItem {
@@ -265,19 +265,21 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
-          <Button variant="ghost" onClick={onClose}>Cancel</Button>
-          <Button 
-            variant="primary" 
-            disabled={!selectedImg}
-            onClick={() => {
-              if (selectedImg) {
-                onSelect(selectedImg);
-                onClose();
-              }
-            }}
-          >
-            Insert Media
-          </Button>
+          <Button variant="ghost" onClick={onClose}>{onSelect ? 'Cancel' : 'Close'}</Button>
+          {onSelect && (
+            <Button 
+              variant="primary" 
+              disabled={!selectedImg}
+              onClick={() => {
+                if (selectedImg && onSelect) {
+                  onSelect(selectedImg);
+                  onClose();
+                }
+              }}
+            >
+              Insert Media
+            </Button>
+          )}
         </div>
 
         {/* Upload Category Overlay Modal */}

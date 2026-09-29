@@ -82,8 +82,9 @@ import OfficialToursPage from '../pages/tours-visits/OfficialToursPage';
 import DignitaryVisitsPage from '../pages/tours-visits/DignitaryVisitsPage';
 import InspectionToursPage from '../pages/tours-visits/InspectionToursPage';
 import DepartmentalVisitsPage from '../pages/tours-visits/DepartmentalVisitsPage';
-import ContactPage from '../pages/contact';
+import ContactPage from '../pages/contact/ContactPage';
 import HomePage from '../pages/HomePage';
+import { BlankPageFallback } from './BlankPageFallback';
 
 interface PageRendererProps {
   slug: string;
@@ -92,7 +93,7 @@ interface PageRendererProps {
 }
 
 export const PageRenderer: React.FC<PageRendererProps> = ({ slug, layoutType, pageData }) => {
-  const templateLayouts = ['HeroFeaturesTimelineLayout', 'HeroStatsGrid', 'HeroThreeColGrid', 'HeroSplitTimeline', 'HeroFeatureList', 'ContactInfoGrid', 'ContentWithRightSidebar', 'ContentWithTabs', 'BasicFeatureGrid', 'CardsAndVerticalTimeline', 'IconsListWithTimeline', 'MinimalIconGrid', 'HeroBannerWithArticles', 'SideBySideListCards', 'HeroBannerWithBadges', 'HeroBannerWithMedia', 'ContentWithAccordion', 'ThreeColServiceCards', 'TwoColEventCards', 'HeroWithProcessGrid', 'HeroWithPricingList', 'HeroWithMenuGrid', 'GalleryLayout', 'ProductsLayout'];
+  const templateLayouts = ['HeroFeaturesTimelineLayout', 'HeroStatsGrid', 'HeroThreeColGrid', 'HeroSplitTimeline', 'HeroFeatureList', 'ContactInfoGrid', 'ContentWithRightSidebar', 'ContentWithTabs', 'BasicFeatureGrid', 'CardsAndVerticalTimeline', 'IconsListWithTimeline', 'MinimalIconGrid', 'HeroBannerWithArticles', 'SideBySideListCards', 'HeroBannerWithBadges', 'HeroBannerWithMedia', 'ContentWithAccordion', 'ThreeColServiceCards', 'TwoColEventCards', 'HeroWithProcessGrid', 'HeroWithPricingList', 'HeroWithMenuGrid', 'GalleryLayout', 'ProductsLayout', 'ContactUsLayout'];
   if (layoutType && templateLayouts.includes(layoutType)) {
     const rawData = pageData?.contentBlocks?.find((b: any) => b.blockType === 'page_template_data')?.content;
     const templateData = normalizeTemplateData(rawData, layoutType);
@@ -145,6 +146,8 @@ export const PageRenderer: React.FC<PageRendererProps> = ({ slug, layoutType, pa
       return <GalleryPage data={templateData} />;
     } else if (layoutType === 'ProductsLayout') {
       return <OurProductsPage data={templateData} />;
+    } else if (layoutType === 'ContactUsLayout') {
+      return <ContactPage data={templateData} />;
     }
   }
 
@@ -263,8 +266,9 @@ export const PageRenderer: React.FC<PageRendererProps> = ({ slug, layoutType, pa
     case 'tours-visits/departmental-visits':
       return <DepartmentalVisitsPage />;
     case 'contact':
-      return <ContactPage />;
+      const contactData = pageData?.contentBlocks?.find((b: any) => b.blockType === 'page_template_data')?.content;
+      return <ContactPage data={normalizeTemplateData(contactData, 'ContactUsLayout')} />;
     default:
-      return <div className="p-20 text-center text-slate-500 bg-white min-h-[500px]">Page Not Found: {slug}</div>;
+      return <BlankPageFallback path={slug} />;
   }
 };
