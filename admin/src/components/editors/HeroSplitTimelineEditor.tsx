@@ -240,11 +240,19 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
             onToggle={() => toggleFixedBlock('hero_content')} 
             history={{
               canUndo: heroContentHist.canUndo || securityHeaderHist.canUndo,
+              canRedo: heroContentHist.canRedo || securityHeaderHist.canRedo,
               undo: () => {
                 if (heroContentHist.canUndo) heroContentHist.undo();
                 if (securityHeaderHist.canUndo) securityHeaderHist.undo();
               },
-              isModified: heroContentHist.isModified || securityHeaderHist.isModified
+              redo: () => {
+                if (heroContentHist.canRedo) heroContentHist.redo();
+                if (securityHeaderHist.canRedo) securityHeaderHist.redo();
+              },
+              reset: () => {
+                heroContentHist.reset();
+                securityHeaderHist.reset();
+              }
             }}
           />
           {!!expandedFixedBlocks['hero_content'] && (

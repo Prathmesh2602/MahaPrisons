@@ -70,55 +70,55 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
   const renderEditor = () => {
     switch (layoutType) {
       case 'BasicFeatureGrid':
-        return <BasicFeatureGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <BasicFeatureGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'CardsAndVerticalTimeline':
-        return <CardsAndVerticalTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <CardsAndVerticalTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'ContactInfoGrid':
-        return <ContactInfoGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <ContactInfoGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'ContentWithAccordion':
-        return <ContentWithAccordionEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <ContentWithAccordionEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'ContentWithRightSidebar':
-        return <ContentWithRightSidebarEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <ContentWithRightSidebarEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'ContentWithTabs':
-        return <ContentWithTabsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <ContentWithTabsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroBannerWithArticles':
-        return <HeroBannerWithArticlesEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroBannerWithArticlesEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroBannerWithBadges':
-        return <HeroBannerWithBadgesEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroBannerWithBadgesEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroBannerWithMedia':
-        return <HeroBannerWithMediaEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroBannerWithMediaEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroWithMenuGrid':
-        return <HeroWithMenuGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroWithMenuGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroWithPricingList':
-        return <HeroWithPricingListEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroWithPricingListEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroWithProcessGrid':
-        return <HeroWithProcessGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroWithProcessGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'IconsListWithTimeline':
-        return <IconsListWithTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <IconsListWithTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'MinimalIconGrid':
-        return <MinimalIconGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <MinimalIconGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'SideBySideListCards':
-        return <SideBySideListCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <SideBySideListCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'ThreeColServiceCards':
-        return <ThreeColServiceCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <ThreeColServiceCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'TwoColEventCards':
-        return <TwoColEventCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <TwoColEventCardsEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroFeaturesTimelineLayout':
-        return <HeroFeaturesTimelineLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroFeaturesTimelineLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroStatsGrid':
-        return <HeroStatsGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroStatsGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroThreeColGrid':
-        return <HeroThreeColGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroThreeColGridEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroSplitTimeline':
-        return <HeroSplitTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroSplitTimelineEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'HeroFeatureList':
-        return <HeroFeatureListEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <HeroFeatureListEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'GalleryLayout':
-        return <GalleryLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <GalleryLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'ProductsLayout':
-        return <ProductsLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <ProductsLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       case 'ContactUsLayout':
-        return <ContactUsLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection} />;
+        return <ContactUsLayoutEditor data={data} updateData={updateData} blockId={blockId} expandedSection={expandedSection ?? undefined} />;
       default:
         return (
           <div className="p-4 bg-red-50 text-red-600 rounded-md">
