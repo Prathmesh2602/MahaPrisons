@@ -19,7 +19,7 @@ import { PrisonAdministrationEditor } from '../components/editors/PrisonAdminist
 import { PrisonActivitiesEditor } from '../components/editors/PrisonActivitiesEditor';
 import { TemplateEditorRenderer } from '../components/editors/TemplateEditorRenderer';
 import { getTemplateDummyData } from '../utils/templateDummyData';
-import { API_URL } from '../config/api';
+import { API_URL, FRONTEND_URL } from '../config/api';
 
 
 export const PageEditor = () => {
@@ -383,7 +383,7 @@ export const PageEditor = () => {
     <div className="flex h-full w-full bg-slate-50 overflow-hidden">
       {/* LEFT PANE: Live Preview */}
       <div className="w-[70%] border-r border-slate-200 flex flex-col bg-slate-100 overflow-hidden">
-        <div className="h-12 bg-white border-b border-slate-200 flex items-center justify-center text-sm font-medium text-slate-500 shadow-sm shrink-0">
+        <div className="h-12 bg-white border-b border-slate-200 flex items-center justify-center text-sm font-medium text-slate-500 shadow-sm shrink-0 font-marathi">
           Live Preview {menuItemData ? `(${menuItemData.label_mr} / ${menuItemData.label_en})` : `(${slug})`}
         </div>
         <div className="flex-1 p-2 overflow-hidden relative" ref={containerRef}>
@@ -397,7 +397,7 @@ export const PageEditor = () => {
           >
             <iframe
               ref={iframeRef}
-              src="http://localhost:3000/preview"
+              src={`${FRONTEND_URL}/preview`}
               className="w-full h-full border-0"
               title="Live Preview"
             />

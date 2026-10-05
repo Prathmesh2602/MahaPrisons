@@ -7,7 +7,7 @@ import { PhoneticInput } from '../components/PhoneticInput';
 import { EditorFormHeader, EditorBlock, EditorBlockHeader } from '../components/EditorLayout';
 import { MediaLibraryPopup } from '../components/MediaLibraryPopup';
 import { Save, Send, Layout, Type, ShieldCheck, ArrowLeft, Image as ImageIcon, Eye, EyeOff, Trash2, X, Monitor, ImagePlus } from 'lucide-react';
-import { API_URL } from '../config/api';
+import { API_URL, FRONTEND_URL } from '../config/api';
 
 
 type TabType = 'DASHBOARD' | 'HEADER' | 'FOOTER' | 'WALLPAPER' | 'LOGIN';
@@ -645,7 +645,7 @@ export const SettingsEditor = () => {
           <div className="w-full h-full bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden relative">
             <iframe
               ref={iframeRef}
-              src={activeTab === 'LOGIN' ? '/login?preview=true' : 'http://localhost:3000/preview'}
+              src={activeTab === 'LOGIN' ? '/login?preview=true' : `${FRONTEND_URL}/preview`}
               className="w-full h-full border-0"
               title="Live Preview"
             />

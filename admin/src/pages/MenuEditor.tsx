@@ -305,7 +305,7 @@ export const MenuEditor = () => {
             return !isRoot ? <icons.FileText size={16} className="text-gray-400 shrink-0" /> : <span className="w-4 shrink-0" />;
           })()}
 
-          <span className="font-medium text-gray-800 text-sm">{label_mr || 'New Item'}</span>
+          <span className="font-medium text-gray-800 text-sm font-marathi">{label_mr || 'New Item'}</span>
           <span className="text-gray-500 text-sm">({label_en || 'English'})</span>
           {isMegaGroup && <span className="ml-2 px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded">MEGA</span>}
         </div>

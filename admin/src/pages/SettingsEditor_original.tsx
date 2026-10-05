@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useBlockHistory } from '../hooks/useBlockHistory';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
@@ -606,7 +606,7 @@ export const SettingsEditor = () => {
           <div className="w-full h-full bg-white rounded-xl shadow-inner border border-slate-200 overflow-hidden">
             <iframe
               ref={iframeRef}
-              src="http://localhost:3000/preview"
+              src="http://localhost:3000"
               className="w-full h-full border-0"
               title="Live Preview"
             />
