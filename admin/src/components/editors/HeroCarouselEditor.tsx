@@ -8,7 +8,7 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Send, Save } from 'lucide-react';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
-import { API_URL } from '../../config/api';
+import { API_URL, FRONTEND_URL } from '../../config/api';
 
 
 const HeroCarouselSlide = ({
@@ -70,7 +70,7 @@ const HeroCarouselSlide = ({
             >
               {currentSlide.img_src ? (
                 <img 
-                  src={currentSlide.img_src.startsWith('http') ? currentSlide.img_src : `http://localhost:3000${currentSlide.img_src.startsWith('/') ? '' : '/'}${currentSlide.img_src}`} 
+                  src={currentSlide.img_src.startsWith('http') ? currentSlide.img_src : `${FRONTEND_URL}${currentSlide.img_src.startsWith('/') ? '' : '/'}${currentSlide.img_src}`} 
                   className="w-full h-full object-cover" 
                 />
               ) : (
@@ -182,7 +182,7 @@ const DirectorMessageBlock = ({ messageData, onUpdateFull, onMediaSelect, onTran
           <div className="w-24 h-24 shrink-0 rounded-md border border-slate-200 bg-slate-50 overflow-hidden relative group cursor-pointer" onClick={onMediaSelect}>
             {data.image ? (
               <img 
-                src={data.image.startsWith('http') ? data.image : `http://localhost:3000${data.image.startsWith('/') ? '' : '/'}${data.image}`} 
+                src={data.image.startsWith('http') ? data.image : `${FRONTEND_URL}${data.image.startsWith('/') ? '' : '/'}${data.image}`} 
                 className="w-full h-full object-cover" 
               />
             ) : (

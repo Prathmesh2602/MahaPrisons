@@ -8,7 +8,7 @@ import { useBlockEditorState } from '../../hooks/useBlockEditorState';
 import { Send, Save, Image as ImageIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
-import { API_URL } from '../../config/api';
+import { API_URL, FRONTEND_URL } from '../../config/api';
 
 
 const HeroContentBlock = ({ settingsData, onUpdateFull, onTranslate, onMediaOpen, isExpanded, onToggle }: any) => {
@@ -57,7 +57,7 @@ const HeroContentBlock = ({ settingsData, onUpdateFull, onTranslate, onMediaOpen
             >
               {currentData.bgImage ? (
                 <img 
-                  src={currentData.bgImage.startsWith('http') ? currentData.bgImage : `http://localhost:3000${currentData.bgImage.startsWith('/') ? '' : '/'}${currentData.bgImage}`} 
+                  src={currentData.bgImage.startsWith('http') ? currentData.bgImage : `${FRONTEND_URL}${currentData.bgImage.startsWith('/') ? '' : '/'}${currentData.bgImage}`} 
                   className="w-full h-full object-cover" 
                 />
               ) : (

@@ -8,7 +8,7 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Send, Save } from 'lucide-react';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
-import { API_URL } from '../../config/api';
+import { API_URL, FRONTEND_URL } from '../../config/api';
 
 
 const MinisterProfileBlock = ({
@@ -61,7 +61,7 @@ const MinisterProfileBlock = ({
               onClick={() => onMediaSelect(section, index)}
             >
               {(currentProfile.img || currentProfile.img_src) ? (
-                <img src={(currentProfile.img || currentProfile.img_src).startsWith('http') ? (currentProfile.img || currentProfile.img_src) : `http://localhost:3000${(currentProfile.img || currentProfile.img_src).startsWith('/') ? '' : '/'}${(currentProfile.img || currentProfile.img_src)}`} className="w-full h-full object-cover" />
+                <img src={(currentProfile.img || currentProfile.img_src).startsWith('http') ? (currentProfile.img || currentProfile.img_src) : `${FRONTEND_URL}${(currentProfile.img || currentProfile.img_src).startsWith('/') ? '' : '/'}${(currentProfile.img || currentProfile.img_src)}`} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
                   <ImageIcon size={24} />

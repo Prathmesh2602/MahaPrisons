@@ -8,7 +8,7 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Send, Save, Image as ImageIcon } from 'lucide-react';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
-import { API_URL } from '../../config/api';
+import { API_URL, FRONTEND_URL } from '../../config/api';
 
 
 const ActivitiesIntroBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
@@ -108,7 +108,7 @@ const ActivityBlock = ({ index, activityData, onUpdateFull, onRemove, onMoveUp, 
             >
               {currentActivity.image ? (
                 <img 
-                  src={currentActivity.image.startsWith('http') ? currentActivity.image : `http://localhost:3000${currentActivity.image.startsWith('/') ? '' : '/'}${currentActivity.image}`} 
+                  src={currentActivity.image.startsWith('http') ? currentActivity.image : `${FRONTEND_URL}${currentActivity.image.startsWith('/') ? '' : '/'}${currentActivity.image}`} 
                   className="w-full h-full object-cover" 
                 />
               ) : (

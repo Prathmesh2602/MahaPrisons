@@ -4,6 +4,7 @@ import { EditorBlockHeader } from '../../EditorLayout';
 import { Image as ImageIcon } from 'lucide-react';
 import { MediaLibraryPopup } from '../../MediaLibraryPopup';
 import { useState } from 'react';
+import { FRONTEND_URL } from '../../../config/api';
 
 export const GeneralSettingsBlock = ({ title, data, onChange, isExpanded: externalIsExpanded, onToggle: externalOnToggle }: any) => {
   const [isMediaPopupOpen, setIsMediaPopupOpen] = useState(false);
@@ -30,7 +31,7 @@ export const GeneralSettingsBlock = ({ title, data, onChange, isExpanded: extern
             >
               {data.image ? (
                 <img 
-                  src={data.image.startsWith('http') ? data.image : `http://localhost:3000${data.image.startsWith('/') ? '' : '/'}${data.image}`} 
+                  src={data.image.startsWith('http') ? data.image : `${FRONTEND_URL}${data.image.startsWith('/') ? '' : '/'}${data.image}`} 
                   className="w-full h-full object-cover" 
                   alt="Hero"
                 />
