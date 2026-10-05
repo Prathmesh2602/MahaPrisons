@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { useAccessibility } from '../hooks/useAccessibility';
 
-const ContactUsLayout = ({ data: dynamicData }) => {
+const ContactUsLayout = ({ data: dynamicData }: { data?: any }) => {
   const { language } = useAccessibility();
   
   // Static dummy data for the design review phase (fallback)
@@ -44,7 +44,7 @@ const ContactUsLayout = ({ data: dynamicData }) => {
 
   const data = dynamicData || defaultData;
 
-  const getTranslation = (obj) => (obj ? obj[language] || obj.en : '');
+  const getTranslation = (obj: any) => (obj ? obj[language] || obj.en : '');
 
   // Form state
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -80,8 +80,8 @@ const ContactUsLayout = ({ data: dynamicData }) => {
             initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2, duration: 0.6 }}
             className="space-y-8"
           >
-            {data.contactInfo.map((info, idx) => {
-              const icons = { MapPin, Phone, Mail, Clock };
+            {data.contactInfo.map((info: any, idx: number) => {
+              const icons: { [key: string]: any } = { MapPin, Phone, Mail, Clock };
               const Icon = icons[info.icon] || Mail;
               
               return (

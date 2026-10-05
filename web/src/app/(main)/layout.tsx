@@ -12,10 +12,10 @@ export default async function MainLayout({
   let settingsData = null;
 
   try {
-    const menuRes = await fetch('http://localhost:5000/api/v1/menu', { next: { revalidate: 60 } });
+    const menuRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/menu`, { next: { revalidate: 60 } });
     if (menuRes.ok) menuData = await menuRes.json();
 
-    const settingsRes = await fetch('http://localhost:5000/api/v1/settings', { next: { revalidate: 60 } });
+    const settingsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/settings`, { next: { revalidate: 60 } });
     if (settingsRes.ok) settingsData = await settingsRes.json();
   } catch (err) {
     console.error('Failed to fetch global data', err);

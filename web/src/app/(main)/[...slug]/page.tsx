@@ -2,7 +2,7 @@ import { PageRenderer } from '../../../components/PageRenderer';
 
 async function getPageData(slug: string, revisionId?: string) {
   try {
-    let url = `http://localhost:5000/api/v1/pages/by-slug?slug=${slug}`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/pages/by-slug?slug=${slug}`;
     if (revisionId) {
       url += `&revisionId=${revisionId}`;
     }

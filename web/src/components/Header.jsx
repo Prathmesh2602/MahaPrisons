@@ -9,13 +9,13 @@ export const Header = ({ settingsData }) => {
   const titleMr = settingsData?.header_config?.title_mr || 'येरवडा खुले जिल्हा कारागृह, पुणे';
   const subtitleEn = settingsData?.header_config?.subtitle_en || 'Yerwada Open District Prison Pune';
   const subtitleMr = settingsData?.header_config?.subtitle_mr || 'येरवडा खुले जिल्हा कारागृह, पुणे';
-  const logoSrc = settingsData?.header_config?.logo_src || 'http://localhost:5000/uploads/logo.jpeg';
+  const logoSrc = settingsData?.header_config?.logo_src || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/logo.jpeg`;
   const logoLink = settingsData?.header_config?.logo_link || 'https://www.maharashtra.gov.in';
   
   // Backward compatibility fallback for legacy settings
-  const legacyEmblemSrc = settingsData?.header_config?.state_emblem_src || 'http://localhost:5000/uploads/emblem.svg';
+  const legacyEmblemSrc = settingsData?.header_config?.state_emblem_src || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/emblem.svg`;
   const legacyEmblemLink = settingsData?.header_config?.emblem_link || 'https://www.india.gov.in';
-  const legacyDigitalIndiaSrc = settingsData?.header_config?.digital_india_src || 'http://localhost:5000/uploads/digital_india.png';
+  const legacyDigitalIndiaSrc = settingsData?.header_config?.digital_india_src || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/digital_india.png`;
   const legacyDigitalIndiaLink = settingsData?.header_config?.digital_india_link || 'https://digitalindia.gov.in';
 
   const rightLogos = settingsData?.header_config?.right_logos || [

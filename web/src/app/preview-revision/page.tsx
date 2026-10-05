@@ -1,14 +1,14 @@
 import { redirect } from 'next/navigation';
 import Layout from '../../components/Layout';
-import HomePage from '../../pages/HomePage';
+import HomePage from '../../views/HomePage';
 import { AccessibilityProvider } from '../../hooks/useAccessibility';
 
 async function getGlobalDataWithRevision(revisionId: string) {
   try {
     const [menuRes, settingsRes, revisionRes] = await Promise.all([
-      fetch('http://localhost:5000/api/v1/menu', { next: { revalidate: 60 } }),
-      fetch('http://localhost:5000/api/v1/settings', { next: { revalidate: 60 } }),
-      fetch(`http://localhost:5000/api/v1/review/public/${revisionId}`, { cache: 'no-store' })
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/menu`, { next: { revalidate: 60 } }),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/settings`, { next: { revalidate: 60 } }),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/review/public/${revisionId}`, { cache: 'no-store' })
     ]);
 
     let menuData = await menuRes.json();
@@ -43,7 +43,7 @@ export default async function PreviewRevisionPage({ searchParams }: { searchPara
   // Fetch home page data for HomePage
   let pageData = null;
   try {
-    const res = await fetch('http://localhost:5000/api/v1/pages/by-slug?slug=/', { cache: 'no-store' });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/pages/by-slug?slug=/`, { cache: 'no-store' });
     if (res.ok) pageData = await res.json();
   } catch (e) {
     console.error(e);

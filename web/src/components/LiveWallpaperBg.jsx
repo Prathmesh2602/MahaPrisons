@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 export const LiveWallpaperBg = ({ settingsData }) => {
   const [activeImage, setActiveImage] = useState(0);
   const [wallpaperImages, setWallpaperImages] = useState([
-    "http://localhost:5000/uploads/wallpaper_1.jpg",
-    "http://localhost:5000/uploads/wallpaper_2.jpg",
-    "http://localhost:5000/uploads/wallpaper_3.jpg",
-    "http://localhost:5000/uploads/wallpaper_4.jpg",
-    "http://localhost:5000/uploads/wallpaper_5.jpg"
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/wallpaper_1.jpg`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/wallpaper_2.jpg`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/wallpaper_3.jpg`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/wallpaper_4.jpg`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/wallpaper_5.jpg`
   ]);
   const [animationTime, setAnimationTime] = useState(4.8);
 
@@ -23,7 +23,7 @@ export const LiveWallpaperBg = ({ settingsData }) => {
       }
     } else {
       // Fetch live wallpaper settings from backend
-      fetch('http://localhost:5000/api/v1/settings/wallpaper_config')
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/settings/wallpaper_config`)
         .then(res => res.json())
         .then(data => {
           if (data && data.images && data.images.length > 0) {

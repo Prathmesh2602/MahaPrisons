@@ -21,8 +21,8 @@ export default function PreviewPage() {
     const fetchGlobalData = async () => {
       try {
         const [menuRes, settingsRes] = await Promise.all([
-          fetch('http://localhost:5000/api/v1/menu'),
-          fetch('http://localhost:5000/api/v1/settings')
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/menu`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/settings`)
         ]);
         if (menuRes.ok) setMenuData(await menuRes.json());
         if (settingsRes.ok) setGlobalSettings(await settingsRes.json());

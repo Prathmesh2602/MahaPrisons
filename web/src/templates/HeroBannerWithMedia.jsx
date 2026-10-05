@@ -15,7 +15,7 @@ const getIcon = (iconName, fallbackName) => {
 const getImageUrl = (url) => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
-  return `http://localhost:5000${url.startsWith('/') ? '' : '/'}${url}`;
+  return `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
 const HeroBannerWithMedia = ({ dataId, data: dynamicData }) => {

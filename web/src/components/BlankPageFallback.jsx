@@ -11,7 +11,7 @@ export const BlankPageFallback = ({ path }) => {
     // Fetch the menu to find the label for this path
     const fetchMenu = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/v1/menu');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/menu`);
         const data = await res.json();
         
         let foundLabelEn = path;
