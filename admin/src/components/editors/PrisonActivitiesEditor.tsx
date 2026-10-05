@@ -8,6 +8,8 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Send, Save, Image as ImageIcon } from 'lucide-react';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
+import { API_URL } from '../../config/api';
+
 
 const ActivitiesIntroBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
   const defaultSettings = { 
@@ -191,7 +193,7 @@ export const PrisonActivitiesEditor = ({ blockId, initialData, onPreviewUpdate }
   const handleTranslateGeneral = async (text: string, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) {
         const newData = JSON.parse(JSON.stringify(data));
@@ -272,7 +274,7 @@ export const PrisonActivitiesEditor = ({ blockId, initialData, onPreviewUpdate }
   const handleTranslateRoot = async (text: string, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateRootField(targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }
@@ -281,7 +283,7 @@ export const PrisonActivitiesEditor = ({ blockId, initialData, onPreviewUpdate }
   const handleTranslateActivity = async (text: string, index: number, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateActivityField(index, targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }

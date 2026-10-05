@@ -5,6 +5,8 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 interface HeroWithPricingListEditorProps {
   data: any;
@@ -253,7 +255,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
                 >
                   {currentHero.heroImage ? (
                     <>
-                      <img src={currentHero.heroImage.startsWith('http') ? currentHero.heroImage : `http://localhost:5000${currentHero.heroImage.startsWith('/') ? '' : '/'}${currentHero.heroImage}`} className="w-full h-full object-cover" alt="Preview" />
+                      <img src={currentHero.heroImage.startsWith('http') ? currentHero.heroImage : `${API_URL}${currentHero.heroImage.startsWith('/') ? '' : '/'}${currentHero.heroImage}`} className="w-full h-full object-cover" alt="Preview" />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <span className="text-white text-sm font-medium">Click to change</span>
                       </div>

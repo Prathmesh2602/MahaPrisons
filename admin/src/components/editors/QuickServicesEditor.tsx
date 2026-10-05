@@ -9,6 +9,8 @@ import { useBlockEditorState } from '../../hooks/useBlockEditorState';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { Button } from '../Button';
 import { useAuth } from '../../context/AuthContext';
+import { API_URL } from '../../config/api';
+
 
 const ImportantLinkBlock = ({
   index, linkData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, onTranslate,
@@ -282,7 +284,7 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
   const handleHeaderTranslate = async (text: string, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) {
         const newData = JSON.parse(JSON.stringify(data));
@@ -329,7 +331,7 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
   const handleTranslate = async (text: string, category: 'important_links' | 'helplines', index: number, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateItemField(category, index, targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }

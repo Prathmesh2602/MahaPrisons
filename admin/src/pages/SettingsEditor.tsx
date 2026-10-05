@@ -7,6 +7,8 @@ import { PhoneticInput } from '../components/PhoneticInput';
 import { EditorFormHeader, EditorBlock, EditorBlockHeader } from '../components/EditorLayout';
 import { MediaLibraryPopup } from '../components/MediaLibraryPopup';
 import { Save, Send, Layout, Type, ShieldCheck, ArrowLeft, Image as ImageIcon, Eye, EyeOff, Trash2, X, Monitor, ImagePlus } from 'lucide-react';
+import { API_URL } from '../config/api';
+
 
 type TabType = 'DASHBOARD' | 'HEADER' | 'FOOTER' | 'WALLPAPER' | 'LOGIN';
 
@@ -14,11 +16,11 @@ const DEFAULT_LOGIN_CONFIG = { backgroundImage: '' };
 
 const DEFAULT_WALLPAPER_CONFIG = {
   images: [
-    'http://localhost:5000/uploads/wallpaper_1.jpg',
-    'http://localhost:5000/uploads/wallpaper_2.jpg',
-    'http://localhost:5000/uploads/wallpaper_3.jpg',
-    'http://localhost:5000/uploads/wallpaper_4.jpg',
-    'http://localhost:5000/uploads/wallpaper_5.jpg'
+    `${API_URL}/uploads/wallpaper_1.jpg`,
+    `${API_URL}/uploads/wallpaper_2.jpg`,
+    `${API_URL}/uploads/wallpaper_3.jpg`,
+    `${API_URL}/uploads/wallpaper_4.jpg`,
+    `${API_URL}/uploads/wallpaper_5.jpg`
   ],
   animationTime: 4.8
 };
@@ -28,11 +30,11 @@ const DEFAULT_HEADER_CONFIG = {
   title_mr: 'येरवडा खुले जिल्हा कारागृह, पुणे',
   subtitle_en: 'Yerwada Open District Prison Pune',
   subtitle_mr: 'येरवडा खुले जिल्हा कारागृह, पुणे',
-  logo_src: 'http://localhost:5000/uploads/logo.jpeg',
+  logo_src: `${API_URL}/uploads/logo.jpeg`,
   logo_link: 'https://www.maharashtra.gov.in',
   right_logos: [
-    { src: 'http://localhost:5000/uploads/emblem.svg', link: 'https://www.india.gov.in' },
-    { src: 'http://localhost:5000/uploads/digital_india.png', link: 'https://digitalindia.gov.in' }
+    { src: `${API_URL}/uploads/emblem.svg`, link: 'https://www.india.gov.in' },
+    { src: `${API_URL}/uploads/digital_india.png`, link: 'https://digitalindia.gov.in' }
   ]
 };
 
@@ -213,7 +215,7 @@ export const SettingsEditor = () => {
 
   const fetchConfig = async (key: string) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/v1/settings/${key}`);
+      const res = await axios.get(`${API_URL}/api/v1/settings/${key}`);
       if (res.data && Object.keys(res.data).length > 0) {
         if (key === 'header_config') {
           setHeaderConfig((prev: any) => {
@@ -451,7 +453,7 @@ export const SettingsEditor = () => {
   const handleCustomTranslate = async (text: string, callback: (translated: string) => void) => {
     if (!text.trim()) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/v1/translate?text=${encodeURIComponent(text)}&source=mr&target=en`);
+      const res = await axios.get(`${API_URL}/api/v1/translate?text=${encodeURIComponent(text)}&source=mr&target=en`);
       if (res.data && res.data.responseData) {
         callback(res.data.responseData.translatedText);
       }
@@ -463,7 +465,7 @@ export const SettingsEditor = () => {
   const handleTranslate = async (text: string, englishField: string, isHeader: boolean) => {
     if (!text.trim()) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/v1/translate?text=${encodeURIComponent(text)}&source=mr&target=en`);
+      const res = await axios.get(`${API_URL}/api/v1/translate?text=${encodeURIComponent(text)}&source=mr&target=en`);
       if (res.data && res.data.responseData) {
         if (isHeader) {
           updateHeaderConfig(englishField, res.data.responseData.translatedText);
@@ -529,7 +531,7 @@ export const SettingsEditor = () => {
   const handleSave = async (key: string, payload: any) => {
     try {
       const changeSummary = generateSettingsSummary(key);
-      const res = await axios.put(`http://localhost:5000/api/v1/settings/${key}`, { payload, changeSummary }, {
+      const res = await axios.put(`${API_URL}/api/v1/settings/${key}`, { payload, changeSummary }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -1239,7 +1241,7 @@ function ProfilePasswordPopup({ isOpen, onClose }: { isOpen: boolean, onClose: (
       return;
     }
     try {
-      const res = await axios.put('http://localhost:5000/api/v1/users/profile/password', {
+      const res = await axios.put(`${API_URL}/api/v1/users/profile/password`, {
         currentPassword,
         newPassword
       }, {

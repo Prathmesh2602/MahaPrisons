@@ -5,6 +5,8 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 interface HeroWithMenuGridEditorProps {
   data: any;
@@ -164,7 +166,7 @@ export const HeroWithMenuGridEditor: React.FC<HeroWithMenuGridEditorProps> = ({ 
                   {safeData.heroImage || safeData.hero?.heroImage ? (
                     <>
                       <img
-                        src={(safeData.heroImage || safeData.hero?.heroImage).startsWith('http') ? (safeData.heroImage || safeData.hero?.heroImage) : `http://localhost:5000${(safeData.heroImage || safeData.hero?.heroImage).startsWith('/') ? '' : '/'}${(safeData.heroImage || safeData.hero?.heroImage)}`}
+                        src={(safeData.heroImage || safeData.hero?.heroImage).startsWith('http') ? (safeData.heroImage || safeData.hero?.heroImage) : `${API_URL}${(safeData.heroImage || safeData.hero?.heroImage).startsWith('/') ? '' : '/'}${(safeData.heroImage || safeData.hero?.heroImage)}`}
                         className="w-full h-full object-cover"
                         alt="Preview"
                       />
@@ -278,7 +280,7 @@ export const HeroWithMenuGridEditor: React.FC<HeroWithMenuGridEditorProps> = ({ 
                   {safeData.secondaryImage || safeData.hero?.secondaryImage ? (
                     <>
                       <img
-                        src={(safeData.secondaryImage || safeData.hero?.secondaryImage).startsWith('http') ? (safeData.secondaryImage || safeData.hero?.secondaryImage) : `http://localhost:5000${(safeData.secondaryImage || safeData.hero?.secondaryImage).startsWith('/') ? '' : '/'}${(safeData.secondaryImage || safeData.hero?.secondaryImage)}`}
+                        src={(safeData.secondaryImage || safeData.hero?.secondaryImage).startsWith('http') ? (safeData.secondaryImage || safeData.hero?.secondaryImage) : `${API_URL}${(safeData.secondaryImage || safeData.hero?.secondaryImage).startsWith('/') ? '' : '/'}${(safeData.secondaryImage || safeData.hero?.secondaryImage)}`}
                         className="w-full h-full object-cover"
                         alt="Preview"
                       />

@@ -5,6 +5,8 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 interface HeroWithProcessGridEditorProps {
   data: any;
@@ -249,7 +251,7 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
                   >
                     {safeData.hero?.heroImage ? (
                       <img
-                        src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `http://localhost:5000${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`}
+                        src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `${API_URL}${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`}
                         className="w-full h-full object-cover"
                         alt="Preview"
                       />

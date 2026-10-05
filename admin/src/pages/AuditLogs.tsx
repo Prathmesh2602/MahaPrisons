@@ -3,6 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { Shield, Eye, Calendar, Clock, CheckCircle, XCircle, Clock3 } from 'lucide-react';
 import { Button } from '../components/Button';
 import { ReviewDiffViewer } from '../components/ReviewDiffViewer';
+import { API_URL } from '../config/api';
+
 
 interface Revision {
   id: string;
@@ -34,7 +36,7 @@ export const AuditLogs = () => {
 
   const fetchLogs = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/v1/review/history', {
+      const res = await fetch(`${API_URL}/api/v1/review/history`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

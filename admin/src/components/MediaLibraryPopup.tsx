@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Button } from './Button';
 import { X, Upload, Image as ImageIcon, Search, Trash2, Loader2, FileText } from 'lucide-react';
+import { API_URL } from '../config/api';
+
 
 interface MediaLibraryPopupProps {
   isOpen: boolean;
@@ -15,7 +17,7 @@ interface MediaItem {
   url: string;
 }
 
-const getFullUrl = (url: string) => url.startsWith('http') ? url : `http://localhost:5000${url}`;
+const getFullUrl = (url: string) => url.startsWith('http') ? url : `${API_URL}${url}`;
 
 export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, onClose, onSelect }) => {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
@@ -37,7 +39,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
 
   const fetchSettings = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/settings');
+      const res = await axios.get(`${API_URL}/api/v1/settings`);
       setSettingsData(res.data);
     } catch (err) {
       console.error('Failed to fetch settings:', err);
@@ -46,7 +48,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
 
   const fetchMedia = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/media');
+      const res = await axios.get(`${API_URL}/api/v1/media`);
       setMediaList(res.data);
     } catch (err) {
       console.error('Failed to fetch media:', err);
@@ -85,7 +87,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
 
     try {
       setIsUploading(true);
-      const res = await axios.post('http://localhost:5000/api/v1/media/upload', formData, {
+      const res = await axios.post(`${API_URL}/api/v1/media/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -108,7 +110,7 @@ export const MediaLibraryPopup: React.FC<MediaLibraryPopupProps> = ({ isOpen, on
     if (!confirm('Are you sure you want to delete this image?')) return;
     
     try {
-      await axios.delete(`http://localhost:5000/api/v1/media/${id}`, {
+      await axios.delete(`${API_URL}/api/v1/media/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setMediaList(prev => prev.filter(m => m.id !== id));

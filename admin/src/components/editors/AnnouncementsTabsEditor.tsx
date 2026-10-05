@@ -8,6 +8,8 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Send, Save, Plus, FileText, Upload } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 const AnnouncementItemBlock = ({
   tabIndex, itemIndex, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, onTranslate,
@@ -308,7 +310,7 @@ export const AnnouncementsTabsEditor = ({ blockId, initialData, onPreviewUpdate 
   const handleTranslate = async (text: string, onTranslateSuccess: (translated: string) => void) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) onTranslateSuccess(translatedText);
     } catch (err) { console.error('Translation failed', err); }

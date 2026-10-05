@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Shield } from 'lucide-react';
 import { Button } from '../components/Button';
 import { motion } from 'framer-motion';
+import { API_URL } from '../config/api';
+
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('admin@mahaprisons.gov.in');
@@ -14,7 +16,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     // Fetch login page configuration
-    axios.get('http://localhost:5000/api/v1/settings/login_config')
+    axios.get(`${API_URL}/api/v1/settings/login_config`)
       .then(res => {
         if (res.data && res.data.backgroundImage) {
           setBgImage(res.data.backgroundImage);
@@ -47,7 +49,7 @@ export const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/v1/auth/login', { email, password });
+      const res = await axios.post(`${API_URL}/api/v1/auth/login`, { email, password });
       login(res.data.token, res.data.user);
     } catch (err) {
       setError('Invalid email or password');

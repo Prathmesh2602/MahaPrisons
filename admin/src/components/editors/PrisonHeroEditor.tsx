@@ -8,6 +8,8 @@ import { useBlockEditorState } from '../../hooks/useBlockEditorState';
 import { Send, Save, Image as ImageIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 const HeroContentBlock = ({ settingsData, onUpdateFull, onTranslate, onMediaOpen, isExpanded, onToggle }: any) => {
   const defaultSettings = { 
@@ -127,7 +129,7 @@ export const PrisonHeroEditor = ({ blockId, initialData, onPreviewUpdate }: any)
   const handleTranslateGeneral = async (text: string, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) {
         const newData = JSON.parse(JSON.stringify(data));

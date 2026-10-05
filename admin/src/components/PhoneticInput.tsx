@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config/api';
+
 
 interface PhoneticInputProps {
   label?: string;
@@ -67,7 +69,7 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
     setFetchError(null);
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/v1/transliterate?text=${encodeURIComponent(word)}`);
+      const res = await axios.get(`${API_URL}/api/v1/transliterate?text=${encodeURIComponent(word)}`);
       if (res.data[0] === 'SUCCESS') {
         const transliteratedWords = res.data[1][0][1];
         setSuggestions(transliteratedWords);
@@ -191,7 +193,7 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
     } else if (onEnglishChange && value.trim()) {
       setIsTranslating(true);
       try {
-        const res = await axios.get('http://localhost:5000/api/v1/translate', {
+        const res = await axios.get(`${API_URL}/api/v1/translate`, {
           params: { text: value, source: 'mr', target: 'en' }
         });
         const translatedText = res.data?.responseData?.translatedText;

@@ -7,6 +7,8 @@ import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Send, Save } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { API_URL } from '../../config/api';
+
 
 const TimelineIntroBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
   const defaultSettings = { 
@@ -142,7 +144,7 @@ export const PrisonTimelineEditor = ({ blockId, initialData, onPreviewUpdate }: 
   const handleTranslateGeneral = async (text: string, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) {
         const newData = JSON.parse(JSON.stringify(data));
@@ -212,7 +214,7 @@ export const PrisonTimelineEditor = ({ blockId, initialData, onPreviewUpdate }: 
   const handleTranslateEvent = async (text: string, index: number, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateEventField(index, targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }

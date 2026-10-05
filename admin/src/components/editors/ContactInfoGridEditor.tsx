@@ -5,6 +5,8 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 interface ContactInfoGridEditorProps {
   data: any;
@@ -250,7 +252,7 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
                   {heroBannerHist.value.heroImage ? (
                     <>
                       <img
-                        src={heroBannerHist.value.heroImage.startsWith('http') ? heroBannerHist.value.heroImage : `http://localhost:5000${heroBannerHist.value.heroImage.startsWith('/') ? '' : '/'}${heroBannerHist.value.heroImage}`}
+                        src={heroBannerHist.value.heroImage.startsWith('http') ? heroBannerHist.value.heroImage : `${API_URL}${heroBannerHist.value.heroImage.startsWith('/') ? '' : '/'}${heroBannerHist.value.heroImage}`}
                         className="w-full h-full object-cover"
                         alt="Preview"
                       />

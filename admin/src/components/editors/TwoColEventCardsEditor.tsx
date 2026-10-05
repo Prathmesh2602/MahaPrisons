@@ -5,6 +5,8 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 interface TwoColEventCardsEditorProps {
   data: any;
@@ -231,7 +233,7 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
                   >
                     {heroBannerHist.value.heroImage ? (
                       <>
-                        <img src={heroBannerHist.value.heroImage.startsWith('http') ? heroBannerHist.value.heroImage : `http://localhost:5000${heroBannerHist.value.heroImage.startsWith('/') ? '' : '/'}${heroBannerHist.value.heroImage}`} className="w-full h-full object-cover" alt="Preview" />
+                        <img src={heroBannerHist.value.heroImage.startsWith('http') ? heroBannerHist.value.heroImage : `${API_URL}${heroBannerHist.value.heroImage.startsWith('/') ? '' : '/'}${heroBannerHist.value.heroImage}`} className="w-full h-full object-cover" alt="Preview" />
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><span className="text-white text-sm font-medium">Click to change</span></div>
                       </>
                     ) : (
@@ -249,7 +251,7 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
                   >
                     {heroBannerHist.value.muralImage ? (
                       <>
-                        <img src={heroBannerHist.value.muralImage.startsWith('http') ? heroBannerHist.value.muralImage : `http://localhost:5000${heroBannerHist.value.muralImage.startsWith('/') ? '' : '/'}${heroBannerHist.value.muralImage}`} className="w-full h-full object-cover" alt="Preview" />
+                        <img src={heroBannerHist.value.muralImage.startsWith('http') ? heroBannerHist.value.muralImage : `${API_URL}${heroBannerHist.value.muralImage.startsWith('/') ? '' : '/'}${heroBannerHist.value.muralImage}`} className="w-full h-full object-cover" alt="Preview" />
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><span className="text-white text-sm font-medium">Click to change</span></div>
                       </>
                     ) : (

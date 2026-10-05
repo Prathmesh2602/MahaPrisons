@@ -7,6 +7,8 @@ import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Send, Save, Plus } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { API_URL } from '../../config/api';
+
 
 const HolidayBlock = ({
   index, holidayData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, onTranslate,
@@ -150,7 +152,7 @@ export const HolidayCalendarEditor = ({ blockId, initialData, onPreviewUpdate }:
   const handleTranslate = async (text: string, index: number, isEnglish: boolean) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: isEnglish ? 'en' : 'mr', target: isEnglish ? 'mr' : 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: isEnglish ? 'en' : 'mr', target: isEnglish ? 'mr' : 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) {
         updateHolidayField(index, isEnglish ? 'title_mr' : 'title_en', translatedText);

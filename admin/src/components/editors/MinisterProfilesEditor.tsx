@@ -8,6 +8,8 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Send, Save } from 'lucide-react';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
+import { API_URL } from '../../config/api';
+
 
 const MinisterProfileBlock = ({
   index, section, profileData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, onMediaSelect, onTranslate,
@@ -173,7 +175,7 @@ export const MinisterProfilesEditor = ({ blockId, initialData, onPreviewUpdate }
   const handleTranslate = async (text: string, section: string, index: number, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', {
+      const res = await axios.get(`${API_URL}/api/v1/translate`, {
         params: { text, source: 'mr', target: 'en' }
       });
       const translatedText = res.data?.responseData?.translatedText;

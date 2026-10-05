@@ -8,6 +8,8 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Send, Save } from 'lucide-react';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
+import { API_URL } from '../../config/api';
+
 
 const HeroCarouselSlide = ({
   index, slideData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, onMediaSelect, onTranslate,
@@ -221,7 +223,7 @@ export const HeroCarouselEditor = ({ blockId, initialData, onPreviewUpdate }: an
   
   const defaultSlides = [
     {
-      img_src: "http://localhost:5000/uploads/rehab_hero.png",
+      img_src: `${API_URL}/uploads/rehab_hero.png`,
       img_alt: "येरवडा खुले कारागृह",
       category: { mr: "पुनर्वसन", en: "Rehabilitation" },
       title: { mr: "येरवडा खुले कारागृह", en: "Yerawada Open Prison" },
@@ -231,7 +233,7 @@ export const HeroCarouselEditor = ({ blockId, initialData, onPreviewUpdate }: an
       cta2: { mr: "उपक्रम पहा", en: "View Initiatives", href: "#" }
     },
     {
-      img_src: "http://localhost:5000/uploads/farming_hero.png",
+      img_src: `${API_URL}/uploads/farming_hero.png`,
       img_alt: "शेती उपक्रम",
       category: { mr: "शेती", en: "Agriculture" },
       title: { mr: "मातीशी नातं", en: "Bond with Soil" },
@@ -246,7 +248,7 @@ export const HeroCarouselEditor = ({ blockId, initialData, onPreviewUpdate }: an
     name: { mr: "श्री. सुहास वारके", en: "Shri. Suhas Warke" },
     designation: { mr: "अपर पोलीस महासंचालक व महानिरीक्षक", en: "ADG & Director General" },
     quote: { mr: "सुरक्षितता, सुधारणा आणि पुनर्वसन ही आमची मुख्य सूत्रे आहेत. आम्ही बंदीवानांना कौशल्यपूर्ण प्रशिक्षण देऊन समाजाचा एक उपयुक्त घटक बनविण्यासाठी कटिबद्ध आहोत.", en: "Security, correction, and rehabilitation are our guiding pillars. We are committed to equipping inmates with skills to make them productive members of society." },
-    image: "http://localhost:5000/uploads/adg_sir.jpeg",
+    image: `${API_URL}/uploads/adg_sir.jpeg`,
     link: "#"
   };
 
@@ -358,7 +360,7 @@ export const HeroCarouselEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const handleTranslate = async (text: string, index: number, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', {
+      const res = await axios.get(`${API_URL}/api/v1/translate`, {
         params: { text, source: 'mr', target: 'en' }
       });
       const translatedText = res.data?.responseData?.translatedText;

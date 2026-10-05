@@ -5,6 +5,8 @@ import { PhoneticInput } from './PhoneticInput';
 import { IconPicker } from './IconPicker';
 import { Button } from './Button';
 import axios from 'axios';
+import { API_URL } from '../config/api';
+
 
 interface MenuEditorFormProps {
   item: any;
@@ -43,7 +45,7 @@ export const MenuEditorForm: React.FC<MenuEditorFormProps> = ({ item, itemType =
   const handleTranslate = async (text: string, englishField: string) => {
     if (!text.trim()) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/v1/translate?text=${encodeURIComponent(text)}&source=mr&target=en`);
+      const res = await axios.get(`${API_URL}/api/v1/translate?text=${encodeURIComponent(text)}&source=mr&target=en`);
       if (res.data && res.data.responseData) {
         handleChange(englishField, res.data.responseData.translatedText);
       }

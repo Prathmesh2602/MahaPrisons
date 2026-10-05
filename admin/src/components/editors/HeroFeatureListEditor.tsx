@@ -5,6 +5,8 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 interface HeroFeatureListEditorProps {
   data: any;
@@ -94,7 +96,7 @@ const ContentSectionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, on
             >
               {currentItem.image ? (
                 <img
-                  src={currentItem.image.startsWith('http') ? currentItem.image : `http://localhost:5000${currentItem.image.startsWith('/') ? '' : '/'}${currentItem.image}`}
+                  src={currentItem.image.startsWith('http') ? currentItem.image : `${API_URL}${currentItem.image.startsWith('/') ? '' : '/'}${currentItem.image}`}
                   className="w-full h-full object-cover"
                   alt="Preview"
                 />
@@ -281,7 +283,7 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
                 >
                   {heroCombinedHist.value.hero.heroImage ? (
                     <img
-                      src={heroCombinedHist.value.hero.heroImage.startsWith('http') ? heroCombinedHist.value.hero.heroImage : `http://localhost:5000${heroCombinedHist.value.hero.heroImage.startsWith('/') ? '' : '/'}${heroCombinedHist.value.hero.heroImage}`}
+                      src={heroCombinedHist.value.hero.heroImage.startsWith('http') ? heroCombinedHist.value.hero.heroImage : `${API_URL}${heroCombinedHist.value.hero.heroImage.startsWith('/') ? '' : '/'}${heroCombinedHist.value.hero.heroImage}`}
                       className="w-full h-full object-cover"
                       alt="Preview"
                     />

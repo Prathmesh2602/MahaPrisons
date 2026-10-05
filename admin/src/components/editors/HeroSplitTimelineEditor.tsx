@@ -5,6 +5,8 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 interface HeroSplitTimelineEditorProps {
   data: any;
@@ -93,7 +95,7 @@ const InfrastructureEditorItem = ({ index, itemData, onUpdateFull, onRemove, onM
             >
               {currentItem.image ? (
                 <img
-                  src={currentItem.image.startsWith('http') ? currentItem.image : `http://localhost:5000${currentItem.image.startsWith('/') ? '' : '/'}${currentItem.image}`}
+                  src={currentItem.image.startsWith('http') ? currentItem.image : `${API_URL}${currentItem.image.startsWith('/') ? '' : '/'}${currentItem.image}`}
                   className="w-full h-full object-cover"
                   alt="Preview"
                 />
@@ -285,7 +287,7 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
                 >
                   {heroContentHist.value.heroImage ? (
                     <img
-                      src={heroContentHist.value.heroImage.startsWith('http') ? heroContentHist.value.heroImage : `http://localhost:5000${heroContentHist.value.heroImage.startsWith('/') ? '' : '/'}${heroContentHist.value.heroImage}`}
+                      src={heroContentHist.value.heroImage.startsWith('http') ? heroContentHist.value.heroImage : `${API_URL}${heroContentHist.value.heroImage.startsWith('/') ? '' : '/'}${heroContentHist.value.heroImage}`}
                       className="w-full h-full object-cover"
                       alt="Preview"
                     />

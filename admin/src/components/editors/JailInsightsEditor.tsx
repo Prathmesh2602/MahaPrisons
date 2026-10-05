@@ -9,6 +9,8 @@ import { useAuth } from '../../context/AuthContext';
 import { Button } from '../Button';
 import { IconPicker } from '../IconPicker';
 import * as lucideIcons from 'lucide-react';
+import { API_URL } from '../../config/api';
+
 
 const GeneralSettingsBlock = ({ settingsData, onUpdateFull, onTranslate, isExpanded, onToggle }: any) => {
   const defaultSettings = { 
@@ -189,7 +191,7 @@ export const JailInsightsEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const handleTranslateGeneral = async (text: string, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) {
         const newData = JSON.parse(JSON.stringify(data));
@@ -238,7 +240,7 @@ export const JailInsightsEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const handleTranslateCard = async (text: string, index: number, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateCardField(index, targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }

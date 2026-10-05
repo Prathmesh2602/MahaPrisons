@@ -8,6 +8,8 @@ import { Button } from '../Button';
 import { Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Send, Save, User } from 'lucide-react';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { useAuth } from '../../context/AuthContext';
+import { API_URL } from '../../config/api';
+
 
 const IntroDescriptionBlock = ({ introData, onUpdateFull, onTranslateRoot, isExpanded, onToggle }: any) => {
   const defaultIntro = { aboutText: { mr: "", en: "" }, welcomeTitle: { mr: "", en: "" } };
@@ -226,7 +228,7 @@ export const AboutSectionEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const handleTranslateRoot = async (text: string, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateRootField(targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }
@@ -235,7 +237,7 @@ export const AboutSectionEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const handleTranslateOfficer = async (text: string, index: number, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateOfficerField(index, targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }

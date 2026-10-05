@@ -19,6 +19,8 @@ import { PrisonAdministrationEditor } from '../components/editors/PrisonAdminist
 import { PrisonActivitiesEditor } from '../components/editors/PrisonActivitiesEditor';
 import { TemplateEditorRenderer } from '../components/editors/TemplateEditorRenderer';
 import { getTemplateDummyData } from '../utils/templateDummyData';
+import { API_URL } from '../config/api';
+
 
 export const PageEditor = () => {
   const [searchParams] = useSearchParams();
@@ -76,7 +78,7 @@ export const PageEditor = () => {
 
   const fetchPageData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/v1/pages/by-slug?slug=${slug}`);
+      const res = await axios.get(`${API_URL}/api/v1/pages/by-slug?slug=${slug}`);
       if (res.data) {
         const fetchedData = res.data;
         const templateBlock = fetchedData.contentBlocks?.find((b: any) => b.blockType === 'page_template_data');
@@ -92,7 +94,7 @@ export const PageEditor = () => {
       }
       
       try {
-        const menuRes = await axios.get('http://localhost:5000/api/v1/menu');
+        const menuRes = await axios.get(`${API_URL}/api/v1/menu`);
         if (menuRes.data) {
           let foundMenu = null;
           const findMenu = (items: any[]) => {
@@ -257,12 +259,12 @@ export const PageEditor = () => {
         newContent._previous_layout = null;
 
         const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:5000/api/v1/pages/blocks/${templateBlock.id}`, {
+        await axios.put(`${API_URL}/api/v1/pages/blocks/${templateBlock.id}`, {
           content: newContent,
           changeSummary: `Reverted layout to ${previousLayout}`
         }, { headers: { Authorization: `Bearer ${token}` }});
 
-        const res = await axios.put(`http://localhost:5000/api/v1/pages/${pageData.id}/layout`, {
+        const res = await axios.put(`${API_URL}/api/v1/pages/${pageData.id}/layout`, {
           layoutType: previousLayout,
           changeSummary: `Reverted layout to ${previousLayout}`
         }, { headers: { Authorization: `Bearer ${token}` }});

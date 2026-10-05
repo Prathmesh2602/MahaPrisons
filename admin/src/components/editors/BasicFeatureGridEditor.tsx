@@ -5,6 +5,8 @@ import { IconPickerInput } from './shared/IconPickerInput';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
+import { API_URL } from '../../config/api';
+
 
 interface BasicFeatureGridEditorProps {
   data: any;
@@ -319,7 +321,7 @@ export const BasicFeatureGridEditor: React.FC<BasicFeatureGridEditorProps> = ({ 
                   {(safeData.hero?.heroImage || safeData.heroImage) ? (
                     <>
                       <img
-                        src={(safeData.hero?.heroImage || safeData.heroImage).startsWith('http') ? (safeData.hero?.heroImage || safeData.heroImage) : `http://localhost:5000${(safeData.hero?.heroImage || safeData.heroImage).startsWith('/') ? '' : '/'}${(safeData.hero?.heroImage || safeData.heroImage)}`}
+                        src={(safeData.hero?.heroImage || safeData.heroImage).startsWith('http') ? (safeData.hero?.heroImage || safeData.heroImage) : `${API_URL}${(safeData.hero?.heroImage || safeData.heroImage).startsWith('/') ? '' : '/'}${(safeData.hero?.heroImage || safeData.heroImage)}`}
                         className="w-full h-full object-cover"
                         alt="Preview"
                       />

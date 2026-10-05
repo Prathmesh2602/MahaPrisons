@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { CheckCircle, XCircle, Clock, Eye, Trash2, CheckCircle2, AlertCircle, Info, RefreshCcw } from 'lucide-react';
 import { ReviewDiffViewer } from '../components/ReviewDiffViewer';
 import { Button } from '../components/Button';
+import { API_URL } from '../config/api';
+
 
 interface Revision {
   id: string;
@@ -34,8 +36,8 @@ export const ReviewDashboard: React.FC = () => {
   const fetchRevisions = async () => {
     try {
       const endpoint = user?.role === 'MAKER'
-        ? 'http://localhost:5000/api/v1/review/my-requests'
-        : 'http://localhost:5000/api/v1/review/pending';
+        ? `${API_URL}/api/v1/review/my-requests`
+        : `${API_URL}/api/v1/review/pending`;
       const res = await axios.get(endpoint);
       setRevisions(res.data);
     } catch (err) {
@@ -53,7 +55,7 @@ export const ReviewDashboard: React.FC = () => {
 
   const handleApprove = async (id: string) => {
     try {
-      await axios.post(`http://localhost:5000/api/v1/review/${id}/approve`);
+      await axios.post(`${API_URL}/api/v1/review/${id}/approve`);
       alert('Revision approved and published successfully.');
       setPreviewRevision(null);
       fetchRevisions();
@@ -68,7 +70,7 @@ export const ReviewDashboard: React.FC = () => {
       return;
     }
     try {
-      await axios.post(`http://localhost:5000/api/v1/review/${id}/reject`, { rejectReason });
+      await axios.post(`${API_URL}/api/v1/review/${id}/reject`, { rejectReason });
       alert('Revision rejected.');
       setPreviewRevision(null);
       setRejectReason('');
@@ -81,7 +83,7 @@ export const ReviewDashboard: React.FC = () => {
   const handleCancel = async (id: string) => {
     if (!confirm('Are you sure you want to cancel this request?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/v1/review/${id}`);
+      await axios.delete(`${API_URL}/api/v1/review/${id}`);
       fetchRevisions();
     } catch (err) {
       alert('Failed to cancel request.');

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Users, Plus, Edit2, Trash2, Shield, Search, X } from 'lucide-react';
 import { Button } from '../components/Button';
+import { API_URL } from '../config/api';
+
 interface UserData {
   id: string;
   email: string;
@@ -31,7 +33,7 @@ export const UserManagement: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/users', {
+      const res = await axios.get(`${API_URL}/api/v1/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data);
@@ -78,12 +80,12 @@ export const UserManagement: React.FC = () => {
     e.preventDefault();
     try {
       if (editingUser) {
-        await axios.put(`http://localhost:5000/api/v1/users/${editingUser.id}`, formData, {
+        await axios.put(`${API_URL}/api/v1/users/${editingUser.id}`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         alert('User updated successfully');
       } else {
-        await axios.post('http://localhost:5000/api/v1/users', formData, {
+        await axios.post(`${API_URL}/api/v1/users`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         alert('User created successfully');
@@ -98,7 +100,7 @@ export const UserManagement: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/v1/users/${id}`, {
+        await axios.delete(`${API_URL}/api/v1/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         alert('User deleted');

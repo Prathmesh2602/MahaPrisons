@@ -12,6 +12,8 @@ import { AuditLogs } from './pages/AuditLogs';
 import { Button } from './components/Button';
 import { MediaLibraryPopup } from './components/MediaLibraryPopup';
 import { LayoutDashboard, Settings, Menu as MenuIcon, LogOut, CheckSquare, Shield, ShieldCheck, Image as ImageIcon, FileText, Users, X } from 'lucide-react';
+import { API_URL } from './config/api';
+
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { token } = useAuth();
@@ -43,7 +45,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           title={!isSidebarExpanded ? "Expand Sidebar" : undefined}
         >
           <div className={`flex items-center gap-3 overflow-hidden whitespace-nowrap ${isSidebarExpanded ? 'flex-1' : ''}`}>
-            <img src="http://localhost:5000/uploads/logo.jpeg" alt="Logo" className="w-10 h-10 min-w-[40px] rounded-md object-cover shrink-0 bg-white" />
+            <img src={`${API_URL}/uploads/logo.jpeg`} alt="Logo" className="w-10 h-10 min-w-[40px] rounded-md object-cover shrink-0 bg-white" />
             <h2 className={`text-base font-bold text-white tracking-wide transition-opacity duration-200 ${isSidebarExpanded ? 'opacity-100' : 'opacity-0 w-0 hidden'}`}>MahaPrisons</h2>
           </div>
           {isSidebarExpanded && (
@@ -120,7 +122,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         {/* Mobile Header */}
         <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 shrink-0 shadow-sm z-30 min-h-[60px]">
           <div className="flex items-center gap-3">
-            <img src="http://localhost:5000/uploads/logo.jpeg" alt="Logo" className="w-10 h-10 rounded-md object-cover shrink-0" />
+            <img src={`${API_URL}/uploads/logo.jpeg`} alt="Logo" className="w-10 h-10 rounded-md object-cover shrink-0" />
             <h2 className="text-base font-bold text-slate-800">MahaPrisons</h2>
           </div>
           <button onClick={() => setIsMobileMenuOpen(true)} className="text-slate-600 hover:text-slate-900 p-1">

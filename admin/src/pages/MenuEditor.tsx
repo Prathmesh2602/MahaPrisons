@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { ArrowUp, ArrowDown, Plus, Edit2, Trash2, ChevronRight, ChevronDown, LayoutGrid, X } from 'lucide-react';
 import * as icons from 'lucide-react';
 import { MenuEditorForm } from '../components/MenuEditorForm';
+import { API_URL } from '../config/api';
+
 
 type EditPath = {
   rootIndex: number;
@@ -61,7 +63,7 @@ export const MenuEditor = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/v1/menu').then(res => {
+    axios.get(`${API_URL}/api/v1/menu`).then(res => {
       const data = res.data;
       setItems(data);
       setHistory([JSON.parse(JSON.stringify(data))]);
@@ -207,7 +209,7 @@ export const MenuEditor = () => {
     setIsSaving(true);
     try {
       const summary = `Updated navigation menu structure`;
-      await axios.put('http://localhost:5000/api/v1/menu', { payload: items, changeSummary: summary }, {
+      await axios.put(`${API_URL}/api/v1/menu`, { payload: items, changeSummary: summary }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       if (user?.role === 'MAKER') {

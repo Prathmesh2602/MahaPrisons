@@ -5,6 +5,8 @@ import { PhoneticInput } from '../PhoneticInput';
 import { Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { useBlockHistory } from '../../hooks/useBlockHistory';
 import { MediaLibraryPopup } from '../MediaLibraryPopup';
+import { API_URL } from '../../config/api';
+
 
 interface HeroBannerWithArticlesEditorProps {
   data: any;
@@ -262,7 +264,7 @@ export const HeroBannerWithArticlesEditor: React.FC<HeroBannerWithArticlesEditor
                 >
                   {safeData.hero?.heroImage ? (
                     <>
-                      <img src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `http://localhost:5000${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Preview" />
+                      <img src={safeData.hero.heroImage.startsWith('http') ? safeData.hero.heroImage : `${API_URL}${safeData.hero.heroImage.startsWith('/') ? '' : '/'}${safeData.hero.heroImage}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Preview" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <span className="text-white font-medium drop-shadow-md bg-black/30 px-3 py-1.5 rounded-full backdrop-blur-sm">Click to change</span>
                       </div>

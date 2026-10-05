@@ -9,6 +9,8 @@ import { Trash2, ArrowUp, ArrowDown, Send, Save } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { IconPicker } from '../IconPicker';
 import * as lucideIcons from 'lucide-react';
+import { API_URL } from '../../config/api';
+
 
 const StatBlock = ({ index, statData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, onTranslate, isExpanded, onToggle }: any) => {
   const defaultStat = { label: { mr: "", en: "" }, value: { mr: "", en: "" }, icon: "" };
@@ -174,7 +176,7 @@ export const PrisonOverviewEditor = ({ blockId, initialData, onPreviewUpdate }: 
   const handleTranslateRoot = async (text: string, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateRootField(targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }
@@ -183,7 +185,7 @@ export const PrisonOverviewEditor = ({ blockId, initialData, onPreviewUpdate }: 
   const handleTranslateStat = async (text: string, index: number, targetKey: string) => {
     if (!text) return;
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/translate', { params: { text, source: 'mr', target: 'en' } });
+      const res = await axios.get(`${API_URL}/api/v1/translate`, { params: { text, source: 'mr', target: 'en' } });
       const translatedText = res.data?.responseData?.translatedText;
       if (translatedText) updateStatField(index, targetKey, translatedText);
     } catch (err) { console.error('Translation failed', err); }

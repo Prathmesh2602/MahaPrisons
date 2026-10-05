@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useBlockHistory } from './useBlockHistory';
+import { API_URL } from '../config/api';
+
 
 export const useBlockEditorState = (blockId: string, initialData: any, onPreviewUpdate: (data: any) => void) => {
   const safeInitialData = initialData || {};
@@ -65,7 +67,7 @@ export const useBlockEditorState = (blockId: string, initialData: any, onPreview
     if (!blockId) return false;
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/v1/pages/blocks/${blockId}`,
+        `${API_URL}/api/v1/pages/blocks/${blockId}`,
         { content: data, changeSummary },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }

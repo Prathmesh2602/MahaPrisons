@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ArrowRight, PlusCircle, MinusCircle, Info } from 'lucide-react';
+import { API_URL } from '../config/api';
+
 
 interface ReviewDiffViewerProps {
   revisionId: string;
@@ -15,7 +17,7 @@ export const ReviewDiffViewer: React.FC<ReviewDiffViewerProps> = ({ revisionId }
     const fetchDiff = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:5000/api/v1/review/${revisionId}/diff`);
+        const res = await axios.get(`${API_URL}/api/v1/review/${revisionId}/diff`);
         setDiffData(res.data);
       } catch (err: any) {
         setError(err.response?.data?.error || 'Failed to load diff');
