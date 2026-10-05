@@ -7,6 +7,7 @@ import LiveWallpaperBg from '../../components/LiveWallpaperBg';
 import { AccessibilityProvider } from '../../hooks/useAccessibility';
 import Layout from '../../components/Layout';
 import { PageRenderer } from '../../components/PageRenderer';
+import { API_URL } from '../../utils/apiConfig';
 
 export default function PreviewPage() {
   const [componentType, setComponentType] = useState<string | null>(null);
@@ -21,8 +22,8 @@ export default function PreviewPage() {
     const fetchGlobalData = async () => {
       try {
         const [menuRes, settingsRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/menu`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/settings`)
+          fetch(`${API_URL}/api/v1/menu`),
+          fetch(`${API_URL}/api/v1/settings`)
         ]);
         if (menuRes.ok) setMenuData(await menuRes.json());
         if (settingsRes.ok) setGlobalSettings(await settingsRes.json());

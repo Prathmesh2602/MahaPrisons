@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility';
+import { API_URL } from '../utils/apiConfig';
 
 export const BlankPageFallback = ({ path }) => {
   const { language } = useAccessibility();
@@ -11,7 +12,7 @@ export const BlankPageFallback = ({ path }) => {
     // Fetch the menu to find the label for this path
     const fetchMenu = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/menu`);
+        const res = await fetch(`${API_URL}/api/v1/menu`);
         const data = await res.json();
         
         let foundLabelEn = path;

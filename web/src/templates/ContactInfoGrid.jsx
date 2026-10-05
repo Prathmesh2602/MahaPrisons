@@ -4,18 +4,13 @@ import { motion } from 'framer-motion';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { facilitiesData } from '../data/facilitiesData';
 import * as LucideIcons from 'lucide-react';
+import { getImageUrl } from '../utils/imageUrlResolver';
 
 const getIcon = (iconName, fallbackName) => {
   if (iconName && LucideIcons[iconName]) {
     return LucideIcons[iconName];
   }
   return LucideIcons[fallbackName] || LucideIcons.HelpCircle;
-};
-
-const getImageUrl = (url) => {
-  if (!url) return '';
-  if (url.startsWith('http')) return url;
-  return `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
 const ContactInfoGrid = ({ dataId, data: dynamicData }) => {

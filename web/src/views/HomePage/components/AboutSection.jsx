@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useAccessibility } from '../../../hooks/useAccessibility';
 import { ArrowRight, User } from 'lucide-react';
+import { API_URL } from '../../../utils/apiConfig';
 
 export const AboutSection = ({ data }) => {
   const { language, t } = useAccessibility();
@@ -21,12 +22,12 @@ export const AboutSection = ({ data }) => {
     {
       name: { mr: "श्री. शामकांत शालन चंद्रकांत शेडगे", en: "Shri. Shamkant Shedge" },
       desg: { mr: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१", en: "Superintendent" },
-      img: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/Shamkant_shedge.png`
+      img: `${API_URL}/uploads/Shamkant_shedge.png`
     },
     {
       name: { mr: "श्री. नागेश एम. कांबळे", en: "Shri. Nagesh M. Kamble" },
       desg: { mr: "वरिष्ठ तुरुंग अधिकारी श्रेणी १", en: "Senior Prison Officer" },
-      img: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/Nagesh_Kamble.png`
+      img: `${API_URL}/uploads/Nagesh_Kamble.png`
     },
     {
       name: { mr: "श्री. नागनाथ एन. भाणवसे", en: "Shri. Nagnath N. Bhanvase" },
@@ -36,7 +37,7 @@ export const AboutSection = ({ data }) => {
     {
       name: { mr: "श्रीमती निशा डी. श्रेयेकर", en: "Smt. Nisha D. Shreyekar" },
       desg: { mr: "तुरुंग अधिकारी श्रेणी २", en: "Prison Officer Class 2" },
-      img: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/nisha_shreyekar.png`
+      img: `${API_URL}/uploads/nisha_shreyekar.png`
     }
   ];
 
@@ -64,7 +65,7 @@ export const AboutSection = ({ data }) => {
               {/* Header: Logo + Title */}
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6 mb-6">
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/logo.jpeg`}
+                  src={`${API_URL}/uploads/logo.jpeg`}
                   alt={t("कारागृह लोगो")}
                   className="w-16 md:w-20 h-auto object-contain mix-blend-multiply dark-mode:mix-blend-screen shrink-0"
                 />

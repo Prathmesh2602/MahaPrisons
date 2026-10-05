@@ -1,8 +1,9 @@
 import HomePage from '../../views/HomePage';
+import { API_URL } from '../../utils/apiConfig';
 
 async function getPageData() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/pages/by-slug?slug=/`, {
+    const res = await fetch(`${API_URL}/api/v1/pages/by-slug?slug=/`, {
       next: { revalidate: 60 } // optional revalidation
     });
     if (!res.ok) return null;

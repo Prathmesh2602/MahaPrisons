@@ -253,7 +253,7 @@ export const mockHomepageData = {
     },
     slides: [
     {
-      img_src: "http://localhost:5000/uploads/rehab_hero.png",
+      img_src: "/uploads/rehab_hero.png",
       img_alt: "येरवडा खुले कारागृह",
       category: { mr: "पुनर्वसन", en: "Rehabilitation" },
       title: { mr: "येरवडा खुले कारागृह", en: "Yerawada Open Prison" },
@@ -263,7 +263,7 @@ export const mockHomepageData = {
       cta2: { mr: "उपक्रम पहा", en: "View Initiatives", href: "#" }
     },
     {
-      img_src: "http://localhost:5000/uploads/farming_hero.png",
+      img_src: "/uploads/farming_hero.png",
       img_alt: "शेती उपक्रम",
       category: { mr: "शेती", en: "Agriculture" },
       title: { mr: "मातीशी नातं", en: "Bond with Soil" },
@@ -273,7 +273,7 @@ export const mockHomepageData = {
       cta2: null
     },
     {
-      img_src: "http://localhost:5000/uploads/skills_hero.png",
+      img_src: "/uploads/skills_hero.png",
       img_alt: "कौशल्य विकास केंद्र",
       category: { mr: "कौशल्य विकास", en: "Skill Development" },
       title: { mr: "कौशल्यातून आत्मनिर्भरतेकडे", en: "Self-reliance through Skills" },
@@ -283,7 +283,7 @@ export const mockHomepageData = {
       cta2: null
     },
     {
-      img_src: "http://localhost:5000/uploads/industry_hero.png",
+      img_src: "/uploads/industry_hero.png",
       img_alt: "उद्योग विभाग",
       category: { mr: "उत्पादन व उद्योग", en: "Production & Industry" },
       title: { mr: "श्रमाला संधी, भविष्याला दिशा.", en: "Opportunity for Labor, Direction for Future." },
@@ -293,7 +293,7 @@ export const mockHomepageData = {
       cta2: null
     },
     {
-      img_src: "http://localhost:5000/uploads/reintegration_hero.png",
+      img_src: "/uploads/reintegration_hero.png",
       img_alt: "पुनर्वसन उपक्रम",
       category: { mr: "पुनर्वसन", en: "Reintegration" },
       title: { mr: "नव्या आयुष्याची तयारी", en: "Preparing for a New Life" },
@@ -330,19 +330,19 @@ export const mockHomepageData = {
       desg: "Director General of Prisons and Correctional Services"
     },
     {
-      img_src: "http://localhost:5000/uploads/yogesh_desai.png",
+      img_src: "/uploads/yogesh_desai.png",
       img_alt: "Yogesh Desai",
       name: "श्री. योगेश देसाई",
       desg: "विशेष कारागृह महानिरीक्षक, महाराष्ट्र राज्य"
     },
     {
-      img_src: "http://localhost:5000/uploads/Sunil_Dhamal.png",
+      img_src: "/uploads/Sunil_Dhamal.png",
       img_alt: "Sunil Dhamal",
       name: "श्री. सुनील ढमाळ",
       desg: "कारागृह उपमहानिरीक्षक, पश्चिम विभाग, येरवडा"
     },
     {
-      img_src: "http://localhost:5000/uploads/Shamkant_shedge.png",
+      img_src: "/uploads/Shamkant_shedge.png",
       img_alt: "Shamkant Shedge",
       name: "श्री. शामकांत शालन चंद्रकांत शेडगे",
       desg: "अधीक्षक, येरवडा खुले जिल्हा कारागृह, वर्ग-१"

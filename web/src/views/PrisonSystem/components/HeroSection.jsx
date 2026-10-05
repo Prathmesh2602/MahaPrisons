@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useAccessibility } from '../../../hooks/useAccessibility';
 import { yerawadaOpenJailData } from '../../../data/yerawadaOpenJailData';
 import { Activity } from 'lucide-react';
+import { API_URL } from '../../../utils/apiConfig';
 
 export const HeroSection = ({ data: propData }) => {
   const { language } = useAccessibility();
@@ -25,7 +26,7 @@ export const HeroSection = ({ data: propData }) => {
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[#F8FAFC] via-[#0F3D66]/60 to-[#0F3D66]/80 dark-mode:from-[#080B11] dark-mode:via-gray-900/80 dark-mode:to-gray-900/90 z-10" />
         <img 
-          src={data.bgImage || yerawadaOpenJailData.hero.bgImage || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/uploads/rehab_hero.png`} 
+          src={data.bgImage || yerawadaOpenJailData.hero.bgImage || `${API_URL}/uploads/rehab_hero.png`} 
           alt="Rehabilitation" 
           className="w-full h-full object-cover opacity-60 dark-mode:opacity-40" 
         />
