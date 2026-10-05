@@ -224,7 +224,7 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
           onKeyUp={isTranslatingInput ? (handleCursorChange as any) : undefined}
           onMouseUp={isTranslatingInput ? (handleCursorChange as any) : undefined}
           onFocus={isTranslatingInput ? (handleCursorChange as any) : undefined}
-          className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm font-marathi focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors min-h-[80px] resize-y"
+          className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors min-h-[80px] resize-y"
           placeholder={inputPlaceholder}
           rows={3}
         />
@@ -240,7 +240,7 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
         onKeyUp={isTranslatingInput ? handleCursorChange : undefined}
         onMouseUp={isTranslatingInput ? handleCursorChange : undefined}
         onFocus={isTranslatingInput ? handleCursorChange : undefined}
-        className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm font-marathi focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors"
+        className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none transition-colors"
         placeholder={inputPlaceholder}
       />
     );
@@ -261,7 +261,7 @@ export const PhoneticInput: React.FC<PhoneticInputProps> = ({
             key={index}
             onClick={() => commitSuggestion(suggestion)}
             onMouseEnter={() => setActiveIndex(index)}
-            className={`cursor-pointer px-4 py-2 text-sm font-marathi ${index === activeIndex ? 'bg-[#5bc0de] text-white' : 'text-gray-700 hover:bg-gray-100'
+            className={`cursor-pointer px-4 py-2 text-sm ${index === activeIndex ? 'bg-[#5bc0de] text-white' : 'text-gray-700 hover:bg-gray-100'
               }`}
           >
             {suggestion}

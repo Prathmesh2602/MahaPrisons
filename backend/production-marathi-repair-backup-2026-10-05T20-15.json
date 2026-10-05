@@ -1,0 +1,596 @@
+[
+  {
+    "id": "886e5676-6ca9-437c-bd7e-41a707d00289",
+    "key": "quick_services",
+    "original": {
+      "header": {
+        "title": {
+          "en": "Quick Services & Important Links",
+          "mr": "Translated"
+        },
+        "subtitle": {
+          "en": "Important contact numbers and related government website links are available below for the convenience of citizens.",
+          "mr": "Translated"
+        }
+      },
+      "helplines": [
+        {
+          "desc": {
+            "en": "",
+            "mr": ""
+          },
+          "icon": "UserCheck",
+          "phone": "155300",
+          "title": {
+            "en": "CitizenG??s Call center",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "",
+            "mr": ""
+          },
+          "icon": "ShieldAlert",
+          "phone": "100",
+          "title": {
+            "en": "Emergency Police",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "",
+            "mr": ""
+          },
+          "icon": "Shield",
+          "phone": "112",
+          "title": {
+            "en": "Emergency Helpline",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "",
+            "mr": ""
+          },
+          "icon": "Crosshair",
+          "phone": "1090",
+          "title": {
+            "en": "Crime Stopper",
+            "mr": "क्राईम स्टॉपर"
+          }
+        },
+        {
+          "desc": {
+            "en": "",
+            "mr": ""
+          },
+          "icon": "HeartHandshake",
+          "phone": "1091",
+          "title": {
+            "en": "Women Helpline",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "",
+            "mr": ""
+          },
+          "icon": "HelpCircle",
+          "phone": "1098",
+          "title": {
+            "en": "Child Helpline",
+            "mr": "Translated"
+          }
+        }
+      ],
+      "important_links": [
+        {
+          "href": "https://www.india.gov.in/",
+          "title": {
+            "en": "National Portal of India",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "https://www.maharashtra.gov.in/",
+          "title": {
+            "en": "Government of Maharashtra",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "https://maharashtratourism.gov.in/",
+          "title": {
+            "en": "Maharashtra Tourism",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "https://aaplesarkar.mahaonline.gov.in",
+          "title": {
+            "en": "Aaple Sarkar",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "https://rtionline.maharashtra.gov.in",
+          "title": {
+            "en": "RTI Online",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "http://maharashtra.etenders.in/",
+          "title": {
+            "en": "Maharashtra E-Tender",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "http://departmentalinquirymarathi.blogspot.com/",
+          "title": {
+            "en": "Department Enquiry",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "https://eprisons.nic.in/NPIP/public/MyVisitRegistration",
+          "title": {
+            "en": "Emulakat for Prisoners and Lawyers",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "https://x.com/mahaprison",
+          "title": {
+            "en": "Twitter",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "https://www.instagram.com/themaharashtraprison/",
+          "title": {
+            "en": "Instagram",
+            "mr": "Translated"
+          }
+        },
+        {
+          "href": "https://www.facebook.com/mahaprisondepartment/",
+          "title": {
+            "en": "Facebook",
+            "mr": "Translated"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "af147012-1014-459c-8034-311f11bb0118",
+    "key": "jail_insights",
+    "original": {
+      "cards": [
+        {
+          "desc": {
+            "en": "Special efforts for overall development of inmates.",
+            "mr": "Translated"
+          },
+          "title": {
+            "en": "Reform and Rehabilitation",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "Farming in open spaces and large-scale plantation.",
+            "mr": "Translated"
+          },
+          "title": {
+            "en": "Agriculture and Plantation",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "Self-reliance through vocational training.",
+            "mr": "व्यावसायिक प्रशिक्षणातून स्वावलंबन."
+          },
+          "title": {
+            "en": "Skill Development",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "Hotel run by inmates providing employment opportunities.",
+            "mr": "Translated"
+          },
+          "title": {
+            "en": "Chain Canteen",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "Yerwada jail has a rich history.",
+            "mr": "Translated"
+          },
+          "title": {
+            "en": "Historical Heritage",
+            "mr": "Translated"
+          }
+        },
+        {
+          "desc": {
+            "en": "Basic literacy and higher education facilities.",
+            "mr": "Translated"
+          },
+          "title": {
+            "en": "Education and Literacy",
+            "mr": "Translated"
+          }
+        }
+      ],
+      "youtubeUrl": "https://www.youtube.com/@CShamkant"
+    }
+  },
+  {
+    "id": "7052406a-49d0-4ba5-acae-f2fb202ac584",
+    "key": "page_template_data",
+    "original": {
+      "title": {
+        "en": "Contact Us",
+        "mr": "Translated"
+      },
+      "subtitle": {
+        "en": "We'd love to hear from you. Please reach out with any inquiries.",
+        "mr": "Translated"
+      },
+      "formLabels": {
+        "name": {
+          "en": "Full Name",
+          "mr": "Translated"
+        },
+        "email": {
+          "en": "Email Address",
+          "mr": "Translated"
+        },
+        "submit": {
+          "en": "Send Message",
+          "mr": "Translated"
+        },
+        "message": {
+          "en": "Your Message",
+          "mr": "Translated"
+        },
+        "subject": {
+          "en": "Subject",
+          "mr": "Translated"
+        }
+      },
+      "contactInfo": [
+        {
+          "icon": "MapPin",
+          "text": {
+            "en": "Maharashtra Prison Department, Old Central Building, Pune - 411001",
+            "mr": "Translated"
+          },
+          "title": {
+            "en": "Headquarters",
+            "mr": "मुख्यालय"
+          }
+        },
+        {
+          "icon": "Phone",
+          "text": {
+            "en": "020-26122580 / 26122606",
+            "mr": "Translated"
+          },
+          "title": {
+            "en": "Phone",
+            "mr": "Translated"
+          }
+        },
+        {
+          "icon": "Mail",
+          "text": {
+            "en": "addg.mahaprisons@mahagov.in",
+            "mr": "addg.mahaprisons@mahagov.in"
+          },
+          "title": {
+            "en": "Email",
+            "mr": "Translated"
+          }
+        },
+        {
+          "icon": "Clock",
+          "text": {
+            "en": "Monday - Friday: 9:45 AM to 6:15 PM",
+            "mr": "Translated"
+          },
+          "title": {
+            "en": "Working Hours",
+            "mr": "Translated"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "34a8ff0b-5648-4221-964f-09aecd0a6ada",
+    "key": "prison_administration",
+    "original": {
+      "staff": [
+        {
+          "img": "http://localhost:5000/uploads/Shamkant_shedge.png",
+          "name": {
+            "en": "Shri. Shamkant Shalan Chandrakant Shedge",
+            "mr": "श्री. शामकांत शालन चंद्रकांत शेडगे"
+          },
+          "role": {
+            "en": "Superintendent, Yerawada Open Jail",
+            "mr": "अधीक्षक, येरवडा खुले जिल्हा कारागृह"
+          }
+        },
+        {
+          "img": "http://localhost:5000/uploads/Nagesh_Kamble.png",
+          "name": {
+            "en": "Shri. Nagesh M. Kamble",
+            "mr": "श्री. नागेश एम. कांबळे"
+          },
+          "role": {
+            "en": "Senior Jailor",
+            "mr": "वरिष्ठ तुरुंग अधिकारी श्रेणी १"
+          }
+        },
+        {
+          "img": "",
+          "name": {
+            "en": "Shri. Nagnath N. Bhanvase",
+            "mr": "श्री. नागनाथ एन. भाणवसे"
+          },
+          "role": {
+            "en": "Jailor Grade 2",
+            "mr": "तुरुंग अधिकारी श्रेणी २"
+          }
+        },
+        {
+          "img": "http://localhost:5000/uploads/nisha_shreyekar.png",
+          "name": {
+            "en": "Smt. Nisha D. Shreyakar",
+            "mr": "श्रीमती निशा डी. श्रेयेकर"
+          },
+          "role": {
+            "en": "Jailor Grade 2",
+            "mr": "तुरुंग अधिकारी श्रेणी २"
+          }
+        },
+        {
+          "img": "http://localhost:5000/uploads/Nita_Uke,_Office_Superintendent.png",
+          "name": {
+            "en": "Smt. Nita Uke",
+            "mr": "सुधार सेवा"
+          },
+          "role": {
+            "en": "Office Superintendent",
+            "mr": "न्यायालयीन खटले"
+          }
+        },
+        {
+          "img": "http://localhost:5000/uploads/Sneha_Dalal,_Senior_Clerk.png",
+          "name": {
+            "en": "Smt. Sneha Dalal",
+            "mr": "महत्त्वाची सूचना"
+          },
+          "role": {
+            "en": "Senior Clerk",
+            "mr": "वरिष्ठ अधिकारी"
+          }
+        },
+        {
+          "img": "http://localhost:5000/uploads/तक्रार निवारणमाहिती उपलब्ध नाही",
+          "name": {
+            "en": "Shri. Govind Gawade",
+            "mr": "श्री. सुनील ढमाळ"
+          },
+          "role": {
+            "en": "Senior Clerk",
+            "mr": "वरिष्ठ अधिकारी"
+          }
+        },
+        {
+          "img": "http://localhost:5000/uploads/तक्रार निवारणमाहिती उपलब्ध नाही",
+          "name": {
+            "en": "Shri. Pravin Khuspe",
+            "mr": "श्री. योगेश देसाई"
+          },
+          "role": {
+            "en": "Clerk",
+            "mr": "महत्त्वाची"
+          }
+        },
+        {
+          "img": "",
+          "name": {
+            "en": "Shri. Sunil Gayakwad",
+            "mr": "श्री. सुहास वारके"
+          },
+          "role": {
+            "en": "Subhedar",
+            "mr": "संपर्क"
+          }
+        },
+        {
+          "img": "",
+          "name": {
+            "en": "Shri. Balaji Sawant",
+            "mr": "Translated"
+          },
+          "role": {
+            "en": "Subhedar",
+            "mr": "संपर्क"
+          }
+        },
+        {
+          "img": "",
+          "name": {
+            "en": "Shri. Datta Chavan",
+            "mr": "श्री. एकनाथ शिंदे"
+          },
+          "role": {
+            "en": "Subhedar",
+            "mr": "संपर्क"
+          }
+        },
+        {
+          "img": "",
+          "name": {
+            "en": "Shri. Chandrakant Khandve",
+            "mr": "Translated"
+          },
+          "role": {
+            "en": "Subhedar",
+            "mr": "संपर्क"
+          }
+        }
+      ],
+      "title": {
+        "en": "Administration & Supervisory Staff",
+        "mr": "Translated"
+      },
+      "description": {
+        "en": "Maintaining an open jail requires immense dedication, leadership, and a deep understanding of inmate psychology. Our respected supervisory officers ensure discipline through trust rather than force.",
+        "mr": "Translated"
+      }
+    }
+  },
+  {
+    "id": "664b54a5-410b-43c1-abd6-dc75d087ad4e",
+    "key": "page_template_data",
+    "original": {
+      "hero": {
+        "title": {
+          "en": "Prison Dispensary",
+          "mr": "कारागृह दवाखाना"
+        },
+        "subtitle": {
+          "en": "Primary Healthcare",
+          "mr": "प्राथमिक आरोग्य सेवा"
+        },
+        "heroImage": "/uploads/admin_1789894461386_pa9fft.jpg",
+        "description": {
+          "en": "A well-equipped primary healthcare center is available in the open prison to treat minor injuries and illnesses that may occur while doing farming and other physical labor.",
+          "mr": "खुल्या कारागृहात शेती आणि इतर कष्टाची कामे करताना उद्भवणाऱ्या किरकोळ दुखापती आणि आजारांवर उपचारासाठी एक सुसज्ज प्राथमिक आरोग्य केंद्र उपलब्ध आहे."
+        }
+      },
+      "gallery": [
+        {
+          "image": "/uploads/admin_1789894461489_wv10i.jpg",
+          "caption": {
+            "en": "Examination Room",
+            "mr": "तपासणी कक्ष"
+          }
+        },
+        {
+          "image": "/uploads/admin_1789894461631_5dahw.jpg",
+          "caption": {
+            "en": "Pharmacy",
+            "mr": "औषधालय"
+          }
+        },
+        {
+          "image": "/uploads/admin_1789894462641_rb81jq.jpg",
+          "caption": {
+            "en": "Ambulance",
+            "mr": "रुग्णवाहिका"
+          }
+        }
+      ],
+      "timings": [
+        {
+          "day": {
+            "en": "OPD",
+            "mr": "ओपीडी (OPD)"
+          },
+          "hours": "08:00 AM - 12:00 PM"
+        },
+        {
+          "day": {
+            "en": "Emergency",
+            "mr": "तातडीची सेवा"
+          },
+          "hours": "माहिती उपलब्ध नाही"
+        }
+      ],
+      "features": [
+        {
+          "desc": {
+            "en": "Immediate first aid for injuries sustained while working on the farm.",
+            "mr": "शेतात काम करताना लागल्यास त्वरित प्रथमोपचार."
+          },
+          "icon": "Stethoscope",
+          "title": {
+            "en": "First Aid",
+            "mr": "प्राथमिक उपचार"
+          }
+        },
+        {
+          "desc": {
+            "en": "Regular monitoring of blood pressure and diabetes.",
+            "mr": "रक्तदाब आणि मधुमेहाची नियमित तपासणी."
+          },
+          "icon": "Brain",
+          "title": {
+            "en": "Regular Check-ups",
+            "mr": "नियमित तपासणी"
+          }
+        },
+        {
+          "desc": {
+            "en": "Referral to Central Prison or Sassoon Hospital for serious illnesses.",
+            "mr": "गंभीर आजारांवर उपचारासाठी मध्यवर्ती कारागृह किंवा ससून रुग्णालयात संदर्भ."
+          },
+          "icon": "Ambulance",
+          "title": {
+            "en": "Ambulance Service",
+            "mr": "रुग्णवाहिका सेवा"
+          }
+        }
+      ],
+      "template": "B",
+      "sectionHeaders": {
+        "gallery": {
+          "icon": "Image",
+          "title": {
+            "en": "Gallery",
+            "mr": "Translated"
+          }
+        },
+        "timings": {
+          "icon": "Clock",
+          "title": {
+            "en": "Timings",
+            "mr": "Translated"
+          }
+        },
+        "category": {
+          "icon": "Clock",
+          "title": {
+            "en": "Daily Facilities",
+            "mr": "Translated"
+          }
+        },
+        "features": {
+          "icon": "CheckCircle",
+          "title": {
+            "en": "Features & Facilities",
+            "mr": "Translated"
+          }
+        }
+      }
+    }
+  }
+]

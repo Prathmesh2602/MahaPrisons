@@ -127,10 +127,46 @@ enToMr.set("a??a?+a??a??a?? a??a??a?+a??a?? a??a?+a??a??a??a??a??a??a?? a?+a??a?
 enToMr.set("Crime Stopper", "क्राईम स्टॉपर");
 enToMr.set("Headquarters", "मुख्यालय");
 enToMr.set("Auction of scrap materials in Yerwada Central Prison", "येरवडा मध्यवर्ती कारागृहातील भंगार साहित्याचा लिलाव");
+enToMr.set("Emergency Helpline", "आणीबाणी मदत सेवा");
+enToMr.set("Agriculture and Plantation", "शेती आणि वृक्षारोपण");
+enToMr.set("Farming in open spaces and large-scale plantation.", "खुल्या जागेत शेती आणि मोठ्या प्रमाणावर वृक्षारोपण.");
+enToMr.set("Reform and Rehabilitation", "सुधारणा आणि पुनर्वसन");
+enToMr.set("Special efforts for overall development of inmates.", "बंदीवानांच्या सर्वांगीण विकासासाठी विशेष प्रयत्न.");
+enToMr.set("Skill Development", "कौशल्य विकास");
+enToMr.set("Historical Heritage", "ऐतिहासिक वारसा");
+enToMr.set("Maharashtra Prison Department, Old Central Building, Pune - 411001", "महाराष्ट्र कारागृह विभाग, जुनी मध्यवर्ती इमारत, पुणे - ४११००१");
+enToMr.set("Emergency Police", "पोलीस नियंत्रण कक्ष");
+enToMr.set("Women Helpline", "महिला हेल्पलाईन");
+enToMr.set("Child Helpline", "बाल हेल्पलाईन");
+enToMr.set("Quick Services & Important Links", "जलद सेवा आणि महत्त्वाच्या लिंक्स");
+enToMr.set("Important contact numbers and related government website links are available below for the convenience of citizens.", "नागरिकांच्या सोयीसाठी महत्त्वाचे संपर्क क्रमांक आणि संबंधित सरकारी वेबसाईटच्या लिंक्स खाली उपलब्ध आहेत.");
+enToMr.set("CitizenG??s Call center", "नागरिक कॉल सेंटर");
+enToMr.set("We'd love to hear from you. Please reach out with any inquiries.", "आम्हाला आपल्याकडून ऐकायला आवडेल. कोणत्याही चौकशीसाठी कृपया संपर्क साधा.");
+enToMr.set("Full Name", "पूर्ण नाव");
+enToMr.set("Email Address", "ईमेल पत्ता");
+enToMr.set("Send Message", "संदेश पाठवा");
+enToMr.set("Your Message", "तुमचा संदेश");
+enToMr.set("Subject", "विषय");
+enToMr.set("Administration & Staff", "प्रशासन व कर्मचारी");
+enToMr.set("Prison Officers & Staff", "तुरुंग अधिकारी व कर्मचारी");
+enToMr.set("About the Administrative Setup", "प्रशासकीय संरचनेबद्दल");
+enToMr.set("Working Hours", "कामाचे तास");
+enToMr.set("Maharashtra Prisons and Correctional Services", "महाराष्ट्र कारागृह आणि सुधार सेवा");
+enToMr.set("Citizen's Call center", "नागरिक कॉल सेंटर");
+enToMr.set("Helplines", "मदत केंद्र");
+enToMr.set("Important Links", "महत्त्वाच्या लिंक्स");
+enToMr.set("Homepage | महाराष्ट्र कारागृह आणि सुधार सेवा | MahaPrisons | होम", "मुख्यपृष्ठ | महाराष्ट्र कारागृह आणि सुधार सेवा | MahaPrisons | होम");
+enToMr.set("नवीन घोषणा", "नवीन घोषणा");
+enToMr.set("लोगो", "लोगो");
+enToMr.set("Shri. Balaji Sawant", "श्री. बालाजी सावंत");
+enToMr.set("Shri. Chandrakant Khandve", "श्री. चंद्रकांत खांदवे");
+enToMr.set("Administration & Supervisory Staff", "प्रशासन आणि पर्यवेक्षकीय कर्मचारी");
+enToMr.set("Maintaining an open jail requires immense dedication, leadership, and a deep understanding of inmate psychology. Our respected supervisory officers ensure discipline through trust rather than force.", "खुल्या कारागृहाची देखभाल करण्यासाठी अपार समर्पण, नेतृत्व आणि बंदीवानांच्या मानसशास्त्राची सखोल समज आवश्यक असते. आमचे आदरणीय पर्यवेक्षकीय अधिकारी बळाऐवजी विश्वासातून शिस्त सुनिश्चित करतात.");
 
 function isCorrupted(str) {
   if (typeof str !== 'string') return false;
-  return str.includes('a??') || str.includes('a?+') || str.includes('Ã') || str.includes('Â') || str.includes('\ufffd');
+  // Note: "माहिती उपलब्ध नाही" and "नवीन घोषणा" are NOT corrupted, they are valid placeholders we previously set.
+  return str.includes('a??') || str.includes('a?+') || str.includes('Ã') || str.includes('Â') || str.includes('\ufffd') || str.includes('Translated');
 }
 
 function fixObject(obj, context) {
@@ -142,15 +178,10 @@ function fixObject(obj, context) {
     if (enToMr.has(enStr)) {
       context.changes.push({ en: enStr, corrupted: obj.mr, restored: enToMr.get(enStr) });
       obj.mr = enToMr.get(enStr);
-      // If EN is also corrupted (because someone pasted Marathi in the EN field), replace it with a sensible English default from translations.
-      if (isCorrupted(enStr) || enStr.startsWith('a??')) {
-         obj.en = Object.keys(translations).find(k => translations[k].mr === obj.mr) || obj.mr; 
-         // Actually better to just leave it or set it to a known good value.
-      }
       changed = true;
     } else {
       context.needsManualReview = true;
-      context.missingEn = enStr;
+      context.missingEn.push(enStr);
     }
   }
 
@@ -162,7 +193,7 @@ function fixObject(obj, context) {
       changed = true;
     } else {
       context.needsManualReview = true;
-      context.missingEn = enStr;
+      context.missingEn.push(enStr);
     }
   }
 
@@ -174,7 +205,7 @@ function fixObject(obj, context) {
       changed = true;
     } else {
       context.needsManualReview = true;
-      context.missingEn = enStr;
+      context.missingEn.push(enStr);
     }
   }
 
@@ -186,7 +217,7 @@ function fixObject(obj, context) {
       changed = true;
     } else {
       context.needsManualReview = true;
-      context.missingEn = enStr;
+      context.missingEn.push(enStr);
     }
   }
 
@@ -198,7 +229,7 @@ function fixObject(obj, context) {
       changed = true;
     } else {
       context.needsManualReview = true;
-      context.missingEn = enStr;
+      context.missingEn.push(enStr);
     }
   }
 
@@ -210,7 +241,7 @@ function fixObject(obj, context) {
       changed = true;
     } else {
       context.needsManualReview = true;
-      context.missingEn = enStr;
+      context.missingEn.push(enStr);
     }
   }
 
@@ -243,14 +274,16 @@ async function main() {
       cbIdentified++;
       
       const contentCopy = JSON.parse(jsonStr);
-      const context = { changes: [], needsManualReview: false, missingEn: null };
+      const context = { changes: [], needsManualReview: false, missingEn: [] };
       
       const fixed = fixObject(contentCopy, context);
       
       if (context.needsManualReview) {
         cbReview++;
         console.log(`[MANUAL REVIEW REQUIRED] ContentBlock ID: ${block.id}, blockType: ${block.blockType}`);
-        if (context.missingEn) console.log(`   Missing translation for EN: "${context.missingEn}"`);
+        if (context.missingEn.length > 0) {
+          console.log(`   Missing translations for EN:\n      ${context.missingEn.join('\n      ')}`);
+        }
       } else if (fixed) {
         cbMapped++;
         cbUpdates.push({ id: block.id, blockType: block.blockType, content: contentCopy, original: block.content, changes: context.changes });
@@ -269,14 +302,16 @@ async function main() {
       ssIdentified++;
       
       const valueCopy = JSON.parse(jsonStr);
-      const context = { changes: [], needsManualReview: false, missingEn: null };
+      const context = { changes: [], needsManualReview: false, missingEn: [] };
       
       const fixed = fixObject(valueCopy, context);
       
       if (context.needsManualReview) {
         ssReview++;
         console.log(`[MANUAL REVIEW REQUIRED] SiteSetting ID: ${setting.id}, key: ${setting.key}`);
-        if (context.missingEn) console.log(`   Missing translation for EN: "${context.missingEn}"`);
+        if (context.missingEn.length > 0) {
+          console.log(`   Missing translations for EN:\n      ${context.missingEn.join('\n      ')}`);
+        }
       } else if (fixed) {
         ssMapped++;
         ssUpdates.push({ id: setting.id, key: setting.key, value: valueCopy, original: setting.value, changes: context.changes });
