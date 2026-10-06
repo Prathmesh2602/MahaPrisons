@@ -222,7 +222,58 @@ export const AnnouncementsTabsEditor = ({ blockId, initialData, onPreviewUpdate 
     { title: { mr: "कागदपत्रे", en: "Documents" }, items: [] }
   ];
 
-  const safeData = (Array.isArray(initialData) && initialData.length > 0) ? initialData : defaultTabs;
+  const hardcodedTranslations: any = {
+    0: [
+      "Instructions to candidates - verification of original documents of 38 candidates who remained absent out of 102 candidates in final waiting list",
+      "Karvatya (Sawer)",
+      "Document Verification - Prison Sepoy Recruitment - Western Region, Pune",
+      "Katari (Turner)",
+      "Prison Sepoy Recruitment - Last chance for document verification - Ch. Sambhajinagar",
+      "Prison Sepoy Recruitment - Ch. Sambhajinagar - Third and final notice to absent candidates for original document verification",
+      "Prison Sepoy Recruitment Year 2022-23 - attendance of 07 candidates in final waiting list for original document verification..."
+    ],
+    1: [
+      "Yerwada Central Jail _ Scrap Auction _ Photos",
+      "Yerwada Central Jail _ Scrap Materials _ Scrap Item _ Weight _ Price _ Photo _ Description",
+      "Eligibility criteria for participating in the auction",
+      "Sale Registration _ Yerwada Central Jail _ Details",
+      "Auction of scrap materials in Yerwada Central Prison"
+    ],
+    2: [
+      "Clerk Post Provisional Seniority List Year 2026",
+      "Provisional Seniority List _ Prison Officer Grade-1 _ Dated 01.01.1993 to 31.12.2026",
+      "Provisional Seniority List _ Senior Clerk _ As of 01.01.2026",
+      "Regarding publication of provisional seniority list as of 01.01.2026 of stenographer cadre posts in Prisons Department..",
+      "Regarding publication of provisional seniority list as of 01.01.2026 of promotional posts in technical cadre of Prisons Department"
+    ]
+  };
+
+  const sanitizeData = (data: any) => {
+    if (!Array.isArray(data) || data.length === 0) return defaultTabs;
+    return data.map((tab, tabIdx) => ({
+      ...tab,
+      items: Array.isArray(tab.items) ? tab.items.map((item: any, itemIdx: number) => {
+        let newItem = { ...item };
+        if (newItem.text && typeof newItem.text === 'object') {
+          const mrText = (newItem.text.mr || '').trim();
+          let enText = (newItem.text.en || '').trim();
+          
+          if (enText === mrText) {
+            enText = '';
+          }
+          
+          if (enText === '' && hardcodedTranslations[tabIdx] && hardcodedTranslations[tabIdx][itemIdx]) {
+            enText = hardcodedTranslations[tabIdx][itemIdx];
+          }
+          
+          newItem.text.en = enText;
+        }
+        return newItem;
+      }) : []
+    }));
+  };
+
+  const safeData = sanitizeData(initialData);
 
   const {
     data,
