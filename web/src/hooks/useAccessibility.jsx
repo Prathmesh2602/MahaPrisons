@@ -53,7 +53,7 @@ export const AccessibilityProvider = ({ children }) => {
     // Base font sizes: standard is 18px (which is 112.5% of browser 16px default)
     // Devanagari script appears naturally larger, so we give English a slight bump
     // to match the visual weight.
-    let baseMultiplier = language === 'en' ? 1.2 : 1.125; 
+    let baseMultiplier = language === 'en' ? 1.20 : 1.125; 
     const sizeMultiplier = baseMultiplier + fontSize * 0.1; // 10% change per step
     root.style.fontSize = `${sizeMultiplier * 100}%`;
   }, [fontSize, language]);
