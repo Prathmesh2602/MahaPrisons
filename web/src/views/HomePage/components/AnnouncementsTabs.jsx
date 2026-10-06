@@ -33,11 +33,20 @@ export const AnnouncementsTabs = ({ data }) => {
 
   // English translations for notice items
   const getNoticeText = (text, tabIdx, itemIdx) => {
-    if (typeof text === 'object' && text !== null) {
-      return text[language] || text.mr;
+    let currentText = text;
+    let isDbObject = typeof text === 'object' && text !== null;
+
+    if (language === 'mr') {
+      return isDbObject ? (text.mr || '') : text;
     }
-    
-    if (language === 'mr') return text;
+
+    // For English
+    let enText = isDbObject ? text.en : '';
+
+    // If we have a valid English translation in DB, use it
+    if (enText && enText.trim() !== '') {
+      return enText;
+    }
 
     // Recruitment Translations
     if (tabIdx === 0) {
@@ -49,7 +58,7 @@ export const AnnouncementsTabs = ({ data }) => {
         case 4: return "Prison Sepoy Recruitment - Last chance for document verification - Ch. Sambhajinagar";
         case 5: return "Prison Sepoy Recruitment - Ch. Sambhajinagar - Third and final notice to absent candidates for original document verification";
         case 6: return "Prison Sepoy Recruitment Year 2022-23 - attendance of 07 candidates in final waiting list for original document verification...";
-        default: return text;
+        default: return isDbObject ? (text.mr || '') : text;
       }
     }
 
@@ -61,7 +70,7 @@ export const AnnouncementsTabs = ({ data }) => {
         case 2: return "Eligibility criteria for participating in the auction";
         case 3: return "Sale Registration _ Yerwada Central Jail _ Details";
         case 4: return "Auction of scrap materials in Yerwada Central Prison";
-        default: return text;
+        default: return isDbObject ? (text.mr || '') : text;
       }
     }
 
@@ -73,11 +82,11 @@ export const AnnouncementsTabs = ({ data }) => {
         case 2: return "Provisional Seniority List _ Senior Clerk _ As of 01.01.2026";
         case 3: return "Regarding publication of provisional seniority list as of 01.01.2026 of stenographer cadre posts in Prisons Department..";
         case 4: return "Regarding publication of provisional seniority list as of 01.01.2026 of promotional posts in technical cadre of Prisons Department";
-        default: return text;
+        default: return isDbObject ? (text.mr || '') : text;
       }
     }
 
-    return text;
+    return isDbObject ? (text.mr || '') : text;
   };
 
   return (
