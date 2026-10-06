@@ -1,0 +1,224 @@
+[
+  {
+    "id": "3b10c35a-7e0e-47bd-b678-88e75f6ff2b0",
+    "menuId": "395fe62b-b98c-4c7c-8004-96ef1f45e78f",
+    "parentId": null,
+    "label_mr": "सोयी-सुविधा",
+    "label_en": "Facilities & Amenities",
+    "href": "#",
+    "icon": "LayoutGrid",
+    "order": 5,
+    "groups": [
+      {
+        "children": [
+          {
+            "href": "/facilities/prisoner-interview",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Prisoner Interview",
+            "label_mr": "माहिती उपलब्ध नाही"
+          },
+          {
+            "href": "/facilities/smart-card-phone",
+            "title": "अॅलन स्मार्ट कार्ड फोन",
+            "label_en": "Allen Smart Card Phone",
+            "label_mr": "अॅलन स्मार्ट कार्ड फोन"
+          },
+          {
+            "href": "/facilities/correspondence",
+            "title": "पत्रव्यवहार आणि मनीऑर्डर",
+            "label_en": "Correspondence & Money Order",
+            "label_mr": "पत्रव्यवहार आणि मनीऑर्डर"
+          }
+        ],
+        "groupTitle_en": "Visit & Contact",
+        "groupTitle_mr": "भेट आणि संपर्क"
+      },
+      {
+        "children": [
+          {
+            "href": "/facilities/free-legal-aid",
+            "title": "मोफत कायदेशीर मदत",
+            "label_en": "Free Legal Aid",
+            "label_mr": "मोफत कायदेशीर मदत"
+          },
+          {
+            "href": "/facilities/district-legal-services",
+            "title": "जिल्हा विधी सेवा प्राधिकरण",
+            "label_en": "District Legal Services (DLSA)",
+            "label_mr": "जिल्हा विधी सेवा प्राधिकरण"
+          },
+          {
+            "href": "/facilities/furlough-parole",
+            "title": "फर्लो आणि पॅरोल रजा",
+            "label_en": "Furlough & Parole Leave",
+            "label_mr": "फर्लो आणि पॅरोल रजा"
+          },
+          {
+            "href": "/facilities/remission",
+            "title": "सवलत (Remission)",
+            "label_en": "Remission",
+            "label_mr": "सवलत (Remission)"
+          }
+        ],
+        "groupTitle_en": "Legal & Administrative",
+        "groupTitle_mr": "कायदेशीर आणि प्रशासकीय"
+      },
+      {
+        "children": [
+          {
+            "href": "/facilities/hirkani-room",
+            "title": "हिरकणी कक्ष",
+            "label_en": "Hirkani Room",
+            "label_mr": "हिरकणी कक्ष"
+          },
+          {
+            "href": "/facilities/gymnasium",
+            "title": "व्यायामशाळा",
+            "label_en": "Gymnasium",
+            "label_mr": "व्यायामशाळा"
+          },
+          {
+            "href": "/facilities/wet-canteen",
+            "title": "वेट कॅन्टीन",
+            "label_en": "Wet Canteen",
+            "label_mr": "वेट कॅन्टीन"
+          }
+        ],
+        "groupTitle_en": "Health & Daily Utilities",
+        "groupTitle_mr": "आरोग्य आणि दैनंदिन सुविधा"
+      },
+      {
+        "children": [
+          {
+            "href": "/facilities/education",
+            "title": "शैक्षणिक सुविधा",
+            "label_en": "Educational Facilities",
+            "label_mr": "शैक्षणिक सुविधा"
+          },
+          {
+            "href": "/facilities/library",
+            "title": "ग्रंथालय",
+            "label_en": "Library",
+            "label_mr": "ग्रंथालय"
+          }
+        ],
+        "groupTitle_en": "Education & Development",
+        "groupTitle_mr": "शिक्षण आणि विकास"
+      }
+    ],
+    "isActive": true,
+    "createdAt": "2026-10-06T03:58:37.263Z",
+    "updatedAt": "2026-10-06T03:58:37.263Z"
+  },
+  {
+    "id": "41754985-27a6-48c8-b6f5-0a261e73aa85",
+    "menuId": "395fe62b-b98c-4c7c-8004-96ef1f45e78f",
+    "parentId": null,
+    "label_mr": "प्रशासकीय विभाग",
+    "label_en": "Administrative Departments",
+    "href": "#",
+    "icon": "Briefcase",
+    "order": 2,
+    "groups": [
+      {
+        "children": [
+          {
+            "href": "/administrative/administration",
+            "title": "प्रशासन",
+            "label_en": "Administration",
+            "label_mr": "प्रशासन"
+          },
+          {
+            "href": "/administrative/establishment",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Establishment",
+            "label_mr": "माहिती उपलब्ध नाही"
+          },
+          {
+            "href": "/administrative/judicial",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Judicial Department",
+            "label_mr": "माहिती उपलब्ध नाही"
+          }
+        ],
+        "groupTitle_en": "Administration & Staff",
+        "groupTitle_mr": "प्रशासन आणि कर्मचारी"
+      },
+      {
+        "children": [
+          {
+            "href": "/administrative/ration",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Ration",
+            "label_mr": "माहिती उपलब्ध नाही"
+          },
+          {
+            "href": "/administrative/canteen",
+            "title": "कॅन्टीन",
+            "label_en": "Canteen",
+            "label_mr": "कॅन्टीन"
+          },
+          {
+            "href": "/administrative/interview",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Interview",
+            "label_mr": "माहिती उपलब्ध नाही"
+          },
+          {
+            "href": "/administrative/hospital",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Hospital",
+            "label_mr": "माहिती उपलब्ध नाही"
+          }
+        ],
+        "groupTitle_en": "Daily Amenities",
+        "groupTitle_mr": "दैनंदिन सुविधा"
+      },
+      {
+        "children": [
+          {
+            "href": "/administrative/factory",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Factory",
+            "label_mr": "माहिती उपलब्ध नाही"
+          },
+          {
+            "href": "/administrative/agriculture",
+            "title": "शेती",
+            "label_en": "Agriculture",
+            "label_mr": "शेती"
+          },
+          {
+            "href": "/administrative/industry",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Industry",
+            "label_mr": "माहिती उपलब्ध नाही"
+          }
+        ],
+        "groupTitle_en": "Production & Activities",
+        "groupTitle_mr": "उत्पादन आणि उपक्रम"
+      },
+      {
+        "children": [
+          {
+            "href": "/administrative/internal-security",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Internal Security",
+            "label_mr": "माहिती उपलब्ध नाही"
+          },
+          {
+            "href": "/administrative/construction",
+            "title": "माहिती उपलब्ध नाही",
+            "label_en": "Construction",
+            "label_mr": "माहिती उपलब्ध नाही"
+          }
+        ],
+        "groupTitle_en": "Security & Infrastructure",
+        "groupTitle_mr": "सुरक्षा आणि पायाभूत सुविधा"
+      }
+    ],
+    "isActive": true,
+    "createdAt": "2026-10-06T03:58:36.160Z",
+    "updatedAt": "2026-10-06T03:58:36.160Z"
+  }
+]
