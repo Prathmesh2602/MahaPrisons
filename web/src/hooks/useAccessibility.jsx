@@ -8,19 +8,25 @@ import { translations } from '../data/translations';
 const AccessibilityContext = createContext(undefined);
 
 export const AccessibilityProvider = ({ children }) => {
-  const [language, setLanguage] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('language') || 'mr';
-    }
-    return 'mr';
-  });
+  const [language, setLanguage] = useState('mr');
   const [contrast, setContrast] = useState('normal');
   const [fontSize, setFontSize] = useState(0);
   const [invertColors, setInvertColors] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('language', language);
-  }, [language]);
+    setIsMounted(true);
+    const storedLang = localStorage.getItem('language');
+    if (storedLang) {
+      setLanguage(storedLang);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      localStorage.setItem('language', language);
+    }
+  }, [language, isMounted]);
   const [bhashiniVoiceActive, setBhashiniVoiceActive] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
