@@ -43,8 +43,8 @@ export const AnnouncementsTabs = ({ data }) => {
     // For English
     let enText = isDbObject ? text.en : '';
 
-    // If we have a valid English translation in DB, use it
-    if (enText && enText.trim() !== '') {
+    // If we have a valid English translation in DB that is not just a copy of Marathi, use it
+    if (enText && enText.trim() !== '' && enText.trim() !== (isDbObject ? (text.mr || '').trim() : '')) {
       return enText;
     }
 

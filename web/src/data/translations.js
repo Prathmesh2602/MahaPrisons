@@ -518,6 +518,14 @@ export const translations = {
     mr: "उत्पादन",
     en: "Products"
   },
+  "अधिक वाचा": {
+    mr: "अधिक वाचा",
+    en: "Read More"
+  },
+  "डाउनलोड": {
+    mr: "डाउनलोड",
+    en: "Download"
+  },
   "कृषी": {
     mr: "कृषी",
     en: "Agriculture"
