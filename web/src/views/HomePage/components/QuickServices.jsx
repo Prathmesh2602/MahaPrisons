@@ -115,7 +115,7 @@ export const QuickServices = ({ data }) => {
                 return (
                   <a
                     key={idx}
-                    href={link.href}
+                    href={link.href ? link.href.replace(/^http:\/\/localhost:5000/, '') : ''}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`group relative ${getGradientBg(idx, 7)} border border-white/60 rounded-md p-2 hover:border-[#0F3D66]/40 hover:shadow-sm transition-all duration-300 dark-mode:border-gray-800 dark-mode:hover:border-blue-900/50 flex items-center justify-between gap-1 focus:outline focus:outline-2 focus:outline-amber-500 overflow-hidden`}

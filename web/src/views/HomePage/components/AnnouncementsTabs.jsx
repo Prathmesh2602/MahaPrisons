@@ -136,10 +136,12 @@ export const AnnouncementsTabs = ({ data }) => {
                 const isPdf = item.href?.endsWith('.pdf') || false;
                 const cardColorClass = pastelColors[idx % pastelColors.length];
 
-                return (
-                  <a
-                    key={idx}
-                    href={item.href}
+                  const cleanHref = item.href ? item.href.replace(/^http:\/\/localhost:5000/, '') : '';
+                  
+                  return (
+                    <a
+                      key={idx}
+                      href={cleanHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`group flex flex-col justify-between p-5 ${cardColorClass} border rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline focus:outline-2 focus:outline-amber-500 relative overflow-hidden`}
