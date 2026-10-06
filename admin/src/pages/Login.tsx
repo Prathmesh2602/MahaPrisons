@@ -11,7 +11,7 @@ export const Login: React.FC = () => {
   const [email, setEmail] = useState('admin@mahaprisons.gov.in');
   const [password, setPassword] = useState('admin123');
   const [error, setError] = useState('');
-  const [bgImage, setBgImage] = useState('https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=1920'); // Default fallback
+  const [bgImage, setBgImage] = useState<string | null>(null);
   const { login } = useAuth();
 
   useEffect(() => {
@@ -20,10 +20,13 @@ export const Login: React.FC = () => {
       .then(res => {
         if (res.data && res.data.backgroundImage) {
           setBgImage(res.data.backgroundImage);
+        } else {
+          setBgImage('https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=1920');
         }
       })
       .catch(err => {
         console.error('Failed to load login config:', err);
+        setBgImage('https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=1920');
       });
 
     // Listen for live preview updates from SettingsEditor
@@ -64,14 +67,16 @@ export const Login: React.FC = () => {
     <div className="min-h-screen w-full flex font-sans bg-slate-50">
       {/* Left Image Side */}
       <div className={`${isPreview ? 'block w-[55%]' : 'hidden lg:block w-[55%] xl:w-[60%]'} relative bg-slate-900 overflow-hidden`}>
-        <motion.img 
-          initial={{ scale: 1.05, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          src={bgImage.startsWith('http') || bgImage.startsWith('data:') ? bgImage : `${API_URL}${bgImage.startsWith('/') ? '' : '/'}${bgImage}`} 
-          alt="Maharashtra Prisons" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        {bgImage && (
+          <motion.img 
+            initial={{ scale: 1.05, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            src={bgImage.startsWith('http') || bgImage.startsWith('data:') ? bgImage : `${API_URL}${bgImage.startsWith('/') ? '' : '/'}${bgImage}`} 
+            alt="Maharashtra Prisons" 
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
         
         {/* Overlay gradient for premium feel */}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/20 to-transparent"></div>
