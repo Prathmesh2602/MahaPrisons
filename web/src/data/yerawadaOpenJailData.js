@@ -100,12 +100,12 @@ export const yerawadaOpenJailData = {
       {
         name: { en: "Shri. Govind Gawade", mr: "श्री. गोविंद गावडे" },
         role: { en: "Senior Clerk", mr: "वरिष्ठ लिपिक" },
-        img: "/uploads/श्री_गोविंद_गावडे_वरिष्ठ_लिपिक.png"
+        img: "/uploads/govind_gawade.png"
       },
       {
         name: { en: "Shri. Pravin Khuspe", mr: "श्री. प्रवीण खुस्पे" },
         role: { en: "Clerk", mr: "लिपिक" },
-        img: "/uploads/श्री_प्रवीण_खुस्पे,_लिपिक.png"
+        img: "/uploads/pravin_khuspe.png"
       },
       { name: { en: "Shri. Sunil Gayakwad", mr: "श्री. सुनील गायकवाड" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
       { name: { en: "Shri. Balaji Sawant", mr: "श्री. बालाजी सावंत" }, role: { en: "Subhedar", mr: "सुभेदार" }, img: "" },
