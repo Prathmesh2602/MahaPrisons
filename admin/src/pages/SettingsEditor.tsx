@@ -59,6 +59,11 @@ const DEFAULT_FOOTER_CONFIG = {
   footer_banners: []
 };
 
+const getImageUrl = (path: string) => {
+  if (!path) return '';
+  return path.startsWith('http') || path.startsWith('data:') ? path : `${API_URL}${path.startsWith('/') ? '' : '/'}${path}`;
+};
+
 export const SettingsEditor = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<TabType>('DASHBOARD');
@@ -775,7 +780,7 @@ export const SettingsEditor = () => {
                       onClick={() => { setMediaTarget('logo_src'); setIsMediaPopupOpen(true); }}
                     >
                       {headerConfig.logo_src ? (
-                        <img src={headerConfig.logo_src} alt="Logo" className="w-full h-full object-contain" />
+                        <img src={getImageUrl(headerConfig.logo_src)} alt="Logo" className="w-full h-full object-contain" />
                       ) : (
                         <div className="flex flex-col items-center text-slate-400">
                           <ImageIcon size={16} className="mb-1" />
@@ -830,7 +835,7 @@ export const SettingsEditor = () => {
                           onClick={() => { setMediaTarget(`right_logo_${idx}`); setIsMediaPopupOpen(true); }}
                         >
                           {logo.src ? (
-                            <img src={logo.src} alt={`Logo ${idx + 1}`} className="w-full h-full object-contain" />
+                            <img src={getImageUrl(logo.src)} alt={`Logo ${idx + 1}`} className="w-full h-full object-contain" />
                           ) : (
                             <div className="flex flex-col items-center text-slate-400">
                               <ImageIcon size={16} className="mb-1" />
@@ -1051,7 +1056,7 @@ export const SettingsEditor = () => {
                           onClick={() => { setMediaTarget(`footer_banner_${idx}`); setIsMediaPopupOpen(true); }}
                         >
                           {banner.img_src ? (
-                            <img src={banner.img_src} alt={`Banner ${idx + 1}`} className="w-full h-full object-contain" />
+                            <img src={getImageUrl(banner.img_src)} alt={`Banner ${idx + 1}`} className="w-full h-full object-contain" />
                           ) : (
                             <div className="flex flex-col items-center text-slate-400">
                               <ImageIcon size={16} className="mb-1" />
@@ -1131,7 +1136,7 @@ export const SettingsEditor = () => {
                           }}
                         >
                           {img ? (
-                            <img src={img} alt={`Wallpaper ${idx + 1}`} className="w-full h-full object-cover" />
+                            <img src={getImageUrl(img)} alt={`Wallpaper ${idx + 1}`} className="w-full h-full object-cover" />
                           ) : (
                             <div className="flex flex-col items-center text-slate-400">
                               <ImageIcon className="mb-1" size={24} />
@@ -1176,7 +1181,7 @@ export const SettingsEditor = () => {
                         }}
                       >
                         {loginConfig.backgroundImage ? (
-                          <img src={loginConfig.backgroundImage} alt="Login Background" className="w-full h-full object-cover" />
+                          <img src={getImageUrl(loginConfig.backgroundImage)} alt="Login Background" className="w-full h-full object-cover" />
                         ) : (
                           <div className="flex flex-col items-center text-slate-400">
                             <ImageIcon className="mb-1" size={24} />
