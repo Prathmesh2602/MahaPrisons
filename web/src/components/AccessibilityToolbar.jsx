@@ -260,7 +260,7 @@ export const AccessibilityToolbar = () => {
 
         {/* Admin Login Button */}
         <a
-          href={process.env.NODE_ENV === 'development' ? 'http://localhost:5173/login?force=true' : 'https://mahaprisons-admin-panel.onrender.com/'}
+          href={process.env.NODE_ENV === 'development' ? 'http://localhost:5173/login?force=true' : 'https://mahaprisons-admin-panel.onrender.com/login?force=true'}
           target="_blank"
           rel="noopener noreferrer"
           className="ml-3 px-3 py-1 bg-[#0F3D66] hover:bg-[#1a4a75] text-white rounded-md text-[10.5px] font-semibold flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
