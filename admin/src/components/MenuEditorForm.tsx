@@ -202,18 +202,7 @@ export const MenuEditorForm: React.FC<MenuEditorFormProps> = ({ item, itemType =
             </div>
           </div>
         )}
-        {(!isGroupHeader && !formData.isGroupHeader && !formData.isMegaGroup) && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Page URL Path</label>
-            <input
-              type="text"
-              value={formData.href || ''}
-              onChange={e => handleChange('href', e.target.value)}
-              className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm focus:ring-1 focus:ring-slate-500 focus:border-slate-500 outline-none"
-              placeholder="e.g. /about-us"
-            />
-          </div>
-        )}
+
         <div className="pt-2 space-y-3">
           {itemType !== 'groupChild' && (
             <div className="flex items-center gap-3">
