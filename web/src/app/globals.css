@@ -205,37 +205,7 @@ body {
   font-family: var(--font-poppins), sans-serif;
 }
 
-.lang-en h1,
-.lang-en h2,
-.lang-en h3,
-.lang-en .font-extrabold {
-  font-weight: 600 !important;
-  /* Semi-bold for primary headings */
-}
-
-.lang-en h4,
-.lang-en h5,
-.lang-en h6,
-.lang-en .font-bold,
-.lang-en b,
-.lang-en strong {
-  font-weight: 500 !important;
-  /* Medium for secondary headings/bold */
-}
-
-.lang-en .font-semibold {
-  font-weight: 400 !important;
-  /* Normal for lower hierarchy */
-}
-
-.lang-en .text-gray-900,
-.lang-en .text-\[\#111827\] {
-  color: #374151 !important;
-}
-
-.lang-en .text-\[\#0F3D66\] {
-  color: #1E40AF !important;
-}
+/* English overrides removed to match Marathi visual weight */
 
 /* --- Marathi Nav Typography Overrides --- */
 .lang-mr nav .text-\[12px\] {
