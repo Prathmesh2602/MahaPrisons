@@ -68,7 +68,7 @@ export const Login: React.FC = () => {
           initial={{ scale: 1.05, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          src={bgImage} 
+          src={bgImage.startsWith('http') || bgImage.startsWith('data:') ? bgImage : `${API_URL}${bgImage.startsWith('/') ? '' : '/'}${bgImage}`} 
           alt="Maharashtra Prisons" 
           className="absolute inset-0 w-full h-full object-cover"
         />
