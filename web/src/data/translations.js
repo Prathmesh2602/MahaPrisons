@@ -1,6 +1,14 @@
 
 export const translations = {
   // Home Menu Dropdown
+  "मुख्य विभाग": {
+    mr: "मुख्य विभाग",
+    en: "Home Section"
+  },
+  "Home Section": {
+    mr: "मुख्य विभाग",
+    en: "Home Section"
+  },
   "घोषणा आणि निविदा": {
     mr: "घोषणा आणि निविदा",
     en: "Announcements & Tenders"

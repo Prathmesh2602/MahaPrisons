@@ -13,7 +13,7 @@ async function main() {
     });
 
     const childrenToCreate = [
-      { label_en: 'Hero Section', label_mr: 'मुख्य विभाग', href: '/#hero', order: 0 },
+      { label_en: 'Home Section', label_mr: 'मुख्य विभाग', href: '/#hero', order: 0 },
       { label_en: 'Minister Profiles', label_mr: 'मंत्र्यांचे प्रोफाइल', href: '/#ministers', order: 1 },
       { label_en: 'About Us', label_mr: 'आमच्याबद्दल', href: '/#about', order: 2 },
       { label_en: 'Jail Insights', label_mr: 'कारागृह माहिती', href: '/#insights', order: 3 },

@@ -15,7 +15,7 @@ async function main() {
 
   // 2. Unmatched records check
   const unmatched = allItems.filter(i => 
-    ['Hero Section', 'Minister Profiles', 'About Us', 'Jail Insights', 'Announcements', 'Holiday Calendar', 'Quick Services', 'New Menu'].includes(i.label_en)
+    ['Hero Section', 'Home Section', 'Minister Profiles', 'About Us', 'Jail Insights', 'Announcements', 'Holiday Calendar', 'Quick Services', 'New Menu'].includes(i.label_en)
   );
   console.log(`\nUnmatched records found: ${unmatched.length} (Expected: 8)`);
   if (unmatched.length !== 8) {

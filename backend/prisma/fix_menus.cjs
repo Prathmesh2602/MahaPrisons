@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 async function fixMenus() {
   const translations = {
     'Hero Section': 'मुख्य पृष्ठ',
+    'Home Section': 'मुख्य विभाग',
     'Minister Profiles': 'मंत्र्यांचे प्रोफाईल',
     'About Us': 'आमच्याबद्दल',
     'Jail Insights': 'कारागृहाची माहिती',

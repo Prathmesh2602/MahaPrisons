@@ -6,7 +6,7 @@ async function updateHomeMenu() {
     const homeIndex = menuItems.findIndex(item => item.href === '/');
     if (homeIndex !== -1) {
       menuItems[homeIndex].children = [
-        { label_en: 'Hero Section', label_mr: 'मुख्य विभाग', href: '/#hero' },
+        { label_en: 'Home Section', label_mr: 'मुख्य विभाग', href: '/#hero' },
         { label_en: 'About Us', label_mr: 'आमच्याबद्दल', href: '/#about' },
         { label_en: 'Jail Insights', label_mr: 'कारागृह माहिती', href: '/#insights' },
         { label_en: 'Announcements', label_mr: 'घोषणा', href: '/#announcements' },
