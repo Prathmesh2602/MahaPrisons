@@ -41,7 +41,7 @@ export const Footer = () => {
 
         {/* Pause Indicator overlay (visible on hover to show it's paused) */}
         <div className="absolute left-4 z-10 bg-white shadow rounded p-1 cursor-default opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400">
-           <span className="text-base font-medium" title="Paused">⏸</span>
+          <span className="text-base font-medium" title="Paused">⏸</span>
         </div>
 
         {/* Marquee Track */}
@@ -88,16 +88,16 @@ export const Footer = () => {
 
       {/* 3. CONTACT SECTION: Address and contact info */}
       <div className="w-full bg-[#1F2937] py-5 px-4 text-center border-b border-gray-800">
-         <p className="text-gray-300 font-medium text-[13px] leading-relaxed">
-           {language === 'mr' 
-              ? 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६'
-              : 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006'}
-           <br className="md:hidden" />
-           <span className="hidden md:inline text-gray-500 mx-3">|</span>
-           {language === 'mr' ? 'फोन: ०२०-२६६९४०५१' : 'Phone: 020-26694051'}
-           <span className="hidden md:inline text-gray-500 mx-3">|</span>
-           {language === 'mr' ? 'ई-मेल:' : 'Email:'} <a href="mailto:yerwadaop-mh@gov.in" className="hover:text-amber-400 hover:underline">yerwadaop-mh@gov.in</a>
-         </p>
+        <p className="text-gray-300 font-medium text-[13px] leading-relaxed">
+          {language === 'mr'
+            ? 'येरवडा खुले कारागृह, विमानतळ रस्ता, पुणे, महाराष्ट्र ४११००६'
+            : 'Yerawada Open Prison, Airport Road, Pune, Maharashtra 411006'}
+          <br className="md:hidden" />
+          <span className="hidden md:inline text-gray-500 mx-3">|</span>
+          {language === 'mr' ? 'फोन: ०२०-२६६९४०५१' : 'Phone: 020-26694051'}
+          <span className="hidden md:inline text-gray-500 mx-3">|</span>
+          {language === 'mr' ? 'ई-मेल:' : 'Email:'} <a href="mailto:yerwadaop-mh@gov.in" className="hover:text-amber-400 hover:underline">yerwadaop-mh@gov.in</a>
+        </p>
       </div>
 
       {/* 4. BOTTOM SECTION: Copyright & NIC details (Deep Black Background) */}
@@ -111,15 +111,27 @@ export const Footer = () => {
                 ? 'मालकीची सामग्री येरवडा खुले कारागृह'
                 : 'Contents owned and maintained by Yerawada Open Prison.'}
             </div>
+            {/* Developer / Hosted by Analytica Business Solutions */}
             <div className="font-medium text-white/85">
               {language === 'mr'
                 ? 'Analytica Business Solutions द्वारे विकसित आणि होस्ट केलेले'
                 : 'Developed and hosted by Analytica Business Solutions'}
             </div>
-           
-            <div className="mt-1.5 text-[9.5px] font-medium text-white/60 uppercase tracking-wider">
-              {language === 'mr' ? 'शेवटचे अद्ययावत: जुलै ०३, २०२६' : 'Last Updated: Jul 03, 2026'}
-            </div>
+
+            {/* Logo below sentence */}
+            <a
+              href="https://abs-solutions.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex items-center justify-center bg-white px-2 py-1 rounded-md shadow-xs hover:bg-slate-50 transition-all hover:scale-[1.02]"
+              title="Analytica Business Solutions"
+            >
+              <img
+                src="/analytica-business-solutions-logo.png"
+                alt="Analytica Business Solutions"
+                className="h-11 sm:h-12 w-auto object-contain"
+              />
+            </a>
           </div>
 
 
