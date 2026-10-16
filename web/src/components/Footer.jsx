@@ -144,7 +144,7 @@ export const Footer = ({ settingsData }) => {
                   "/analytica-business-solutions-logo.png"
                 }
                 alt="Analytica Business Solutions"
-                className="h-11 sm:h-8 w-auto object-contain"
+                className="h-10 sm:h-12 w-auto object-contain"
               />
             </a>
           </div>
