@@ -1,0 +1,25 @@
+# Runs on the EC2 server (see provision.sh). Only Caddy (80/443) is reachable from outside;
+# the API stays on the private Docker network. The database is Supabase Postgres (DATABASE_URL in .env).
+services:
+  backend:
+    build: ./backend
+    image: mahaprisons-backend:latest
+    restart: always
+    env_file: /opt/mahaprisons/.env
+    volumes:
+      - /opt/mahaprisons/uploads:/app/uploads
+
+  # HTTPS: gets and renews a free Let's Encrypt certificate for SITE_ADDRESS by itself.
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /opt/mahaprisons/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /opt/mahaprisons/caddy:/data

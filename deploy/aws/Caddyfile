@@ -1,0 +1,5 @@
+# {$SITE_ADDRESS} is e.g. 3-7-63-105.sslip.io, or your own domain such as api.example.com.
+{$SITE_ADDRESS} {
+	encode zstd gzip
+	reverse_proxy backend:5000
+}

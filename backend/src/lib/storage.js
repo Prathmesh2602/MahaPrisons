@@ -2,11 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { supabase, bucketName } = require('./supabase');
 
+// Local mode writes to backend/uploads; in production this is bind-mounted to /opt/mahaprisons/uploads.
 const isSupabase = process.env.STORAGE_MODE === 'supabase';
 
-if (process.env.NODE_ENV === 'production' && !isSupabase) {
-    throw new Error('FATAL: Running in production without STORAGE_MODE=supabase. Ephemeral local storage is disabled in production to prevent data loss. Please set STORAGE_MODE=supabase.');
-}
 const uploadFile = async ({ buffer, filename, mimetype, localPath }) => {
     if (!isSupabase) {
         return {
