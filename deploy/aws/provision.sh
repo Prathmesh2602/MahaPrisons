@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# One-time setup of the MahaPrisons API on AWS:
-#   one EC2 server running Caddy (free HTTPS) and the API in Docker; the database is Supabase Postgres.
+# One-time setup of MahaPrisons on AWS:
+#   one EC2 server running Caddy (free HTTPS, serves the admin panel), the API and the Next.js website
+#   in Docker; the database is Supabase Postgres.
 # The image is built on the server itself from a code bundle in S3 (no local Docker or ECR needed).
 # Everything is named mahaprisons-* and created beside whatever else is in the account;
 # nothing existing is changed. Safe to re-run: each step checks before creating.
@@ -36,13 +37,13 @@ if [ "$ALLOC" = "None" ]; then
 fi
 IP="$(aws ec2 describe-addresses --allocation-ids "$ALLOC" --query 'Addresses[0].PublicIp' --output text)"
 SITE="${SITE_ADDRESS:-${IP//./-}.sslip.io}"
-echo "ip=$IP site=$SITE"
+echo "ip=$IP api=$SITE web=web.$SITE admin=admin.$SITE"
 
 say "Config and secrets (SSM Parameter Store, encrypted)"
 ENVFILE="$(mktemp)"; trap 'rm -f "$ENVFILE"' EXIT
 if aws ssm get-parameter --name /$NAME/app-env >/dev/null 2>&1; then
   # Keep existing secrets; only (re)set the address.
-  aws ssm get-parameter --name /$NAME/app-env --with-decryption --query Parameter.Value --output text | grep -v '^SITE_ADDRESS=' > "$ENVFILE"
+  aws ssm get-parameter --name /$NAME/app-env --with-decryption --query Parameter.Value --output text | grep -vE '^(SITE_ADDRESS|WEB_ADDRESS|ADMIN_ADDRESS)=' > "$ENVFILE"
 else
   {
     echo "NODE_ENV=production"
@@ -53,7 +54,7 @@ else
     grep -E '^(JWT_SECRET|CORS_ORIGINS)=.' "$ROOT/backend/.env" | tr -d '"'
   } > "$ENVFILE"
 fi
-echo "SITE_ADDRESS=$SITE" >> "$ENVFILE"
+{ echo "SITE_ADDRESS=$SITE"; echo "WEB_ADDRESS=web.$SITE"; echo "ADMIN_ADDRESS=admin.$SITE"; } >> "$ENVFILE"
 aws ssm put-parameter --name /$NAME/app-env --type SecureString --overwrite --value "file://$ENVFILE" >/dev/null
 echo "saved"
 

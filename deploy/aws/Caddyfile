@@ -1,5 +1,32 @@
-# {$SITE_ADDRESS} is e.g. 3-7-63-105.sslip.io, or your own domain such as api.example.com.
+# Addresses come from .env, e.g. 13-204-230-95.sslip.io (API), web.13-204-230-95.sslip.io, admin.13-204-230-95.sslip.io.
+# Caddy gets and renews a free HTTPS certificate for each by itself.
+
+# API
 {$SITE_ADDRESS} {
 	encode zstd gzip
 	reverse_proxy backend:5000
+}
+
+# Public website (Next.js)
+{$WEB_ADDRESS} {
+	encode zstd gzip
+	handle /uploads/* {
+		reverse_proxy backend:5000
+	}
+	handle {
+		reverse_proxy web:3000
+	}
+}
+
+# Admin panel (static SPA baked into this Caddy image at /srv/admin)
+{$ADMIN_ADDRESS} {
+	encode zstd gzip
+	handle /uploads/* {
+		reverse_proxy backend:5000
+	}
+	handle {
+		root * /srv/admin
+		try_files {path} /index.html
+		file_server
+	}
 }

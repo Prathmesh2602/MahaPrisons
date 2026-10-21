@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Ship the current backend/ code: bundle it to S3, then build and restart on the server.
+# Ship the current backend/, web/ and admin/ code: bundle it to S3, then build and restart on the server.
 # Database migrations run automatically on start. Uses the `default` AWS profile.
 set -euo pipefail
 export AWS_PROFILE="${AWS_PROFILE:-default}" AWS_REGION="${AWS_REGION:-ap-south-1}" AWS_PAGER=""
@@ -12,6 +12,9 @@ BUCKET="mahaprisons-releases-$ACCOUNT"
 BUNDLE="$(mktemp -d)"; trap 'rm -rf "$BUNDLE"' EXIT
 mkdir -p "$BUNDLE/app/backend"
 (cd "$ROOT/backend" && cp -R Dockerfile .dockerignore package.json package-lock.json prisma src "$BUNDLE/app/backend/")
+for app in web admin; do
+  rsync -a --exclude node_modules --exclude .next --exclude dist --exclude '.env*.local' "$ROOT/$app/" "$BUNDLE/app/$app/"
+done
 cp "$HERE/docker-compose.prod.yml" "$BUNDLE/app/docker-compose.yml"
 cp "$HERE/Caddyfile" "$BUNDLE/app/Caddyfile"
 cp "$HERE/on-server-release.sh" "$BUNDLE/app/release.sh"
