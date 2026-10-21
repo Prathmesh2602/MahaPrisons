@@ -1,0 +1,6 @@
+node_modules
+dist
+.env.local
+*.cjs
+test*.js
+typecheck_output.txt

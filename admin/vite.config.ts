@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/uploads': 'http://localhost:5000'
+      '/uploads': { target: 'https://13-204-230-95.sslip.io', changeOrigin: true }
     }
   },
   preview: {

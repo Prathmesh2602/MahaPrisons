@@ -10,6 +10,9 @@ aws ssm get-parameter --region "$REGION" --name /mahaprisons/app-env --with-decr
 chmod 600 .env.new
 mv .env.new .env
 
+# One at a time: the server has 2 GB of RAM (plus swap), and the Next.js build is the heaviest.
 docker compose build backend
+docker compose build web
+docker compose build caddy
 docker compose up -d --remove-orphans
 docker image prune -f >/dev/null
