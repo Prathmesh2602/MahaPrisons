@@ -138,7 +138,8 @@ export const TemplateEditorRenderer: React.FC<TemplateEditorRendererProps> = ({
       else {
         for (let i = 0; i < newLen; i++) {
           if (JSON.stringify(data.gallery[i]) !== JSON.stringify(initialData?.gallery?.[i])) {
-             const title = data.gallery[i].title?.mr || data.gallery[i].title?.en || `Item ${i+1}`;
+             const rawTitle = data.gallery[i].title?.mr || data.gallery[i].title?.en || `Item ${i+1}`;
+             const title = (rawTitle.includes('a?') || rawTitle.includes('??')) ? (data.gallery[i].title?.en || `Item ${i+1}`) : rawTitle;
              summary = `'${title}' img changed in Gallery page`;
              break;
           }

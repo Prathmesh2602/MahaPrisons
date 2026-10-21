@@ -9,19 +9,19 @@ async function main() {
   const users = [
     {
       email: 'admin@mahaprisons.gov.in',
-      password: 'admin',
+      password: 'admin123',
       name: 'Super Admin',
       role: 'SUPER_ADMIN'
     },
     {
       email: 'checker@mahaprisons.gov.in',
-      password: 'admin', // the user asked for checker login, maybe just standard password
+      password: 'admin123',
       name: 'Checker Admin',
       role: 'CHECKER'
     },
     {
       email: 'maker@mahaprisons.gov.in',
-      password: 'admin',
+      password: 'admin123',
       name: 'Content Maker',
       role: 'MAKER'
     }
