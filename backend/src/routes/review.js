@@ -89,7 +89,7 @@ router.get('/pending', authMiddleware, requireRole(['CHECKER', 'SUPER_ADMIN']), 
 
 // GET /api/v1/review/history
 // Fetch all revisions for Audit Logs
-router.get('/history', authMiddleware, requireRole(['CHECKER', 'SUPER_ADMIN']), async (req, res) => {
+router.get('/history', authMiddleware, requireRole(['MAKER', 'CHECKER', 'SUPER_ADMIN']), async (req, res) => {
   try {
     const revisions = await prisma.revision.findMany({
       include: { 
@@ -149,7 +149,7 @@ router.delete('/:id', authMiddleware, requireRole(['MAKER', 'SUPER_ADMIN']), asy
 
 // GET /api/v1/review/:id/diff
 // Fetch the difference between proposed data and live data
-router.get('/:id/diff', authMiddleware, requireRole(['CHECKER', 'SUPER_ADMIN']), async (req, res) => {
+router.get('/:id/diff', authMiddleware, requireRole(['MAKER', 'CHECKER', 'SUPER_ADMIN']), async (req, res) => {
   try {
     const revision = await prisma.revision.findUnique({ where: { id: req.params.id } });
     if (!revision) return res.status(404).json({ error: 'Revision not found' });
