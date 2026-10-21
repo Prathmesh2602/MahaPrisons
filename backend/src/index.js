@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -5,14 +6,13 @@ require('dotenv').config();
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-// Serve static uploaded media files
+// Serve static uploaded media files for local development fallback only.
+// Production media is served directly from Supabase Storage CDN.
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {
@@ -43,6 +43,39 @@ app.use('/api/v1/translate', translateRoutes);
 app.use('/api/v1/media', mediaRoutes);
 app.use('/api/v1/pages', pagesRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Root Endpoint for deployment verification
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'MahaPrisons API',
+    health: '/api/health',
+    version: 'v1'
+  });
 });
+
+// 404 Not Found handler
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Endpoint not found',
+    path: req.originalUrl
+  });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled server error:', err);
+  res.status(err.status || 500).json({
+    error: err.message || 'Internal Server Error'
+  });
+});
+
+// Export the app for Vercel serverless hosting.
+module.exports = app;
+
+// Allow local development to keep using npm start.
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}

@@ -3,16 +3,21 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../lib/prisma');
 const { authMiddleware } = require('../middleware/auth');
 const { uploadFile, deleteFile } = require('../lib/storage');
 const { supabase, bucketName } = require('../lib/supabase');
 
-// Ensure uploads directory exists
+// Ensure uploads directory exists for local development (only when STORAGE_MODE is not supabase)
 const uploadDir = path.join(__dirname, '../../uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+if (process.env.STORAGE_MODE !== 'supabase') {
+  try {
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+  } catch (err) {
+    console.warn('Local uploads directory could not be created:', err.message);
+  }
 }
 
 // Configure multer storage
@@ -20,7 +25,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  limits: { fileSize: 4.5 * 1024 * 1024 }, // 4.5MB limit to comply with Vercel serverless payload limits
   fileFilter: (req, file, cb) => {
     const filetypes = /jpeg|jpg|png|gif|svg|webp|pdf/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -164,6 +169,7 @@ router.post('/import-url', authMiddleware, async (req, res) => {
       method: 'GET',
       url: url,
       responseType: 'arraybuffer',
+      timeout: 15000, // 15s timeout to prevent serverless function hangs
     });
 
     const contentType = response.headers['content-type'];

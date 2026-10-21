@@ -1,8 +1,10 @@
 const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../lib/prisma');
 const { authMiddleware, requireRole } = require('../middleware/auth');
 const router = express.Router();
-const prisma = new PrismaClient();
+
+const PUBLIC_FRONTEND_URL = (process.env.PUBLIC_FRONTEND_URL || 'http://localhost:3000').replace(/\/$/, '');
+const ADMIN_FRONTEND_URL = (process.env.ADMIN_FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
 
 const decorateRevisions = async (revisions) => {
   return Promise.all(revisions.map(async (rev) => {
@@ -20,11 +22,11 @@ const decorateRevisions = async (revisions) => {
         'login_config': 'Login Page'
       };
       displayTitle = map[rev.recordId] || rev.recordId;
-      previewUrl = rev.recordId === 'login_config' ? 'http://localhost:5173/login?preview=true' : `http://localhost:3000/preview-revision?revisionId=${rev.id}`;
+      previewUrl = rev.recordId === 'login_config' ? `${ADMIN_FRONTEND_URL}/login?preview=true` : `${PUBLIC_FRONTEND_URL}/preview-revision?revisionId=${rev.id}`;
     } else if (rev.modelName === 'Menu') {
       displayType = 'Navigation Menu';
       displayTitle = 'Main Menu';
-      previewUrl = `http://localhost:3000/preview-revision?revisionId=${rev.id}`;
+      previewUrl = `${PUBLIC_FRONTEND_URL}/preview-revision?revisionId=${rev.id}`;
     } else if (rev.modelName === 'ContentBlock') {
       displayType = 'Page Content';
       const block = await prisma.contentBlock.findUnique({
@@ -33,7 +35,7 @@ const decorateRevisions = async (revisions) => {
       });
       if (block && block.pageNode) {
         displayTitle = `${block.pageNode.title} (${block.blockType})`;
-        previewUrl = `http://localhost:3000/${block.pageNode.slug}?preview=true&revisionId=${rev.id}`;
+        previewUrl = `${PUBLIC_FRONTEND_URL}/${block.pageNode.slug}?preview=true&revisionId=${rev.id}`;
       } else {
         displayTitle = 'Unknown Page Block';
       }
@@ -42,7 +44,7 @@ const decorateRevisions = async (revisions) => {
       const page = await prisma.pageNode.findUnique({ where: { id: rev.recordId } });
       if (page) {
         displayTitle = page.title;
-        previewUrl = `http://localhost:3000/${page.slug}?preview=true&revisionId=${rev.id}`;
+        previewUrl = `${PUBLIC_FRONTEND_URL}/${page.slug}?preview=true&revisionId=${rev.id}`;
       }
     }
 
