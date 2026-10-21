@@ -2,12 +2,20 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+require('./lib/env').validateEnv();
 
 const path = require('path');
 
 const app = express();
 
-app.use(cors());
+// Caddy reverse proxy sits in front in production
+app.set('trust proxy', 1);
+
+// CORS_ORIGINS: comma-separated allowlist; unset allows all (local dev)
+const corsOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',').map((o) => o.trim())
+  : true;
+app.use(cors({ origin: corsOrigins }));
 app.use(express.json());
 
 // Serve static uploaded media files for local development fallback only.

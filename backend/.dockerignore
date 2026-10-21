@@ -1,0 +1,6 @@
+# Only package files, prisma/ and src/ are needed in the image
+*
+!package.json
+!package-lock.json
+!prisma/
+!src/
