@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Shield, Eye, Calendar, Clock, CheckCircle, XCircle, Clock3 } from 'lucide-react';
 import { Button } from '../components/Button';
 import { ReviewDiffViewer } from '../components/ReviewDiffViewer';
-import { API_URL } from '../config/api';
+import { API_URL, resolvePreviewUrl } from '../config/api';
 
 
 interface Revision {
@@ -180,7 +180,7 @@ export const AuditLogs = () => {
                 <div className="flex items-center gap-3">
                   {previewRevision.previewUrl && (
                     <Button 
-                      onClick={() => window.open(previewRevision.previewUrl, '_blank')} 
+                      onClick={() => window.open(resolvePreviewUrl(previewRevision.previewUrl), '_blank')} 
                       variant="outline" 
                       size="sm" 
                       className="border-indigo-200 text-indigo-700 hover:bg-indigo-50"

@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { CheckCircle, XCircle, Clock, Eye, Trash2, CheckCircle2, AlertCircle, Info, RefreshCcw } from 'lucide-react';
 import { ReviewDiffViewer } from '../components/ReviewDiffViewer';
 import { Button } from '../components/Button';
-import { API_URL } from '../config/api';
+import { API_URL, resolvePreviewUrl } from '../config/api';
 
 
 interface Revision {
@@ -210,7 +210,7 @@ export const ReviewDashboard: React.FC = () => {
                 <div className="flex items-center gap-2">
                   {previewRevision.previewUrl && (
                     <Button 
-                      onClick={() => window.open(previewRevision.previewUrl, '_blank')} 
+                      onClick={() => window.open(resolvePreviewUrl(previewRevision.previewUrl), '_blank')} 
                       variant="outline" 
                       size="sm" 
                       className="mr-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50"

@@ -3,10 +3,57 @@ const prisma = require('../lib/prisma');
 const { authMiddleware, requireRole } = require('../middleware/auth');
 const router = express.Router();
 
-const PUBLIC_FRONTEND_URL = (process.env.PUBLIC_FRONTEND_URL || 'http://localhost:3000').replace(/\/$/, '');
-const ADMIN_FRONTEND_URL = (process.env.ADMIN_FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+const getPublicFrontendUrl = (req) => {
+  let url = process.env.PUBLIC_FRONTEND_URL || 
+            process.env.FRONTEND_URL || 
+            (process.env.WEB_ADDRESS ? `https://${process.env.WEB_ADDRESS}` : null) ||
+            process.env.WEB_URL;
 
-const decorateRevisions = async (revisions) => {
+  if (url) return url.replace(/\/$/, '');
+
+  // Detect from incoming request origin if available
+  if (req) {
+    const origin = req.get('origin') || req.get('referer');
+    if (origin && !origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+      try {
+        const parsed = new URL(origin);
+        if (parsed.hostname.startsWith('admin.')) {
+          return `${parsed.protocol}//${parsed.hostname.replace(/^admin\./, 'web.')}`;
+        }
+      } catch (e) {}
+    }
+  }
+
+  // Fallback for production when environment variables are omitted
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://web.13-204-230-95.sslip.io';
+  }
+
+  return 'http://localhost:3000';
+};
+
+const getAdminFrontendUrl = (req) => {
+  let url = process.env.ADMIN_FRONTEND_URL || 
+            process.env.ADMIN_URL || 
+            (process.env.ADMIN_ADDRESS ? `https://${process.env.ADMIN_ADDRESS}` : null);
+
+  if (url) return url.replace(/\/$/, '');
+
+  if (req && req.get('origin')) {
+    return req.get('origin').replace(/\/$/, '');
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://admin.13-204-230-95.sslip.io';
+  }
+
+  return 'http://localhost:5173';
+};
+
+const decorateRevisions = async (revisions, req) => {
+  const publicFrontendUrl = getPublicFrontendUrl(req);
+  const adminFrontendUrl = getAdminFrontendUrl(req);
+
   return Promise.all(revisions.map(async (rev) => {
     let displayTitle = rev.recordId || 'Global Config';
     let displayType = rev.modelName;
@@ -22,11 +69,11 @@ const decorateRevisions = async (revisions) => {
         'login_config': 'Login Page'
       };
       displayTitle = map[rev.recordId] || rev.recordId;
-      previewUrl = rev.recordId === 'login_config' ? `${ADMIN_FRONTEND_URL}/login?preview=true` : `${PUBLIC_FRONTEND_URL}/preview-revision?revisionId=${rev.id}`;
+      previewUrl = rev.recordId === 'login_config' ? `${adminFrontendUrl}/login?preview=true` : `${publicFrontendUrl}/preview-revision?revisionId=${rev.id}`;
     } else if (rev.modelName === 'Menu') {
       displayType = 'Navigation Menu';
       displayTitle = 'Main Menu';
-      previewUrl = `${PUBLIC_FRONTEND_URL}/preview-revision?revisionId=${rev.id}`;
+      previewUrl = `${publicFrontendUrl}/preview-revision?revisionId=${rev.id}`;
     } else if (rev.modelName === 'ContentBlock') {
       displayType = 'Page Content';
       const block = await prisma.contentBlock.findUnique({
@@ -35,7 +82,7 @@ const decorateRevisions = async (revisions) => {
       });
       if (block && block.pageNode) {
         displayTitle = `${block.pageNode.title} (${block.blockType})`;
-        previewUrl = `${PUBLIC_FRONTEND_URL}/${block.pageNode.slug}?preview=true&revisionId=${rev.id}`;
+        previewUrl = `${publicFrontendUrl}/${block.pageNode.slug}?preview=true&revisionId=${rev.id}`;
       } else {
         displayTitle = 'Unknown Page Block';
       }
@@ -44,7 +91,7 @@ const decorateRevisions = async (revisions) => {
       const page = await prisma.pageNode.findUnique({ where: { id: rev.recordId } });
       if (page) {
         displayTitle = page.title;
-        previewUrl = `${PUBLIC_FRONTEND_URL}/${page.slug}?preview=true&revisionId=${rev.id}`;
+        previewUrl = `${publicFrontendUrl}/${page.slug}?preview=true&revisionId=${rev.id}`;
       }
     }
 
@@ -79,7 +126,7 @@ router.get('/pending', authMiddleware, requireRole(['CHECKER', 'SUPER_ADMIN']), 
       include: { createdBy: { select: { name: true, email: true } } },
       orderBy: { createdAt: 'desc' }
     });
-    const decorated = await decorateRevisions(pendingRevisions);
+    const decorated = await decorateRevisions(pendingRevisions, req);
     res.json(decorated);
   } catch (error) {
     console.error('Fetch pending reviews error:', error);
@@ -98,7 +145,7 @@ router.get('/history', authMiddleware, requireRole(['MAKER', 'CHECKER', 'SUPER_A
       },
       orderBy: { updatedAt: 'desc' }
     });
-    const decorated = await decorateRevisions(revisions);
+    const decorated = await decorateRevisions(revisions, req);
     res.json(decorated);
   } catch (error) {
     console.error('Fetch review history error:', error);
@@ -115,7 +162,7 @@ router.get('/my-requests', authMiddleware, requireRole(['MAKER', 'SUPER_ADMIN'])
       include: { createdBy: { select: { name: true, email: true } } },
       orderBy: { createdAt: 'desc' }
     });
-    const decorated = await decorateRevisions(myRevisions);
+    const decorated = await decorateRevisions(myRevisions, req);
     res.json(decorated);
   } catch (error) {
     console.error('Fetch my reviews error:', error);
