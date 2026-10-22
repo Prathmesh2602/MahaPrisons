@@ -17,7 +17,7 @@ interface HeroBannerWithMediaEditorProps {
 
 const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { value: '', label: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -61,7 +61,7 @@ const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, on
 
 const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -105,7 +105,7 @@ const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMov
 
 const ContactInfoEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { text: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -332,7 +332,7 @@ export const HeroBannerWithMediaEditor: React.FC<HeroBannerWithMediaEditorProps>
                   </button>
           {(safeData.stats || []).map((item: any, index: number) => (
                     <StatsEditorItem
-                      key={`item-${index}`} index={index} itemData={item}
+                      key={item._key || item.id || `item-${index}`} index={index} itemData={item}
                       onUpdateFull={(i: number, newD: any) => updateArrayItemFull('stats', i, newD)}
                       onRemove={() => removeArrayItem('stats', index)}
                       onMoveUp={() => moveArrayItem('stats', index, -1)}
@@ -394,7 +394,7 @@ export const HeroBannerWithMediaEditor: React.FC<HeroBannerWithMediaEditorProps>
           </button>
           {(safeData.keyFunctions || []).map((item: any, index: number) => (
             <KeyFunctionsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('keyFunctions', i, newD)}
               onRemove={() => removeArrayItem('keyFunctions', index)}
               onMoveUp={() => moveArrayItem('keyFunctions', index, -1)}
@@ -448,7 +448,7 @@ export const HeroBannerWithMediaEditor: React.FC<HeroBannerWithMediaEditorProps>
           </button>
           {(safeData.contactInfo || []).map((item: any, index: number) => (
             <ContactInfoEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('contactInfo', i, newD)}
               onRemove={() => removeArrayItem('contactInfo', index)}
               onMoveUp={() => moveArrayItem('contactInfo', index, -1)}

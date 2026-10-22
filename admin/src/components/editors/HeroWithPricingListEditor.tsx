@@ -148,7 +148,9 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
   const addArrayItem = (field: string, defaultItem: any) => {
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
-    handleChange(field, [defaultItem, ...arr]);
+    const newKey = `${field}_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    const itemWithKey = typeof defaultItem === 'object' && defaultItem !== null ? { _key: newKey, ...defaultItem } : defaultItem;
+    handleChange(field, [itemWithKey, ...arr]);
   };
 
   const heroHist = useBlockHistory(
@@ -293,7 +295,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
           </button>
           {(safeData.services || []).map((item: any, index: number) => (
             <ServicesEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('services', i, newD)}
               onRemove={() => removeArrayItem('services', index)}
               onMoveUp={() => moveArrayItem('services', index, -1)}
@@ -322,7 +324,7 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
           </button>
           {(safeData.impact || []).map((item: any, index: number) => (
             <ImpactEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('impact', i, newD)}
               onRemove={() => removeArrayItem('impact', index)}
               onMoveUp={() => moveArrayItem('impact', index, -1)}

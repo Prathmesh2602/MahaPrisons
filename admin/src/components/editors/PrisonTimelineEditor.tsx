@@ -60,7 +60,8 @@ const EventBlock = ({ index, eventData, onUpdateFull, onRemove, onMoveUp, onMove
   const eventHist = useBlockHistory(
     defaultEvent,
     eventData,
-    (newData) => onUpdateFull(index, newData)
+    (newData) => onUpdateFull(index, newData),
+    eventData._key
   );
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -186,7 +187,8 @@ export const PrisonTimelineEditor = ({ blockId, initialData, onPreviewUpdate }: 
   const addEvent = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.events) newData.events = [];
-    newData.events.unshift({ year: "", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
+    const newKey = `event_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    newData.events.unshift({ _key: newKey, year: "", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
     setData(newData);
     updateHistoryState(newData);
   };
@@ -258,7 +260,7 @@ export const PrisonTimelineEditor = ({ blockId, initialData, onPreviewUpdate }: 
         <div className="w-full space-y-2">
           {data.events?.map((event: any, index: number) => (
             <EventBlock
-              key={index}
+              key={event._key || `event-${index}`}
               index={index}
               eventData={event}
               onUpdateFull={updateEventFull}

@@ -74,7 +74,8 @@ const InsightCardBlock = ({
   const cardHist = useBlockHistory(
     defaultCard,
     cardData,
-    (newCardData) => onUpdateFull(index, newCardData)
+    (newCardData) => onUpdateFull(index, newCardData),
+    cardData._key
   );
 
   const handleLocalUpdate = (key: string, value: string) => {
@@ -276,10 +277,11 @@ export const JailInsightsEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const handleAddCard = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.cards) newData.cards = defaultCards;
-    newData.cards.unshift({ title: { mr: "", en: "" }, desc: { mr: "", en: "" }, icon: "" });
+    const newKey = `card_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    newData.cards.unshift({ _key: newKey, title: { mr: "", en: "" }, desc: { mr: "", en: "" }, icon: "" });
     setData(newData);
     updateHistoryState(newData);
-    setExpandedBlock(`card-${newData.cards.length - 1}`);
+    setExpandedBlock(`card-0`);
   };
 
   return (
@@ -320,7 +322,7 @@ export const JailInsightsEditor = ({ blockId, initialData, onPreviewUpdate }: an
           </Button>
           {(data.cards || defaultCards).map((card: any, index: number) => (
             <InsightCardBlock
-              key={index}
+              key={card._key || `card-${index}`}
               index={index}
               cardData={card}
               onUpdateFull={updateCardFull}

@@ -66,7 +66,8 @@ const OfficerProfileBlock = ({
   const officerHist = useBlockHistory(
     defaultOfficer,
     officerData,
-    (newOfficerData) => onUpdateFull(index, newOfficerData)
+    (newOfficerData) => onUpdateFull(index, newOfficerData),
+    officerData._key
   );
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -198,7 +199,9 @@ export const AboutSectionEditor = ({ blockId, initialData, onPreviewUpdate }: an
   const addOfficer = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.openJailOfficers) newData.openJailOfficers = [];
+    const newKey = `officer_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
     newData.openJailOfficers.unshift({
+      _key: newKey,
       name: { mr: "", en: "" },
       desg: { mr: "", en: "" },
       img: ""
@@ -279,7 +282,7 @@ export const AboutSectionEditor = ({ blockId, initialData, onPreviewUpdate }: an
         <div className="w-full space-y-2">
           {data.openJailOfficers?.map((officer: any, index: number) => (
             <OfficerProfileBlock
-              key={index}
+              key={officer._key || `officer-${index}`}
               index={index}
               officerData={officer}
               onUpdateFull={updateOfficerFull}

@@ -3,9 +3,39 @@ import axios from 'axios';
 import { useBlockHistory } from './useBlockHistory';
 import { API_URL } from '../config/api';
 
+export function ensureArrayItemKeys(data: any): any {
+  if (!data || typeof data !== 'object') return data;
+  
+  if (Array.isArray(data)) {
+    return data.map((item, idx) => {
+      if (item && typeof item === 'object') {
+        const existingKey = item._key || (item.id && typeof item.id === 'string' && item.id.trim() !== '' ? item.id : undefined);
+        const key = existingKey || `k_${Math.random().toString(36).substring(2, 9)}_${Date.now()}_${idx}`;
+        const processed = ensureArrayItemKeys(item);
+        if (processed._key !== key) {
+          return { ...processed, _key: key };
+        }
+        return processed;
+      }
+      return item;
+    });
+  }
+
+  let hasChanged = false;
+  const result: any = {};
+  for (const k of Object.keys(data)) {
+    const val = data[k];
+    const processed = ensureArrayItemKeys(val);
+    result[k] = processed;
+    if (processed !== val) {
+      hasChanged = true;
+    }
+  }
+  return hasChanged ? result : data;
+}
 
 export const useBlockEditorState = (blockId: string, initialData: any, onPreviewUpdate: (data: any) => void) => {
-  const safeInitialData = initialData || {};
+  const safeInitialData = ensureArrayItemKeys(initialData || {});
   const [data, setData] = useState<any>(safeInitialData);
   const [savedData, setSavedData] = useState<any>(safeInitialData);
   
@@ -16,9 +46,10 @@ export const useBlockEditorState = (blockId: string, initialData: any, onPreview
 
   const initialDataStr = JSON.stringify(initialData);
   useEffect(() => {
-    setData(initialData);
-    setSavedData(initialData);
-    historyRef.current = [JSON.parse(initialDataStr || 'null')];
+    const normalized = ensureArrayItemKeys(JSON.parse(initialDataStr || '{}'));
+    setData(normalized);
+    setSavedData(normalized);
+    historyRef.current = [JSON.parse(JSON.stringify(normalized))];
     historyIndexRef.current = 0;
     setHistoryTrigger(prev => prev + 1);
   }, [initialDataStr]);
@@ -28,9 +59,17 @@ export const useBlockEditorState = (blockId: string, initialData: any, onPreview
     onPreviewUpdate(data);
   }, [data]);
 
+  const setNormalizedData = (newVal: any) => {
+    setData((prev: any) => {
+      const resolved = typeof newVal === 'function' ? newVal(prev) : newVal;
+      return ensureArrayItemKeys(resolved);
+    });
+  };
+
   const updateHistoryState = (newData: any) => {
+    const normalized = ensureArrayItemKeys(newData);
     const newHistory = historyRef.current.slice(0, historyIndexRef.current + 1);
-    newHistory.push(JSON.parse(JSON.stringify(newData)));
+    newHistory.push(JSON.parse(JSON.stringify(normalized)));
     historyRef.current = newHistory;
     historyIndexRef.current = newHistory.length - 1;
     setHistoryTrigger(prev => prev + 1);
@@ -89,7 +128,7 @@ export const useBlockEditorState = (blockId: string, initialData: any, onPreview
 
   return {
     data,
-    setData,
+    setData: setNormalizedData,
     savedData,
     historyIndex: historyIndexRef.current,
     historyLength: historyRef.current.length,

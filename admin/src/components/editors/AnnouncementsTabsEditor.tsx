@@ -20,7 +20,8 @@ const AnnouncementItemBlock = ({
   const itemHist = useBlockHistory(
     defaultItem,
     itemData,
-    (newItemData) => onUpdateFull(itemIndex, newItemData)
+    (newItemData) => onUpdateFull(itemIndex, newItemData),
+    itemData._key
   );
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -120,7 +121,9 @@ const TabBlock = ({
   const handleAddItem = () => {
     const newTab = JSON.parse(JSON.stringify(tabHist.value));
     if (!newTab.items) newTab.items = [];
+    const newKey = `announcement_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
     newTab.items.unshift({
+      _key: newKey,
       text: { mr: "", en: "" },
       date: new Date().toLocaleDateString('en-GB'),
       isNew: true,
@@ -186,7 +189,7 @@ const TabBlock = ({
               const isItemExpanded = expandedItem === itemKey;
               return (
                 <AnnouncementItemBlock
-                  key={itemIndex}
+                  key={item._key || `item-${itemIndex}`}
                   tabIndex={tabIndex}
                   itemIndex={itemIndex}
                   itemData={item}
@@ -333,7 +336,8 @@ export const AnnouncementsTabsEditor = ({ blockId, initialData, onPreviewUpdate 
 
   const addTab = () => {
     const newData = JSON.parse(JSON.stringify(data));
-    newData.unshift({ title: { mr: "नवीन टॅब", en: "New Tab" }, items: [] });
+    const newKey = `tab_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    newData.unshift({ _key: newKey, title: { mr: "नवीन टॅब", en: "New Tab" }, items: [] });
     setData(newData);
     updateHistoryState(newData);
   };
@@ -388,7 +392,7 @@ export const AnnouncementsTabsEditor = ({ blockId, initialData, onPreviewUpdate 
       <div className="w-full flex flex-col gap-2">
         {tabsData.map((tab: any, tabIndex: number) => (
           <TabBlock
-            key={tabIndex}
+            key={tab._key || `tab-${tabIndex}`}
             tabIndex={tabIndex}
             tabData={tab}
             onUpdateFull={updateTabFull}

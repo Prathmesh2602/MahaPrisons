@@ -66,7 +66,8 @@ const ActivityBlock = ({ index, activityData, onUpdateFull, onRemove, onMoveUp, 
   const activityHist = useBlockHistory(
     defaultActivity,
     activityData,
-    (newData) => onUpdateFull(index, newData)
+    (newData) => onUpdateFull(index, newData),
+    activityData._key
   );
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -248,7 +249,8 @@ export const PrisonActivitiesEditor = ({ blockId, initialData, onPreviewUpdate }
   const addActivity = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.list) newData.list = [];
-    newData.list.unshift({ id: "", image: "", imagePosition: "left", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
+    const newKey = `activity_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    newData.list.unshift({ _key: newKey, id: "", image: "", imagePosition: "left", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
     setData(newData);
     updateHistoryState(newData);
   };
@@ -328,7 +330,7 @@ export const PrisonActivitiesEditor = ({ blockId, initialData, onPreviewUpdate }
         <div className="w-full space-y-2">
           {data.list?.map((activity: any, index: number) => (
             <ActivityBlock
-              key={index}
+              key={activity._key || activity.id || `activity-${index}`}
               index={index}
               activityData={activity}
               onUpdateFull={updateActivityFull}

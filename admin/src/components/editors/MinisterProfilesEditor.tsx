@@ -20,7 +20,8 @@ const MinisterProfileBlock = ({
   const profileHist = useBlockHistory(
     defaultProfile,
     profileData,
-    (newProfileData) => onUpdateFull(section, index, newProfileData)
+    (newProfileData) => onUpdateFull(section, index, newProfileData),
+    profileData._key
   );
 
   const handleLocalUpdate = (key: string, value: string) => {
@@ -144,14 +145,16 @@ export const MinisterProfilesEditor = ({ blockId, initialData, onPreviewUpdate }
   const addProfile = (section: string) => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData[section]) newData[section] = [];
+    const newKey = `${section}_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
     newData[section].unshift({
+      _key: newKey,
       name: { mr: "", en: "" },
       desg: { mr: "", en: "" },
       img_src: ""
     });
     setData(newData);
     updateHistoryState(newData);
-    setExpandedBlock({ section, index: newData[section].length - 1 });
+    setExpandedBlock({ section, index: 0 });
   };
 
   const removeProfile = (section: string, index: number) => {
@@ -211,7 +214,7 @@ export const MinisterProfilesEditor = ({ blockId, initialData, onPreviewUpdate }
           <div className="space-y-2">
             {data?.ministers?.map((profile: any, index: number) => (
               <MinisterProfileBlock
-                key={`ministers-${index}`}
+                key={profile._key || `ministers-${index}`}
                 section="ministers"
                 index={index}
                 profileData={profile}
@@ -239,7 +242,7 @@ export const MinisterProfilesEditor = ({ blockId, initialData, onPreviewUpdate }
           <div className="space-y-2">
             {data?.seniorOfficers?.map((profile: any, index: number) => (
               <MinisterProfileBlock
-                key={`officers-${index}`}
+                key={profile._key || `officers-${index}`}
                 section="seniorOfficers"
                 index={index}
                 profileData={profile}

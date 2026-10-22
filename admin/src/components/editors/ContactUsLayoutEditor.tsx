@@ -20,7 +20,7 @@ const ContactInfoEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMove
     text: { mr: '', en: '' }
   };
   
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
   const handleLocalUpdate = (key: string, value: any) => {

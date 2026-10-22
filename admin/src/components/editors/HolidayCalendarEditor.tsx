@@ -28,7 +28,8 @@ const HolidayBlock = ({
   const holidayHist = useBlockHistory(
     defaultHoliday,
     initialHolidayData,
-    (newHolidayData) => onUpdateFull(index, newHolidayData)
+    (newHolidayData) => onUpdateFull(index, newHolidayData),
+    holidayData._key
   );
 
   const handleLocalUpdate = (key: string, value: string) => {
@@ -121,7 +122,9 @@ export const HolidayCalendarEditor = ({ blockId, initialData, onPreviewUpdate }:
 
   const addHoliday = () => {
     const newData = JSON.parse(JSON.stringify(data));
+    const newKey = `holiday_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
     newData.unshift({
+      _key: newKey,
       date: new Date().toISOString().split('T')[0],
       type: 'gazetted',
       title_en: '',
@@ -179,7 +182,7 @@ export const HolidayCalendarEditor = ({ blockId, initialData, onPreviewUpdate }:
       <div className="w-full space-y-2">
         {data.map((holiday: any, index: number) => (
           <HolidayBlock
-            key={index}
+            key={holiday._key || `holiday-${index}`}
             index={index}
             holidayData={holiday}
             onUpdateFull={updateHolidayFull}

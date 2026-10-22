@@ -17,7 +17,7 @@ interface HeroWithMenuGridEditorProps {
 
 const MenuHighlightsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { mr: '', en: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -347,7 +347,7 @@ export const HeroWithMenuGridEditor: React.FC<HeroWithMenuGridEditorProps> = ({ 
           </button>
           {(safeData.menuHighlights || []).map((item: any, index: number) => (
             <MenuHighlightsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('menuHighlights', i, newD)}
               onRemove={() => removeArrayItem('menuHighlights', index)}
               onMoveUp={() => moveArrayItem('menuHighlights', index, -1)}

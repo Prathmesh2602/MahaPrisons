@@ -19,7 +19,8 @@ const StatBlock = ({ index, statData, onUpdateFull, onRemove, onMoveUp, onMoveDo
   const statHist = useBlockHistory(
     defaultStat,
     statData,
-    (newData) => onUpdateFull(index, newData)
+    (newData) => onUpdateFull(index, newData),
+    statData._key
   );
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -150,7 +151,8 @@ export const PrisonOverviewEditor = ({ blockId, initialData, onPreviewUpdate }: 
   const addStat = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.stats) newData.stats = [];
-    newData.stats.unshift({ label: { mr: "", en: "" }, value: { mr: "", en: "" } });
+    const newKey = `stat_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    newData.stats.unshift({ _key: newKey, label: { mr: "", en: "" }, value: { mr: "", en: "" } });
     setData(newData);
     updateHistoryState(newData);
   };
@@ -219,7 +221,7 @@ export const PrisonOverviewEditor = ({ blockId, initialData, onPreviewUpdate }: 
         <div className="w-full space-y-2">
           {data.stats?.map((stat: any, index: number) => (
             <StatBlock
-              key={index}
+              key={stat._key || `stat-${index}`}
               index={index}
               statData={stat}
               onUpdateFull={updateStatFull}

@@ -17,7 +17,7 @@ interface HeroFeatureListEditorProps {
 
 const HighlightsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -61,7 +61,7 @@ const HighlightsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveU
 
 const ContentSectionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { image: '', imagePosition: '', title: { mr: '', en: '' }, description: { mr: '', en: '' } };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
   const [mediaOpen_image, setMediaOpen_image] = useState(false);
 
@@ -324,7 +324,7 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
           </button>
           {(safeData.highlights || []).map((item: any, index: number) => (
             <HighlightsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('highlights', i, newD)}
               onRemove={() => removeArrayItem('highlights', index)}
               onMoveUp={() => moveArrayItem('highlights', index, -1)}
@@ -354,7 +354,7 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
           </button>
           {(safeData.contentSections || []).map((item: any, index: number) => (
             <ContentSectionsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('contentSections', i, newD)}
               onRemove={() => removeArrayItem('contentSections', index)}
               onMoveUp={() => moveArrayItem('contentSections', index, -1)}

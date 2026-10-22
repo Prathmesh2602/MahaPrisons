@@ -21,7 +21,8 @@ const ImportantLinkBlock = ({
   const linkHist = useBlockHistory(
     defaultLink,
     linkData,
-    (newLinkData) => onUpdateFull(index, newLinkData)
+    (newLinkData) => onUpdateFull(index, newLinkData),
+    linkData._key
   );
 
   const handleLocalUpdate = (key: string, value: string) => {
@@ -77,7 +78,8 @@ const HelplineBlock = ({
   const helpHist = useBlockHistory(
     defaultHelp,
     helpData,
-    (newHelpData) => onUpdateFull(index, newHelpData)
+    (newHelpData) => onUpdateFull(index, newHelpData),
+    helpData._key
   );
 
   const handleLocalUpdate = (key: string, value: string) => {
@@ -300,10 +302,11 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
   const addItem = (category: 'important_links' | 'helplines') => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData[category]) newData[category] = [];
+    const newKey = `${category}_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
     if (category === 'important_links') {
-      newData[category].unshift({ title: { mr: "", en: "" }, href: "" });
+      newData[category].unshift({ _key: newKey, title: { mr: "", en: "" }, href: "" });
     } else {
-      newData[category].unshift({ title: { mr: "", en: "" }, phone: "", icon: "Phone" });
+      newData[category].unshift({ _key: newKey, title: { mr: "", en: "" }, phone: "", icon: "Phone" });
     }
     setData(newData);
     updateHistoryState(newData);
@@ -374,7 +377,7 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
           <Button onClick={() => addItem('helplines')} variant="secondary" className="mb-4 w-full text-xs h-8"><Plus size={12} className="mr-2" /> Add Helpline</Button>
           {helplinesList.map((help: any, index: number) => (
             <HelplineBlock
-              key={index}
+              key={help._key || `help-${index}`}
               index={index}
               helpData={help}
               onUpdateFull={(idx: number, newHelpData: any) => updateItemFull('helplines', idx, newHelpData)}
@@ -401,7 +404,7 @@ export const QuickServicesEditor = ({ blockId, initialData, onPreviewUpdate }: a
           <Button onClick={() => addItem('important_links')} variant="secondary" className="mb-4 w-full text-xs h-8"><Plus size={12} className="mr-2" /> Add Link</Button>
           {linksList.map((link: any, index: number) => (
             <ImportantLinkBlock
-              key={index}
+              key={link._key || `link-${index}`}
               index={index}
               linkData={link}
               onUpdateFull={(idx: number, newLinkData: any) => updateItemFull('important_links', idx, newLinkData)}

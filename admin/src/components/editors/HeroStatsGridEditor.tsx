@@ -17,7 +17,7 @@ interface HeroStatsGridEditorProps {
 
 const FeaturesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -61,7 +61,7 @@ const FeaturesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp,
 
 const GalleryEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { image: '', caption: { mr: '', en: '' } };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
   const [mediaOpen_image, setMediaOpen_image] = useState(false);
 
@@ -128,7 +128,7 @@ const GalleryEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, 
 
 const TimingsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { day: { mr: '', en: '' }, hours: { mr: '', en: '' } };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -390,7 +390,7 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
           </button>
           {(safeData.features || []).map((item: any, index: number) => (
             <FeaturesEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('features', i, newD)}
               onRemove={() => removeArrayItem('features', index)}
               onMoveUp={() => moveArrayItem('features', index, -1)}
@@ -446,7 +446,7 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
           </button>
           {(safeData.gallery || []).map((item: any, index: number) => (
             <GalleryEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('gallery', i, newD)}
               onRemove={() => removeArrayItem('gallery', index)}
               onMoveUp={() => moveArrayItem('gallery', index, -1)}
@@ -502,7 +502,7 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
           </button>
           {(safeData.timings || []).map((item: any, index: number) => (
             <TimingsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('timings', i, newD)}
               onRemove={() => removeArrayItem('timings', index)}
               onMoveUp={() => moveArrayItem('timings', index, -1)}

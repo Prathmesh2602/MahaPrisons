@@ -17,7 +17,7 @@ interface TwoColEventCardsEditorProps {
 
 const VenueFeaturesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -56,7 +56,7 @@ const VenueFeaturesEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMo
 
 const IntroBlockEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, description: { mr: '', en: '' } };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -140,7 +140,9 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
   const addArrayItem = (field: string, defaultItem: any) => {
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
-    handleChange(field, [defaultItem, ...arr]);
+    const newKey = `${field}_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    const itemWithKey = typeof defaultItem === 'object' && defaultItem !== null ? { _key: newKey, ...defaultItem } : defaultItem;
+    handleChange(field, [itemWithKey, ...arr]);
   };
 
   // Migrations
@@ -281,7 +283,7 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
           </button>
           {(safeData.introBlocks || []).map((item: any, index: number) => (
             <IntroBlockEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || `intro-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('introBlocks', i, newD)}
               onRemove={() => removeArrayItem('introBlocks', index)}
               onMoveUp={() => moveArrayItem('introBlocks', index, -1)}
@@ -310,7 +312,7 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
           </button>
           {(safeData.venueFeatures || []).map((item: any, index: number) => (
             <VenueFeaturesEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || `venue-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('venueFeatures', i, newD)}
               onRemove={() => removeArrayItem('venueFeatures', index)}
               onMoveUp={() => moveArrayItem('venueFeatures', index, -1)}

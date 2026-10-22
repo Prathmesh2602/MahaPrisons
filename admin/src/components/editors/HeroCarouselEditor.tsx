@@ -26,7 +26,8 @@ const HeroCarouselSlide = ({
     slideData,
     (newSlideData) => {
       onUpdateFull(index, newSlideData);
-    }
+    },
+    slideData._key
   );
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -326,7 +327,9 @@ export const HeroCarouselEditor = ({ blockId, initialData, onPreviewUpdate }: an
 
   const addSlide = () => {
     const newData = JSON.parse(JSON.stringify(data));
+    const newKey = `slide_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
     newData.slides.unshift({
+      _key: newKey,
       img_src: "", img_alt: "",
       category: { mr: "", en: "" },
       title: { mr: "", en: "" },
@@ -415,7 +418,7 @@ export const HeroCarouselEditor = ({ blockId, initialData, onPreviewUpdate }: an
           <div className="w-full space-y-2">
             {data.slides?.map((slide: any, index: number) => (
               <HeroCarouselSlide
-                key={index}
+                key={slide._key || `slide-${index}`}
                 index={index}
                 slideData={slide}
                 onUpdateFull={updateSlideFull}

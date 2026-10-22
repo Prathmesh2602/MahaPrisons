@@ -19,7 +19,7 @@ const ProductItem = ({
   isExpanded, onToggle
 }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, image: '', icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
   const handleLocalUpdate = (key: string, value: string) => {

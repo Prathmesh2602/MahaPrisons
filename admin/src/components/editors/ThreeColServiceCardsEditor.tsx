@@ -17,7 +17,7 @@ interface ThreeColServiceCardsEditorProps {
 
 const FeatureEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: 'Droplets' };
-  const itemHist = useBlockHistory(defaultItem, { ...itemData, icon: itemData?.icon || 'Droplets' }, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, { ...itemData, icon: itemData?.icon || 'Droplets' }, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -107,7 +107,9 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
   const addArrayItem = (field: string, defaultItem: any) => {
     let arr = safeData[field] || [];
     if (!Array.isArray(arr)) arr = [arr].filter(Boolean);
-    handleChange(field, [defaultItem, ...arr]);
+    const newKey = `${field}_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    const itemWithKey = typeof defaultItem === 'object' && defaultItem !== null ? { _key: newKey, ...defaultItem } : defaultItem;
+    handleChange(field, [itemWithKey, ...arr]);
   };
 
   // Pre-seed gallery from legacy hero images if missing
@@ -268,7 +270,7 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
           </button>
           {(safeData.features || []).map((item: any, index: number) => (
             <FeatureEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('features', i, newD)}
               onRemove={() => removeArrayItem('features', index)}
               onMoveUp={() => moveArrayItem('features', index, -1)}

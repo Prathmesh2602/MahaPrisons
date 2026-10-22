@@ -3,11 +3,23 @@ import { useState, useEffect, useRef } from 'react';
 export function useBlockHistory<T>(
   defaultValue: T,
   propValue: T,
-  onChange: (val: T) => void
+  onChange: (val: T) => void,
+  itemKey?: any
 ) {
-  const historyRef = useRef<T[]>([propValue]);
+  const getItemIdentity = (val: any) => {
+    if (itemKey !== undefined && itemKey !== null) return String(itemKey);
+    if (val && typeof val === 'object') {
+      if (val._key) return String(val._key);
+      if (val.id) return String(val.id);
+    }
+    return undefined;
+  };
+
+  const initialParsed = propValue === undefined ? defaultValue : JSON.parse(JSON.stringify(propValue));
+  const historyRef = useRef<T[]>([initialParsed]);
   const indexRef = useRef(0);
   const internalChangeRef = useRef(false);
+  const currentKeyRef = useRef<string | undefined>(getItemIdentity(propValue));
   const [trigger, setTrigger] = useState(0);
 
   const propValueStr = propValue === undefined ? undefined : JSON.stringify(propValue);
@@ -24,7 +36,26 @@ export function useBlockHistory<T>(
     setTrigger(prev => prev + 1);
   }, [defaultValueStr]);
 
+  // Synchronously or via effect detect item identity change
+  const currentIdentity = getItemIdentity(propValue);
+  if (currentIdentity !== undefined && currentKeyRef.current !== undefined && currentIdentity !== currentKeyRef.current) {
+    currentKeyRef.current = currentIdentity;
+    const parsedVal = propValue === undefined ? defaultValue : JSON.parse(JSON.stringify(propValue));
+    historyRef.current = [parsedVal];
+    indexRef.current = 0;
+  }
+
   useEffect(() => {
+    const currentId = getItemIdentity(propValue);
+    if (currentId !== undefined && currentKeyRef.current !== undefined && currentId !== currentKeyRef.current) {
+      currentKeyRef.current = currentId;
+      const parsedVal = propValue === undefined ? defaultValue : JSON.parse(JSON.stringify(propValue));
+      historyRef.current = [parsedVal];
+      indexRef.current = 0;
+      setTrigger(prev => prev + 1);
+      return;
+    }
+
     if (internalChangeRef.current) {
       internalChangeRef.current = false;
     } else {
@@ -45,8 +76,9 @@ export function useBlockHistory<T>(
 
   const update = (newVal: T) => {
     internalChangeRef.current = true;
+    const cloned = JSON.parse(JSON.stringify(newVal));
     const newHist = historyRef.current.slice(0, indexRef.current + 1);
-    newHist.push(newVal);
+    newHist.push(cloned);
     historyRef.current = newHist;
     indexRef.current = newHist.length - 1;
     onChange(newVal);
@@ -57,7 +89,7 @@ export function useBlockHistory<T>(
     if (indexRef.current > 0) {
       internalChangeRef.current = true;
       indexRef.current -= 1;
-      const prev = historyRef.current[indexRef.current];
+      const prev = JSON.parse(JSON.stringify(historyRef.current[indexRef.current]));
       onChange(prev);
       setTrigger(prev => prev + 1);
     }
@@ -67,7 +99,7 @@ export function useBlockHistory<T>(
     if (indexRef.current < historyRef.current.length - 1) {
       internalChangeRef.current = true;
       indexRef.current += 1;
-      const next = historyRef.current[indexRef.current];
+      const next = JSON.parse(JSON.stringify(historyRef.current[indexRef.current]));
       onChange(next);
       setTrigger(prev => prev + 1);
     }
@@ -76,7 +108,9 @@ export function useBlockHistory<T>(
   const reset = () => {
     internalChangeRef.current = true;
     const newHist = historyRef.current.slice(0, indexRef.current + 1);
-    const initialLocalState = historyRef.current[0];
+    const initialLocalState = historyRef.current[0] !== undefined 
+      ? JSON.parse(JSON.stringify(historyRef.current[0]))
+      : JSON.parse(JSON.stringify(defaultValue));
     newHist.push(initialLocalState);
     historyRef.current = newHist;
     indexRef.current = newHist.length - 1;

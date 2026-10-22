@@ -66,7 +66,8 @@ const StaffBlock = ({ index, staffData, onUpdateFull, onRemove, onMoveUp, onMove
   const staffHist = useBlockHistory(
     defaultStaff,
     staffData,
-    (newData) => onUpdateFull(index, newData)
+    (newData) => onUpdateFull(index, newData),
+    staffData._key
   );
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -205,7 +206,8 @@ export const PrisonAdministrationEditor = ({ blockId, initialData, onPreviewUpda
   const addStaff = () => {
     const newData = JSON.parse(JSON.stringify(data));
     if (!newData.staff) newData.staff = [];
-    newData.staff.unshift({ name: { mr: "", en: "" }, role: { mr: "", en: "" }, img: "" });
+    const newKey = `staff_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    newData.staff.unshift({ _key: newKey, name: { mr: "", en: "" }, role: { mr: "", en: "" }, img: "" });
     setData(newData);
     updateHistoryState(newData);
   };
@@ -278,7 +280,7 @@ export const PrisonAdministrationEditor = ({ blockId, initialData, onPreviewUpda
         <div className="w-full space-y-2">
           {data.staff?.map((staffItem: any, index: number) => (
             <StaffBlock
-              key={index}
+              key={staffItem._key || `staff-${index}`}
               index={index}
               staffData={staffItem}
               onUpdateFull={updateStaffFull}

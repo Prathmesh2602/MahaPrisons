@@ -18,7 +18,8 @@ const GalleryItemBlock = ({
   const itemHist = useBlockHistory(
     defaultItem,
     itemData,
-    (newItemData) => onUpdateFull(index, newItemData)
+    (newItemData) => onUpdateFull(index, newItemData),
+    itemData._key
   );
 
   const handleLocalUpdate = (key: string, value: string) => {
@@ -144,7 +145,8 @@ export const GalleryLayoutEditor = ({ data, updateData, blockId, expandedSection
 
   const handleAddItem = () => {
     const newItems = [...(currentData.gallery || [])];
-    newItems.unshift({ image: "", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
+    const newKey = `gallery_${Math.random().toString(36).substring(2, 9)}_${Date.now()}`;
+    newItems.unshift({ _key: newKey, image: "", title: { mr: "", en: "" }, desc: { mr: "", en: "" } });
     history.update({ ...currentData, gallery: newItems });
     setExpandedIndex(0);
   };
@@ -216,7 +218,7 @@ export const GalleryLayoutEditor = ({ data, updateData, blockId, expandedSection
               </button>
         {(currentData.gallery || []).map((item: any, idx: number) => (
                 <GalleryItemBlock
-                  key={idx}
+                  key={item._key || `item-${idx}`}
                   index={idx}
                   itemData={item}
                   onUpdateFull={handleUpdateItem}

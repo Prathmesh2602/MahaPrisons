@@ -17,7 +17,7 @@ interface HeroSplitTimelineEditorProps {
 
 const CoreProtocolsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' } };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -60,7 +60,7 @@ const CoreProtocolsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMo
 
 const InfrastructureEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { image: '', name: { mr: '', en: '' }, details: { mr: '', en: '' } };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
   const [mediaOpen_image, setMediaOpen_image] = useState(false);
 
@@ -360,7 +360,7 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
           </button>
           {(safeData.coreProtocols || []).map((item: any, index: number) => (
             <CoreProtocolsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('coreProtocols', i, newD)}
               onRemove={() => removeArrayItem('coreProtocols', index)}
               onMoveUp={() => moveArrayItem('coreProtocols', index, -1)}
@@ -416,7 +416,7 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
           </button>
           {(safeData.infrastructure || []).map((item: any, index: number) => (
             <InfrastructureEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('infrastructure', i, newD)}
               onRemove={() => removeArrayItem('infrastructure', index)}
               onMoveUp={() => moveArrayItem('infrastructure', index, -1)}

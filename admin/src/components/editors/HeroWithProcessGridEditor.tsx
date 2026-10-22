@@ -17,7 +17,7 @@ interface HeroWithProcessGridEditorProps {
 
 const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { value: '', label: { mr: '', en: '' }, isText: false };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -60,7 +60,7 @@ const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, on
 
 const TechnicalFocusEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, description: { mr: '', en: '' }, icon: 'CheckCircle2' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -342,7 +342,7 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
           </button>
           {(safeData.stats || []).map((item: any, index: number) => (
             <StatsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('stats', i, newD)}
               onRemove={() => removeArrayItem('stats', index)}
               onMoveUp={() => moveArrayItem('stats', index, -1)}
@@ -397,7 +397,7 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
           </button>
           {(safeData.technicalFocus || []).map((item: any, index: number) => (
             <TechnicalFocusEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('technicalFocus', i, newD)}
               onRemove={() => removeArrayItem('technicalFocus', index)}
               onMoveUp={() => moveArrayItem('technicalFocus', index, -1)}

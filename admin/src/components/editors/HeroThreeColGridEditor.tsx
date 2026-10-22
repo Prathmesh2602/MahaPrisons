@@ -17,7 +17,7 @@ interface HeroThreeColGridEditorProps {
 
 const ProductionStatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { value: '', label: { mr: '', en: '' }, unit: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -74,7 +74,7 @@ const ProductionStatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, on
 
 const ActiveProjectsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { image: '', title: { mr: '', en: '' }, desc: { mr: '', en: '' } };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
   const [mediaOpen_image, setMediaOpen_image] = useState(false);
 
@@ -321,7 +321,7 @@ export const HeroThreeColGridEditor: React.FC<HeroThreeColGridEditorProps> = ({ 
           </button>
           {(safeData.productionStats || []).map((item: any, index: number) => (
             <ProductionStatsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('productionStats', i, newD)}
               onRemove={() => removeArrayItem('productionStats', index)}
               onMoveUp={() => moveArrayItem('productionStats', index, -1)}
@@ -352,7 +352,7 @@ export const HeroThreeColGridEditor: React.FC<HeroThreeColGridEditorProps> = ({ 
           </button>
           {(safeData.activeProjects || []).map((item: any, index: number) => (
             <ActiveProjectsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('activeProjects', i, newD)}
               onRemove={() => removeArrayItem('activeProjects', index)}
               onMoveUp={() => moveArrayItem('activeProjects', index, -1)}

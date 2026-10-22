@@ -17,7 +17,7 @@ interface HeroFeaturesTimelineLayoutEditorProps {
 
 const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { value: '', label: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -61,7 +61,7 @@ const StatsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, on
 
 const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
 
@@ -105,7 +105,7 @@ const KeyFunctionsEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMov
 
 const ContactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, onMoveDown, isFirst, isLast, isExpanded, onToggle }: any) => {
   const defaultItem = { text: { mr: '', en: '' }, icon: 'MapPin' };
-  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData));
+  const itemHist = useBlockHistory(defaultItem, itemData, (newItemData: any) => onUpdateFull(index, newItemData), itemData?._key);
   const currentItem = itemHist.value;
 
   const handleLocalUpdate = (key: string, value: any) => {
@@ -315,7 +315,7 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
           </button>
           {(safeData.stats || []).map((item: any, index: number) => (
             <StatsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('stats', i, newD)}
               onRemove={() => removeArrayItem('stats', index)}
               onMoveUp={() => moveArrayItem('stats', index, -1)}
@@ -370,7 +370,7 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
           </button>
           {(safeData.keyFunctions || []).map((item: any, index: number) => (
             <KeyFunctionsEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('keyFunctions', i, newD)}
               onRemove={() => removeArrayItem('keyFunctions', index)}
               onMoveUp={() => moveArrayItem('keyFunctions', index, -1)}
@@ -428,7 +428,7 @@ export const HeroFeaturesTimelineLayoutEditor: React.FC<HeroFeaturesTimelineLayo
           </button>
           {(safeData.contactList || []).map((item: any, index: number) => (
             <ContactEditorItem
-              key={`item-${index}`} index={index} itemData={item}
+              key={item._key || item.id || `item-${index}`} index={index} itemData={item}
               onUpdateFull={(i: number, newD: any) => updateArrayItemFull('contactList', i, newD)}
               onRemove={() => removeArrayItem('contactList', index)}
               onMoveUp={() => moveArrayItem('contactList', index, -1)}
