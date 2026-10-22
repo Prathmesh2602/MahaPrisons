@@ -59,23 +59,35 @@ const FeatureEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, 
 };
 
 export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
-  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>('hero');
+  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>(0);
   
   const [mediaOpen_heroImage1, setMediaOpen_heroImage1] = useState(false);
   const [mediaOpen_heroImage2, setMediaOpen_heroImage2] = useState(false);
 
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_header: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   const activeSection = (expandedSection || 'hero').replace('template_', '');
 
   useEffect(() => {
-    setExpandedItemIndex(activeSection === 'hero' ? 'hero' : 0);
+    setExpandedItemIndex(0);
   }, [activeSection]);
 
   const safeData = {
     ...data
   };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
@@ -131,14 +143,19 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
       description: safeData.hero?.description || safeData.description || { mr: '', en: '' }
     },
     (newHero: any) => {
-      handleChange('hero', {
-        ...safeData.hero,
-        icon: newHero.icon,
+      handleChange({
+        hero: {
+          ...safeData.hero,
+          icon: newHero.icon,
+          title: newHero.title,
+          subtitle: newHero.subtitle,
+          description: newHero.description
+        },
         title: newHero.title,
         subtitle: newHero.subtitle,
-        description: newHero.description
+        description: newHero.description,
+        sectionHeaders: { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newHero.icon } }
       });
-      handleChange('sectionHeaders', { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newHero.icon } });
     }
   );
   const currentHero = heroHist.value;
@@ -155,11 +172,11 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Hero Configuration" 
-            isExpanded={expandedItemIndex === 'hero'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} 
+            isExpanded={!!expandedFixedBlocks['hero_header']} 
+            onToggle={() => toggleFixedBlock('hero_header')} 
             history={heroHist}
           />
-          {expandedItemIndex === 'hero' && (
+          {!!expandedFixedBlocks['hero_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <IconPickerInput 
                 label="Hero Icon" 
@@ -206,49 +223,79 @@ export const ThreeColServiceCardsEditor: React.FC<ThreeColServiceCardsEditorProp
     
     return (
       <div className="pb-10 space-y-4">
-        <button onClick={() => addArrayItem('gallery', '')} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+        <div className="px-1 mb-2">
+          <h3 className="text-sm font-bold text-slate-700">Showcase Images</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{galleryArray.length} image(s)</p>
+        </div>
+        <button 
+          onClick={() => {
+            const arr = Array.isArray(safeData.gallery) ? [...safeData.gallery] : [];
+            handleChange('gallery', [...arr, '']);
+            setExpandedItemIndex(arr.length);
+            setMediaOpen_heroImage1(true);
+          }} 
+          className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50 cursor-pointer"
+        >
           <Plus size={16} /> Add Image
         </button>
         <div className="space-y-4">
-        {galleryArray.map((imgUrl: string, index: number) => (
-          <div key={`gallery-${index}`} className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3 relative shadow-sm">
-            <div className="flex justify-between items-center">
-              <span className="text-xs font-semibold text-slate-500 uppercase">Image {index + 1}</span>
-              <div className="flex gap-1 border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm">
-                <button onClick={() => moveArrayItem('gallery', index, -1)} disabled={index === 0} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowUp size={14} /></button>
-                <button onClick={() => moveArrayItem('gallery', index, 1)} disabled={index === galleryArray.length - 1} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowDown size={14} /></button>
-                <button onClick={() => removeArrayItem('gallery', index)} className="p-1.5 text-red-500 hover:bg-red-50 transition-colors"><Trash2 size={14} /></button>
+        {galleryArray.length === 0 && (
+          <div className="p-8 text-center bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl text-slate-500">
+            <p className="font-medium text-sm">No showcase images yet.</p>
+            <p className="text-xs text-slate-400 mt-1">Click the "Add Image" button above to add photos to this section.</p>
+          </div>
+        )}
+        {galleryArray.map((item: any, index: number) => {
+          const imgUrl = typeof item === 'object' && item !== null ? (item.url || '') : (typeof item === 'string' ? item : '');
+          return (
+            <div key={`gallery-${index}`} className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3 relative shadow-sm">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-semibold text-slate-500 uppercase">Image {index + 1}</span>
+                <div className="flex gap-1 border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm">
+                  <button onClick={() => moveArrayItem('gallery', index, -1)} disabled={index === 0} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowUp size={14} /></button>
+                  <button onClick={() => moveArrayItem('gallery', index, 1)} disabled={index === galleryArray.length - 1} className="p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 border-r border-slate-200"><ArrowDown size={14} /></button>
+                  <button onClick={() => removeArrayItem('gallery', index)} className="p-1.5 text-red-500 hover:bg-red-50 transition-colors"><Trash2 size={14} /></button>
+                </div>
+              </div>
+              
+              <div
+                className="w-full h-36 bg-white rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
+                onClick={() => {
+                  setExpandedItemIndex(index);
+                  setMediaOpen_heroImage1(true);
+                }}
+              >
+                {imgUrl ? (
+                  <>
+                    <img src={imgUrl.startsWith('http') ? imgUrl : `${API_URL}${imgUrl.startsWith('/') ? '' : '/'}${imgUrl}`} className="w-full h-full object-cover" alt="Preview" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-white text-sm font-medium">Click to change</span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50">
+                    <span className="text-2xl mb-1">🖼</span>
+                    <span className="text-xs">Click to select image</span>
+                  </div>
+                )}
               </div>
             </div>
-            
-            <div
-              className="w-full h-36 bg-white rounded-lg border border-slate-300 overflow-hidden relative group cursor-pointer"
-              onClick={() => {
-                setExpandedItemIndex(index);
-                setMediaOpen_heroImage1(true);
-              }}
-            >
-              {imgUrl ? (
-                <>
-                  <img src={imgUrl.startsWith('http') ? imgUrl : `${API_URL}${imgUrl.startsWith('/') ? '' : '/'}${imgUrl}`} className="w-full h-full object-cover" alt="Preview" />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="text-white text-sm font-medium">Click to change</span>
-                  </div>
-                </>
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50">
-                  <span className="text-2xl mb-1">🖼</span>
-                  <span className="text-xs">Click to select</span>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
         <MediaLibraryPopup
           isOpen={mediaOpen_heroImage1}
           onClose={() => setMediaOpen_heroImage1(false)}
           onSelect={(url: string) => { 
-            updateArrayItemFull('gallery', expandedItemIndex as number, url); 
+            const arr = Array.isArray(safeData.gallery) ? [...safeData.gallery] : [];
+            const idx = expandedItemIndex as number;
+            if (idx >= 0 && idx < arr.length) {
+              if (typeof arr[idx] === 'object' && arr[idx] !== null) {
+                arr[idx] = { ...arr[idx], url };
+              } else {
+                arr[idx] = url;
+              }
+              handleChange('gallery', arr);
+            }
             setMediaOpen_heroImage1(false); 
           }}
         />

@@ -147,11 +147,23 @@ const ContactInfoEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMove
 };
 
 export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
-  const [expandedItemIndex, setExpandedItemIndex] = useState<string | null>('hero');
+  const [expandedItemIndex, setExpandedItemIndex] = useState<string | null>(null);
   const activeSection = (expandedSection || 'hero').replace('template_', '');
 
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_header: true,
+    desc_block: true,
+    stats_header: true,
+    keyFunctions_header: true,
+    contactInfo_header: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   useEffect(() => {
-    setExpandedItemIndex(activeSection === 'hero' ? 'hero' : 'desc_block');
+    setExpandedItemIndex(null);
   }, [activeSection]);
 
   const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
@@ -182,8 +194,12 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
     safeData.contactInfo = safeData.contactInfo.map((item: any) => ({ ...item, icon: item.icon || 'Info' }));
   }
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
@@ -218,13 +234,18 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
     handleChange(field, [itemWithKey, ...arr]);
   };
 
-  const descHist = useBlockHistory({ description: { mr: '', en: '' }, stampText: { mr: '', en: '' } }, { description: safeData.hero?.description || { mr: '', en: '' }, stampText: safeData.hero?.stampText || { mr: '', en: '' } }, (newData: any) => handleChange('hero', { ...safeData.hero, ...newData }));
+  const descHist = useBlockHistory({ description: { mr: '', en: '' }, stampText: { mr: '', en: '' } }, { description: safeData.hero?.description || safeData.description || { mr: '', en: '' }, stampText: safeData.hero?.stampText || { mr: '', en: '' } }, (newData: any) => handleChange('hero', { ...safeData.hero, ...newData }));
   const heroBannerHist = useBlockHistory(
     { icon: 'Send', heroImage: '', title: { mr: '', en: '' }, subtitle: { mr: '', en: '' } },
     { icon: safeData.sectionHeaders?.hero?.icon || 'Send', heroImage: safeData.hero?.heroImage || safeData.heroImage || '', title: safeData.hero?.title || safeData.title || { mr: '', en: '' }, subtitle: safeData.hero?.subtitle || safeData.subtitle || { mr: '', en: '' } },
     (newData: any) => {
-       handleChange('hero', { ...safeData.hero, heroImage: newData.heroImage, title: newData.title, subtitle: newData.subtitle });
-       handleChange('sectionHeaders', { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newData.icon } });
+       handleChange({
+         hero: { ...safeData.hero, heroImage: newData.heroImage, title: newData.title, subtitle: newData.subtitle },
+         title: newData.title,
+         subtitle: newData.subtitle,
+         heroImage: newData.heroImage,
+         sectionHeaders: { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newData.icon } }
+       });
     }
   );
 
@@ -234,11 +255,11 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Header Banner" 
-            isExpanded={expandedItemIndex === 'hero'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} 
+            isExpanded={!!expandedFixedBlocks['hero_header']} 
+            onToggle={() => toggleFixedBlock('hero_header')} 
             history={heroBannerHist}
           />
-          {expandedItemIndex === 'hero' && (
+          {!!expandedFixedBlocks['hero_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <IconPickerInput 
                 label="Header Banner Icon" 
@@ -290,17 +311,17 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
     );
   }
 
-  if (['details', 'stats', 'keyFunctions', 'contactInfo', 'description'].includes(activeSection)) {
+  if (activeSection === 'description' || activeSection === 'details') {
     return (
       <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
           <EditorBlockHeader 
             title="Description Block" 
-            isExpanded={expandedItemIndex === 'desc_block'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'desc_block' ? null : 'desc_block')} 
+            isExpanded={!!expandedFixedBlocks['desc_block']} 
+            onToggle={() => toggleFixedBlock('desc_block')} 
             history={descHist}
           />
-          {expandedItemIndex === 'desc_block' && (
+          {!!expandedFixedBlocks['desc_block'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description</label>
@@ -313,14 +334,20 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
             </div>
           )}
         </div>
+      </div>
+    );
+  }
 
+  if (activeSection === 'stats') {
+    return (
+      <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
           <EditorBlockHeader 
             title="Stats Block" 
-            isExpanded={expandedItemIndex === 'stats_header'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'stats_header' ? null : 'stats_header')} 
+            isExpanded={!!expandedFixedBlocks['stats_header']} 
+            onToggle={() => toggleFixedBlock('stats_header')} 
           />
-          {expandedItemIndex === 'stats_header' && (
+          {!!expandedFixedBlocks['stats_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
@@ -340,40 +367,43 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
           )}
         </div>
         
-        {activeSection === 'stats' || expandedItemIndex?.startsWith('stats') ? (
-          <div className="mb-4">
-            <div className="px-1 mb-2">
-              <h3 className="text-sm font-bold text-slate-700">Stats List</h3>
-              <p className="text-xs text-slate-500 mt-0.5">{(safeData.stats || []).length} item(s)</p>
-            </div>
-            <div className="space-y-2">
-              <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
-                <Plus size={16} /> Add Stats Item
-              </button>
-          {(safeData.stats || []).map((item: any, index: number) => (
-                <StatsEditorItem
-                  key={item._key || item.id || `item-${index}`} index={index} itemData={item}
-                  onUpdateFull={(i: number, newD: any) => updateArrayItemFull('stats', i, newD)}
-                  onRemove={() => removeArrayItem('stats', index)}
-                  onMoveUp={() => moveArrayItem('stats', index, -1)}
-                  onMoveDown={() => moveArrayItem('stats', index, 1)}
-                  isFirst={index === 0} isLast={index === (safeData.stats || []).length - 1}
-                  isExpanded={expandedItemIndex === `stats-${index}`}
-                  onToggle={() => setExpandedItemIndex(expandedItemIndex === `stats-${index}` ? null : `stats-${index}`)}
-                />
-              ))}
-
-            </div>
+        <div className="mb-4">
+          <div className="px-1 mb-2">
+            <h3 className="text-sm font-bold text-slate-700">Stats List</h3>
+            <p className="text-xs text-slate-500 mt-0.5">{(safeData.stats || []).length} item(s)</p>
           </div>
-        ) : null}
+          <div className="space-y-2">
+            <button onClick={() => addArrayItem('stats', { value: '', label: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+              <Plus size={16} /> Add Stats Item
+            </button>
+            {(safeData.stats || []).map((item: any, index: number) => (
+              <StatsEditorItem
+                key={item._key || item.id || `item-${index}`} index={index} itemData={item}
+                onUpdateFull={(i: number, newD: any) => updateArrayItemFull('stats', i, newD)}
+                onRemove={() => removeArrayItem('stats', index)}
+                onMoveUp={() => moveArrayItem('stats', index, -1)}
+                onMoveDown={() => moveArrayItem('stats', index, 1)}
+                isFirst={index === 0} isLast={index === (safeData.stats || []).length - 1}
+                isExpanded={expandedItemIndex === `stats-${index}`}
+                onToggle={() => setExpandedItemIndex(expandedItemIndex === `stats-${index}` ? null : `stats-${index}`)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
+  if (activeSection === 'keyFunctions') {
+    return (
+      <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
           <EditorBlockHeader 
             title="Key Functions Block" 
-            isExpanded={expandedItemIndex === 'keyFunctions_header'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'keyFunctions_header' ? null : 'keyFunctions_header')} 
+            isExpanded={!!expandedFixedBlocks['keyFunctions_header']} 
+            onToggle={() => toggleFixedBlock('keyFunctions_header')} 
           />
-          {expandedItemIndex === 'keyFunctions_header' && (
+          {!!expandedFixedBlocks['keyFunctions_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
@@ -393,40 +423,43 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
           )}
         </div>
         
-        {activeSection === 'keyFunctions' || expandedItemIndex?.startsWith('keyFunctions') ? (
-          <div className="mb-4">
-            <div className="px-1 mb-2">
-              <h3 className="text-sm font-bold text-slate-700">Key Functions List</h3>
-              <p className="text-xs text-slate-500 mt-0.5">{(safeData.keyFunctions || []).length} item(s)</p>
-            </div>
-            <div className="space-y-2">
-              <button onClick={() => addArrayItem('keyFunctions', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
-                <Plus size={16} /> Add Key Functions Item
-              </button>
-          {(safeData.keyFunctions || []).map((item: any, index: number) => (
-                <KeyFunctionsEditorItem
-                  key={item._key || item.id || `item-${index}`} index={index} itemData={item}
-                  onUpdateFull={(i: number, newD: any) => updateArrayItemFull('keyFunctions', i, newD)}
-                  onRemove={() => removeArrayItem('keyFunctions', index)}
-                  onMoveUp={() => moveArrayItem('keyFunctions', index, -1)}
-                  onMoveDown={() => moveArrayItem('keyFunctions', index, 1)}
-                  isFirst={index === 0} isLast={index === (safeData.keyFunctions || []).length - 1}
-                  isExpanded={expandedItemIndex === `keyFunctions-${index}`}
-                  onToggle={() => setExpandedItemIndex(expandedItemIndex === `keyFunctions-${index}` ? null : `keyFunctions-${index}`)}
-                />
-              ))}
-
-            </div>
+        <div className="mb-4">
+          <div className="px-1 mb-2">
+            <h3 className="text-sm font-bold text-slate-700">Key Functions List</h3>
+            <p className="text-xs text-slate-500 mt-0.5">{(safeData.keyFunctions || []).length} item(s)</p>
           </div>
-        ) : null}
+          <div className="space-y-2">
+            <button onClick={() => addArrayItem('keyFunctions', { title: { mr: '', en: '' }, desc: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+              <Plus size={16} /> Add Key Functions Item
+            </button>
+            {(safeData.keyFunctions || []).map((item: any, index: number) => (
+              <KeyFunctionsEditorItem
+                key={item._key || item.id || `item-${index}`} index={index} itemData={item}
+                onUpdateFull={(i: number, newD: any) => updateArrayItemFull('keyFunctions', i, newD)}
+                onRemove={() => removeArrayItem('keyFunctions', index)}
+                onMoveUp={() => moveArrayItem('keyFunctions', index, -1)}
+                onMoveDown={() => moveArrayItem('keyFunctions', index, 1)}
+                isFirst={index === 0} isLast={index === (safeData.keyFunctions || []).length - 1}
+                isExpanded={expandedItemIndex === `keyFunctions-${index}`}
+                onToggle={() => setExpandedItemIndex(expandedItemIndex === `keyFunctions-${index}` ? null : `keyFunctions-${index}`)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
+  if (activeSection === 'contactInfo') {
+    return (
+      <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
           <EditorBlockHeader 
             title="Contact Info Block" 
-            isExpanded={expandedItemIndex === 'contactInfo_header'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'contactInfo_header' ? null : 'contactInfo_header')} 
+            isExpanded={!!expandedFixedBlocks['contactInfo_header']} 
+            onToggle={() => toggleFixedBlock('contactInfo_header')} 
           />
-          {expandedItemIndex === 'contactInfo_header' && (
+          {!!expandedFixedBlocks['contactInfo_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
@@ -446,33 +479,29 @@ export const ContactInfoGridEditor: React.FC<ContactInfoGridEditorProps> = ({ da
           )}
         </div>
         
-        {activeSection === 'contactInfo' || expandedItemIndex?.startsWith('contactInfo') ? (
-          <div className="mb-4">
-            <div className="px-1 mb-2">
-              <h3 className="text-sm font-bold text-slate-700">Contact Links List</h3>
-              <p className="text-xs text-slate-500 mt-0.5">{(safeData.contactInfo || []).length} item(s)</p>
-            </div>
-            <div className="space-y-2">
-              <button onClick={() => addArrayItem('contactInfo', { text: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
-                <Plus size={16} /> Add Contact Link
-              </button>
-          {(safeData.contactInfo || []).map((item: any, index: number) => (
-                <ContactInfoEditorItem
-                  key={item._key || item.id || `item-${index}`} index={index} itemData={item}
-                  onUpdateFull={(i: number, newD: any) => updateArrayItemFull('contactInfo', i, newD)}
-                  onRemove={() => removeArrayItem('contactInfo', index)}
-                  onMoveUp={() => moveArrayItem('contactInfo', index, -1)}
-                  onMoveDown={() => moveArrayItem('contactInfo', index, 1)}
-                  isFirst={index === 0} isLast={index === (safeData.contactInfo || []).length - 1}
-                  isExpanded={expandedItemIndex === `contactInfo-${index}`}
-                  onToggle={() => setExpandedItemIndex(expandedItemIndex === `contactInfo-${index}` ? null : `contactInfo-${index}`)}
-                />
-              ))}
-
-            </div>
+        <div className="mb-4">
+          <div className="px-1 mb-2">
+            <h3 className="text-sm font-bold text-slate-700">Contact Links List</h3>
+            <p className="text-xs text-slate-500 mt-0.5">{(safeData.contactInfo || []).length} item(s)</p>
           </div>
-        ) : null}
-
+          <div className="space-y-2">
+            <button onClick={() => addArrayItem('contactInfo', { text: { mr: '', en: '' }, icon: '' })} className="mb-4 px-4 py-3 bg-indigo-50/50 border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 w-full flex justify-center items-center gap-2 shadow-indigo-100/50">
+              <Plus size={16} /> Add Contact Link
+            </button>
+            {(safeData.contactInfo || []).map((item: any, index: number) => (
+              <ContactInfoEditorItem
+                key={item._key || item.id || `item-${index}`} index={index} itemData={item}
+                onUpdateFull={(i: number, newD: any) => updateArrayItemFull('contactInfo', i, newD)}
+                onRemove={() => removeArrayItem('contactInfo', index)}
+                onMoveUp={() => moveArrayItem('contactInfo', index, -1)}
+                onMoveDown={() => moveArrayItem('contactInfo', index, 1)}
+                isFirst={index === 0} isLast={index === (safeData.contactInfo || []).length - 1}
+                isExpanded={expandedItemIndex === `contactInfo-${index}`}
+                onToggle={() => setExpandedItemIndex(expandedItemIndex === `contactInfo-${index}` ? null : `contactInfo-${index}`)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

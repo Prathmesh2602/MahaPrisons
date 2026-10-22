@@ -102,11 +102,19 @@ const ImpactEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveUp, o
 };
 
 export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
-  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>('hero');
+  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>(0);
   const activeSection = (expandedSection || 'hero').replace('template_', '');
 
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_header: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   useEffect(() => {
-    setExpandedItemIndex(activeSection === 'hero' ? 'hero' : (activeSection === 'services' ? 0 : 0));
+    setExpandedItemIndex(0);
   }, [activeSection]);
 
   const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
@@ -115,8 +123,12 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
     ...data
   };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
@@ -165,25 +177,30 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
     {
       badgeTitle: safeData.sectionHeaders?.training?.title?.mr ? safeData.sectionHeaders.training.title : { mr: 'व्यावसायिक प्रशिक्षण', en: 'Vocational Training' },
       badgeIcon: safeData.sectionHeaders?.training?.icon || 'Scissors',
-      title: safeData.hero?.title || { mr: '', en: '' },
-      subtitle: safeData.hero?.subtitle || { mr: '', en: '' },
+      title: safeData.hero?.title || safeData.title || { mr: '', en: '' },
+      subtitle: safeData.hero?.subtitle || safeData.subtitle || { mr: '', en: '' },
       description: safeData.hero?.description || safeData.description || { mr: '', en: '' },
       heroImage: safeData.hero?.heroImage || ''
     },
     (newCombined: any) => {
-      handleChange('hero', {
-        ...safeData.hero,
+      handleChange({
+        hero: {
+          ...safeData.hero,
+          title: newCombined.title,
+          subtitle: newCombined.subtitle,
+          description: newCombined.description,
+          heroImage: newCombined.heroImage
+        },
         title: newCombined.title,
         subtitle: newCombined.subtitle,
         description: newCombined.description,
-        heroImage: newCombined.heroImage
-      });
-      handleChange('sectionHeaders', {
-        ...safeData.sectionHeaders,
-        training: {
-          ...(safeData.sectionHeaders?.training || {}),
-          title: newCombined.badgeTitle,
-          icon: newCombined.badgeIcon
+        sectionHeaders: {
+          ...safeData.sectionHeaders,
+          training: {
+            ...(safeData.sectionHeaders?.training || {}),
+            title: newCombined.badgeTitle,
+            icon: newCombined.badgeIcon
+          }
         }
       });
     }
@@ -201,11 +218,11 @@ export const HeroWithPricingListEditor: React.FC<HeroWithPricingListEditorProps>
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Hero Content" 
-            isExpanded={expandedItemIndex === 'hero'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} 
+            isExpanded={!!expandedFixedBlocks['hero_header']} 
+            onToggle={() => toggleFixedBlock('hero_header')} 
             history={heroHist}
           />
-          {expandedItemIndex === 'hero' && (
+          {!!expandedFixedBlocks['hero_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Badge Title</label>

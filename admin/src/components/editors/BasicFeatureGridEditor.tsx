@@ -170,8 +170,12 @@ export const BasicFeatureGridEditor: React.FC<BasicFeatureGridEditorProps> = ({ 
     ...data
   };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...data, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const statsHist = useBlockHistory([], safeData.stats || [], (newData: any) => handleChange('stats', newData));
@@ -198,8 +202,13 @@ export const BasicFeatureGridEditor: React.FC<BasicFeatureGridEditorProps> = ({ 
     { icon: 'Scale', heroImage: '', title: { mr: '', en: '' }, subtitle: { mr: '', en: '' } },
     { icon: safeData.sectionHeaders?.hero?.icon || 'Scale', heroImage: safeData.hero?.heroImage || safeData.heroImage || '', title: safeData.hero?.title || safeData.title || { mr: '', en: '' }, subtitle: safeData.hero?.subtitle || safeData.subtitle || { mr: '', en: '' } },
     (newData: any) => {
-       handleChange('hero', { ...safeData.hero, heroImage: newData.heroImage, title: newData.title, subtitle: newData.subtitle });
-       handleChange('sectionHeaders', { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newData.icon } });
+       handleChange({
+         hero: { ...safeData.hero, heroImage: newData.heroImage, title: newData.title, subtitle: newData.subtitle },
+         title: newData.title,
+         subtitle: newData.subtitle,
+         heroImage: newData.heroImage,
+         sectionHeaders: { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newData.icon } }
+       });
     }
   );
 

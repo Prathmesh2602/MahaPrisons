@@ -79,7 +79,11 @@ export const TemplateSelectorModal: React.FC<TemplateSelectorModalProps> = ({ cu
             <button onClick={() => setSelectedTemplate(null)} className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
               Cancel / रद्द करा
             </button>
-            <button onClick={handleConfirm} className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors font-medium">
+            <button 
+              id="confirm-template-change-btn"
+              onClick={handleConfirm} 
+              className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors font-medium"
+            >
               Confirm Change / बदल निश्चित करा
             </button>
           </div>
@@ -96,7 +100,7 @@ export const TemplateSelectorModal: React.FC<TemplateSelectorModalProps> = ({ cu
             <h2 className="text-xl font-bold text-slate-800">Select Page Template</h2>
             <p className="text-sm text-slate-500 mt-1">Choose the layout that best fits your content structure.</p>
           </div>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200 transition-colors">
+          <button id="close-template-modal-btn" onClick={onClose} className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200 transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -106,6 +110,7 @@ export const TemplateSelectorModal: React.FC<TemplateSelectorModalProps> = ({ cu
             {templates.map((tpl) => (
               <div 
                 key={tpl.id}
+                id={`template-card-${tpl.id}`}
                 onClick={() => {
                   if (currentTemplate === tpl.id) {
                     onClose();

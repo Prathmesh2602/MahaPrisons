@@ -135,6 +135,11 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
 
   const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
     hero_content: true,
+    security_header: true,
+    notice_header: true,
+    alert_message: true,
+    protocols_header: true,
+    infrastructure_header: true,
     motto_content: true,
     contactInfo_content: true,
     category_header: true,
@@ -160,14 +165,23 @@ export const HeroSplitTimelineEditor: React.FC<HeroSplitTimelineEditorProps> = (
     ...data
   };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const heroContentHist = useBlockHistory(
     { title: { mr: '', en: '' }, subtitle: { mr: '', en: '' }, description: { mr: '', en: '' }, heroImage: '' },
     safeData.hero || {},
-    (newVal: any) => handleChange('hero', newVal)
+    (newVal: any) => handleChange({
+      hero: newVal,
+      title: newVal.title,
+      subtitle: newVal.subtitle,
+      description: newVal.description
+    })
   );
 
   const securityHeaderHist = useBlockHistory(

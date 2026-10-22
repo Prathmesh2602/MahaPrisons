@@ -180,8 +180,12 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
     ...data
   };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const defaultBadge = { title: { mr: 'शेती व पूरक व्यवसाय', en: 'Agriculture & Allied Activities' }, icon: 'Sprout' };
@@ -196,9 +200,11 @@ export const HeroFeatureListEditor: React.FC<HeroFeatureListEditorProps> = ({ da
       badge: { ...defaultBadge, ...(safeData.sectionHeaders?.general || {}) }
     },
     (newVal: any) => {
-      updateData({
-        ...safeData,
+      handleChange({
         hero: newVal.hero,
+        title: newVal.hero?.title,
+        description: newVal.hero?.description,
+        heroImage: newVal.hero?.heroImage,
         sectionHeaders: {
           ...safeData.sectionHeaders,
           general: newVal.badge

@@ -146,11 +146,21 @@ const ContactInfoEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMove
 };
 
 export const SideBySideListCardsEditor: React.FC<SideBySideListCardsEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
-  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>('hero');
+  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>(0);
   const activeSection = (expandedSection || 'hero').replace('template_', '');
 
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_header: true,
+    keyFunctions_header: true,
+    contactInfo_header: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   useEffect(() => {
-    setExpandedItemIndex(activeSection === 'hero' ? 'hero' : (activeSection === 'stats' ? 0 : 0));
+    setExpandedItemIndex(0);
   }, [activeSection]);
 
   const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
@@ -179,8 +189,12 @@ export const SideBySideListCardsEditor: React.FC<SideBySideListCardsEditorProps>
     ].filter(Boolean);
   }
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
@@ -225,8 +239,14 @@ export const SideBySideListCardsEditor: React.FC<SideBySideListCardsEditorProps>
       heroImage: safeData.hero?.heroImage || safeData.heroImage || ''
     },
     (newData: any) => {
-       handleChange('hero', { ...safeData.hero, title: newData.title, subtitle: newData.subtitle, description: newData.description, heroImage: newData.heroImage });
-       handleChange('sectionHeaders', { ...safeData.sectionHeaders, heroBadge: { ...(safeData.sectionHeaders?.heroBadge || {}), title: newData.badgeTitle } });
+       handleChange({
+         hero: { ...safeData.hero, title: newData.title, subtitle: newData.subtitle, description: newData.description, heroImage: newData.heroImage },
+         title: newData.title,
+         subtitle: newData.subtitle,
+         description: newData.description,
+         heroImage: newData.heroImage,
+         sectionHeaders: { ...safeData.sectionHeaders, heroBadge: { ...(safeData.sectionHeaders?.heroBadge || {}), title: newData.badgeTitle } }
+       });
     }
   );
 
@@ -236,11 +256,11 @@ export const SideBySideListCardsEditor: React.FC<SideBySideListCardsEditorProps>
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Hero Content" 
-            isExpanded={expandedItemIndex === 'hero'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} 
+            isExpanded={!!expandedFixedBlocks['hero_header']} 
+            onToggle={() => toggleFixedBlock('hero_header')} 
             history={heroBannerHist}
           />
-          {expandedItemIndex === 'hero' && (
+          {!!expandedFixedBlocks['hero_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               
               <div>
@@ -322,10 +342,10 @@ export const SideBySideListCardsEditor: React.FC<SideBySideListCardsEditorProps>
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Section Title Configuration" 
-            isExpanded={expandedItemIndex === 'keyFunctions_header'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'keyFunctions_header' ? null : 'keyFunctions_header')} 
+            isExpanded={!!expandedFixedBlocks['keyFunctions_header']} 
+            onToggle={() => toggleFixedBlock('keyFunctions_header')} 
           />
-          {expandedItemIndex === 'keyFunctions_header' && (
+          {!!expandedFixedBlocks['keyFunctions_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <IconPickerInput 
                 label="Section Icon" 
@@ -377,10 +397,10 @@ export const SideBySideListCardsEditor: React.FC<SideBySideListCardsEditorProps>
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Section Title Configuration" 
-            isExpanded={expandedItemIndex === 'contactInfo_header'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'contactInfo_header' ? null : 'contactInfo_header')} 
+            isExpanded={!!expandedFixedBlocks['contactInfo_header']} 
+            onToggle={() => toggleFixedBlock('contactInfo_header')} 
           />
-          {expandedItemIndex === 'contactInfo_header' && (
+          {!!expandedFixedBlocks['contactInfo_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <IconPickerInput 
                 label="Section Icon" 

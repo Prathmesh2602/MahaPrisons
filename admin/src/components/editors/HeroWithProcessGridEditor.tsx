@@ -108,6 +108,8 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
 
   const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
     hero_content: true,
+    stats_header: true,
+    technicalFocus_header: true,
     motto_content: true,
     contactInfo_content: true,
     category_header: true,
@@ -159,8 +161,12 @@ export const HeroWithProcessGridEditor: React.FC<HeroWithProcessGridEditorProps>
     }
   }
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {

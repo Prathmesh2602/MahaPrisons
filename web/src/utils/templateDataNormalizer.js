@@ -5,9 +5,15 @@ export const normalizeTemplateData = (data, layoutType) => {
   
   const getObj = (obj, fallback) => {
     if (!obj) return fallback;
-    if (typeof obj === 'string' && obj.trim() === '') return fallback;
-    if (typeof obj === 'object' && !Array.isArray(obj) && Object.keys(obj).length === 0) return fallback;
-    if (obj.en === '' && obj.mr === '') return fallback;
+    if (typeof obj === 'string') return obj.trim() === '' ? fallback : obj;
+    if (typeof obj === 'object' && !Array.isArray(obj)) {
+      if (Object.keys(obj).length === 0) return fallback;
+      if (obj.en !== undefined || obj.mr !== undefined) {
+        if ((!obj.en || obj.en.trim() === '') && (!obj.mr || obj.mr.trim() === '')) {
+          return fallback;
+        }
+      }
+    }
     return obj;
   };
 
@@ -16,11 +22,11 @@ export const normalizeTemplateData = (data, layoutType) => {
     return img;
   };
 
-  // Extract or fallback base fields
-  const title = getObj(d.title, getObj(d.hero?.title, defaults.defaultTitle));
-  const subtitle = getObj(d.subtitle, getObj(d.hero?.subtitle, defaults.defaultSubtitle));
-  const description = getObj(d.description, getObj(d.hero?.description, defaults.defaultDescription));
-  const image = getImg(d.image, getImg(d.hero?.heroImage, defaults.defaultPlaceholderImage));
+  // Extract or fallback base fields, checking hero first then top level
+  const title = getObj(d.hero?.title, getObj(d.title, defaults.defaultTitle));
+  const subtitle = getObj(d.hero?.subtitle, getObj(d.subtitle, defaults.defaultSubtitle));
+  const description = getObj(d.hero?.description, getObj(d.description, defaults.defaultDescription));
+  const image = getImg(d.hero?.heroImage, getImg(d.image, defaults.defaultPlaceholderImage));
 
   // The components expect `data.hero.title`, so we provide it
   const base = {
@@ -45,14 +51,18 @@ export const normalizeTemplateData = (data, layoutType) => {
       if (typeof item === 'object' && item !== null) {
         let isEmpty = true;
         for (const key of Object.keys(item)) {
+          if (key === '_key' || key === 'id') continue;
           const val = item[key];
-          if (val) {
+          if (val !== undefined && val !== null) {
             if (typeof val === 'object') {
-              if (val.en || val.mr) {
+              if ((val.en && val.en.trim() !== '') || (val.mr && val.mr.trim() !== '')) {
                 isEmpty = false;
                 break;
               }
-            } else {
+            } else if (typeof val === 'string' && val.trim() !== '') {
+              isEmpty = false;
+              break;
+            } else if (typeof val === 'number' || typeof val === 'boolean') {
               isEmpty = false;
               break;
             }
@@ -71,6 +81,7 @@ export const normalizeTemplateData = (data, layoutType) => {
         ...base,
         stats: getArray(d.stats, defaults.defaultStatsArray),
         keyFunctions: getArray(d.keyFunctions, defaults.defaultGenericArray),
+        contactList: d.contactList,
         contactInfo: getObj(d.contactInfo, defaults.defaultContactInfo)
       };
     case 'HeroStatsGrid':
@@ -191,7 +202,14 @@ export const normalizeTemplateData = (data, layoutType) => {
         contactInfo: getArray(d.contactInfo, defaults.defaultContactInfoWithTextArray), listCards: getArray(d.listCards, defaults.defaultGenericArray) };
     case 'ThreeColServiceCards':
       return { ...base,
-        features: getArray(d.features, defaults.defaultGenericArray), services: getArray(d.services, defaults.defaultGenericArray) };
+        features: getArray(d.features, defaults.defaultGenericArray), 
+        services: getArray(d.services, defaults.defaultGenericArray),
+        gallery: (Array.isArray(d.gallery) && d.gallery.length > 0)
+          ? d.gallery
+          : (d.heroImage1 || d.hero?.heroImage1 || d.heroImage2 || d.hero?.heroImage2
+            ? [d.heroImage1 || d.hero?.heroImage1, d.heroImage2 || d.hero?.heroImage2].filter(Boolean)
+            : [defaults.defaultPlaceholderImage, defaults.defaultPlaceholderImage])
+      };
     case 'TwoColEventCards':
       return { ...base,
         venueFeatures: getArray(d.venueFeatures, defaults.defaultGenericArray), events: getArray(d.events, defaults.defaultEvents) };

@@ -39,6 +39,11 @@ export default function PreviewPage() {
       if (data && data.type === 'PREVIEW_UPDATE') {
         setComponentType(data.component);
         setSettingsData(data.payload);
+      } else if (data && data.type === 'SCROLL_TO_BLOCK') {
+        const el = document.querySelector(`[data-block-type="${data.blockType}"]`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
     };
 

@@ -150,14 +150,26 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
   const activeSection = (expandedSection || 'hero').replace('template_', '');
   const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
 
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_header: true,
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   useEffect(() => {
     setExpandedItemIndex(0);
   }, [activeSection]);
 
   const safeData = { ...data };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
@@ -201,7 +213,13 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
       description: safeData.hero?.description || safeData.description || { mr: '', en: '' }
     },
     (newData: any) => {
-       handleChange('hero', { ...safeData.hero, title: newData.title, subtitle: newData.subtitle, heroImage: newData.heroImage, description: newData.description });
+       handleChange({
+         hero: { ...safeData.hero, title: newData.title, subtitle: newData.subtitle, heroImage: newData.heroImage, description: newData.description },
+         title: newData.title,
+         subtitle: newData.subtitle,
+         heroImage: newData.heroImage,
+         description: newData.description
+       });
     }
   );
 
@@ -218,8 +236,8 @@ export const IconsListWithTimelineEditor: React.FC<IconsListWithTimelineEditorPr
     return (
       <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
-          <EditorBlockHeader title="Hero Banner Configuration" isExpanded={expandedItemIndex === 'hero'} onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} history={heroBannerHist} />
-          {expandedItemIndex === 'hero' && (
+          <EditorBlockHeader title="Hero Banner Configuration" isExpanded={!!expandedFixedBlocks['hero_header']} onToggle={() => toggleFixedBlock('hero_header')} history={heroBannerHist} />
+          {!!expandedFixedBlocks['hero_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>

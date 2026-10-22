@@ -147,6 +147,18 @@ export const CardsAndVerticalTimelineEditor: React.FC<CardsAndVerticalTimelineEd
   const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>(0);
   const activeSection = (expandedSection || 'hero').replace('template_', '');
 
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_header: true,
+    desc_block: true,
+    stats_header: true,
+    keyFunctions_header: true,
+    contactInfo_header: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   useEffect(() => {
     setExpandedItemIndex(0);
   }, [activeSection]);
@@ -160,8 +172,12 @@ export const CardsAndVerticalTimelineEditor: React.FC<CardsAndVerticalTimelineEd
   if (!safeData.sectionHeaders.stats) safeData.sectionHeaders.stats = { title: { en: 'Statistics', mr: 'आकडेवारी' }, icon: 'TrendingUp' };
   if (!safeData.sectionHeaders.contactInfo) safeData.sectionHeaders.contactInfo = { title: { en: 'Contact Us', mr: 'संपर्क साधा' }, icon: 'Phone' };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...data, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
@@ -200,8 +216,12 @@ export const CardsAndVerticalTimelineEditor: React.FC<CardsAndVerticalTimelineEd
     { icon: 'Calendar', title: { mr: '', en: '' }, subtitle: { mr: '', en: '' } },
     { icon: safeData.sectionHeaders?.hero?.icon || 'Calendar', title: safeData.hero?.title || safeData.title || { mr: '', en: '' }, subtitle: safeData.hero?.subtitle || safeData.subtitle || { mr: '', en: '' } },
     (newData: any) => {
-       handleChange('hero', { ...safeData.hero, title: newData.title, subtitle: newData.subtitle });
-       handleChange('sectionHeaders', { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newData.icon } });
+       handleChange({
+         hero: { ...safeData.hero, title: newData.title, subtitle: newData.subtitle },
+         title: newData.title,
+         subtitle: newData.subtitle,
+         sectionHeaders: { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newData.icon } }
+       });
     }
   );
 
@@ -237,8 +257,8 @@ export const CardsAndVerticalTimelineEditor: React.FC<CardsAndVerticalTimelineEd
     return (
       <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
-          <EditorBlockHeader title="Hero Banner Configuration" isExpanded={expandedItemIndex === 'hero'} onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} history={heroBannerHist} />
-          {expandedItemIndex === 'hero' && (
+          <EditorBlockHeader title="Hero Banner Configuration" isExpanded={!!expandedFixedBlocks['hero_header']} onToggle={() => toggleFixedBlock('hero_header')} history={heroBannerHist} />
+          {!!expandedFixedBlocks['hero_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <IconPickerInput label="Section Icon" value={heroBannerHist.value.icon || ''} onChange={(val) => { const newD = JSON.parse(JSON.stringify(heroBannerHist.value)); newD.icon = val; heroBannerHist.update(newD); }} />
               <div>
@@ -260,8 +280,8 @@ export const CardsAndVerticalTimelineEditor: React.FC<CardsAndVerticalTimelineEd
     return (
       <div className="pb-10 space-y-4">
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
-          <EditorBlockHeader title="Description Block" isExpanded={expandedItemIndex === 'desc'} onToggle={() => setExpandedItemIndex(expandedItemIndex === 'desc' ? null : 'desc')} history={descHist} />
-          {expandedItemIndex === 'desc' && (
+          <EditorBlockHeader title="Description Block" isExpanded={!!expandedFixedBlocks['desc_block']} onToggle={() => toggleFixedBlock('desc_block')} history={descHist} />
+          {!!expandedFixedBlocks['desc_block'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Description / Quote</label>
@@ -309,11 +329,11 @@ export const CardsAndVerticalTimelineEditor: React.FC<CardsAndVerticalTimelineEd
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-4 shadow-sm">
           <EditorBlockHeader 
             title="Section Header Configuration (Optional)" 
-            isExpanded={expandedItemIndex === 'stats_header'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'stats_header' ? null : 'stats_header')} 
+            isExpanded={!!expandedFixedBlocks['stats_header']} 
+            onToggle={() => toggleFixedBlock('stats_header')} 
             history={statsHeaderHist}
           />
-          {expandedItemIndex === 'stats_header' && (
+          {!!expandedFixedBlocks['stats_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>
@@ -364,11 +384,11 @@ export const CardsAndVerticalTimelineEditor: React.FC<CardsAndVerticalTimelineEd
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Contact Section Style" 
-            isExpanded={expandedItemIndex === 'contact_header'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'contact_header' ? null : 'contact_header')} 
+            isExpanded={!!expandedFixedBlocks['contactInfo_header']} 
+            onToggle={() => toggleFixedBlock('contactInfo_header')} 
             history={contactHeaderHist}
           />
-          {expandedItemIndex === 'contact_header' && (
+          {!!expandedFixedBlocks['contactInfo_header'] && (
             <div className="p-4 space-y-4 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Section Title</label>

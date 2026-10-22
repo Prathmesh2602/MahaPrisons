@@ -37,6 +37,7 @@ export const PageEditor = () => {
   const isFixedTemplatePage = ['/', 'yerawada-open-jail', 'gallery', 'our-products', 'contact'].includes(slug);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isIframeReady, setIsIframeReady] = useState(false);
+  const latestContentRef = useRef<Record<string, any>>({});
 
   useEffect(() => {
     if (isIframeReady && iframeRef.current?.contentWindow) {
@@ -70,6 +71,13 @@ export const PageEditor = () => {
         } else {
           setSelectedBlockType(type);
         }
+      } else if (event.data?.type === 'EDITOR_SCROLL_TO_BLOCK') {
+        if (iframeRef.current?.contentWindow) {
+          iframeRef.current.contentWindow.postMessage({
+            type: 'SCROLL_TO_BLOCK',
+            blockType: event.data.blockType
+          }, '*');
+        }
       }
     };
     window.addEventListener('message', handleMessage);
@@ -78,6 +86,7 @@ export const PageEditor = () => {
 
   const fetchPageData = async () => {
     try {
+      latestContentRef.current = {};
       const res = await axios.get(`${API_URL}/api/v1/pages/by-slug?slug=${slug}`);
       if (res.data) {
         const fetchedData = res.data;
@@ -126,15 +135,31 @@ export const PageEditor = () => {
   const handleTemplateChange = async (templateId: string) => {
     if (!pageData?.id) return;
     try {
-      // 1. Find the page_template_data block
-      const templateBlock = pageData.contentBlocks?.find((b: any) => b.blockType === 'page_template_data');
-      if (templateBlock && pageData.layoutType !== templateId) {
-        let oldContent = templateBlock.content || {};
+      // 1. Find or create the page_template_data block
+      let currentBlocks = pageData.contentBlocks?.map((b: any) => {
+        const latest = latestContentRef.current[b.blockType];
+        return latest ? { ...b, content: JSON.parse(JSON.stringify(latest)) } : { ...b, content: JSON.parse(JSON.stringify(b.content || {})) };
+      }) || [];
+      let templateBlock = currentBlocks.find((b: any) => b.blockType === 'page_template_data');
+      if (!templateBlock) {
+        templateBlock = {
+          id: 'temp_template_block_' + Date.now(),
+          pageNodeId: pageData.id,
+          blockType: 'page_template_data',
+          content: {},
+          order: 0,
+          isActive: true
+        };
+        currentBlocks.push(templateBlock);
+      }
+
+      if (pageData.layoutType !== templateId) {
+        let oldContent = latestContentRef.current['page_template_data'] || templateBlock.content || {};
         let newContent: any = {
-          title: oldContent.title || { mr: '', en: '' },
-          subtitle: oldContent.subtitle || { mr: '', en: '' },
-          description: oldContent.description || { mr: '', en: '' },
-          image: oldContent.image || '',
+          title: oldContent.title || (oldContent.hero?.title ? { ...oldContent.hero.title } : { mr: '', en: '' }),
+          subtitle: oldContent.subtitle || (oldContent.hero?.subtitle ? { ...oldContent.hero.subtitle } : { mr: '', en: '' }),
+          description: oldContent.description || (oldContent.hero?.description ? { ...oldContent.hero.description } : { mr: '', en: '' }),
+          image: oldContent.image || oldContent.hero?.heroImage || '',
           _archived_data: { ...(oldContent._archived_data || {}) }
         };
 
@@ -142,11 +167,11 @@ export const PageEditor = () => {
         const currentLayout = pageData.layoutType;
         const currentSpecifics: any = {};
         for (const key of Object.keys(oldContent)) {
-          if (!['title', 'subtitle', 'description', 'image', '_archived_data', '_previous_layout'].includes(key)) {
+          if (!['title', 'subtitle', 'description', 'image', 'hero', '_archived_data', '_previous_layout'].includes(key)) {
             currentSpecifics[key] = oldContent[key];
           }
         }
-        if (Object.keys(currentSpecifics).length > 0) {
+        if (currentLayout && Object.keys(currentSpecifics).length > 0) {
           newContent._archived_data[currentLayout] = currentSpecifics;
         }
         
@@ -158,58 +183,79 @@ export const PageEditor = () => {
         const dummyData: any = getTemplateDummyData(templateId);
 
         if (!archivedForNew) {
-          // Keep title/subtitle/description/image as empty or whatever it already is
+          // Initialize with full starter dummyData
+          const starter = JSON.parse(JSON.stringify(dummyData || {}));
           
-          // Initialize arrays/objects with empty shapes matching dummy data length
-          for (const key of Object.keys(dummyData)) {
-            if (!['title', 'subtitle', 'description', 'image'].includes(key)) {
-              if (Array.isArray(dummyData[key])) {
-                newContent[key] = dummyData[key].map((item: any) => {
-                  if (typeof item === 'object' && item !== null) {
-                    const emptyItem: any = {};
-                    for (const k of Object.keys(item)) {
-                      if (typeof item[k] === 'object' && item[k] !== null) {
-                        if ('en' in item[k] || 'mr' in item[k]) {
-                          emptyItem[k] = { en: '', mr: '' };
-                        } else {
-                          emptyItem[k] = {};
-                        }
-                      } else {
-                        emptyItem[k] = '';
-                      }
-                    }
-                    return emptyItem;
-                  }
-                  return '';
-                });
-              } else if (typeof dummyData[key] === 'object' && dummyData[key] !== null) {
-                newContent[key] = {};
-              } else {
-                newContent[key] = '';
-              }
-            }
+          // Carry over existing title/subtitle/description/image if non-empty
+          if (newContent.title && (newContent.title.en || newContent.title.mr)) {
+            starter.title = newContent.title;
           }
+          if (newContent.subtitle && (newContent.subtitle.en || newContent.subtitle.mr)) {
+            starter.subtitle = newContent.subtitle;
+          }
+          if (newContent.description && (newContent.description.en || newContent.description.mr)) {
+            starter.description = newContent.description;
+          }
+          if (newContent.image) {
+            starter.image = newContent.image;
+          }
+
+          starter.hero = {
+            title: starter.title || { mr: '', en: '' },
+            subtitle: starter.subtitle || { mr: '', en: '' },
+            description: starter.description || { mr: '', en: '' },
+            heroImage: starter.image || ''
+          };
+
+          Object.assign(newContent, starter);
         } else {
           // Restore archived
           Object.assign(newContent, archivedForNew);
+          if (newContent.hero) {
+            newContent.title = newContent.hero.title || newContent.title;
+            newContent.subtitle = newContent.hero.subtitle || newContent.subtitle;
+            newContent.description = newContent.hero.description || newContent.description;
+            newContent.image = newContent.hero.heroImage || newContent.image;
+          }
         }
 
         // Add draft layout type flag for local use
         newContent._draft_layout_type = templateId;
 
-        // Update locally without saving to DB yet!
-        setPageData((prev: any) => {
-          const newData = JSON.parse(JSON.stringify(prev));
-          const block = newData.contentBlocks?.find((b: any) => b.blockType === 'page_template_data');
-          if (block) {
-            block.content = newContent;
-          }
-          newData.layoutType = templateId;
-          newData._is_draft_layout = true;
-          return newData;
-        });
-        
+        // Update block in currentBlocks
+        const targetBlock = currentBlocks.find((b: any) => b.blockType === 'page_template_data');
+        if (targetBlock) {
+          targetBlock.content = newContent;
+        }
+        latestContentRef.current['page_template_data'] = newContent;
+
+        const updatedPageData = {
+          ...pageData,
+          contentBlocks: currentBlocks,
+          layoutType: templateId,
+          _is_draft_layout: true
+        };
+
+        setPageData(updatedPageData);
+        setSelectedBlockType('page_template_data');
+        setExpandedSection('hero');
         setIsTemplateModalOpen(false);
+
+        // Immediately notify preview iframe
+        if (isIframeReady && iframeRef.current?.contentWindow) {
+          iframeRef.current.contentWindow.postMessage(
+            {
+              type: 'PREVIEW_UPDATE',
+              component: 'Page',
+              payload: { 
+                blocks: currentBlocks, 
+                slug,
+                layoutType: templateId 
+              }
+            },
+            '*'
+          );
+        }
       }
     } catch (error) {
       console.error('Failed to change template:', error);
@@ -222,6 +268,7 @@ export const PageEditor = () => {
 
     if (pageData._is_draft_layout) {
       if (confirm('Are you sure you want to cancel your layout changes and revert to the published version?\nतुम्हाला खात्री आहे की तुम्ही तुमचे लेआउट बदल रद्द करू इच्छिता आणि प्रकाशित आवृत्तीवर परत जाऊ इच्छिता?')) {
+        latestContentRef.current = {};
         fetchPageData();
       }
       return;
@@ -282,8 +329,12 @@ export const PageEditor = () => {
   const handlePreviewUpdate = (blockType: string, updatedContent: any) => {
     if (!isIframeReady || !iframeRef.current?.contentWindow || !pageData) return;
 
+    latestContentRef.current[blockType] = updatedContent;
+
     const blocks = pageData.contentBlocks?.map((b: any) => {
       if (b.blockType === blockType) return { ...b, content: updatedContent };
+      const cached = latestContentRef.current[b.blockType];
+      if (cached) return { ...b, content: cached };
       return b;
     }) || [];
 
@@ -350,7 +401,7 @@ export const PageEditor = () => {
       case 'prison_activities':
         return <PrisonActivitiesEditor blockId={block.id} initialData={block.content} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} />;
       case 'page_template_data':
-        return <TemplateEditorRenderer key={pageData.layoutType} blockId={block.id} initialData={block.content} layoutType={pageData.layoutType} isDraftLayout={pageData._is_draft_layout} expandedSection={expandedSection} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} menuItemData={menuItemData} />;
+        return <TemplateEditorRenderer key={pageData.layoutType} blockId={block.id} initialData={block.content} layoutType={pageData.layoutType} isDraftLayout={pageData._is_draft_layout} expandedSection={expandedSection} onPreviewUpdate={(content: any) => handlePreviewUpdate(selectedBlockType, content)} menuItemData={menuItemData} onSaved={fetchPageData} />;
       default:
         return (
           <div className="text-center text-slate-500 py-10 bg-slate-50 border border-slate-200 rounded-lg m-3">
@@ -425,6 +476,7 @@ export const PageEditor = () => {
                 </button>
               )}
               <button 
+                id="change-template-btn"
                 onClick={() => setIsTemplateModalOpen(true)}
                 className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors shadow-sm flex items-center gap-1"
               >
@@ -440,6 +492,7 @@ export const PageEditor = () => {
             <h3 className="text-lg font-bold text-slate-800 mb-1">No Template Selected</h3>
             <p className="text-sm text-slate-500 mb-4 max-w-xs">This page is currently blank. Select a template from the library to start building.</p>
             <button 
+              id="choose-template-btn"
               onClick={() => setIsTemplateModalOpen(true)}
               className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
             >

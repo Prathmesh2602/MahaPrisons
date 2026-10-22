@@ -71,7 +71,7 @@ const ContactInfoGrid = ({ dataId, data: dynamicData }) => {
             </p>
           </div>
 
-          <div className="mb-12">
+          <div data-block-type="template_stats" className="mb-12">
             {data.sectionHeaders?.stats?.title && (
               <div className="flex items-center gap-3 mb-6">
                 {(() => {
@@ -99,7 +99,7 @@ const ContactInfoGrid = ({ dataId, data: dynamicData }) => {
             </div>
           </div>
 
-          <div className="mb-16">
+          <div data-block-type="template_keyFunctions" className="mb-16">
             {data.sectionHeaders?.keyFunctions?.title && (
               <div className="flex items-center gap-3 mb-6">
                 {(() => {
@@ -127,7 +127,7 @@ const ContactInfoGrid = ({ dataId, data: dynamicData }) => {
             </div>
           </div>
 
-          <div className="mt-16 bg-amber-50 dark-mode:bg-amber-900/10 p-6 rounded-sm font-poppins border border-amber-100 dark-mode:border-amber-900/50">
+          <div data-block-type="template_contactInfo" className="mt-16 bg-amber-50 dark-mode:bg-amber-900/10 p-6 rounded-sm font-poppins border border-amber-100 dark-mode:border-amber-900/50">
             {data.sectionHeaders?.contactInfo?.title && (
               <div className="flex items-center gap-3 mb-6 border-b border-amber-200 dark-mode:border-amber-800/50 pb-4">
                 {(() => {

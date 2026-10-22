@@ -97,11 +97,19 @@ const IntroBlockEditorItem = ({ index, itemData, onUpdateFull, onRemove, onMoveU
 };
 
 export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ data, updateData, blockId, expandedSection }) => {
-  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>('hero');
+  const [expandedItemIndex, setExpandedItemIndex] = useState<number | string | null>(0);
   const activeSection = (expandedSection || 'hero').replace('template_', '');
 
+  const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_header: true
+  });
+
+  const toggleFixedBlock = (key: string) => {
+    setExpandedFixedBlocks(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   useEffect(() => {
-    setExpandedItemIndex(activeSection === 'hero' ? 'hero' : (activeSection === 'about' ? 0 : 0));
+    setExpandedItemIndex(0);
   }, [activeSection]);
 
   const [mediaOpen_heroImage, setMediaOpen_heroImage] = useState(false);
@@ -109,8 +117,12 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
 
   const safeData = { ...data };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
@@ -182,10 +194,14 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
       subtitleIcon: safeData.sectionHeaders?.hero?.subtitleIcon || 'MapPin'
     },
     (newData: any) => {
-       handleChange('hero', { ...safeData.hero, title: newData.title, subtitle: newData.subtitle, heroImage: newData.heroImage });
-       handleChange('heroImage', newData.heroImage);
-       handleChange('muralImage', newData.muralImage);
-       handleChange('sectionHeaders', { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newData.icon, subtitleIcon: newData.subtitleIcon } });
+       handleChange({
+         hero: { ...safeData.hero, title: newData.title, subtitle: newData.subtitle, heroImage: newData.heroImage },
+         title: newData.title,
+         subtitle: newData.subtitle,
+         heroImage: newData.heroImage,
+         muralImage: newData.muralImage,
+         sectionHeaders: { ...safeData.sectionHeaders, hero: { ...(safeData.sectionHeaders?.hero || {}), icon: newData.icon, subtitleIcon: newData.subtitleIcon } }
+       });
     }
   );
 
@@ -195,11 +211,11 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
         <div className="p-2 border border-slate-200 rounded-lg bg-slate-50 mb-3 shadow-sm">
           <EditorBlockHeader 
             title="Hero Content" 
-            isExpanded={expandedItemIndex === 'hero'} 
-            onToggle={() => setExpandedItemIndex(expandedItemIndex === 'hero' ? null : 'hero')} 
+            isExpanded={!!expandedFixedBlocks['hero_header']} 
+            onToggle={() => toggleFixedBlock('hero_header')} 
             history={heroBannerHist}
           />
-          {expandedItemIndex === 'hero' && (
+          {!!expandedFixedBlocks['hero_header'] && (
             <div className="p-4 space-y-6 bg-white border-t border-slate-200 mt-2 rounded-b-lg">
               
               <div className="space-y-4">
@@ -299,7 +315,7 @@ export const TwoColEventCardsEditor: React.FC<TwoColEventCardsEditorProps> = ({ 
     );
   }
 
-  if (activeSection === 'motto') {
+  if (activeSection === 'venueFeatures' || activeSection === 'motto') {
     return (
       <div className="pb-10 space-y-4">
         <div className="px-1 mb-2">

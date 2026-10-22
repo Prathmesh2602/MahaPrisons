@@ -180,9 +180,12 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
 
   const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
     hero_content: true,
+    category_header: true,
+    features_header: true,
+    gallery_header: true,
+    timings_header: true,
     motto_content: true,
     contactInfo_content: true,
-    category_header: true,
     general_header: true,
     production_header: true,
     partnership_header: true,
@@ -205,14 +208,23 @@ export const HeroStatsGridEditor: React.FC<HeroStatsGridEditorProps> = ({ data, 
     ...data
   };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const heroContentHist = useBlockHistory(
     { title: { mr: '', en: '' }, subtitle: { mr: '', en: '' }, description: { mr: '', en: '' }, heroImage: '' },
     safeData.hero || {},
-    (newVal: any) => handleChange('hero', newVal)
+    (newVal: any) => handleChange({
+      hero: newVal,
+      title: newVal.title,
+      subtitle: newVal.subtitle,
+      description: newVal.description
+    })
   );
 
   const heroBadgeHist = useBlockHistory(

@@ -147,6 +147,10 @@ export const HeroBannerWithMediaEditor: React.FC<HeroBannerWithMediaEditorProps>
   const activeSection = (expandedSection || 'hero').replace('template_', '');
 
   const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
+    hero_header: true,
+    hero_image: true,
+    keyFunctions_header: true,
+    contactInfo_header: true,
     hero_content: true,
     motto_content: true,
     contactInfo_content: true,
@@ -195,8 +199,12 @@ export const HeroBannerWithMediaEditor: React.FC<HeroBannerWithMediaEditorProps>
     safeData.contactInfo = safeData.contactInfo.map((item: any) => ({ ...item, icon: item.icon || 'Info' }));
   }
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const updateArrayItemFull = (field: string, index: number, newItemData: any) => {
@@ -250,11 +258,33 @@ export const HeroBannerWithMediaEditor: React.FC<HeroBannerWithMediaEditorProps>
               />
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Title</label>
-                <PhoneticInput value={safeData.hero?.title?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, title: { ...safeData.hero?.title, en: val } })} englishValue={safeData.hero?.title?.en || ''} />
+                <PhoneticInput 
+                  value={safeData.hero?.title?.mr || safeData.title?.mr || ''} 
+                  onChange={(val) => {
+                    const newTitle = { ...(safeData.hero?.title || safeData.title || {}), mr: val };
+                    handleChange({ hero: { ...safeData.hero, title: newTitle }, title: newTitle });
+                  }} 
+                  onEnglishChange={(val) => {
+                    const newTitle = { ...(safeData.hero?.title || safeData.title || {}), en: val };
+                    handleChange({ hero: { ...safeData.hero, title: newTitle }, title: newTitle });
+                  }} 
+                  englishValue={safeData.hero?.title?.en || safeData.title?.en || ''} 
+                />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Subtitle</label>
-                <PhoneticInput value={safeData.hero?.subtitle?.mr || ''} onChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, mr: val } })} onEnglishChange={(val) => handleChange('hero', { ...safeData.hero, subtitle: { ...safeData.hero?.subtitle, en: val } })} englishValue={safeData.hero?.subtitle?.en || ''} />
+                <PhoneticInput 
+                  value={safeData.hero?.subtitle?.mr || safeData.subtitle?.mr || ''} 
+                  onChange={(val) => {
+                    const newSub = { ...(safeData.hero?.subtitle || safeData.subtitle || {}), mr: val };
+                    handleChange({ hero: { ...safeData.hero, subtitle: newSub }, subtitle: newSub });
+                  }} 
+                  onEnglishChange={(val) => {
+                    const newSub = { ...(safeData.hero?.subtitle || safeData.subtitle || {}), en: val };
+                    handleChange({ hero: { ...safeData.hero, subtitle: newSub }, subtitle: newSub });
+                  }} 
+                  englishValue={safeData.hero?.subtitle?.en || safeData.subtitle?.en || ''} 
+                />
               </div>
             </div>
           )}

@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useBlockHistory } from './useBlockHistory';
 import { API_URL } from '../config/api';
+
+const objectKeyMap = new WeakMap<object, string>();
+let keyCounter = 0;
 
 export function ensureArrayItemKeys(data: any): any {
   if (!data || typeof data !== 'object') return data;
@@ -9,8 +11,17 @@ export function ensureArrayItemKeys(data: any): any {
   if (Array.isArray(data)) {
     return data.map((item, idx) => {
       if (item && typeof item === 'object') {
-        const existingKey = item._key || (item.id && typeof item.id === 'string' && item.id.trim() !== '' ? item.id : undefined);
-        const key = existingKey || `k_${Math.random().toString(36).substring(2, 9)}_${Date.now()}_${idx}`;
+        let key = item._key;
+        if (!key && item.id !== undefined && item.id !== null && String(item.id).trim() !== '') {
+          key = String(item.id);
+        }
+        if (!key) {
+          key = objectKeyMap.get(item);
+          if (!key) {
+            key = `k_${++keyCounter}_${idx}`;
+            objectKeyMap.set(item, key);
+          }
+        }
         const processed = ensureArrayItemKeys(item);
         if (processed._key !== key) {
           return { ...processed, _key: key };
@@ -41,22 +52,58 @@ export const useBlockEditorState = (blockId: string, initialData: any, onPreview
   
   const historyRef = useRef<any[]>([JSON.parse(JSON.stringify(safeInitialData))]);
   const historyIndexRef = useRef(0);
-  // Dummy state just to trigger re-renders for UI when history changes
   const [historyTrigger, setHistoryTrigger] = useState(0);
 
+  const prevBlockIdRef = useRef(blockId);
+  const lastEmittedStrRef = useRef<string>('');
   const initialDataStr = JSON.stringify(initialData);
-  useEffect(() => {
-    const normalized = ensureArrayItemKeys(JSON.parse(initialDataStr || '{}'));
-    setData(normalized);
-    setSavedData(normalized);
-    historyRef.current = [JSON.parse(JSON.stringify(normalized))];
-    historyIndexRef.current = 0;
-    setHistoryTrigger(prev => prev + 1);
-  }, [initialDataStr]);
 
-  // Sync with preview when data changes
   useEffect(() => {
+    const isNewBlock = prevBlockIdRef.current !== blockId;
+    prevBlockIdRef.current = blockId;
+
+    if (isNewBlock) {
+      const normalized = ensureArrayItemKeys(JSON.parse(initialDataStr || '{}'));
+      setData(normalized);
+      setSavedData(normalized);
+      historyRef.current = [JSON.parse(JSON.stringify(normalized))];
+      historyIndexRef.current = 0;
+      setHistoryTrigger(prev => prev + 1);
+      return;
+    }
+
+    const currentJson = JSON.stringify(data);
+    if (initialDataStr === currentJson || initialDataStr === lastEmittedStrRef.current) {
+      return;
+    }
+
+    // Only update if initialData genuinely came from an external source (e.g. reload or template switch)
+    if (initialDataStr && initialDataStr !== '{}') {
+      const normalized = ensureArrayItemKeys(JSON.parse(initialDataStr));
+      setData(normalized);
+      setSavedData(normalized);
+      historyRef.current = [JSON.parse(JSON.stringify(normalized))];
+      historyIndexRef.current = 0;
+      setHistoryTrigger(prev => prev + 1);
+    }
+  }, [blockId, initialDataStr]);
+
+  // Sync with preview and update history when data changes
+  useEffect(() => {
+    const json = JSON.stringify(data);
+    if (json === lastEmittedStrRef.current) return;
+    lastEmittedStrRef.current = json;
     onPreviewUpdate(data);
+
+    // Record into undo/redo history if different from current head
+    const currentHead = JSON.stringify(historyRef.current[historyIndexRef.current]);
+    if (json !== currentHead) {
+      const newHistory = historyRef.current.slice(0, historyIndexRef.current + 1);
+      newHistory.push(JSON.parse(json));
+      historyRef.current = newHistory;
+      historyIndexRef.current = newHistory.length - 1;
+      setHistoryTrigger(prev => prev + 1);
+    }
   }, [data]);
 
   const setNormalizedData = (newVal: any) => {
@@ -66,13 +113,10 @@ export const useBlockEditorState = (blockId: string, initialData: any, onPreview
     });
   };
 
-  const updateHistoryState = (newData: any) => {
-    const normalized = ensureArrayItemKeys(newData);
-    const newHistory = historyRef.current.slice(0, historyIndexRef.current + 1);
-    newHistory.push(JSON.parse(JSON.stringify(normalized)));
-    historyRef.current = newHistory;
-    historyIndexRef.current = newHistory.length - 1;
-    setHistoryTrigger(prev => prev + 1);
+  const updateHistoryState = (newData?: any) => {
+    if (newData) {
+      setNormalizedData(newData);
+    }
   };
 
   const handleUndo = () => {

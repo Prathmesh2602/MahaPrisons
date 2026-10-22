@@ -149,11 +149,13 @@ export const HeroThreeColGridEditor: React.FC<HeroThreeColGridEditorProps> = ({ 
 
   const [expandedFixedBlocks, setExpandedFixedBlocks] = useState<Record<string, boolean>>({
     hero_content: true,
+    production_header: true,
+    impact_header: true,
+    impact_statement: true,
     motto_content: true,
     contactInfo_content: true,
     category_header: true,
     general_header: true,
-    production_header: true,
     partnership_header: true,
     training_header: true,
     organization_header: true,
@@ -174,14 +176,23 @@ export const HeroThreeColGridEditor: React.FC<HeroThreeColGridEditorProps> = ({ 
     ...data
   };
 
-  const handleChange = (field: string, value: any) => {
-    updateData({ ...safeData, [field]: value });
+  const handleChange = (fieldOrUpdates: string | Record<string, any>, value?: any) => {
+    if (typeof fieldOrUpdates === 'string') {
+      updateData((prev: any) => ({ ...prev, [fieldOrUpdates]: value }));
+    } else {
+      updateData((prev: any) => ({ ...prev, ...fieldOrUpdates }));
+    }
   };
 
   const heroContentHist = useBlockHistory(
     { title: { mr: '', en: '' }, subtitle: { mr: '', en: '' }, description: { mr: '', en: '' }, heroImage: '' },
     safeData.hero || {},
-    (newVal: any) => handleChange('hero', newVal)
+    (newVal: any) => handleChange({
+      hero: newVal,
+      title: newVal.title,
+      subtitle: newVal.subtitle,
+      description: newVal.description
+    })
   );
 
   const heroBadgeHist = useBlockHistory(

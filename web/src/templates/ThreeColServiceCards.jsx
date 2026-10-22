@@ -107,16 +107,22 @@ const ThreeColServiceCards = ({ dataId, data: dynamicData }) => {
           
           if (gallery.length === 0) return null;
 
+          const gridColsClass = gallery.length === 1 ? 'grid-cols-1' : (gallery.length === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3');
+
           return (
-            <div data-block-type="template_gallery" className={`grid grid-cols-1 md:grid-cols-${gallery.length === 1 ? '1' : '2'} gap-6 lg:gap-6 items-center`}>
-              {gallery.map((imgUrl, idx) => (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  key={idx} className="rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 border-8 border-white dark-mode:border-slate-800"
-                >
-                  <img src={imgUrl} alt={`Showcase ${idx + 1}`} className="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700" />
-                </motion.div>
-              ))}
+            <div data-block-type="template_gallery" className={`grid ${gridColsClass} gap-6 lg:gap-6 items-center`}>
+              {gallery.map((imgItem, idx) => {
+                const imgUrl = typeof imgItem === 'object' && imgItem?.url ? imgItem.url : imgItem;
+                if (!imgUrl) return null;
+                return (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    key={idx} className="rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 border-8 border-white dark-mode:border-slate-800"
+                  >
+                    <img src={imgUrl} alt={`Showcase ${idx + 1}`} className="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700" />
+                  </motion.div>
+                );
+              })}
             </div>
           );
         })()}
