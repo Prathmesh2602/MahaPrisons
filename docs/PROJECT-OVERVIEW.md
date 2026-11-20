@@ -5,7 +5,7 @@
 | **Project Name** | **MahaPrisons CMS Platform** (Digital Transformation & Dynamic CMS Architecture) |
 | **Department / Client** | **Maharashtra Prisons & Correctional Services Department** (महाराष्ट्र कारागृह आणि सुधारसेवा विभाग) |
 | **Flagship Facility** | Yerwada Open District Prison, Pune (येरवडा खुले जिल्हा कारागृह, पुणे) |
-| **Project Version** | 2.0.0 (Production-Ready Architecture) |
+| **Project Version** | 2.1.0 (Production-Ready Architecture & Dynamic Template Engine) |
 | **Primary Goal** | 100% Dynamic, Zero-Code CMS-Driven Website with Strict GIGW 3.0 & WCAG 2.1 AA Compliance |
 | **Document Purpose** | Comprehensive project dossier, executive briefing, and slide-by-slide presentation blueprint |
 
@@ -13,11 +13,11 @@
 
 ## Executive Summary
 
-The **MahaPrisons CMS Platform** is a digital transformation initiative executed for the Maharashtra Prisons & Correctional Services Department, Government of Maharashtra. The project modernizes the state's prison public portal from a legacy static single-page application (SPA) into a dynamic, bilingual (Marathi & English), enterprise-grade Content Management System (CMS) and public web application.
+The **MahaPrisons CMS Platform** is an enterprise-grade digital transformation initiative executed for the Maharashtra Prisons & Correctional Services Department, Government of Maharashtra. The project modernizes the state's prison public portal from a legacy static single-page application (SPA) into a dynamic, bilingual (Marathi & English), enterprise-grade Content Management System (CMS) and public web application.
 
 Every facet of the public experience—including dynamic page layouts, hierarchical navigation menus, ministerial profiles, inmate industry catalogs, official gazettes/tenders, emergency marquees, site branding, and media assets—is manageable via an administrative dashboard with **zero manual code modifications or deployment pipelines required**.
 
-The platform incorporates **Maker-Checker administrative governance** (dual authorization for sensitive changes), **interactive live split-screen previewing**, **bilingual phonetic typing with Google Input Tools transliteration**, **bidirectional auto-translation**, and **23 semantic design templates** engineered to guarantee compliance with the **Guidelines for Indian Government Websites (GIGW 3.0)** and **WCAG 2.1 AA** accessibility standards.
+The platform incorporates **Maker-Checker administrative governance** (dual authorization for sensitive changes), **interactive split-screen live previewing with an anti-flicker synchronization engine**, **bilingual phonetic typing with Google Input Tools transliteration**, **bidirectional auto-translation**, an expansive **Template Library modal with automated dummy data pre-seeding**, and **25 semantic design templates** engineered to guarantee compliance with the **Guidelines for Indian Government Websites (GIGW 3.0)** and **WCAG 2.1 AA** accessibility standards.
 
 ---
 
@@ -32,6 +32,7 @@ Prior to this architectural transformation, the MahaPrisons website operated as 
 | **GIGW 3.0 Compliance Gaps** | Audit flagged missing dedicated routes (`/about`, `/contact`, `/feedback`, `/sitemap`), missing downloadable document metadata (PDF sizes, languages), and static language headers. | Hardcoded single-page sections without semantic URL resolution or metadata encapsulation. |
 | **Zero Administrative Governance** | No audit trails, no role separation, and high risk of unintended production outages during content edits. | Any change required Git commits and full CI/CD deployment pipelines. |
 | **Bilingual Maintenance Burden** | Translating content across Marathi and English was error-prone, requiring manual synchronization of JSON keys. | Disconnected dictionaries without phonetic input tooling for departmental staff. |
+| **Rigid Layout Editing** | Creating or re-styling pages required manual frontend coding; selecting a new layout resulted in empty, broken screens with no starter content. | Absence of standardized layout contracts and automated data pre-seeding. |
 
 ---
 
@@ -42,11 +43,11 @@ The modernized system adopts a decoupled, high-performance architecture comprisi
 ```mermaid
 flowchart TD
     subgraph PublicLayer ["1. Public Presentation Layer (web/)"]
-        PublicWeb["Next.js 16 (App Router)<br/>• Server-Side Rendering (SSR)<br/>• Incremental Static Regeneration (ISR)<br/>• GIGW 3.0 Accessibility Shell<br/>• Bhashini Text-to-Speech Engine"]
+        PublicWeb["Next.js 16 (App Router)<br/>• Server-Side Rendering (SSR)<br/>• Incremental Static Regeneration (ISR)<br/>• 25 Semantic Design Templates<br/>• GIGW 3.0 Accessibility Shell<br/>• Bhashini Text-to-Speech Engine"]
     end
 
     subgraph AdminLayer ["2. Governance & Management Layer (admin/)"]
-        AdminPortal["Vite 8 + React 19 + TypeScript<br/>• Live-Preview Split-Pane Editor<br/>• Drag-and-Drop Menu Builder<br/>• Phonetic Input (English ➔ Marathi)<br/>• Maker-Checker Review Queue<br/>• Media & Asset Manager"]
+        AdminPortal["Vite 8 + React 19 + TypeScript<br/>• Live-Preview Split-Pane Editor<br/>• 25-Template Library with Pre-Seeded Starter Data<br/>• Anti-Flicker Decoupled State Synchronization<br/>• Drag-and-Drop Menu Builder<br/>• Phonetic Input (English ➔ Marathi)<br/>• Maker-Checker Review Queue<br/>• Media & Asset Manager"]
     end
 
     subgraph ServiceLayer ["3. Backend API Gateway (backend/)"]
@@ -64,7 +65,7 @@ flowchart TD
     APIServer <-->|Read Cache| RedisCache
     APIServer <-->|Relational Queries| PostgresDB
     APIServer <-->|Asset Uploads & Streaming| StorageBucket
-    AdminPortal -.->|Two-Way postMessage Live Sync| PublicWeb
+    AdminPortal -.->|Two-Way postMessage Live Sync (Anti-Flicker)| PublicWeb
 ```
 
 ---
@@ -92,24 +93,43 @@ flowchart TD
 
 ### 4.1 Fixed-Template + Typed-Block Paradigm
 To prevent well-intentioned administrators from breaking layout grids, branding guidelines, or GIGW accessibility contrast requirements, the system strictly separates **Content Data** from **Markup/Styles**:
-- **Templates are developer-owned code components** (23 semantic templates in `web/src/templates/`).
+- **Templates are developer-owned code components:** 25 semantic templates in `web/src/templates/` and `web/src/views/` handle presentation.
 - **Content is purely structured JSON** validated against strict schemas.
 - Admins edit text, numbers, links, and image references via structured forms—they never touch raw HTML or CSS.
 
-### 4.2 Split-Screen Live Preview with Bidirectional `postMessage` Synchronization
+### 4.2 Split-Screen Live Preview & High-Performance Anti-Flicker Architecture
 The Admin Page Editor (`admin/src/pages/PageEditor.tsx`) provides an interactive split-screen experience:
-1. **Left Canvas (Embedded Next.js Preview):** Renders the real Next.js application inside a responsive `<iframe>`.
-2. **Right Canvas (Structured Form Fields):** Renders the typed block editor with phonetic inputs and file uploaders.
-3. **Bi-Directional Communication Protocol:**
-   - **Click-to-Edit:** Clicking any component (e.g., Hero Carousel, Minister Profiles) inside the iframe sends a `BLOCK_SELECTED` message to the admin container, immediately focusing that section's form on the right.
-   - **Instant Hot Preview:** Typing in the form emits a `PREVIEW_UPDATE` event via `window.postMessage`, instantly re-rendering the iframe preview in real time without refreshing the page.
+1. **Left Canvas (Embedded Next.js Preview):** Renders the actual Next.js application inside an iframe scaled dynamically via a `ResizeObserver`.
+2. **Right Canvas (Structured Form Fields):** Renders the typed block editor with sticky section tab navigation, phonetic inputs, and media pickers.
+3. **Decoupled Real-Time Sync (`latestContentRef`):**
+   - High-frequency typing events emit `PREVIEW_UPDATE` directly to the iframe via `window.postMessage` without re-rendering the parent `PageEditor` component.
+   - Eliminates continuous 100Hz re-render loops, preventing input stuttering and loss of focus.
+4. **Deterministic Key Stabilization (`WeakMap`):**
+   - In `useBlockEditorState.ts`, array items receive stable, deterministic `_key` identifiers via `WeakMap`.
+   - Prevents non-deterministic random key generation (`Math.random()`), ensuring cursor positions and phonetic suggestions remain rock-solid during keystrokes.
+5. **Self-Echo & History Guard:**
+   - Emitted updates are checked against `lastEmittedStrRef` so incoming state echoes do not wipe local history or trigger redundant state resets.
 
-### 4.3 Bilingual Phonetic Input & Bidirectional Translation Engine
+### 4.3 Template Library & Instant Starter Dummy Data Pre-seeding
+Selecting a blank layout in traditional CMSs often presents an intimidating blank screen. The MahaPrisons platform solves this completely:
+- **Visual Template Library (`TemplateSelectorModal.tsx`):** A searchable modal showcasing visual thumbnail previews and feature descriptions for all 25 layouts.
+- **Automated Starter Data Pre-seeding (`templateDummyData.ts`):** Selecting any template automatically seeds balanced, bilingual dummy data (Hero banner, key features, stats, showcase galleries, contact details).
+- **Zero-Blank-Screen Guarantee:** The live preview immediately reflects a complete, stunning layout, allowing editors to simply replace placeholder text and images.
+- **Draft Layout Mode & Safe Reverting:**
+  - Layout changes are marked with `_is_draft_layout: true` until explicitly published.
+  - Previous layout configurations are archived in `_archived_data[previousLayout]`.
+  - Admins can click **"Cancel Draft"** or **"Revert"** at any time to instantly restore the published template state without losing data.
+
+### 4.4 Sticky Section Tabs & Deep In-Iframe Anchor Navigation
+- Every template editor features an ergonomic sticky section tab bar (e.g., `Header Banner`, `Main Content`, `Key Features`, `Showcase Images`, `Contact Details`).
+- **In-Iframe Click-to-Edit:** Clicking any component inside the preview iframe sends a `BLOCK_SELECTED` message that automatically scrolls to and opens the relevant section tab in the editor pane.
+
+### 4.5 Bilingual Phonetic Input & Bidirectional Translation Engine
 Departmental staff frequently type on standard QWERTY English keyboards but must publish in official Marathi:
 - **Real-Time Phonetic Transliteration (`PhoneticInput.tsx`):** Keystrokes are intercepted and transliterated into Devanagari suggestions with arrow-key selection (e.g., typing `karagruh` presents `कारागृह`).
 - **One-Click Bidirectional Translation:** A dedicated translation button between the Marathi and English fields allows instant translation in either direction, eliminating copy-paste workflows.
 
-### 4.4 Enterprise Maker-Checker Governance & Dual Authorization
+### 4.6 Enterprise Maker-Checker Governance & Dual Authorization
 High-impact government publications require strict accountability:
 ```mermaid
 stateDiagram-v2
@@ -124,7 +144,7 @@ stateDiagram-v2
 - **Dedicated Revision Preview (`/preview-revision?revisionId=...`):** Allows approvers to view the exact future state of the public website before approving.
 - **Audit Logs (`AuditLogs.tsx`):** Immutable logging records user IDs, timestamps, previous payloads, and rejection rationales.
 
-### 4.5 The Unified Menu-Driven Dynamic Routing Engine
+### 4.7 The Unified Menu-Driven Dynamic Routing Engine
 Instead of maintaining static route tables:
 1. Every menu item in the database (`MenuItem`) points to an internal slug, an anchor link, or an external URL.
 2. The dynamic catch-all route `web/src/app/(main)/[...slug]/page.tsx` captures incoming URLs.
@@ -152,15 +172,43 @@ Instead of maintaining static route tables:
   - `QuickServices.jsx`: Citizen shortcuts to e-Prisons, e-Mulakat (visitor scheduling), grievance redressal, and bail status.
   - `HolidayCalendar.jsx`: Interactive institutional calendar of government holidays and court schedules.
   - `PhotoGallery.jsx`: High-resolution gallery album viewer with modal zoom.
-- **23 Semantic Content Templates (`web/src/templates/`):**
-  - Standardized layouts including `HeroStatsGrid`, `ContactInfoGrid`, `CardsAndVerticalTimeline`, `HeroBannerWithMedia`, `ContentWithAccordion`, `HeroFeaturesTimelineLayout`, `TwoColEventCards`, `ThreeColServiceCards`, and `ProductsLayout`.
+- **25 Semantic Dynamic Content Templates (`web/src/templates/` & `web/src/views/`):**
+  1. `BasicFeatureGrid` — Standard header banner, 3-column features, stats widget, and contact block.
+  2. `CardsAndVerticalTimeline` — Milestone chronicles and progressive department timelines.
+  3. `ContactInfoGrid` — Structured administrative contact directories with interactive maps.
+  4. `ContactUsLayout` — Comprehensive departmental headquarters, regional officer directories, and citizen inquiry forms.
+  5. `ContentWithAccordion` — Categorized FAQs, citizen rules, legal mandates, and prison guidelines.
+  6. `ContentWithRightSidebar` — In-depth narrative reports flanked by quick statistical widgets and quotes.
+  7. `ContentWithTabs` — Tabbed document sections organizing complex administrative procedures.
+  8. `GalleryLayout` — Categorized photo archives with lightbox preview and multi-column grids.
+  9. `HeroBannerWithArticles` — Prominent hero section spotlighting news bulletins, press releases, and publications.
+  10. `HeroBannerWithBadges` — Official certifications, awards, and milestone achievements.
+  11. `HeroBannerWithMedia` — Multimedia showcase featuring institutional video reels and photo essays.
+  12. `HeroFeatureList` — Numbered protocols, security measures, and compliance standards.
+  13. `HeroFeaturesTimelineLayout` — Comprehensive facility overview with integrated chronological milestones.
+  14. `HeroSplitTimeline` — Dual-column layout balancing operational protocols against historical milestones.
+  15. `HeroStatsGrid` — High-impact metrics showcase with photo albums and operating hours.
+  16. `HeroThreeColGrid` — Industry production metrics, active modernization projects, and social impact statements.
+  17. `HeroWithMenuGrid` — Quick-link navigation grids for complex facility services (canteens, visitor desks).
+  18. `HeroWithPricingList` — Public rate charts for inmate vocational services and industrial output.
+  19. `HeroWithProcessGrid` — Step-by-step procedural guides for prison visits, bail inquiries, and legal aid.
+  20. `IconsListWithTimeline` — Visual icon directories synchronized with chronological progress logs.
+  21. `MinimalIconGrid` — Clean, distraction-free service icon cards for rapid citizen navigation.
+  22. `ProductsLayout` — Inmate vocational training catalog with product cards, pricing, and category filters.
+  23. `SideBySideListCards` — Comparative service cards and paired administrative divisions.
+  24. `ThreeColServiceCards` — Commercial facility layouts (e.g., laundry, press units) with bottom showcase galleries.
+  25. `TwoColEventCards` — Scheduled cultural events, sports meets, and reform seminars with date/time stamps.
 - **Footer with Continuous Partner Marquee (`Footer.jsx`):**
   - Continuous CSS marquee displaying government initiative banners with pause-on-hover accessibility compliance.
   - Semantic copyright and departmental ownership statements.
 
 ### 5.2 Admin CMS Portal (`admin/`)
 - **Dashboard (`App.tsx`):** Responsive collapsible sidebar, session metrics, quick links to pending tasks, and user profile badges.
-- **Live Page Editor (`PageEditor.tsx`):** Split-screen visual editor with template selector modal, 39 individual block editors, and iframe preview.
+- **Live Page Editor (`PageEditor.tsx`):**
+  - Split-screen visual editor with Template Selector Modal (`TemplateSelectorModal.tsx`).
+  - Decoupled `latestContentRef` preventing input flickering and focus loss during live updates.
+  - 39 individual block and template editors located in `admin/src/components/editors/`.
+  - Comprehensive undo/redo/reset history tracking managed via `useBlockEditorState.ts` and `useBlockHistory.ts`.
 - **Navigation Tree Builder (`MenuEditor.tsx`):**
   - Hierarchical drag-and-drop tree allowing reordering, nesting, and unnesting of menu items.
   - Icon picker supporting 20+ government-themed Lucide icons.
@@ -186,7 +234,7 @@ Instead of maintaining static route tables:
   - `Media`: Indexed catalog of uploaded files, MIME types, dimensions, and cloud URLs.
 - **REST Endpoints & Routing Architecture:**
   - `/api/v1/auth`: JWT generation, password encryption, and user validation.
-  - `/api/v1/pages`: Slug-based retrieval, draft-mode query filters, and block updates.
+  - `/api/v1/pages`: Slug-based retrieval, draft-mode query filters, layout updates, and block updates.
   - `/api/v1/menu`: Hierarchical tree queries and batch reordering.
   - `/api/v1/settings`: Global key-value retrieval and updates.
   - `/api/v1/review`: Submission, pending queue filtering, approval execution, and rejection logging.
@@ -235,7 +283,7 @@ Use this section directly to assemble a high-impact presentation deck (PowerPoin
 - **Slide Title:** Architectural Vision: Zero-Code Dynamic Management
 - **Key Points:**
   - **100% Dynamic Content:** Every title, menu link, photo, and tender is editable from a visual dashboard.
-  - **Strict Design Guardrails:** Fixed semantic templates ensure editors cannot break accessibility or branding.
+  - **Strict Design Guardrails:** 25 fixed semantic templates ensure editors cannot break accessibility or branding.
   - **Maker-Checker Governance:** Dual authorization prevents unauthorized or accidental live publications.
   - **Bilingual By Design:** Built-in Marathi phonetic transliteration and instant bidirectional translation.
 - **Visuals:** Pillar graphic showing Content Freedom, Visual Consistency, Governance, and Accessibility.
@@ -259,23 +307,35 @@ Use this section directly to assemble a high-impact presentation deck (PowerPoin
   - Quick e-Services links for e-Prisons, e-Mulakat visitor booking, and legal aid.
 - **Visuals:** Screenshots of the live public Homepage, MegaMenu, and Announcements tabs.
 
-### Slide 6: Dynamic PageRenderer & 23 Semantic Templates
-- **Slide Title:** Template-Driven Dynamic Rendering
+### Slide 6: Dynamic PageRenderer & 25 Semantic Templates
+- **Slide Title:** 25 Template-Driven Semantic Layouts
 - **Key Points:**
   - Dynamic catch-all routing (`[...slug]`) resolves any database page path on demand.
-  - Library of **23 semantic templates** covers every department requirement (HeroStatsGrid, CardsAndVerticalTimeline, ContentWithAccordion, ContactInfoGrid).
+  - Library of **25 semantic templates** covers every department requirement (HeroStatsGrid, CardsAndVerticalTimeline, ThreeColServiceCards, ProductsLayout, ContactUsLayout).
+  - Complete data normalization via `templateDataNormalizer.js` with responsive image showcases and graceful fallbacks.
   - Eliminates hardcoded pages while maintaining 100% visual and structural consistency.
-- **Visuals:** Grid preview of 4-6 diverse template layouts.
+- **Visuals:** Grid preview of 6 diverse template layouts.
 
-### Slide 7: Admin Portal: Split-Screen Live Preview
-- **Slide Title:** Live Preview Split-Screen Page Editor
+### Slide 7: Admin Portal: Split-Screen Live Preview & Anti-Flicker Architecture
+- **Slide Title:** Real-Time Split-Screen Page Editor
 - **Key Points:**
   - Left pane embeds live Next.js preview; right pane renders structured data forms.
-  - **Click-to-Edit:** Clicking a hero section or card in the preview immediately focuses its form.
+  - **Anti-Flicker Decoupled Sync:** `latestContentRef` sends postMessages to iframe without re-rendering parent container, completely preventing input stuttering and caret jumps.
+  - **Deterministic Key Stabilization:** WeakMap-backed array keys guarantee stable typing in phonetic fields.
+  - **Click-to-Edit:** Clicking a hero section or card in the preview immediately focuses its section tab.
   - **Real-Time Preview Updates:** Bi-directional `postMessage` protocol updates the preview as the editor types without refreshing.
 - **Visuals:** Side-by-side screenshot of the Admin Page Editor showing the iframe on left and form on right.
 
-### Slide 8: Interactive Navigation Tree Builder
+### Slide 8: Template Library & Plug-and-Play Starter Data
+- **Slide Title:** Zero-Blank-Screen Template Library
+- **Key Points:**
+  - Searchable **TemplateSelectorModal** displays visual thumbnails for all 25 templates.
+  - Selecting any blank layout automatically pre-seeds rich, realistic starter dummy data (`templateDummyData.ts`).
+  - Eliminates "blank screen paralysis"—editors immediately see populated forms and a gorgeous preview.
+  - Includes Draft Layout Mode (`_is_draft_layout`), archival, and one-click Revert capability.
+- **Visuals:** Screenshot of Template Selector Modal and pre-seeded ThreeColServiceCards layout.
+
+### Slide 9: Interactive Navigation Tree Builder
 - **Slide Title:** Drag-and-Drop Menu Builder
 - **Key Points:**
   - Visual hierarchy editor for top navigation, mega-menus, and footers.
@@ -284,7 +344,7 @@ Use this section directly to assemble a high-impact presentation deck (PowerPoin
   - Full revision history: Unlimited Undo, Redo, and Reset.
 - **Visuals:** Screenshot of `MenuEditor.tsx` showing the drag-and-drop tree and icon selector.
 
-### Slide 9: Bilingual Phonetic Input & Auto-Translation
+### Slide 10: Bilingual Phonetic Input & Auto-Translation
 - **Slide Title:** Overcoming Language Barriers in Content Entry
 - **Key Points:**
   - **Phonetic Transliteration:** Editors type phonetically in English, converted live to Marathi Devanagari script via Google Input Tools API.
@@ -292,7 +352,7 @@ Use this section directly to assemble a high-impact presentation deck (PowerPoin
   - Guarantees complete bilingual parity across all government announcements.
 - **Visuals:** Close-up of `PhoneticInput.tsx` showing typing `namaskar` with Marathi suggestion dropdown.
 
-### Slide 10: Dual-Authorization Maker-Checker Governance
+### Slide 11: Dual-Authorization Maker-Checker Governance
 - **Slide Title:** Enterprise Security & Quality Assurance
 - **Key Points:**
   - **Role-Based Access Control (RBAC):** MAKER, CHECKER, and SUPER_ADMIN roles.
@@ -301,7 +361,7 @@ Use this section directly to assemble a high-impact presentation deck (PowerPoin
   - **Immutable Audit Trail:** Comprehensive logging of who changed what, when, and why.
 - **Visuals:** Diagram of the Maker-Checker workflow and screenshot of `ReviewDiffViewer.tsx`.
 
-### Slide 11: Media Library & Global Site Chrome Engine
+### Slide 12: Media Library & Global Site Chrome Engine
 - **Slide Title:** Centralized Media & Site Chrome Management
 - **Key Points:**
   - Media Library with drag-and-drop upload to Supabase cloud storage / local disk.
@@ -309,7 +369,7 @@ Use this section directly to assemble a high-impact presentation deck (PowerPoin
   - Universal settings editor controlling header logos, contact info, and animated wallpapers.
 - **Visuals:** Screenshot of `MediaLibraryPopup.tsx` and `SettingsEditor.tsx`.
 
-### Slide 12: Accessibility & Government Standards (GIGW 3.0 / WCAG 2.1 AA)
+### Slide 13: Accessibility & Government Standards (GIGW 3.0 / WCAG 2.1 AA)
 - **Slide Title:** Compliance & Inclusive Digital Access
 - **Key Points:**
   - Certified compliance with GIGW 3.0 guidelines and WCAG 2.1 AA standards.
@@ -318,26 +378,18 @@ Use this section directly to assemble a high-impact presentation deck (PowerPoin
   - Screen reader semantic landmarks and visible focus states.
 - **Visuals:** Compliance badge graphics and screenshot of the Accessibility Toolbar in action.
 
-### Slide 13: Project Status & Milestones Delivered
+### Slide 14: Project Status & Milestones Delivered
 - **Slide Title:** Delivery Milestones & Current Readiness
 - **Key Points:**
   - Phase 0: Base infrastructure, Docker PostgreSQL & Redis provisioning. *(Complete)*
   - Phase 1: Unified Prisma schema & legacy data migration. *(Complete)*
   - Phase 2: Public read APIs with Redis caching. *(Complete)*
-  - Phase 3: Next.js 16 SSR/ISR frontend migration with 23 semantic templates. *(Complete)*
+  - Phase 3: Next.js 16 SSR/ISR frontend migration with 25 semantic templates. *(Complete)*
   - Phase 4: JWT auth, RBAC, and Maker-Checker governance. *(Complete)*
   - Phase 5: Vite Admin Dashboard with live preview and phonetic typing. *(Complete)*
   - Phase 6: GIGW compliance remediation & media cloud storage. *(Complete)*
+  - Phase 7: 25-Template Library, automated starter data pre-seeding & anti-flicker live sync. *(Complete)*
 - **Visuals:** Milestone progress timeline with 100% completion checkmarks.
-
-### Slide 14: Measurable Value & Impact
-- **Slide Title:** Transformative Impact & Value Delivered
-- **Key Metrics / Impact:**
-  - **100% Zero-Code Independence:** Departmental staff manage all content without software engineers.
-  - **90% Faster Publishing Cycle:** Tenders and urgent notices publish in minutes rather than days.
-  - **Sub-Second Performance:** Next.js SSR + Redis delivers sub-500ms page load times across Maharashtra.
-  - **100% GIGW 3.0 & WCAG 2.1 AA Compliance:** Full legal and accessibility standard adherence.
-- **Visuals:** KPI metric cards (Publishing Speed, Uptime, Accessibility Score, Content Freedom).
 
 ### Slide 15: Conclusion & Future Roadmap
 - **Slide Title:** Next Steps & Strategic Enhancements
@@ -356,8 +408,13 @@ Use this section directly to assemble a high-impact presentation deck (PowerPoin
 MahaPrisons/
 ├── admin/                      # Vite + React 19 + TypeScript Admin CMS Portal
 │   ├── src/
-│   │   ├── components/         # PhoneticInput, MediaLibraryPopup, ReviewDiffViewer, IconPicker
-│   │   │   └── editors/        # 39 Custom Block & Template Editors
+│   │   ├── components/         # PhoneticInput, MediaLibraryPopup, ReviewDiffViewer, IconPicker, TemplateSelectorModal
+│   │   │   └── editors/        # 39 Custom Block & Template Editors:
+│   │   │                       #   • TemplateEditorRenderer.tsx (Master layout orchestrator with sticky section tabs)
+│   │   │                       #   • 25 Layout Editors (BasicFeatureGrid, ThreeColServiceCards, HeroStatsGrid, etc.)
+│   │   │                       #   • 13 Homepage/Prison Section Editors (HeroCarousel, MinisterProfiles, etc.)
+│   │   ├── hooks/              # useBlockEditorState (Anti-flicker state machine, WeakMap stable keys), useBlockHistory
+│   │   ├── utils/              # templateDummyData.ts (Deterministic starter data sets for all 25 templates)
 │   │   ├── pages/              # PageEditor, MenuEditor, SettingsEditor, ReviewDashboard, Users, AuditLogs
 │   │   └── context/            # AuthContext (JWT & Role-based authentication)
 ├── backend/                    # Express.js REST API Microservices & Prisma ORM
@@ -371,8 +428,9 @@ MahaPrisons/
 │   ├── src/
 │   │   ├── app/(main)/         # Dynamic App Router routes ([...slug]/page.tsx, page.tsx)
 │   │   ├── components/         # Header, MegaMenu, Footer, PageRenderer, AccessibilityToolbar
-│   │   ├── templates/          # 23 Semantic Dynamic Templates (HeroStatsGrid, ContactInfoGrid, etc.)
-│   │   ├── views/              # Homepage, PrisonSystem, OurProducts, Gallery, Facilities, Social
+│   │   ├── templates/          # 23 Semantic Dynamic Component Templates (HeroStatsGrid, ContactInfoGrid, ThreeColServiceCards, etc.)
+│   │   ├── views/              # Dedicated Views & Layouts (GalleryLayout, ProductsLayout, Homepage, Facilities)
+│   │   ├── utils/              # templateDataNormalizer.js & templatePlaceholders.js (Resilient schema fallbacks)
 │   │   └── hooks/              # useAccessibility (Language, contrast, font scaling, Bhashini speech)
 ├── web-legacy/                 # Original React 19 + Vite CSR Prototype (Reference Baseline)
 ├── docs/                       # Project Documentation & Architecture Specifications
@@ -382,8 +440,9 @@ MahaPrisons/
 │   ├── CMS-IMPLEMENTATION-PLAN.md   # Phased Delivery Roadmap
 │   ├── DETAILED-ITERATIVE-IMPLEMENTATION-PLAN.md # Vertical Slice Milestones
 │   ├── GIGW-COMPLIANCE-AUDIT.md # Official Government Guidelines Audit Report
+│   ├── NETLIFY-DEPLOYMENT-AUDIT.md  # Production Deployment Checklist
 │   ├── TASK_SHEET.md           # Engineering Task Checklist
-│   └── PROJECT-PRESENTATION-OVERVIEW.md # THIS MASTER PRESENTATION DOSSIER
+│   └── PROJECT-OVERVIEW.md     # THIS MASTER DOSSIER & PRESENTATION BLUEPRINT
 ├── docker-compose.yml          # PostgreSQL (Port 5435) & Redis 7 Container Orchestration
 └── check-db.mjs                # Database connectivity & diagnostic scripts
 ```
