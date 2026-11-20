@@ -26,12 +26,16 @@ const iconColorMap = {
 };
 
 const isItemActive = (item, pathname) => {
+  if (!item || !pathname) return false;
   if (item.href && item.href !== '#' && pathname === item.href) return true;
-  if (item.children) {
+  if (item.children && Array.isArray(item.children)) {
     if (item.children.some(child => isItemActive(child, pathname))) return true;
   }
-  if (item.groups) {
-    if (item.groups.some(group => group.children && group.children.some(child => isItemActive(child, pathname)))) return true;
+  if (item.groups && Array.isArray(item.groups)) {
+    if (item.groups.some(group => {
+      const gChildren = group.children || group.links || [];
+      return Array.isArray(gChildren) && gChildren.some(child => isItemActive(child, pathname));
+    })) return true;
   }
   return false;
 };
@@ -39,6 +43,52 @@ const isItemActive = (item, pathname) => {
 export const MegaMenu = ({ menuData }) => {
   const { language, t } = useAccessibility();
   const location = usePathname();
+
+  // Universal label resolver for any menu node (root, group, child, subChild)
+  const getItemTitle = (node) => {
+    if (!node) return '';
+    if (typeof node === 'string') return t(node);
+
+    if (language === 'mr') {
+      const val = node.label_mr || 
+                  node.groupTitle_mr || 
+                  node.title_mr || 
+                  node.text_mr || 
+                  (typeof node.label === 'object' ? (node.label?.mr || node.label?.en) : null) ||
+                  (typeof node.title === 'object' ? (node.title?.mr || node.title?.en) : null) ||
+                  (typeof node.text === 'object' ? (node.text?.mr || node.text?.en) : null) ||
+                  (typeof node.groupTitle === 'object' ? (node.groupTitle?.mr || node.groupTitle?.en) : null) ||
+                  (node.groupTitle ? t(node.groupTitle) : null) ||
+                  (node.text ? t(node.text) : null) ||
+                  (node.title ? t(node.title) : null) ||
+                  (node.label ? t(node.label) : null) ||
+                  node.label_en || 
+                  node.groupTitle_en || 
+                  node.title_en || 
+                  node.text_en ||
+                  '';
+      return typeof val === 'string' ? val : (val?.mr || val?.en || '');
+    } else {
+      const val = node.label_en || 
+                  node.groupTitle_en || 
+                  node.title_en || 
+                  node.text_en || 
+                  (typeof node.label === 'object' ? (node.label?.en || node.label?.mr) : null) ||
+                  (typeof node.title === 'object' ? (node.title?.en || node.title?.mr) : null) ||
+                  (typeof node.text === 'object' ? (node.text?.en || node.text?.mr) : null) ||
+                  (typeof node.groupTitle === 'object' ? (node.groupTitle?.en || node.groupTitle?.mr) : null) ||
+                  (node.groupTitle ? t(node.groupTitle) : null) ||
+                  (node.text ? t(node.text) : null) ||
+                  (node.title ? t(node.title) : null) ||
+                  (node.label ? t(node.label) : null) ||
+                  node.label_mr || 
+                  node.groupTitle_mr || 
+                  node.title_mr || 
+                  node.text_mr ||
+                  '';
+      return typeof val === 'string' ? val : (val?.en || val?.mr || '');
+    }
+  };
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null); // Desktop active top-level dropdown index
   const [activeSubMenu, setActiveSubMenu] = useState(null); // Desktop active sub flyout index
@@ -221,7 +271,7 @@ export const MegaMenu = ({ menuData }) => {
             return (
               <div key={idx} className={`px-2 py-2 flex items-center gap-1.5 whitespace-nowrap ${isActive ? 'px-3' : ''}`}>
                 {IconComponent && <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'mr-1' : iconColor}`} />}
-                <span>{language === 'mr' ? item.label_mr : item.label_en}</span>
+                <span>{getItemTitle(item)}</span>
                 {hasChildren && <ChevronDown className="w-3 h-3" />}
               </div>
             );
@@ -258,7 +308,7 @@ export const MegaMenu = ({ menuData }) => {
                   aria-expanded={isDropdownActive ? "true" : "false"}
                 >
                   {IconComponent && <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'mr-1' : (item.icon ? iconColorMap[item.icon] : 'text-gray-700')}`} />}
-                  <span>{language === 'mr' ? item.label_mr : item.label_en}</span>
+                  <span>{getItemTitle(item)}</span>
                   {hasChildren && <ChevronDown className="w-3 h-3 text-gray-500 dark-mode:text-gray-400 flex-shrink-0" />}
                 </Link>
 
@@ -272,7 +322,7 @@ export const MegaMenu = ({ menuData }) => {
                         onClick={(e) => handleLinkClick(e, child.href)}
                         className="w-full px-4 py-2 text-[13px] font-medium text-[#0F3D66] dark-mode:text-blue-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500"
                       >
-                        <span className="flex-1 text-left whitespace-normal leading-snug">{language === 'mr' ? child.label_mr : child.label_en}</span>
+                        <span className="flex-1 text-left whitespace-normal leading-snug">{getItemTitle(child)}</span>
                         <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0 mt-0.5" />
                       </Link>
                     ))}
@@ -285,7 +335,7 @@ export const MegaMenu = ({ menuData }) => {
                     {item.groups?.map((group, gIdx) => (
                       <div key={gIdx} className="flex flex-col gap-1.5">
                         <h3 className="text-[14px] font-medium text-amber-600 dark-mode:text-amber-500 border-b border-gray-200 dark-mode:border-gray-700 pb-0.5 mb-1 whitespace-normal leading-snug">
-                          {language === 'mr' ? group.groupTitle_mr : (group.groupTitle_en || group.groupTitle_mr)}
+                          {getItemTitle(group)}
                         </h3>
                         <div className="flex flex-col gap-0.5">
                           {group.children?.map((child, cIdx) => {
@@ -302,7 +352,7 @@ export const MegaMenu = ({ menuData }) => {
                                 >
                                   <div className="flex items-start gap-1 flex-1">
                                     <ChevronRight className="w-2.5 h-2.5 text-gray-400 flex-shrink-0 mt-0.5" />
-                                    <span className="whitespace-normal leading-tight text-left">{language === 'mr' ? child.label_mr : (child.label_en || child.label_mr)}</span>
+                                    <span className="whitespace-normal leading-tight text-left">{getItemTitle(child)}</span>
                                   </div>
                                   {hasSub && <ChevronRight className="w-2.5 h-2.5 text-gray-400 flex-shrink-0 mt-0.5" />}
                                 </Link>
@@ -315,7 +365,7 @@ export const MegaMenu = ({ menuData }) => {
                                         onClick={(e) => handleLinkClick(e, subChild.href)}
                                         className="w-full px-3 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 transition-colors flex items-start"
                                       >
-                                        <span className="whitespace-normal leading-tight text-left">{language === 'mr' ? subChild.label_mr : (subChild.label_en || subChild.label_mr)}</span>
+                                        <span className="whitespace-normal leading-tight text-left">{getItemTitle(subChild)}</span>
                                       </Link>
                                     ))}
                                   </div>
@@ -374,14 +424,14 @@ export const MegaMenu = ({ menuData }) => {
                             else handleLinkClick(e, item.href);
                           }}
                           className={`w-full px-4 py-2 text-[13px] font-medium flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500 ${
-                            isItemActive(item, location.pathname) 
+                            isItemActive(item, location) 
                               ? 'bg-amber-50 text-amber-700 dark-mode:bg-amber-900/30 dark-mode:text-amber-400' 
                               : isSubActive 
                                 ? 'bg-gray-100 dark-mode:bg-gray-800 text-gray-900 dark-mode:text-gray-100' 
                                 : 'text-gray-900 dark-mode:text-gray-100 hover:bg-gray-100 dark-mode:hover:bg-gray-800'
                           }`}
                         >
-                          <span className="flex-1 whitespace-normal leading-snug text-left max-w-[200px]">{language === 'mr' ? item.label_mr : item.label_en}</span>
+                          <span className="flex-1 whitespace-normal leading-snug text-left max-w-[200px]">{getItemTitle(item)}</span>
                           {hasSubChildren ? (
                             <ChevronLeft className="w-3.5 h-3.5 text-[#1E5AA8] dark-mode:text-blue-400 flex-shrink-0 mt-0.5" />
                           ) : (
@@ -399,14 +449,14 @@ export const MegaMenu = ({ menuData }) => {
                                 onClick={(e) => handleLinkClick(e, subChild.href)}
                                 className="w-full px-4 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start gap-2 justify-between border-b border-gray-100 last:border-0 dark-mode:border-gray-800 transition-colors focus:outline focus:outline-2 focus:outline-amber-500"
                               >
-                                <span className="flex-1 text-left whitespace-normal leading-snug">{language === 'mr' ? subChild.label_mr : subChild.label_en}</span>
+                                <span className="flex-1 text-left whitespace-normal leading-snug">{getItemTitle(subChild)}</span>
                                 <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0 mt-0.5" />
                               </Link>
                             ))}
                             {item.groups && item.groups.length > 0 && item.groups?.map((group, gIdx) => (
                               <div key={gIdx} className="mb-2 last:mb-0">
                                 <div className="px-4 py-1.5 text-[14px] font-medium text-amber-600 dark-mode:text-amber-500 bg-gray-50 dark-mode:bg-gray-800/50 whitespace-normal leading-snug">
-                                  {language === 'mr' ? group.groupTitle_mr : (group.groupTitle_en || group.groupTitle_mr)}
+                                  {getItemTitle(group)}
                                 </div>
                                 {group.children?.map((subChild, scIdx) => (
                                   <Link
@@ -415,7 +465,7 @@ export const MegaMenu = ({ menuData }) => {
                                     onClick={(e) => handleLinkClick(e, subChild.href || '#')}
                                     className="w-full px-4 py-1.5 text-[12px] font-normal text-[#374151] dark-mode:text-gray-300 hover:bg-blue-50 hover:text-blue-700 dark-mode:hover:bg-gray-800 flex items-start transition-colors border-b border-gray-100 last:border-0 dark-mode:border-gray-800"
                                   >
-                                    <span className="whitespace-normal leading-snug text-left">{language === 'mr' ? subChild.label_mr : (subChild.label_en || subChild.label_mr)}</span>
+                                    <span className="whitespace-normal leading-snug text-left">{getItemTitle(subChild)}</span>
                                   </Link>
                                 ))}
                               </div>
@@ -493,83 +543,125 @@ export const MegaMenu = ({ menuData }) => {
                       onClick={() => hasChildren ? toggleDropdownMobile(idx) : null}
                     >
                       <Link
-                        href={hasChildren ? '#' : item.href}
-                        className="text-sm font-semibold flex items-center gap-2.5"
+                        href={hasChildren ? '#' : (item.href || '#')}
+                        className="text-sm font-semibold flex items-center gap-2.5 flex-1"
                         onClick={(e) => {
-                          if (hasChildren) e.preventDefault();
-                          else handleLinkClick(e, item.href);
+                          if (hasChildren) {
+                            e.preventDefault();
+                            toggleDropdownMobile(idx);
+                          } else {
+                            handleLinkClick(e, item.href);
+                          }
                         }}
                       >
                         {IconComponent && <IconComponent className={`w-4 h-4 ${item.icon ? iconColorMap[item.icon] : 'text-blue-200'}`} />}
-                        <span>{language === 'mr' ? item.label_mr : item.label_en}</span>
+                        <span>{getItemTitle(item)}</span>
                       </Link>
                       {hasChildren && (
-                        <button className="p-1 focus:outline-none">
+                        <button
+                          type="button"
+                          className="p-1 focus:outline-none"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleDropdownMobile(idx);
+                          }}
+                          aria-label={isDropdownActive ? "Collapse sub-menu" : "Expand sub-menu"}
+                        >
                           <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDropdownActive ? 'rotate-180 text-amber-400' : 'text-gray-400'}`} />
                         </button>
                       )}
                     </div>
 
-                    {/* Mobile Dropdown Submenu */}
-                    {hasChildren && (!item.groups || item.groups.length === 0) && isDropdownActive && (
-                      <div className="mt-1 pl-6 flex flex-col gap-1 bg-[#092947]/50 rounded-md py-1 border-l-2 border-amber-500 animate-in slide-in-from-top duration-200">
-                        {item.children?.map((child, cIdx) => (
-                          <Link
-                            key={cIdx}
-                            href={child.href}
-                            onClick={(e) => handleLinkClick(e, child.href)}
-                            className="block px-3 py-1.5 text-[13px] font-medium text-blue-200 hover:bg-white/10 hover:text-white rounded transition-colors"
-                          >
-                            {language === 'mr' ? child.label_mr : child.label_en}
-                          </Link>
-                        ))}
+                    {/* Mobile Dropdown Submenu (Direct Children) */}
+                    {hasChildren && item.children && item.children.length > 0 && isDropdownActive && (
+                      <div className="mt-1 pl-4 flex flex-col gap-1 bg-[#092947]/50 rounded-md py-1 border-l-2 border-amber-500 animate-in slide-in-from-top duration-200">
+                        {item.children.map((child, cIdx) => {
+                          const hasSub = child.children && child.children.length > 0;
+                          return (
+                            <div key={cIdx} className="flex flex-col">
+                              <Link
+                                href={hasSub ? '#' : (child.href || '#')}
+                                onClick={(e) => {
+                                  if (hasSub) {
+                                    e.preventDefault();
+                                  } else {
+                                    handleLinkClick(e, child.href);
+                                  }
+                                }}
+                                className="block px-3 py-1.5 text-[13px] font-medium text-blue-200 hover:bg-white/10 hover:text-white rounded transition-colors"
+                              >
+                                {getItemTitle(child)}
+                              </Link>
+                              {hasSub && (
+                                <div className="pl-4 flex flex-col border-l border-white/10 ml-3 mb-1">
+                                  {child.children.map((subChild, scIdx) => (
+                                    <Link
+                                      key={scIdx}
+                                      href={subChild.href || '#'}
+                                      onClick={(e) => handleLinkClick(e, subChild.href)}
+                                      className="block px-3 py-1 text-[12px] font-normal text-gray-300 hover:bg-white/10 hover:text-white rounded transition-colors"
+                                    >
+                                      {getItemTitle(subChild)}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
 
                     {/* Mobile Mega Menu Groups */}
                     {hasChildren && item.groups && item.groups.length > 0 && isDropdownActive && (
                       <div className="mt-1 pl-4 flex flex-col gap-3 bg-[#092947]/50 rounded-md py-2 border-l-2 border-amber-500 animate-in slide-in-from-top duration-200">
-                        {item.groups?.map((group, gIdx) => (
-                          <div key={gIdx} className="flex flex-col gap-1">
-                            <h4 className="text-[14px] font-medium text-amber-400 px-3 mb-1 whitespace-normal leading-snug">
-                              {t(group.groupTitle)}
-                            </h4>
-                            {group.children.map((child, cIdx) => {
-                              const hasSub = child.children && child.children.length > 0;
-                              return (
-                                <div key={cIdx}>
-                                  <Link
-                                    href={hasSub ? '#' : child.href}
-                                    className="block px-3 py-1 text-[13px] font-medium text-blue-200 hover:bg-white/10 hover:text-white rounded transition-colors"
-                                    onClick={(e) => {
-                                      if (hasSub) {
-                                        e.preventDefault();
-                                      } else {
-                                        setMobileMenuOpen(false);
-                                      }
-                                    }}
-                                  >
-                                    - {t(child.text)}
-                                  </Link>
-                                  {hasSub && (
-                                    <div className="pl-4 flex flex-col mt-0.5 mb-1">
-                                      {child.children.map((subChild, scIdx) => (
-                                        <Link
-                                          key={scIdx}
-                                          href={subChild.href}
-                                          className="block px-3 py-1 text-[12px] font-normal text-gray-300 hover:bg-white/10 hover:text-white rounded transition-colors"
-                                          onClick={() => setMobileMenuOpen(false)}
-                                        >
-                                          {language === 'mr' ? subChild.text : (t(subChild.text) || subChild.text)}
-                                        </Link>
-                                      ))}
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        ))}
+                        {item.groups.map((group, gIdx) => {
+                          const groupItems = group.children || group.links || [];
+                          const groupTitle = getItemTitle(group);
+                          return (
+                            <div key={gIdx} className="flex flex-col gap-1">
+                              {groupTitle && (
+                                <h4 className="text-[13px] font-semibold text-amber-400 px-3 mb-0.5 whitespace-normal leading-snug">
+                                  {groupTitle}
+                                </h4>
+                              )}
+                              {groupItems.map((child, cIdx) => {
+                                const hasSub = child.children && child.children.length > 0;
+                                return (
+                                  <div key={cIdx}>
+                                    <Link
+                                      href={hasSub ? '#' : (child.href || '#')}
+                                      className="block px-3 py-1 text-[13px] font-medium text-blue-200 hover:bg-white/10 hover:text-white rounded transition-colors"
+                                      onClick={(e) => {
+                                        if (hasSub) {
+                                          e.preventDefault();
+                                        } else {
+                                          handleLinkClick(e, child.href);
+                                        }
+                                      }}
+                                    >
+                                      - {getItemTitle(child)}
+                                    </Link>
+                                    {hasSub && (
+                                      <div className="pl-4 flex flex-col mt-0.5 mb-1 border-l border-white/10 ml-3">
+                                        {child.children.map((subChild, scIdx) => (
+                                          <Link
+                                            key={scIdx}
+                                            href={subChild.href || '#'}
+                                            className="block px-3 py-1 text-[12px] font-normal text-gray-300 hover:bg-white/10 hover:text-white rounded transition-colors"
+                                            onClick={(e) => handleLinkClick(e, subChild.href)}
+                                          >
+                                            {getItemTitle(subChild)}
+                                          </Link>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
